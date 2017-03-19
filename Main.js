@@ -98,6 +98,12 @@ bot.on('message' , msg => {
         console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "Notice me)");
      }
 
+  if(input.startsWith(prefix + "VOTEBAN"))
+    {
+      msg.reply("KYS")
+      msg.reply("Böser Steven!")
+    }
+
   if(input ===prefix + "DATBOI")
      {
        msg.channel.sendMessage("HERE COME DAT BOI");
@@ -206,8 +212,13 @@ bot.on('message' , msg => {
      mal.quickSearch(InputMAL).then(function (results) {
        results.anime[0].fetch().then(function (results2) {
            msg.channel.sendMessage(     [
-             "**Title: " + results2.title,
-             ""
+             "**Title:** "                         + results2.title,
+             "**Url:** https://myanimelist.net"    + results2.path,
+             "**Score:**"                          + results2.score,
+             "**Rank:**"                           + results2.ranked,
+             "**Popularity:**"                     + results2.popularity,
+             "**Synapse:**",
+             results2.description,
            ]);
 
 
