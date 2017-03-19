@@ -3,9 +3,9 @@ Senpai-Bot Source Code
 
 so this is the Source Code of my own bot "Senpai"
 
-this is free to use for your bot (that mean you can copy paste any of my code to your own bot if you want :3)
+this is free to use for your bot (that mean you can copy and edit my code id you want that)
 
-its written in node.js, Discord.js and Request.js  (that mean you need at least nodejs and Discord.js to run it)
+its written in node.js, with Discord.js and Request.js 
 
 https://nodejs.org/en/
 
@@ -13,11 +13,11 @@ https://github.com/hydrabolt/discord.js
 
 https://github.com/request/request
 
-Also i dont know if you must edit some stuff if you wanna selfhost my bot (i think at least the code for the pics and the Token for the Bot)
+Also i dont know if you must edit some stuff if you wanna selfhost my bot (like your Token from the Bot you can change that in the config)
 
-**_% is the prefix from my bot, so put this befor all these Commands_**
+**_% is the prefix from my bot, so put this befor all these Commands (you can change that in the config_**
 
-**_Commands with a * require the role "Bot Commander",_**
+**_Commands with a * require a role with the required permission (like if you wanna Ban a User you need a role with the permission "BAN_MEMBERS",_**
 
 **so the bot can the Following Commands,**
 
@@ -25,9 +25,9 @@ Also i dont know if you must edit some stuff if you wanna selfhost my bot (i thi
 
 >showbans* shows you all bans on your Server,
 
->ban* [tag target user here] ban a user do without [],
+>ban* [Mention target user here] ban a user do without [],
 
->kick* [tag target user here] Kick a user do without [],
+>kick* [Mention target user here] Kick a user do without [],
 
 >8ball [question] a funny 8ball command who can answer a random Yes/No question :) do without [],
 
@@ -35,9 +35,7 @@ Also i dont know if you must edit some stuff if you wanna selfhost my bot (i thi
 
 >KappaHD shows a Kappa in HD,
 
->FWF show 1 from 4 random FunWithFlags Picture from The big bang theory :),
-
->Cat shows a random cat image sweet :3,
+>Cat shows a random cat image ,
 
 >fgt show a huge faggot font (thats a copy&paste shit example :3)
 
