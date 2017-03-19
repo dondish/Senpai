@@ -9,7 +9,8 @@
 "use strict";
 const Discord = require('discord.js');
 const request = require('request');
-const urban   = require('urban')
+const urban   = require('urban');
+var   mal     = require('maljs');
 const config  = require('./config/config.js');
 const bot     = new Discord.Client();
 const Token   = config.Token;
@@ -39,7 +40,7 @@ bot.on('message' , msg => {
 
   if(input ===prefix + "HELP")
   {
-    msg.channel.sendMessage("i sent you a PM")
+    msg.channel.sendMessage("i sent you a PM");
     msg.author.sendMessage([
       `**${prefix}Cat**                  show you a random cat                                                        `,
       `**${prefix}8ball**                ask me a Question and i answer                                               `,
@@ -141,11 +142,11 @@ bot.on('message' , msg => {
  {
   if(input.startsWith(prefix + "BAN"))
     {
-      if(msg.member.hasPermission("BAN_MEMBERS"))
+      if(msg.member.hasPermission(4))
         {
-        var ID = msg.content.slice(7, -1)
-          msg.guild.ban(ID)
-          msg.channel.sendMessage("**I've Banned:hammer: <@" + ID + "> because **<@" + msg.author.id + ">** want it**")
+          var id    = msg.mentions.users
+          msg.guild.ban(id.first())
+          msg.channel.sendMessage("**I've Banned:hammer: " + id.first() + " because **<@" + msg.author.id + ">** want it**")
           console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "ban)");
         }else{
           msg.reply("*You need a role that provide the right to ban People*")
@@ -155,11 +156,11 @@ bot.on('message' , msg => {
 
    if(input.startsWith(prefix + "KICK"))
      {
-       if(msg.member.hasPermission("KICK_MEMBER"))
+       if(msg.member.hasPermission(2))
          {
-         var ID2 = msg.content.slice(8, -1)
-            msg.guild.ban(ID2)
-            msg.channel.sendMessage("**I've Kicked <@" + ID2 + "> because **<@" + msg.author.id + ">** want it**")
+            var id2 = msg.mentions.users
+            msg.guild.member(id2.first()).kick()
+            msg.channel.sendMessage("**I've Kicked " + id2.first() + " because **<@" + msg.author.id + ">** want it**")
             msg.channel.sendFile("http://cdn2.hubspot.net/hub/98462/file-39842987-jpg/images/to_get_kicked_out,_phrasal_verb_for_english_learners.jpg")
             console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "kick)");
          }else{
@@ -195,6 +196,27 @@ bot.on('message' , msg => {
       }
     );
     }
+
+  if(input.startsWith(prefix+ "ANIME"))
+   if(input ===prefix + "ANIME")
+   {
+     msg.reply("You must add a Anime name after " + prefix + "Anime")
+   }else{
+     var InputMAL = msg.content.slice(7)
+     mal.quickSearch(InputMAL).then(function (results) {
+       results.anime[0].fetch().then(function (results2) {
+           msg.channel.sendMessage(     [
+             "**Title: " + results2.title,
+             ""
+           ]);
+
+
+       }
+     );
+     }
+    );
+   }
+
 
 }
 );
