@@ -26,9 +26,9 @@ i used the Language [Nodejs](https://nodejs.org/en/) what is like is sound based
 - **Urban** Search a word in the Urban Dictunary
 - **fgt** shows a Copy&Paste
 - **Notice me** Senpai will notice you
+- **Anime/Manga** search for a specific Anime/Manga
 
 ### Will be added in the Future
 
 - **Mute** mute a mentioned user
-- **Anime/Manga** search for a specific Anime/Manga
 - **osu** Search for a specific Player on [Osu!](https://osu.ppy.sh)
