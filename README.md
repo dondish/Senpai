@@ -3,7 +3,7 @@ Senpai-Bot Source Code
 
 so this is the Source Code of my own bot "Senpai"
 
-this is free to use for your bot (that mean you can copy and edit my code id you want that)
+this is free to use for your bot (that mean you can copy and edit my code if you want that)
 
 its written in nodejs, with Discord.js ,Request and urban
 
@@ -25,8 +25,6 @@ Also i dont know if you must edit some stuff if you wanna selfhost my bot (like 
 
 >info telling you the current information about my bot,
 
->showbans* shows you all bans on your Server,
-
 >ban* [Mention target user here] ban a user do without [],
 
 >kick* [Mention target user here] Kick a user do without [],
@@ -39,7 +37,9 @@ Also i dont know if you must edit some stuff if you wanna selfhost my bot (like 
 
 >Cat shows a random cat image ,
 
->fgt show a huge faggot font (thats a copy&paste shit example :3)
+>fgt show a huge faggot font (thats a copy&paste)
+
+>Urban Dictunary search
 
 
 it have some interactions with weeb stuff :3 as example these (here you don't need the prefix)
@@ -55,7 +55,5 @@ These commands will be added in the next time:
 >Anime and Manga search
 
 >Osu search for Maps and Player
-
->Urban Dictunary search
 
 >and many more
