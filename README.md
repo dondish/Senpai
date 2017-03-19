@@ -5,7 +5,7 @@ so this is the Source Code of my own bot "Senpai"
 
 this is free to use for your bot (that mean you can copy and edit my code id you want that)
 
-its written in node.js, with Discord.js and Request.js 
+its written in nodejs, with Discord.js and Request
 
 https://nodejs.org/en/
 
@@ -15,7 +15,7 @@ https://github.com/request/request
 
 Also i dont know if you must edit some stuff if you wanna selfhost my bot (like your Token from the Bot you can change that in the config)
 
-**_% is the prefix from my bot, so put this befor all these Commands (you can change that in the config_**
+**_% is the prefix from my bot, so put this befor all these Commands (you can change that in the config)_**
 
 **_Commands with a * require a role with the required permission (like if you wanna Ban a User you need a role with the permission "BAN_MEMBERS",_**
 
