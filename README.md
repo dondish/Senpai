@@ -5,13 +5,15 @@ so this is the Source Code of my own bot "Senpai"
 
 this is free to use for your bot (that mean you can copy and edit my code id you want that)
 
-its written in nodejs, with Discord.js and Request
+its written in nodejs, with Discord.js ,Request and urban
 
 https://nodejs.org/en/
 
 https://github.com/hydrabolt/discord.js
 
 https://github.com/request/request
+
+https://github.com/mvrilo/urban
 
 Also i dont know if you must edit some stuff if you wanna selfhost my bot (like your Token from the Bot you can change that in the config)
 

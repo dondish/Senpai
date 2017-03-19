@@ -9,6 +9,7 @@
 "use strict";
 const Discord = require('discord.js');
 const request = require('request');
+const urban   = require('urban')
 const config  = require('./config/config.js');
 const bot     = new Discord.Client();
 const Token   = config.Token;
@@ -40,15 +41,16 @@ bot.on('message' , msg => {
   {
     msg.channel.sendMessage("i sent you a PM")
     msg.author.sendMessage([
-      "**%Cat**                  show you a random cat                                                        ",
-      "**%8ball**                ask me a Question and i answer                                               ",
-      "**Notice Me**             i will notice you :3                                                         ",
-      "**%ping**                 shows my ping in ms                                                          ",
-      "**%fgt**                  shows a copy&paste                                                           ",
-      "**%Kappa**                shows a Kappa                                                                ",
-      "**%KappaHD**              shows a HD Kappa                                                             ",
-      "**%Ban @[User]**          ban a user if you have a role with the BAN_MEMBER right                      ",
-      "**%kick @[User]**         kicks a user if you have a role with the KICK_MEMBER right                   "
+      `**${prefix}Cat**                  show you a random cat                                                        `,
+      `**${prefix}8ball**                ask me a Question and i answer                                               `,
+      `**Notice Me**                     i will notice you :3                                                         `,
+      `**${prefix}ping**                 shows my ping in ms                                                          `,
+      `**${prefix}fgt**                  shows a copy&paste                                                           `,
+      `**${prefix}Kappa**                shows a Kappa                                                                `,
+      `**${prefix}KappaHD**              shows a HD Kappa                                                             `,
+      `**${prefix}Ban @[User]**          ban a user if you have a role with the BAN_MEMBER right                      `,
+      `**${prefix}kick @[User]**         kicks a user if you have a role with the KICK_MEMBER right                   `,
+      `**${prefix}urban [word]**         search for a word on urban Urban Dictionary                                  `
     ]);
   }
 
@@ -166,6 +168,33 @@ bot.on('message' , msg => {
          }
      }
   }
+
+  if(input.startsWith(prefix + "URBAN"))
+   if(input ===prefix + "URBAN")
+   {
+     msg.reply("You must add a word after " + prefix + "Urban")
+   }else{
+      var InputUrban = urban(msg.content.slice(7))
+      InputUrban.first(function(OutputUrban) {
+        msg.channel.sendMessage([
+          `**${OutputUrban.word}** by ${OutputUrban.author}`,
+          ``,
+          `***Definition:***`,
+          `${OutputUrban.definition}`,
+          ``,
+          `***Example***`,
+          `${OutputUrban.example}`,
+          ``,
+          `${OutputUrban.thumbs_up} :thumbsup:`,
+          ``,
+          `${OutputUrban.thumbs_down} :thumbsdown:`
+
+
+        ])
+        console.log(log +msg.author.username + "/" + msg.author.id + " (" + prefix + "urban)" );
+      }
+    );
+    }
 
 }
 );
