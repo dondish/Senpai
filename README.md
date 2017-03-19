@@ -1,19 +1,19 @@
-#Senpai-Bot
+# Senpai-Bot
 
-##About
+## About
 Here you can find the Source code of my own Bot "Senpai" feel free to use and modify it if you want
 
 
-##Language and Libs
+## Language and Libs
 
 i used the Language [Nodejs](https://nodejs.org/en/) what is like is sound Javascript also i used 3 Libs so far
 - [Discord.js](https://nodejs.org)
 - [request](https://github.com/request/request)
 - [urban](https://github.com/mvrilo/urban)
 
-##Commands and Future
+## Commands and Future
 
-###Commands so far
+### Commands so far
 
 - **Info** Shows all commands in a PM
 - **Ban** Ban a mentioned user
@@ -26,7 +26,7 @@ i used the Language [Nodejs](https://nodejs.org/en/) what is like is sound Javas
 - **fgt** shows a Copy&Paste
 - **Notice me** Senpai will notice you
 
-###Will be added in the Future
+### Will be added in the Future
 
 - **Mute** mute a mentioned user
 - **Anime/Manga** search for a specific Anime/Manga
