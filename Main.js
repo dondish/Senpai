@@ -33,7 +33,7 @@ bot.on('ready' , () => {
 bot.on('message' , msg => {
 
   var input        = msg.content.toUpperCase() ;
-  var Eingabe8Ball = msg.content.slice(7);
+  var Input8Ball   = msg.content.slice(7);
   var things       = ["It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"];
   var poop ;
   var Ping         = bot.ping;
@@ -51,7 +51,8 @@ bot.on('message' , msg => {
       `**${prefix}KappaHD**              shows a HD Kappa                                                             `,
       `**${prefix}Ban @[User]**          ban a user if you have a role with the BAN_MEMBER right                      `,
       `**${prefix}kick @[User]**         kicks a user if you have a role with the KICK_MEMBER right                   `,
-      `**${prefix}urban [word]**         search for a word on urban Urban Dictionary                                  `
+      `**${prefix}urban [word]**         search for a word on urban Urban Dictionary                                  `,
+      `**${prefix}Anime [word]**         search for a Anime on myanimelist                                            `
     ]);
   }
 
@@ -80,7 +81,7 @@ bot.on('message' , msg => {
                                   }
                      else
           {
-            poop = ("You ask me `" + Eingabe8Ball + "` and my answer is: **" + things[Math.floor(Math.random()*things.length)] + "**");
+            poop = ("You ask me `" + Input8Ball + "` and my answer is: **" + things[Math.floor(Math.random()*things.length)] + "**");
             msg.reply(poop);
             console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "8ball)");
           }
@@ -129,6 +130,40 @@ bot.on('message' , msg => {
     msg.channel.sendFile("https://puu.sh/uNpBW/b360eb05f7.png");
     console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "kappahd)");
     }
+
+/*  if(input.startsWith(prefix + "COINFLIP"))
+    {
+      function coinFlip() {
+        return (Math.floor(Math.random() * 2) == 0) ? 'HEAD' : 'NUMBER';
+      }
+      var inputcoin = input.slice(10)
+      if(input ===prefix + "COINFLIP")
+        {
+          msg.channel.sendMessage("Please write Head or Number behind " + prefix + "Coinflip")
+          console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "coinflip)");
+          return;
+        }
+    if(inputcoin "HEAD", "NUMBER")
+     {
+       msg.channel.sendMessage("you can only chosse between head or number")
+       console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "coinflip)");
+     }else{
+      if(input.startsWith(prefix + "COINFLIP"))
+      {
+        if(coinFlip() ===inputcoin){
+          msg.reply("You won :heart:")
+          console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "coinflip)");
+        }else{
+          msg.reply("You lost Feelsbadman")
+          console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "coinflip)");
+        }
+      }else{
+        msg.reply("I dont got that pls retry")
+        console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "coinflip)");
+      }
+    }
+  }
+  */
 
 
   if(input ===prefix + "FGT")
@@ -180,6 +215,7 @@ bot.on('message' , msg => {
    if(input ===prefix + "URBAN")
    {
      msg.reply("You must add a word after " + prefix + "Urban")
+     console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "urban)");
    }else{
       var InputUrban = urban(msg.content.slice(7))
       InputUrban.first(function(OutputUrban) {
@@ -207,6 +243,7 @@ bot.on('message' , msg => {
    if(input ===prefix + "ANIME")
    {
      msg.reply("You must add a Anime name after " + prefix + "Anime")
+     console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "Anime)");
    }else{
      var InputMAL = msg.content.slice(7)
      mal.quickSearch(InputMAL).then(function (results) {
@@ -226,6 +263,7 @@ bot.on('message' , msg => {
      );
      }
     );
+    console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "Anime)");
    }
 
 
