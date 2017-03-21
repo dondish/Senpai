@@ -47,16 +47,17 @@ bot.on('message' , msg => {
       `**${prefix}Cat**                     show you a random cat                                                        `,
       `**${prefix}8ball**                   ask me a Question and i answer                                               `,
       `**Notice Me**                        i will notice you :3                                                         `,
-      `**${prefix}ping**                    shows my ping in ms                                                          `,
-      `**${prefix}fgt**                     shows a copy&paste                                                           `,
+      `**${prefix}Ping**                    shows my ping in ms                                                          `,
+      `**${prefix}Fgt**                     shows a copy&paste                                                           `,
       `**${prefix}Kappa**                   shows a Kappa                                                                `,
       `**${prefix}KappaHD**                 shows a HD Kappa                                                             `,
       `**${prefix}Ban @[User]**             ban a user if you have a role with the BAN_MEMBER right                      `,
-      `**${prefix}kick @[User]**            kicks a user if you have a role with the KICK_MEMBER right                   `,
-      `**${prefix}urban [word]**            search for a word on urban Urban Dictionary                                  `,
+      `**${prefix}Kick @[User]**            kicks a user if you have a role with the KICK_MEMBER right                   `,
+      `**${prefix}Urban [word]**            search for a word on urban Urban Dictionary                                  `,
       `**${prefix}Anime [Anime Name]**      search for a Anime on myanimelist                                            `,
-      `**${prefix}Manga [Manga Name]        search for a Manga on myanimelist                                            `,
-      `**${prefix}Coinflip [Head/Number]**  do a coinflip                                                                `
+      `**${prefix}Manga [Manga Name]**      search for a Manga on myanimelist                                            `,
+      `**${prefix}Coinflip [Head/Number]**  do a coinflip                                                                `,
+      `**${prefix}Cookie @[User]**          give someone a Cookie                                                        `
     ]);
   }
 
