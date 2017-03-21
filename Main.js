@@ -42,17 +42,18 @@ bot.on('message' , msg => {
   {
     msg.channel.sendMessage("i sent you a PM");
     msg.author.sendMessage([
-      `**${prefix}Cat**                  show you a random cat                                                        `,
-      `**${prefix}8ball**                ask me a Question and i answer                                               `,
-      `**Notice Me**                     i will notice you :3                                                         `,
-      `**${prefix}ping**                 shows my ping in ms                                                          `,
-      `**${prefix}fgt**                  shows a copy&paste                                                           `,
-      `**${prefix}Kappa**                shows a Kappa                                                                `,
-      `**${prefix}KappaHD**              shows a HD Kappa                                                             `,
-      `**${prefix}Ban @[User]**          ban a user if you have a role with the BAN_MEMBER right                      `,
-      `**${prefix}kick @[User]**         kicks a user if you have a role with the KICK_MEMBER right                   `,
-      `**${prefix}urban [word]**         search for a word on urban Urban Dictionary                                  `,
-      `**${prefix}Anime [word]**         search for a Anime on myanimelist                                            `
+      `**${prefix}Cat**                     show you a random cat                                                        `,
+      `**${prefix}8ball**                   ask me a Question and i answer                                               `,
+      `**Notice Me**                        i will notice you :3                                                         `,
+      `**${prefix}ping**                    shows my ping in ms                                                          `,
+      `**${prefix}fgt**                     shows a copy&paste                                                           `,
+      `**${prefix}Kappa**                   shows a Kappa                                                                `,
+      `**${prefix}KappaHD**                 shows a HD Kappa                                                             `,
+      `**${prefix}Ban @[User]**             ban a user if you have a role with the BAN_MEMBER right                      `,
+      `**${prefix}kick @[User]**            kicks a user if you have a role with the KICK_MEMBER right                   `,
+      `**${prefix}urban [word]**            search for a word on urban Urban Dictionary                                  `,
+      `**${prefix}Anime [word]**            search for a Anime on myanimelist                                            `,
+      `**${prefix}Coinflip [Head/Number]**  do a coinflip and decide if you win or lose                                  `
     ]);
   }
 
