@@ -64,7 +64,7 @@ bot.on('message' , msg => {
     request.get("http://random.cat/meow", function (error, response, body) {
            if(error) {
                    console.log(logerror + msg.author.username + "/" + msg.author.id + " error while try to request from http://random.cat/meow");
-                   msg.channel.sendMessage("error while get your Cat Picture");
+                   msg.channel.sendMessage("error while getting your Cat Picture");
                    return;
                }
                var url = body.slice(33, -2);
@@ -102,7 +102,7 @@ bot.on('message' , msg => {
   if(input.startsWith(prefix + "VOTEBAN"))
     {
       msg.reply("KYS")
-      msg.reply("Böser Steven!")
+      msg.channel.sendMessage("Böser Steven!")
     }
 
   if(input ===prefix + "DATBOI")
@@ -131,39 +131,37 @@ bot.on('message' , msg => {
     console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "kappahd)");
     }
 
-/*  if(input.startsWith(prefix + "COINFLIP"))
-    {
-      function coinFlip() {
-        return (Math.floor(Math.random() * 2) == 0) ? 'HEAD' : 'NUMBER';
-      }
-      var inputcoin = input.slice(10)
-      if(input ===prefix + "COINFLIP")
-        {
-          msg.channel.sendMessage("Please write Head or Number behind " + prefix + "Coinflip")
-          console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "coinflip)");
-          return;
-        }
-    if(inputcoin "HEAD", "NUMBER")
-     {
-       msg.channel.sendMessage("you can only chosse between head or number")
-       console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "coinflip)");
-     }else{
-      if(input.startsWith(prefix + "COINFLIP"))
-      {
-        if(coinFlip() ===inputcoin){
-          msg.reply("You won :heart:")
-          console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "coinflip)");
-        }else{
-          msg.reply("You lost Feelsbadman")
-          console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "coinflip)");
-        }
-      }else{
-        msg.reply("I dont got that pls retry")
-        console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "coinflip)");
-      }
+  if(input.startsWith(prefix + "COINFLIP"))
+  {
+    function coinFlip() {
+    return Math.floor(Math.random() * 2);
     }
+    if(input ===prefix + "COINFLIP")
+    {
+      msg.channel.sendMessage("You can only use coinflip if you add Head/Number behind it!")
+    }else{
+      var inputcoin = input.slice(10);
+      if(inputcoin === 'HEAD' || inputcoin === 'NUMBER')
+     {
+        var convertcoin
+        if(inputcoin === 'Head')
+        {
+          convertcoin = 1
+        }else{
+          convertcoin = 0
+        }
+        if(coinFlip() === convertcoin)
+        {
+          msg.channel.sendMessage("You won :heart:")
+        }else{
+          msg.channel.sendMessage("You lost Feelsbadman")
+        }
+     }else{
+       msg.channel.sendMessage("You can only choose Head or Number!")
+     }
+    }
+    console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "%coinflip ");
   }
-  */
 
 
   if(input ===prefix + "FGT")
