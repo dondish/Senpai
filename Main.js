@@ -6,18 +6,20 @@
                   and named after my love to Anime :3,
 
 */
-"use strict";
+
 const Discord = require('discord.js');
 const request = require('request');
 const urban   = require('urban');
-var   mal     = require('maljs');
+const mal     = require('maljs');
 const config  = require('./config/config.js');
+const osu     = require('node-osu')
+var   osuApi  = new osu.Api('d2d8589bc831aa6f6a6581b1cf5893830f838858')
 const bot     = new Discord.Client();
 const Token   = config.Token;
 const prefix  = config.prefix;
-var log =       "[Command]                   ";
-var info =      "[Info]                      ";
-var logerror =  "[Error]                     ";
+var log       = "[Command]                   ";
+var info      = "[Info]                      ";
+var logerror  = "[Error]                     ";
 
 //ready function
 bot.on('ready' , () => {
@@ -52,8 +54,9 @@ bot.on('message' , msg => {
       `**${prefix}Ban @[User]**             ban a user if you have a role with the BAN_MEMBER right                      `,
       `**${prefix}kick @[User]**            kicks a user if you have a role with the KICK_MEMBER right                   `,
       `**${prefix}urban [word]**            search for a word on urban Urban Dictionary                                  `,
-      `**${prefix}Anime [word]**            search for a Anime on myanimelist                                            `,
-      `**${prefix}Coinflip [Head/Number]**  do a coinflip and decide if you win or lose                                  `
+      `**${prefix}Anime [Anime Name]**      search for a Anime on myanimelist                                            `,
+      `**${prefix}Manga [Manga Name]        search for a Manga on myanimelist                                            `,
+      `**${prefix}Coinflip [Head/Number]**  do a coinflip                                                                `
     ]);
   }
 
@@ -100,7 +103,7 @@ bot.on('message' , msg => {
         console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "Notice me)");
      }
 
-  if(input.startsWith(prefix + "VOTEBAN"))
+  if(input.startsWith(prefix + "VOTEBAN" || prefix + "VOTEKICK"))
     {
       msg.reply("KYS")
       msg.channel.sendMessage("Böser Steven!")
@@ -131,6 +134,8 @@ bot.on('message' , msg => {
     msg.channel.sendFile("https://puu.sh/uNpBW/b360eb05f7.png");
     console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "kappahd)");
     }
+
+
 
   if(input.startsWith(prefix + "COINFLIP"))
   {
@@ -237,6 +242,34 @@ bot.on('message' , msg => {
       }
     );
     }
+
+    if(input.startsWith(prefix+ "MANGA"))
+     if(input ===prefix + "MANGA")
+     {
+       msg.reply("You must add a Manga name after " + prefix + "Manga")
+       console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "Manga)");
+     }else{
+       var InputMAL = msg.content.slice(7)
+       mal.quickSearch(InputMAL).then(function (results) {
+         results.manga[0].fetch().then(function (results2) {
+             msg.channel.sendMessage(     [
+               "**Title:** "                         + results2.title,
+               "**Url:** https://myanimelist.net"    + results2.path,
+               "**Score:**"                          + results2.score,
+               "**Rank:**"                           + results2.ranked,
+               "**Popularity:**"                     + results2.popularity,
+               "**Synapse:**",
+               results2.description,
+             ]);
+
+
+         }
+       );
+       }
+      );
+      console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "Manga)");
+     }
+
 
   if(input.startsWith(prefix+ "ANIME"))
    if(input ===prefix + "ANIME")

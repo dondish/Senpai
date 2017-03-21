@@ -1,7 +1,7 @@
 # Senpai-Bot
 
 ## About
-Here you can find the Source code of my own Bot "Senpai" feel free to use and modify it if you want
+Here you can find the Source code of my own Bot "Senpai" for [Discord](https://discordapp.com/) feel free to use and modify it if you want
 
 
 ## Language and Libs
@@ -26,7 +26,7 @@ i used the Language [Nodejs](https://nodejs.org/en/) what is like it sound based
 - **Urban** Search for a word in the Urban Dictunary
 - **fgt** shows a Copy&Paste
 - **Notice me** Senpai will notice you
-- **Anime/Manga** search for a Anime/Manga on myanimelist.com
+- **Anime/Manga** search for a Anime/Manga on [MyAnimeList](https://myanimelist.net/)
 
 ### Will be added in the Future
 
