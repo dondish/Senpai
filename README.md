@@ -23,10 +23,10 @@ i used the Language [Nodejs](https://nodejs.org/en/) what is like it sound based
 - **Kappa** Shows a Kappa
 - **KappaHD** Shows a Kappa in HD
 - **CAT** Shows a random Cat image
-- **Urban** Search a word in the Urban Dictunary
+- **Urban** Search for a word in the Urban Dictunary
 - **fgt** shows a Copy&Paste
 - **Notice me** Senpai will notice you
-- **Anime/Manga** search for a specific Anime/Manga
+- **Anime/Manga** search for a Anime/Manga on myanimelist.com
 
 ### Will be added in the Future
 
