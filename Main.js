@@ -203,9 +203,9 @@ bot.on('message' , msg => {
      {
        if(msg.member.hasPermission(2))
          {
-            var id2 = msg.mentions.users
-            msg.guild.member(id2.first()).kick()
-            msg.channel.sendMessage("**I've Kicked " + id2.first() + " because **<@" + msg.author.id + ">** want it**")
+            var id = msg.mentions.users
+            msg.guild.member(id.first()).kick()
+            msg.channel.sendMessage("**I've Kicked " + id.first() + " because **" + msg.author + " want it**")
             msg.channel.sendFile("http://cdn2.hubspot.net/hub/98462/file-39842987-jpg/images/to_get_kicked_out,_phrasal_verb_for_english_learners.jpg")
             console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "kick)");
          }else{
@@ -213,6 +213,13 @@ bot.on('message' , msg => {
             console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "kick)[no rights] ");
          }
      }
+  }
+
+
+  if(input.startsWith(prefix + "COOKIE"))
+  {
+    var id = msg.mentions.users
+    msg.channel.sendMessage(`**${id.first()} got a :cookie: from ${msg.author}**`)
   }
 
   if(input.startsWith(prefix + "URBAN"))

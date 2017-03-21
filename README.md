@@ -6,11 +6,12 @@ Here you can find the Source code of my own Bot "Senpai" for [Discord](https://d
 
 ## Language and Libs
 
-i used the Language [Nodejs](https://nodejs.org/en/) what is like it sound based on Javascript also i used 4 Libs so far
+i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript also i used 5 Libs so far
 - [Discord.js](https://nodejs.org)
 - [request](https://github.com/request/request)
 - [urban](https://github.com/mvrilo/urban)
 - [maljs](https://www.npmjs.com/package/maljs)
+- [node-osu](https://www.npmjs.com/package/node-osu)
 
 ## Commands and Future
 
@@ -22,7 +23,7 @@ i used the Language [Nodejs](https://nodejs.org/en/) what is like it sound based
 - **8ball** Ask a Question and get a answer
 - **Kappa** Shows a Kappa
 - **KappaHD** Shows a Kappa in HD
-- **CAT** Shows a random Cat image
+- **Cat** Shows a random Cat image
 - **Urban** Search for a word in the Urban Dictunary
 - **fgt** shows a Copy&Paste
 - **Notice me** Senpai will notice you
