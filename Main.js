@@ -104,10 +104,11 @@ bot.on('message' , msg => {
         console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "Notice me)");
      }
 
-  if(input.startsWith(prefix + "VOTEBAN" || prefix + "VOTEKICK"))
+  if(input.startsWith(prefix + "VOTEBAN") ||input.startsWith(prefix + "VOTEKICK"))
     {
       msg.reply("KYS")
       msg.channel.sendMessage("Böser Steven!")
+      console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "Voteban/Votekick)")
     }
 
   if(input ===prefix + "DATBOI")
@@ -206,7 +207,7 @@ bot.on('message' , msg => {
          {
             var id = msg.mentions.users
             msg.guild.member(id.first()).kick()
-            msg.channel.sendMessage("**I've Kicked " + id.first() + " because **" + msg.author + " want it**")
+            msg.channel.sendMessage("**I've Kicked " + id.first() + " because " + msg.author + " want it**")
             msg.channel.sendFile("http://cdn2.hubspot.net/hub/98462/file-39842987-jpg/images/to_get_kicked_out,_phrasal_verb_for_english_learners.jpg")
             console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "kick)");
          }else{
