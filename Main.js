@@ -101,7 +101,7 @@ bot.on('message' , msg => {
   if(input.startsWith("NOTICE ME"))
      {
         msg.reply("I do :heart:");
-        console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "Notice me)");
+        console.log(log + msg.author.username + "/" + msg.author.id + " (" + "Notice me)");
      }
 
   if(input.startsWith(prefix + "VOTEBAN") ||input.startsWith(prefix + "VOTEKICK"))
