@@ -13,7 +13,7 @@ const urban       = require('urban');
 const mal         = require('maljs');
 const config      = require('./config/config.js');
 const osu         = require('node-osu')
-var   osuApi      = new osu.Api(config.OsuToken)
+const osuApi      = new osu.Api(config.OsuToken)
 const bot         = new Discord.Client();
 const LoginToken  = config.BotToken;
 const prefix      = config.prefix;
@@ -44,36 +44,36 @@ bot.on('message' , msg => {
   {
     msg.channel.sendMessage("i sent you a PM");
     msg.author.sendMessage([
-      "```Markdown                                                                              ",
-      `Notice Me                                                                                `,
-      '           # I will notice you :3                                                        ',
-      `${prefix}Cat                                                                             `,
-      '           # Show you a random sweet cat                                                 ',
-      `${prefix}8ball                                                                           `,
-      '           # Ask me a Question and i answer                                              ',
-      `${prefix}Ping                                                                            `,
-      '           # Shows my ping in ms                                                         ',
-      `${prefix}Fgt                                                                             `,
-      '           # Shows a Copy&Paste                                                          ',
-      `${prefix}Kappa                                                                           `,
-      '           # Shows a Kappa                                                               ',
-      `${prefix}KappaHD                                                                         `,
-      '           # Shows a HD Kappa                                                            ',
-      `${prefix}Ban @[User]                                                                     `,
-      '           # Ban a user if you have a role with the BAN_MEMBER right                     ',
-      `${prefix}Kick @[User]                                                                    `,
-      '           # Kick a user if you have a role with the KICK_MEMBER right                   ',
-      `${prefix}Urban [word]                                                                    `,
-      '           # Search for a word on urban Urban Dictionary                                 ',
-      `${prefix}Anime [Anime Name]                                                              `,
-      '           # Search for a Anime on myanimelist                                           ',
-      `${prefix}Manga [Manga Name]                                                              `,
-      '           # Search for a Manga on myanimelist                                           ',
-      `${prefix}Coinflip [Head/Number]                                                          `,
-      '           # Do a coinflip                                                               ',
-      `${prefix}Cookie @[User]                                                                  `,
-      '           # Give someone a Cookie                                                       ',
-      "```                                                                                      "
+      "```",
+      `Notice Me
+                 -I will notice you :3
+      ${prefix}Cat
+                 -Show you a random sweet cat
+      ${prefix}8ball
+                 -Ask me a Question and i answer
+      ${prefix}Ping
+                 -Shows my ping in ms
+      ${prefix}Fgt
+                 -Shows a Copy&Paste
+      ${prefix}Kappa
+                 -Shows a Kappa
+      ${prefix}KappaHD
+                 -Shows a HD Kappa
+      ${prefix}Ban @[User]
+                 -Ban a user if you have a role with the BAN_MEMBER right
+      ${prefix}Kick @[User]
+                 -Kick a user if you have a role with the KICK_MEMBER right
+      ${prefix}Urban [word]
+                 -Search for a word on urban Urban Dictionary
+      ${prefix}Anime [Anime Name]
+                 -Search for a Anime on myanimelist
+      ${prefix}Manga [Manga Name]
+                 -Search for a Manga on myanimelist
+      ${prefix}Coinflip [Head/Number]
+                 -Do a coinflip
+      ${prefix}Cookie @[User]
+                 -Give someone a Cookie`,
+      "```"
     ]);
   }
 
