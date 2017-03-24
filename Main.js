@@ -44,35 +44,48 @@ bot.on('message' , msg => {
   {
     msg.channel.sendMessage("i sent you a PM");
     msg.author.sendMessage([
-      "```",
-      `Notice Me
-                 -I will notice you :3
+      "```markdown",
+`      Notice Me
+                 #I will notice you :3
+
       ${prefix}Cat
-                 -Show you a random sweet cat
+                 #Show you a random sweet cat
+
       ${prefix}8ball
-                 -Ask me a Question and i answer
+                 #Ask me a Question and i answer
+
       ${prefix}Ping
-                 -Shows my ping in ms
+                 #Shows my ping in ms
+
       ${prefix}Fgt
-                 -Shows a Copy&Paste
+                 #Shows a Copy&Paste
+
       ${prefix}Kappa
-                 -Shows a Kappa
+                 #Shows a Kappa
+
       ${prefix}KappaHD
-                 -Shows a HD Kappa
-      ${prefix}Ban @[User]
-                 -Ban a user if you have a role with the BAN_MEMBER right
-      ${prefix}Kick @[User]
-                 -Kick a user if you have a role with the KICK_MEMBER right
+                 #Shows a HD Kappa
+
+      ${prefix}Ban [@User]
+                 #Ban a user if you have a role with the BAN_MEMBER right
+
+      ${prefix}Kick [@User]
+                 #Kick a user if you have a role with the KICK_MEMBER right
+
       ${prefix}Urban [word]
-                 -Search for a word on urban Urban Dictionary
+                 #Search for a word on urban Urban Dictionary
+
       ${prefix}Anime [Anime Name]
-                 -Search for a Anime on myanimelist
+                 #Search for a Anime on myanimelist
+
       ${prefix}Manga [Manga Name]
-                 -Search for a Manga on myanimelist
+                 #Search for a Manga on myanimelist
+
       ${prefix}Coinflip [Head/Number]
-                 -Do a coinflip
+                 #Do a coinflip
+
       ${prefix}Cookie @[User]
-                 -Give someone a Cookie`,
+                 #Give someone a Cookie`,
       "```"
     ]);
   }
