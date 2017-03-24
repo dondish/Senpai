@@ -7,19 +7,19 @@
 
 */
 
-const Discord = require('discord.js');
-const request = require('request');
-const urban   = require('urban');
-const mal     = require('maljs');
-const config  = require('./config/config.js');
-const osu     = require('node-osu')
-var   osuApi  = new osu.Api('d2d8589bc831aa6f6a6581b1cf5893830f838858')
-const bot     = new Discord.Client();
-const Token   = config.Token;
-const prefix  = config.prefix;
-var log       = "[Command]                   ";
-var info      = "[Info]                      ";
-var logerror  = "[Error]                     ";
+const Discord     = require('discord.js');
+const request     = require('request');
+const urban       = require('urban');
+const mal         = require('maljs');
+const config      = require('./config/config.js');
+const osu         = require('node-osu')
+var   osuApi      = new osu.Api(config.OsuToken)
+const bot         = new Discord.Client();
+const LoginToken  = config.BotToken;
+const prefix      = config.prefix;
+var log           = "[Command]                   ";
+var info          = "[Info]                      ";
+var logerror      = "[Error]                     ";
 
 //ready function
 bot.on('ready' , () => {
@@ -44,20 +44,36 @@ bot.on('message' , msg => {
   {
     msg.channel.sendMessage("i sent you a PM");
     msg.author.sendMessage([
-      `**${prefix}Cat**                     show you a random cat                                                        `,
-      `**${prefix}8ball**                   ask me a Question and i answer                                               `,
-      `**Notice Me**                        i will notice you :3                                                         `,
-      `**${prefix}Ping**                    shows my ping in ms                                                          `,
-      `**${prefix}Fgt**                     shows a copy&paste                                                           `,
-      `**${prefix}Kappa**                   shows a Kappa                                                                `,
-      `**${prefix}KappaHD**                 shows a HD Kappa                                                             `,
-      `**${prefix}Ban @[User]**             ban a user if you have a role with the BAN_MEMBER right                      `,
-      `**${prefix}Kick @[User]**            kicks a user if you have a role with the KICK_MEMBER right                   `,
-      `**${prefix}Urban [word]**            search for a word on urban Urban Dictionary                                  `,
-      `**${prefix}Anime [Anime Name]**      search for a Anime on myanimelist                                            `,
-      `**${prefix}Manga [Manga Name]**      search for a Manga on myanimelist                                            `,
-      `**${prefix}Coinflip [Head/Number]**  do a coinflip                                                                `,
-      `**${prefix}Cookie @[User]**          give someone a Cookie                                                        `
+      "```Markdown                                                                              ",
+      `Notice Me                                                                                `,
+      '           # I will notice you :3                                                        ',
+      `${prefix}Cat                                                                             `,
+      '           # Show you a random sweet cat                                                 ',
+      `${prefix}8ball                                                                           `,
+      '           # Ask me a Question and i answer                                              ',
+      `${prefix}Ping                                                                            `,
+      '           # Shows my ping in ms                                                         ',
+      `${prefix}Fgt                                                                             `,
+      '           # Shows a Copy&Paste                                                          ',
+      `${prefix}Kappa                                                                           `,
+      '           # Shows a Kappa                                                               ',
+      `${prefix}KappaHD                                                                         `,
+      '           # Shows a HD Kappa                                                            ',
+      `${prefix}Ban @[User]                                                                     `,
+      '           # Ban a user if you have a role with the BAN_MEMBER right                     ',
+      `${prefix}Kick @[User]                                                                    `,
+      '           # Kick a user if you have a role with the KICK_MEMBER right                   ',
+      `${prefix}Urban [word]                                                                    `,
+      '           # Search for a word on urban Urban Dictionary                                 ',
+      `${prefix}Anime [Anime Name]                                                              `,
+      '           # Search for a Anime on myanimelist                                           ',
+      `${prefix}Manga [Manga Name]                                                              `,
+      '           # Search for a Manga on myanimelist                                           ',
+      `${prefix}Coinflip [Head/Number]                                                          `,
+      '           # Do a coinflip                                                               ',
+      `${prefix}Cookie @[User]                                                                  `,
+      '           # Give someone a Cookie                                                       ',
+      "```                                                                                      "
     ]);
   }
 
@@ -208,7 +224,6 @@ bot.on('message' , msg => {
             var id = msg.mentions.users
             msg.guild.member(id.first()).kick()
             msg.channel.sendMessage("**I've Kicked " + id.first() + " because " + msg.author + " want it**")
-            msg.channel.sendFile("http://cdn2.hubspot.net/hub/98462/file-39842987-jpg/images/to_get_kicked_out,_phrasal_verb_for_english_learners.jpg")
             console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "kick)");
          }else{
             msg.reply("*You need a role that provide the right to kick People*")
@@ -311,4 +326,4 @@ bot.on('message' , msg => {
 }
 );
 
-bot.login(Token);
+bot.login(LoginToken);
