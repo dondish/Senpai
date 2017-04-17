@@ -1,9 +1,9 @@
 /*
- Author:          Fr3akGam3r
+ Author:          Yukine
  AuthorID:        184632227894657025
- Version:         2.6
- Description:     This is Discord Bot based on nodejs and discord.js ,
-                  and named after my love to Anime :3,
+ Version:         2.62
+ Description:     This is Discord Bot based on nodejs and discord.js
+                  and named after my love to Anime :3
 
 */
 
@@ -12,11 +12,12 @@ const request     = require('request');
 const urban       = require('urban');
 const mal         = require('maljs');
 const config      = require('./config/config.js');
-const osu         = require('node-osu')
-const osuApi      = new osu.Api(config.OsuToken)
+const osu         = require('node-osu');
+const osuApi      = new osu.Api(config.OsuToken);
 const bot         = new Discord.Client();
 const LoginToken  = config.BotToken;
 const prefix      = config.prefix;
+const Version     = "2.62"
 var log           = "[Command]                   ";
 var info          = "[Info]                      ";
 var logerror      = "[Error]                     ";
@@ -39,6 +40,35 @@ bot.on('message' , msg => {
   var things       = ["It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"];
   var poop ;
   var Ping         = bot.ping;
+  const args       = msg.content.split(" ").slice(1);
+  const embed      = new Discord.RichEmbed()
+
+
+  if(input.startsWith(prefix + "EVAL"))
+  {
+    if(msg.author.id == "184632227894657025")
+    {
+      function clean(text) {
+        if (typeof(text) === "string")
+            return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+        else
+            return text;
+          }
+    if (msg.content.startsWith(prefix + "eval")) {
+      try {
+        var code = args.join(" ");
+        var evaled = eval(code);
+        if (typeof evaled !== "string")
+          evaled = require("util").inspect(evaled);
+          msg.channel.sendCode("xl", clean(evaled));
+          } catch (err) {
+            msg.channel.sendMessage(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+          }
+    }
+    }else {
+      msg.channel.sendMessage("Because of security measures, only the owner can execute this command!")
+    }
+  }
 
   if(input ===prefix + "HELP")
   {
@@ -143,7 +173,7 @@ bot.on('message' , msg => {
   if(input ===prefix + "DATBOI")
      {
        msg.channel.sendMessage("HERE COME DAT BOI");
-       msg.channel.sendMessage("https://lh3.googleusercontent.com/YaEeYfc89GKs0YygNigS33golgVvTiPzqklKcg_OUrcdNt4n5pAokeGPFfIhoGOji6-BLlfi=s640-h400-e365");
+       msg.channel.sendFile("https://lh3.googleusercontent.com/YaEeYfc89GKs0YygNigS33golgVvTiPzqklKcg_OUrcdNt4n5pAokeGPFfIhoGOji6-BLlfi=s640-h400-e365");
      console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "datboi)");
      }
 
@@ -197,7 +227,7 @@ bot.on('message' , msg => {
        msg.channel.sendMessage("You can only choose Head or Number!")
      }
     }
-    console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "%coinflip ");
+    console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "coinflip" + ")");
   }
 
 
@@ -225,7 +255,7 @@ bot.on('message' , msg => {
           msg.channel.sendMessage("**I've Banned:hammer: " + id.first() + " because **<@" + msg.author.id + ">** want it**")
           console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "ban)");
         }else{
-          msg.reply("*You need a role that provide the right to ban People*")
+          msg.reply("*You need a role that provide the right to ban People!*")
           console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "ban)[no rights] ");
         }
     }
