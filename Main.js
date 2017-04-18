@@ -18,9 +18,6 @@ const bot         = new Discord.Client();
 const LoginToken  = config.BotToken;
 const prefix      = config.prefix;
 const Version     = "2.62"
-var log           = "[Command]                   ";
-var info          = "[Info]                      ";
-var logerror      = "[Error]                     ";
 
 //ready function
 bot.on('ready' , () => {
@@ -35,13 +32,44 @@ bot.on('ready' , () => {
 //event listener message
 bot.on('message' , msg => {
 
-  var input        = msg.content.toUpperCase() ;
-  var Input8Ball   = msg.content.slice(7);
-  var things       = ["It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"];
+  let responseObject = {
+    "DANKMEMES": "https://cdn.discordapp.com/attachments/190967860070318080/203724153767985152/7ead62afdd1514fde3e19ba5ffc66728c092c9acf65137327491a29fc57f2932_1.gif",
+    "KAPPA"    : "https://puu.sh/uNpB8/aa6908a2de.png",
+    "KAPPAHD"  : "https://puu.sh/vnJLh/496413df0a.png",
+    "DATBOI"   : "https://lh3.googleusercontent.com/YaEeYfc89GKs0YygNigS33golgVvTiPzqklKcg_OUrcdNt4n5pAokeGPFfIhoGOji6-BLlfi=s640-h400-e365",
+  };
+  var input          = msg.content.toUpperCase() ;
+  var Input8Ball     = msg.content.slice(7);
+  var things         = ["It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"];
   var poop ;
-  var Ping         = bot.ping;
-  const args       = msg.content.split(" ").slice(1);
-  const embed      = new Discord.RichEmbed()
+  var Ping           = bot.ping;
+  const args         = msg.content.split(" ").slice(1);
+  const embed        = new Discord.RichEmbed()
+
+  if (msg.author.bot) return;
+
+  function log(special){
+    if(undefined != special){
+      console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")", special)
+      return;
+    } else {
+      console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
+      return;
+    }
+  }
+
+function error(error){
+  console.log("[Error]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")", error)
+  msg.channel.sendMessage("Sorry i had a Error while executing this command please try again and if this happen again please contact my Programmer")
+  }
+
+  if(msg.content.startsWith(prefix))
+  {
+        if(responseObject[msg.content.slice(1).toUpperCase()]) {
+          msg.channel.sendFile(responseObject[msg.content.slice(1).toUpperCase()]);
+          log()
+        }
+      }
 
 
   if(input.startsWith(prefix + "EVAL"))
@@ -70,9 +98,11 @@ bot.on('message' , msg => {
     }
   }
 
+
   if(input ===prefix + "HELP")
   {
     msg.channel.sendMessage("i sent you a PM");
+    log()
     msg.author.sendMessage([
       "```markdown",
 `      Notice Me
@@ -127,14 +157,13 @@ bot.on('message' , msg => {
   {
     request.get("http://random.cat/meow", function (error, response, body) {
            if(error) {
-                   console.log(logerror + msg.author.username + "/" + msg.author.id + " error while try to request from http://random.cat/meow");
-                   msg.channel.sendMessage("error while getting your Cat Picture");
+                   error(error)
                    return;
                }
                var url = body.slice(33, -2);
                msg.reply("here you go enjoy your cat");
-               msg.channel.sendMessage("http://random.cat/i/" + url);
-               console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "cat)");
+               msg.channel.sendFile("http://random.cat/i/" + url);
+               log()
                                                                           }
               );
   }
@@ -147,56 +176,14 @@ bot.on('message' , msg => {
           {
             poop = ("You ask me `" + Input8Ball + "` and my answer is: **" + things[Math.floor(Math.random()*things.length)] + "**");
             msg.reply(poop);
-            console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "8ball)");
+            log()
           }
                                         }
-
-  if(input ===prefix + "DANKMEMES")
-      {
-        msg.channel.sendFile("https://cdn.discordapp.com/attachments/190967860070318080/203724153767985152/7ead62afdd1514fde3e19ba5ffc66728c092c9acf65137327491a29fc57f2932_1.gif");
-        console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "dankmemes)");
-      }
-
-  if(input.startsWith("NOTICE ME"))
-     {
-        msg.reply("I do :heart:");
-        console.log(log + msg.author.username + "/" + msg.author.id + " (" + "Notice me)");
-     }
-
-  if(input.startsWith(prefix + "VOTEBAN") ||input.startsWith(prefix + "VOTEKICK"))
-    {
-      msg.reply("KYS")
-      msg.channel.sendMessage("Böser Steven!")
-      console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "Voteban/Votekick)")
-    }
-
-  if(input ===prefix + "DATBOI")
-     {
-       msg.channel.sendMessage("HERE COME DAT BOI");
-       msg.channel.sendFile("https://lh3.googleusercontent.com/YaEeYfc89GKs0YygNigS33golgVvTiPzqklKcg_OUrcdNt4n5pAokeGPFfIhoGOji6-BLlfi=s640-h400-e365");
-     console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "datboi)");
-     }
-
   if(input ===prefix + "PING")
     {
       msg.channel.sendMessage(Math.round(Ping) + " ms");
-      console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "ping)");
+      log()
     }
-
-
-  if(input ===prefix + "KAPPA")
-    {
-      msg.channel.sendFile("https://puu.sh/uNpB8/aa6908a2de.png");
-      console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "kappa)");
-    }
-
-  if(input ===prefix + "KAPPAHD")
-    {
-    msg.channel.sendFile("https://puu.sh/uNpBW/b360eb05f7.png");
-    console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "kappahd)");
-    }
-
-
 
   if(input.startsWith(prefix + "COINFLIP"))
   {
@@ -227,7 +214,7 @@ bot.on('message' , msg => {
        msg.channel.sendMessage("You can only choose Head or Number!")
      }
     }
-    console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "coinflip" + ")");
+    log()
   }
 
 
@@ -242,7 +229,8 @@ bot.on('message' , msg => {
 ██║░░░░░██║░░██║╚██████╔╝╚██████╔╝╚██████╔╝░░░██║░░░
 ╚═╝░░░░░╚═╝░░╚═╝░╚═════╝░░╚═════╝░░╚═════╝░░░░╚═╝░░░`
                     ]
-                   );
+                  );
+                  log()
      }
  if(msg.channel.type === "text")
  {
@@ -253,10 +241,10 @@ bot.on('message' , msg => {
           var id    = msg.mentions.users
           msg.guild.ban(id.first())
           msg.channel.sendMessage("**I've Banned:hammer: " + id.first() + " because **<@" + msg.author.id + ">** want it**")
-          console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "ban)");
+          log()
         }else{
           msg.reply("*You need a role that provide the right to ban People!*")
-          console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "ban)[no rights] ");
+          log("No Rights")
         }
     }
 
@@ -267,10 +255,10 @@ bot.on('message' , msg => {
             var id = msg.mentions.users
             msg.guild.member(id.first()).kick()
             msg.channel.sendMessage("**I've Kicked " + id.first() + " because " + msg.author + " want it**")
-            console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "kick)");
+            log()
          }else{
             msg.reply("*You need a role that provide the right to kick People*")
-            console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "kick)[no rights] ");
+            log("No Rights")
          }
      }
   }
@@ -280,13 +268,13 @@ bot.on('message' , msg => {
   {
     var id = msg.mentions.users
     msg.channel.sendMessage(`**${id.first()} got a :cookie: from ${msg.author}**`)
+    log()
   }
 
   if(input.startsWith(prefix + "URBAN"))
    if(input ===prefix + "URBAN")
    {
      msg.reply("You must add a word after " + prefix + "Urban")
-     console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "urban)");
    }else{
       var InputUrban = urban(msg.content.slice(7))
       InputUrban.first(function(OutputUrban) {
@@ -302,10 +290,8 @@ bot.on('message' , msg => {
           `${OutputUrban.thumbs_up} :thumbsup:`,
           ``,
           `${OutputUrban.thumbs_down} :thumbsdown:`
-
-
         ])
-        console.log(log +msg.author.username + "/" + msg.author.id + " (" + prefix + "urban)" );
+        log()
       }
     );
     }
@@ -314,7 +300,7 @@ bot.on('message' , msg => {
      if(input ===prefix + "MANGA")
      {
        msg.reply("You must add a Manga name after " + prefix + "Manga")
-       console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "Manga)");
+       log()
      }else{
        var InputMAL = msg.content.slice(7)
        mal.quickSearch(InputMAL).then(function (results) {
@@ -334,7 +320,7 @@ bot.on('message' , msg => {
        );
        }
       );
-      console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "Manga)");
+      log()
      }
 
 
@@ -342,27 +328,26 @@ bot.on('message' , msg => {
    if(input ===prefix + "ANIME")
    {
      msg.reply("You must add a Anime name after " + prefix + "Anime")
-     console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "Anime)");
+     log()
    }else{
+     msg.channel.sendMessage("Im fetching the Information from MyAnimeList...")
      var InputMAL = msg.content.slice(7)
      mal.quickSearch(InputMAL).then(function (results) {
        results.anime[0].fetch().then(function (results2) {
-           msg.channel.sendMessage(     [
-             "**Title:** "                         + results2.title,
-             "**Url:** https://myanimelist.net"    + results2.path,
-             "**Score:**"                          + results2.score,
-             "**Rank:**"                           + results2.ranked,
-             "**Popularity:**"                     + results2.popularity,
-             "**Synapse:**",
-             results2.description,
-           ]);
-
-
-       }
+         msg.channel.sendMessage(     [
+           "**Title:** "                         + results2.title,
+           "**Url:** https://myanimelist.net"    + results2.path,
+           "**Score:**"                          + results2.score,
+           "**Rank:**"                           + results2.ranked,
+           "**Popularity:**"                     + results2.popularity,
+           "**Synapse:**",
+           results2.description,
+         ]);
+     }
      );
      }
     );
-    console.log(log + msg.author.username + "/" + msg.author.id + " (" + prefix + "Anime)");
+    log()
    }
 
 
