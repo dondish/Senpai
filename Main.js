@@ -10,8 +10,9 @@
 const Discord     = require('discord.js');
 const request     = require('request');
 const urban       = require('urban');
-const mal         = require('maljs');
 const config      = require('./config/config.js');
+const MALjs       = require('MALjs');
+const mal         = new MALjs(config.MyAnimeListUsername, config.MyAnimeListPassword);
 const osu         = require('node-osu');
 const osuApi      = new osu.Api(config.OsuToken);
 const bot         = new Discord.Client();
@@ -26,6 +27,11 @@ bot.on('ready' , () => {
   console.log('ID:            ' + bot.user.id);
   console.log('Servers:       ' + bot.guilds.size );
   console.log('Channels:      ' + bot.channels.size);
+  console.log('-----------------------------------------------------------------------------');
+  console.log('Other API Status:')
+  mal.verifyCredentials()
+    .then(result => console.log(result))
+    .catch(err => done(err));
   console.log('-----------------------------------------------------------------------------');
   bot.user.setGame("%help")
 });
@@ -72,7 +78,7 @@ function error(error){
       }
 
 
-  if(input.startsWith(prefix + "EVAL"))
+  if(input.startsWith(prefix + "eval"))
   {
     if(msg.author.id == "184632227894657025")
     {
@@ -296,59 +302,68 @@ function error(error){
     );
     }
 
-    if(input.startsWith(prefix+ "MANGA"))
-     if(input ===prefix + "MANGA")
-     {
-       msg.reply("You must add a Manga name after " + prefix + "Manga")
-       log()
-     }else{
-       var InputMAL = msg.content.slice(7)
-       mal.quickSearch(InputMAL).then(function (results) {
-         results.manga[0].fetch().then(function (results2) {
-             msg.channel.sendMessage(     [
-               "**Title:** "                         + results2.title,
-               "**Url:** https://myanimelist.net"    + results2.path,
-               "**Score:**"                          + results2.score,
-               "**Rank:**"                           + results2.ranked,
-               "**Popularity:**"                     + results2.popularity,
-               "**Synapse:**",
-               results2.description,
-             ]);
-
-
-         }
-       );
-       }
-      );
-      log()
-     }
-
-
-  if(input.startsWith(prefix+ "ANIME"))
-   if(input ===prefix + "ANIME")
-   {
+  if(input.startsWith(prefix + "ANIME"))
+  {
+    if(input ===prefix + "ANIME")
+    {
      msg.reply("You must add a Anime name after " + prefix + "Anime")
      log()
-   }else{
-     msg.channel.sendMessage("Im fetching the Information from MyAnimeList...")
-     var InputMAL = msg.content.slice(7)
-     mal.quickSearch(InputMAL).then(function (results) {
-       results.anime[0].fetch().then(function (results2) {
-         msg.channel.sendMessage(     [
-           "**Title:** "                         + results2.title,
-           "**Url:** https://myanimelist.net"    + results2.path,
-           "**Score:**"                          + results2.score,
-           "**Rank:**"                           + results2.ranked,
-           "**Popularity:**"                     + results2.popularity,
-           "**Synapse:**",
-           results2.description,
-         ]);
-     }
-     );
-     }
-    );
-    log()
+    }else{
+      var InputMAL = msg.content.slice(7)
+      mal.anime.search(InputMAL)
+        .then(result => {
+          var Animeres = result.anime[0]
+          msg.channel.sendMessage([
+          "**Title JP:**", Animeres.title,
+          "**Title EN:**", Animeres.english,
+          "**Url:**",      "https://myanimelist.net/anime/" + Animeres.id,
+          "**Score:**",    Animeres.score,
+          "**Type:**",     Animeres.type,
+          "**Status:**",   Animeres.status,
+          "**Episodes:**", Animeres.episodes,
+          "**Synopsis:**",
+          Animeres.synopsis
+          ])
+          log()
+        })
+        .catch(err => {
+          msg.reply("I had a error while trying to fetch the data from MyAnimeList Sorry! But dont blame me, blame the search API from MyAnimeList")
+          log(err)
+        });
    }
+  }
+
+  if(input.startsWith(prefix + "MANGA"))
+  {
+    if(input ===prefix + "MANGA")
+    {
+     msg.reply("You must add a Manga name after " + prefix + "Manga")
+     log()
+    }else{
+      var InputMAL = msg.content.slice(7)
+      mal.manga.search(InputMAL)
+        .then(result => {
+          var Mangares = result.manga[0]
+          console.log(Mangares)
+          msg.channel.sendMessage([
+          "**Title JP:**",   Mangares.title,
+          "**Title EN:**",   Mangares.english,
+          "**Url:**",        "https://myanimelist.net/manga/" + Mangares.id,
+          "**Score:**",      Mangares.score,
+          "**Type:**",       Mangares.type,
+          "**Chapters:**",   Mangares.chapters,
+          "**Episodes:**",   Mangares.episodes,
+          "**Synopsis:**",
+          Mangares.synopsis
+          ])
+          log()
+        })
+        .catch(err => {
+          msg.reply("I had a error while trying to fetch the data from MyAnimeList Sorry! But dont blame me, blame the search API from MyAnimeList")
+          log(err)
+        });
+   }
+  }
 
 
 }
