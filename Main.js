@@ -352,7 +352,7 @@ function error(error){
           "**Score:**",      Mangares.score,
           "**Type:**",       Mangares.type,
           "**Chapters:**",   Mangares.chapters,
-          "**Episodes:**",   Mangares.episodes,
+          "**Status:**",     Mangares.status,
           "**Synopsis:**",
           Mangares.synopsis
           ])
