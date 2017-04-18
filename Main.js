@@ -18,7 +18,7 @@ const osuApi      = new osu.Api(config.OsuToken);
 const bot         = new Discord.Client();
 const LoginToken  = config.BotToken;
 const prefix      = config.prefix;
-const Version     = "2.62"
+const Version     = "2.6.2"
 
 //ready function
 bot.on('ready' , () => {
@@ -30,7 +30,12 @@ bot.on('ready' , () => {
   console.log('-----------------------------------------------------------------------------');
   console.log('Other API Status:')
   mal.verifyCredentials()
-    .then(result => console.log(result))
+    .then(result => {
+      if (undefined != result)
+        {
+          console.log("MAL API READY")
+        }
+    })
     .catch(err => done(err));
   console.log('-----------------------------------------------------------------------------');
   bot.user.setGame("%help")

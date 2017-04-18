@@ -1,0 +1,23 @@
+{
+  "name": "senpai-bot",
+  "version": "2.6.2",
+  "description": "Selfmade Nodejs Discord bot",
+  "main": "Main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fr3akGam3r/Senpai-Bot-Discord.git"
+  },
+  "keywords": [
+    "node",
+    "npm"
+  ],
+  "author": "Yukine",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fr3akGam3r/Senpai-Bot-Discord/issues"
+  },
+  "homepage": "https://github.com/Fr3akGam3r/Senpai-Bot-Discord#readme"
+}
