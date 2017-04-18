@@ -28,6 +28,7 @@ i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript
 - **fgt** shows a Copy&Paste
 - **Notice me** Senpai will notice you
 - **Anime/Manga** search for a Anime/Manga on [MyAnimeList](https://myanimelist.net/)
+- **Cookie** Give someone a Cookie
 
 ### Will be added in the Future
 
