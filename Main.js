@@ -78,7 +78,7 @@ function error(error){
       }
 
 
-  if(input.startsWith(prefix + "eval"))
+  if(input.startsWith(prefix + "EVAL"))
   {
     if(msg.author.id == "184632227894657025")
     {
@@ -88,7 +88,7 @@ function error(error){
         else
             return text;
           }
-    if (msg.content.startsWith(prefix + "eval")) {
+    if (input.startsWith(prefix + "EVAL")) {
       try {
         var code = args.join(" ");
         var evaled = eval(code);
