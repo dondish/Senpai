@@ -249,23 +249,28 @@ function error(error){
     {
       if(msg.member.hasPermission(4))
         {
-          var id    = msg.mentions.users
-          msg.guild.ban(id.first())
-          msg.channel.sendMessage("**I've Banned:hammer: " + id.first() + " because **<@" + msg.author.id + ">** want it**")
+          var user    = msg.mentions.users
+          if (user.size < 1) return msg.reply('You must mention someone for this Command.')
+          if (!msg.guild.member(user.first()).bannable) return msg.reply('I have no rights to ban that User');
+          msg.guild.ban(user.first())
+          msg.channel.sendMessage("**I've Banned:hammer: " + user.first() + " because **<@" + msg.author.id + ">** want it**")
           log()
         }else{
           msg.reply("*You need a role that provide the right to ban People!*")
           log("No Rights")
         }
-    }
+      }
+
 
    if(input.startsWith(prefix + "KICK"))
      {
        if(msg.member.hasPermission(2))
          {
-            var id = msg.mentions.users
-            msg.guild.member(id.first()).kick()
-            msg.channel.sendMessage("**I've Kicked " + id.first() + " because " + msg.author + " want it**")
+            var user = msg.mentions.users
+            if (user.size < 1) return msg.reply('You must mention someone for this Command.')
+            if (!msg.guild.member(user.first()).kickable) return msg.reply('I have no rights to kick that User');
+            msg.guild.member(user.first()).kick()
+            msg.channel.sendMessage("**I've Kicked " + user.first() + " because " + msg.author + " want it**")
             log()
          }else{
             msg.reply("*You need a role that provide the right to kick People*")
@@ -277,8 +282,9 @@ function error(error){
 
   if(input.startsWith(prefix + "COOKIE"))
   {
-    var id = msg.mentions.users
-    msg.channel.sendMessage(`**${id.first()} got a :cookie: from ${msg.author}**`)
+    var user = msg.mentions.users
+    if (user.size < 1) return message.reply('You must mention someone for this Command.')
+    msg.channel.sendMessage(`**${user.first()} got a :cookie: from ${msg.author}**`)
     log()
   }
 
