@@ -199,7 +199,7 @@ function error(error){
   if(input.startsWith(prefix + "COINFLIP"))
   {
     function coinFlip() {
-    return Math.floor(Math.random() * 2);
+    return Math.round(Math.random())
     }
     if(input ===prefix + "COINFLIP")
     {
@@ -283,7 +283,7 @@ function error(error){
   if(input.startsWith(prefix + "COOKIE"))
   {
     var user = msg.mentions.users
-    if (user.size < 1) return message.reply('You must mention someone for this Command.')
+    if (user.size < 1) return msg.reply('You must mention someone for this Command.')
     msg.channel.sendMessage(`**${user.first()} got a :cookie: from ${msg.author}**`)
     log()
   }
@@ -355,7 +355,6 @@ function error(error){
       mal.manga.search(InputMAL)
         .then(result => {
           var Mangares = result.manga[0]
-          console.log(Mangares)
           msg.channel.sendMessage([
           "**Title JP:**",   Mangares.title,
           "**Title EN:**",   Mangares.english,

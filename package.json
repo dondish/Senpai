@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/Fr3akGam3r/Senpai-Bot-Discord/issues"
   },
-  "homepage": "https://github.com/Fr3akGam3r/Senpai-Bot-Discord#readme"
+  "homepage": "https://github.com/Fr3akGam3r/Senpai-Bot-Discord#readme",
+  "devDependencies": {
+    "eslint": "^3.19.0"
+  }
 }
