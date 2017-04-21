@@ -9,7 +9,7 @@ Here you can find the Source code of my own Bot "Senpai" for [Discord](https://d
 i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript also i used 5 Libs so far
 - [Discord.js](https://nodejs.org)
 - [request](https://github.com/request/request)
-- [urban](https://github.com/mvrilo/urban)
+- [relevant-urban](https://www.npmjs.com/package/relevant-urban)
 - [MALjs](https://github.com/ricklancee/maljs)
 - [node-osu](https://www.npmjs.com/package/node-osu)
 

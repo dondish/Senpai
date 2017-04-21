@@ -9,7 +9,7 @@
 
 const Discord     = require('discord.js');
 const request     = require('request');
-const urban       = require('urban');
+const urban       = require('relevant-urban');
 const config      = require('./config/config.js');
 const MALjs       = require('MALjs');
 const mal         = new MALjs(config.MyAnimeListUsername, config.MyAnimeListPassword);
@@ -36,7 +36,7 @@ bot.on('ready' , () => {
           console.log("MAL API READY")
         }
     })
-    .catch(err => done(err));
+    .catch(err => console.error(err));
   console.log('-----------------------------------------------------------------------------');
   bot.user.setGame("%help")
 });
@@ -50,10 +50,11 @@ bot.on('message' , msg => {
     "DATBOI"   : "https://lh3.googleusercontent.com/YaEeYfc89GKs0YygNigS33golgVvTiPzqklKcg_OUrcdNt4n5pAokeGPFfIhoGOji6-BLlfi=s640-h400-e365",
   };
   var input          = msg.content.toUpperCase() ;
-  var Input8Ball     = msg.content.slice(7);
+  var Input7         = msg.content.slice(7)
   var things         = ["It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"];
   var poop ;
   var Ping           = bot.ping;
+  var user           = msg.mentions.users
   const args         = msg.content.split(" ").slice(1);
   const embed        = new Discord.RichEmbed()
 
@@ -185,7 +186,7 @@ function error(error){
                                   }
                      else
           {
-            poop = ("You ask me `" + Input8Ball + "` and my answer is: **" + things[Math.floor(Math.random()*things.length)] + "**");
+            poop = ("You ask me `" + Input7 + "` and my answer is: **" + things[Math.floor(Math.random()*things.length)] + "**");
             msg.reply(poop);
             log()
           }
@@ -249,7 +250,6 @@ function error(error){
     {
       if(msg.member.hasPermission(4))
         {
-          var user    = msg.mentions.users
           if (user.size < 1) return msg.reply('You must mention someone for this Command.')
           if (!msg.guild.member(user.first()).bannable) return msg.reply('I have no rights to ban that User');
           msg.guild.ban(user.first())
@@ -266,7 +266,6 @@ function error(error){
      {
        if(msg.member.hasPermission(2))
          {
-            var user = msg.mentions.users
             if (user.size < 1) return msg.reply('You must mention someone for this Command.')
             if (!msg.guild.member(user.first()).kickable) return msg.reply('I have no rights to kick that User');
             msg.guild.member(user.first()).kick()
@@ -277,12 +276,9 @@ function error(error){
             log("No Rights")
          }
      }
-  }
-
-
-  if(input.startsWith(prefix + "COOKIE"))
+   }
+   if(input.startsWith(prefix + "COOKIE"))
   {
-    var user = msg.mentions.users
     if (user.size < 1) return msg.reply('You must mention someone for this Command.')
     msg.channel.sendMessage(`**${user.first()} got a :cookie: from ${msg.author}**`)
     log()
@@ -293,24 +289,25 @@ function error(error){
    {
      msg.reply("You must add a word after " + prefix + "Urban")
    }else{
-      var InputUrban = urban(msg.content.slice(7))
-      InputUrban.first(function(OutputUrban) {
+     var InputUrban = msg.content.slice(7)
+     urban.random(InputUrban)
+      .then(result => {
         msg.channel.sendMessage([
-          `**${OutputUrban.word}** by ${OutputUrban.author}`,
+          `**${result.word}** by ${result.author}`,
           ``,
           `***Definition:***`,
-          `${OutputUrban.definition}`,
+          `${result.definition}`,
           ``,
           `***Example***`,
-          `${OutputUrban.example}`,
+          `${result.example}`,
           ``,
-          `${OutputUrban.thumbs_up} :thumbsup:`,
+          `${result.thumbsUp} :thumbsup:`,
           ``,
-          `${OutputUrban.thumbs_down} :thumbsdown:`
+          `${result.thumbsDown} :thumbsdown:`
         ])
         log()
-      }
-    );
+      })
+      .catch(err => { error(err) })
     }
 
   if(input.startsWith(prefix + "ANIME"))
@@ -320,8 +317,7 @@ function error(error){
      msg.reply("You must add a Anime name after " + prefix + "Anime")
      log()
     }else{
-      var InputMAL = msg.content.slice(7)
-      mal.anime.search(InputMAL)
+      mal.anime.search(Input7)
         .then(result => {
           var Animeres = result.anime[0]
           msg.channel.sendMessage([
@@ -351,8 +347,7 @@ function error(error){
      msg.reply("You must add a Manga name after " + prefix + "Manga")
      log()
     }else{
-      var InputMAL = msg.content.slice(7)
-      mal.manga.search(InputMAL)
+      mal.manga.search(Input7)
         .then(result => {
           var Mangares = result.manga[0]
           msg.channel.sendMessage([
@@ -375,8 +370,8 @@ function error(error){
    }
   }
 
-
 }
+
 );
 
 bot.login(LoginToken);
