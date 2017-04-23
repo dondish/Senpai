@@ -16,6 +16,6 @@ exports.run = (client, msg, args) => {
 
 exports.help = {
     'name': 'purge',
-    'description': 'Purges X amount of messages from the current channel ',
+    'description': 'Delete X amount of messages from the current channel ',
     'usage': 'purge <number>'
 }

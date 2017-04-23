@@ -7,10 +7,10 @@ exports.run = (client, msg, params) => {
     .then(message => message.delete(10000))
     msg.author.sendCode('asciidoc', `= Command List =\n\n[Use ${config.prefix}help <commandname> for details]\n\n${client.commands.map(c => `${config.prefix}${c.help.name}${' '.repeat(longest - c.help.name.length)} :: ${c.help.description}`).join('\n')}`);
   } else {
-    let command = params[0];
+    let command = params[0].toUpperCase();
     if (client.commands.has(command)) {
       command = client.commands.get(command);
-      msg.channel.sendCode('asciidoc', `= ${command.help.name} = \n${command.help.description}\nusage::${command.help.usage}`);
+      msg.channel.sendCode('asciidoc', `= ${command.help.name} = \n${command.help.description}\nUsage: ${config.prefix}${command.help.usage}`);
     }
   }
   console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
