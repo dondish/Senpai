@@ -1,7 +1,8 @@
 module.exports = {
       'BotToken'            :'',
       'prefix'              :'%',
-      'OsuToken'            :''
-      'MyAnimeListUsername' :''
-      'MyAnimeListPassword' :''
+      'OsuToken'            :'',
+      'MyAnimeListUsername' :'',
+      'MyAnimeListPassword' :'',
+      'OwnerID'             :''
 };

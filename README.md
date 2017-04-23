@@ -17,7 +17,8 @@ i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript
 
 ### Commands so far
 
-- **Info** Shows all commands in a PM
+- **help** Shows all commands in a PM
+- **Coinflip** do a Coinflip
 - **Ban** Ban a mentioned user
 - **Kick** Kick a mentioned user
 - **8ball** Ask a Question and get a answer
@@ -25,6 +26,10 @@ i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript
 - **Urban** Search for a word in the Urban Dictunary
 - **Anime/Manga** search for a Anime/Manga on [MyAnimeList](https://myanimelist.net/)
 - **Cookie** Give someone a Cookie
+- **Eval** Evaluate code on the Bot (Because of security measures, only the owner can execute this command!)
+- **Ping** shows the ping of the bot
+- **purge** Delete X amount of messages from the current channel 
+
 
 ### Will be added in the Future
 
