@@ -1,2 +1,2 @@
 Title Discord-Bot
-node "%cd%\Main.js"
+node "%cd%\app.js"

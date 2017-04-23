@@ -21,12 +21,8 @@ i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript
 - **Ban** Ban a mentioned user
 - **Kick** Kick a mentioned user
 - **8ball** Ask a Question and get a answer
-- **Kappa** Shows a Kappa
-- **KappaHD** Shows a Kappa in HD
 - **Cat** Shows a random Cat image
 - **Urban** Search for a word in the Urban Dictunary
-- **fgt** shows a Copy&Paste
-- **Notice me** Senpai will notice you
 - **Anime/Manga** search for a Anime/Manga on [MyAnimeList](https://myanimelist.net/)
 - **Cookie** Give someone a Cookie
 
