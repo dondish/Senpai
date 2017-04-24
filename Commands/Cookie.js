@@ -1,8 +1,8 @@
 const fs = require("fs")
 let cookies = JSON.parse(fs.readFileSync('./databases/cookies.json', 'utf8'));
 exports.run = (client, msg) => {
-    if (msg.mentions.users.first().size < 1) return msg.reply('You must mention someone for this Command.')
-    if (!cookies[msg.mentions.users.first().id]) cookies[msg.mentions.users.first().id] = {'cookies': 1};
+    if (msg.mentions.users.size < 1) return msg.reply('You must mention someone for this Command.')
+    if (!cookies[msg.mentions.users.first().id]) cookies[msg.mentions.users.first().id] = {'cookies': 0};
     cookies[msg.mentions.users.first().id].cookies++;
     msg.channel.sendMessage(`**${msg.mentions.users.first()} got a :cookie: from ${msg.author}**`)
     fs.writeFile('./databases/cookies.json', JSON.stringify(cookies), err => {

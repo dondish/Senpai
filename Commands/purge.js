@@ -7,7 +7,7 @@ exports.run = (client, msg, args) => {
   msg.channel.fetchMessages({'limit': messagecount}).then(messages => {
       msg.channel.bulkDelete(messages)
       msg.channel.sendMessage("i've deleted " + messages.size + " Messages")
-      .then(message => message.delete(10000))
+      .then(message => message.delete(10000).catch(console.warn))
      }
   )
   .catch(console.error);
