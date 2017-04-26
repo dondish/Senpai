@@ -1,5 +1,5 @@
 const Discord                               = require('discord.js');
-const bot                                   = new Discord.Client();
+const bot                                   = new Discord.Client( {"fetchAllMembers": true} );
 const config                                = require('./config/config.js');
 const LoginToken                            = config.BotToken;
 const fs                                    = require('fs');
