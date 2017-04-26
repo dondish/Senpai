@@ -28,7 +28,6 @@ module.exports = (oldMember, newMember) =>
           })
         }
       }
-      console.log("User:" + oldMember.user.username + " Changed to online!")
       return
     });
  }
@@ -36,7 +35,6 @@ module.exports = (oldMember, newMember) =>
  {
     connection.query(`DELETE FROM discord_user_online.user WHERE user_id=${newMember.id}`, function (error, results, fields) {
       if (error) throw error;
-      console.log("User:" + oldMember.user.username + " Changed to oflline!")
       return
     });
  }
