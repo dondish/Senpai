@@ -18,7 +18,25 @@ exports.run = (client, msg) => {
             var timeDB          = results[0].time
             var currenttime     = moment().unix()
             var OnlineTime      = currenttime - timeDB
-            msg.channel.sendMessage(`The User ${user} was ${OnlineTime} seconds online!`)
+            var TimeType
+            var ShowTime
+            var ti
+            if(OnlineTime >= 3600)
+            {
+                TimeType = "hour"
+                ti   = OnlineTime/3600
+                ShowTime = Math.round(ti * 1000) / 1000;
+            }else if(OnlineTime >= 60)
+            {
+                TimeType = "minute"
+                ti   = OnlineTime/60
+                ShowTime = Math.round(ti * 1000) / 1000;
+            }else
+            {
+                TimeType = "seconds"
+                ShowTime = OnlineTime
+            }
+            msg.channel.sendMessage(`The User ${user} was ${ShowTime} ${TimeType}/s online!`)
             });
     }else{
         let user    = msg.mentions.users.first()
@@ -28,7 +46,25 @@ exports.run = (client, msg) => {
             var timeDB          = results[0].time
             var currenttime     = moment().unix()
             var OnlineTime      = currenttime - timeDB
-            msg.channel.sendMessage(`The User ${user} was ${OnlineTime} seconds online!`)
+            var TimeType
+            var ShowTime
+            var ti
+            if(OnlineTime >= 3600)
+            {
+                TimeType = "hour"
+                ti   = OnlineTime/3600
+                ShowTime = Math.round(ti * 1000) / 1000;
+            }else if(OnlineTime >= 60)
+            {
+                TimeType = "minute"
+                ti   = OnlineTime/60
+                ShowTime = Math.round(ti * 1000) / 1000;
+            }else
+            {
+                TimeType = "seconds"
+                ShowTime = OnlineTime
+            }
+            msg.channel.sendMessage(`The User ${user} was ${ShowTime} ${TimeType}/s online!`)
             });
     }
     console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
