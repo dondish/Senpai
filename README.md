@@ -31,7 +31,7 @@ i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript
 - **Eval** Evaluate code on the Bot (Because of security measures, only the owner can execute this command!)
 - **Ping** shows the ping of the bot
 - **purge** Delete X amount of messages from the current channel 
-- **online** shows how long you other other users were online
+- **online** shows how long you or a user were online
 
 
 ### Will be added in the Future
