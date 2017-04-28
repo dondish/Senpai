@@ -25,12 +25,12 @@ exports.run = (client, msg) => {
             {
                 TimeType = "hour"
                 ti   = OnlineTime/3600
-                ShowTime = Math.round(ti * 1000) / 1000;
+                ShowTime = Math.round(ti * 10) / 10;
             }else if(OnlineTime >= 60)
             {
                 TimeType = "minute"
                 ti   = OnlineTime/60
-                ShowTime = Math.round(ti * 1000) / 1000;
+                ShowTime = Math.round(ti * 10) / 10;
             }else
             {
                 TimeType = "seconds"
