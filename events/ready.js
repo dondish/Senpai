@@ -3,7 +3,7 @@ const MALjs                                 = require('MALjs');
 const mal                                   = new MALjs(config.MyAnimeListUsername, config.MyAnimeListPassword);
 const mysql                                 = require("mysql")
 var   moment                                = require('moment');
-var   firstStartup                          = true
+var   firstStartup                          = false
 var   connection                            = mysql.createConnection({
   "host"     : 'localhost',
   "user"     : config.MySQLUsername,

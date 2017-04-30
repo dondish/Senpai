@@ -7,7 +7,7 @@ require('./Eventloader/eventloader.js')(bot);
 
 
 bot.commands = new Discord.Collection();
-bot.aliases = new Discord.Collection();
+
 fs.readdir('./Commands/', (err, files) => {
   if (err) console.error(err);
   console.log(`Loading a total of ${files.length} commands.`);
