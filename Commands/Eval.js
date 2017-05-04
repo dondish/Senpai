@@ -12,7 +12,7 @@ exports.run = (client, msg, params) => {
         var evaled = eval(code);
         if (typeof evaled !== "string")
           evaled = require("util").inspect(evaled);
-          msg.channel.sendCode("xl", clean(evaled));
+          msg.channel.send(clean(evaled), {"code": 'xl'});
           } catch (err) {
             msg.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
           }
