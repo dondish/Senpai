@@ -14,7 +14,7 @@ exports.run = (client, msg, params) => {
           evaled = require("util").inspect(evaled);
           msg.channel.sendCode("xl", clean(evaled));
           } catch (err) {
-            msg.channel.sendMessage(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+            msg.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
           }
 }
 

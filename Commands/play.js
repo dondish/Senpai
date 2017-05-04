@@ -2,7 +2,7 @@ const yt                                    = require('ytdl-core');
 const fs                                    = require('fs');
 const config                                = require('../config/config.js')
 exports.run = (client, msg, args) => {
-    if (msg.channel.type != "text") return msg.channel.sendMessage("You can run this command only on a Server!")
+    if (msg.channel.type != "text") return msg.channel.send("You can run this command only on a Server!")
     var voiceConnection = msg.guild.voiceConnection
     let queues = {};
     var Video  = msg.content.slice(config.prefix.length + 5)
@@ -21,7 +21,7 @@ exports.run = (client, msg, args) => {
     if (voiceConnection === null) return msg.reply(`You must let me join a Voice Channel with ${config.prefix}join!`)
     if (!Video) return msg.reply('No video specified!');
             //Get the video information.
-        msg.channel.sendMessage('Searching...').then(response => {
+        msg.channel.send('Searching...').then(response => {
             //If the suffix doesn't start with 'http', assume it's a search.
             if (!Video.toLowerCase().startsWith('http')) {
                 Video = 'gvsearch1:' + Video;
@@ -38,14 +38,14 @@ exports.run = (client, msg, args) => {
                     if (fs.existsSync(`./audio_cache/${filename}.mp3`)) {
                     const dispatcher = voiceConnection.playFile(`./audio_cache/${filename}.mp3`)
                     dispatcher.on('end', () => {
-                    msg.channel.sendMessage("Playback finished.")
+                    msg.channel.send("Playback finished.")
                     })
                     }else{
                         executeQueue(msg, queue)
                     setTimeout(() => {
                     const dispatcher = voiceConnection.playFile(`./audio_cache/${filename}.mp3`)
                     dispatcher.on('end', () => {
-                    msg.channel.sendMessage("Playback finished.")
+                    msg.channel.send("Playback finished.")
                     })
                     }, 5000)
                     }

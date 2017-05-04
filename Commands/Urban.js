@@ -4,7 +4,7 @@ exports.run = (client, msg, params) => {
     if (params.length < 1) return msg.reply('You must add a word to search for');
      urban.random(InputUrban)
       .then(result => {
-        msg.channel.sendMessage([
+        msg.channel.send([
           `**${result.word}** by ${result.author}`,
           ``,
           `***Definition:***`,

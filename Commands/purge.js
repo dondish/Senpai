@@ -8,7 +8,7 @@ exports.run = (client, msg, args) => {
   if(messagecount > 100) return msg.reply("You can only delete 100 Messages at the time!")
   msg.channel.fetchMessages({'limit': messagecount}).then(messages => {
       msg.channel.bulkDelete(messages)
-      msg.channel.sendMessage("i've deleted " + messages.size + " Messages")
+      msg.channel.send("i've deleted " + messages.size + " Messages")
       .then(message => message.delete(10000).catch(console.warn))
      }
   )

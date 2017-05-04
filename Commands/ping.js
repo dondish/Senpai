@@ -1,5 +1,5 @@
 exports.run = (client, msg) => {
-    msg.channel.sendMessage(Math.round(msg.client.ping) + " ms");
+    msg.channel.send(Math.round(msg.client.ping) + " ms");
     console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 

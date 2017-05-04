@@ -17,9 +17,9 @@ exports.run = (client, msg, params) => {
         }
         if(coinFlip() === convertcoin)
         {
-          msg.channel.sendMessage("You won :heart:")
+          msg.channel.send("You won :heart:")
         }else{
-          msg.channel.sendMessage("You lost Feelsbadman")
+          msg.channel.send("You lost Feelsbadman")
         }
      }else{
        msg.reply("You can only choose Head or Number!")

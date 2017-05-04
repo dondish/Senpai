@@ -36,7 +36,7 @@ exports.run = (client, msg) => {
                 TimeType = "seconds"
                 ShowTime = OnlineTime
             }
-            msg.channel.sendMessage(`The User ${user} was ${ShowTime} ${TimeType}/s online!`)
+            msg.channel.send(`The User ${user} was ${ShowTime} ${TimeType}/s online!`)
             });
     }else{
         let user    = msg.mentions.users.first()
@@ -64,7 +64,7 @@ exports.run = (client, msg) => {
                 TimeType = "seconds"
                 ShowTime = OnlineTime
             }
-            msg.channel.sendMessage(`The User ${user} was ${ShowTime} ${TimeType}/s online!`)
+            msg.channel.send(`The User ${user} was ${ShowTime} ${TimeType}/s online!`)
             });
     }
     console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")

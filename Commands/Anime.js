@@ -6,7 +6,7 @@ exports.run = (client, msg, params) => {
       mal.anime.search(msg.content.slice(7))
         .then(result => {
           var Animeres = result.anime[0]
-          msg.channel.sendMessage([
+          msg.channel.send([
           "**Title JP:**", Animeres.title,
           "**Title EN:**", Animeres.english,
           "**Url:**",      "https://myanimelist.net/anime/" + Animeres.id,

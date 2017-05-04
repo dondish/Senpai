@@ -6,7 +6,7 @@ exports.run = (client, msg, params) => {
       mal.manga.search(msg.content.slice(7))
         .then(result => {
           var Mangares = result.manga[0]
-          msg.channel.sendMessage([
+          msg.channel.send([
           "**Title JP:**",   Mangares.title,
           "**Title EN:**",   Mangares.english,
           "**Url:**",        "https://myanimelist.net/manga/" + Mangares.id,
