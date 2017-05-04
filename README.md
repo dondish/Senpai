@@ -6,7 +6,7 @@ Here you can find the Source code of my own Bot "Senpai" for [Discord](https://d
 
 ## Language and Libs
 
-i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript also i used 7 Libs so far
+i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript also i used 8 Libs so far
 - [Discord.js](https://nodejs.org)
 - [request](https://github.com/request/request)
 - [relevant-urban](https://www.npmjs.com/package/relevant-urban)
@@ -14,6 +14,7 @@ i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript
 - [node-osu](https://www.npmjs.com/package/node-osu)
 - [Mysql](https://github.com/mysqljs/mysql)
 - [moments](https://www.npmjs.com/package/moment)
+- [ytdl-core](https://github.com/fent/node-ytdl-core)
 
 ## Commands and Future
 
@@ -32,6 +33,9 @@ i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript
 - **Ping** shows the ping of the bot
 - **purge** Delete X amount of messages from the current channel 
 - **online** shows how long you or a user were online
+- **Join** Joins a Voice Channel to play Music in it
+- **disconnect** leaves a Voice Channel
+- **play** Plays a song from Youtube
 
 
 ### Will be added in the Future
