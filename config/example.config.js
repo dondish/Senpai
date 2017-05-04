@@ -6,5 +6,6 @@ module.exports = {
       'MyAnimeListPassword' :'',
       'OwnerID'             :'',
       'MySQLUsername'       :'',
-      'MysQLPassword'       :''
+      'MysQLPassword'       :'',
+      'GoogleApiKey'        :''
 };
