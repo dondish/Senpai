@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Fr3akGam3r/Senpai-Bot-Discord#readme",
   "devDependencies": {
-    "eslint": "^3.19.0"
+    "eslint": "^3.19.0",
+    "discordjs": "11.1.0"
   }
 }

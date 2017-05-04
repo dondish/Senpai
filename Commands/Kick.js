@@ -14,7 +14,7 @@ exports.run = (client, msg, args) => {
         "timestamp": new Date(),
         "fields": [{
         "name": 'Command',
-        "value": 'kick'
+        "value": 'Kick'
         },
         {
         "name": 'User',
