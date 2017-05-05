@@ -13,88 +13,71 @@ exports.run = (client, msg, args) => {
     var Video  = msg.content.slice(config.prefix.length + 5)
     if (voiceConnection === null) return msg.reply(`You must let me join a Voice Channel with ${config.prefix}join!`)
     if (!Video) return msg.reply('No video specified!');
-    var filename = Video.slice(32)
     function getQueue(guild) {
     if (!queues[guild]) queues[guild] = [];
     return queues[guild];
     }
     const queue = getQueue(msg.guild.id);
-    function executeQueue(msg, queue) {
-        yt.downloadFromInfo(queue[0], {'filter': 'audioonly'})
-        .pipe(fs.createWriteStream(`./audio_cache/${filename}.mp3`));
-        return;
-    }
-
-            //Get the video information.
-        msg.channel.send('Searching...').then(response => {
-            //If the suffix doesn't start with 'http', assume it's a search and search from Youtube search.
-            if (!Video.toLowerCase().startsWith('http')) {
-                search(Video, searchopts, function(err, results) {
-                    if (err) return msg.reply("I had an error while try to search for your song!")
-                    var firstV = results[0]
-                    if (firstV.kind != "youtube#video") {
-                       firstV = results[1] 
+    function playqueue(msg, queue) {
+            if(voiceConnection.speaking === true) return;
+            if(queue.length < 1) return;
+            const queuedvideo = queue[0]
+            const id          = queuedvideo.video_id
+            const title       = queuedvideo.title
+            if(fs.exists(`./audio_cache/${id}.mp3`)) {
+                const dispatcher = voiceConnection.playFile(`./audio_cache/${id}.mp3`)
+                dispatcher.on('end', () => {
+                        msg.channel.send(`Finished playing ${title}`)
+                        queue.shift()
                     }
-                    filename = firstV.link.slice(32)
-                //Get the video info from youtube-dl.
-                yt.getInfo(firstV.link, (err, info) => {
-                //Verify the info.
-                if (err || info.video_id === undefined) {
-                    return response.edit('error while try to get Information about the searched song');
-                }
-                //Queue the video.
-                response.edit('**Queued:** ' + info.title).then(() => {
-                    queue.push(info);
-                    if (fs.existsSync(`./audio_cache/${filename}.mp3`)) {
-                    const dispatcher = voiceConnection.playFile(`./audio_cache/${filename}.mp3`)
-                    dispatcher.on('end', () => {
-                    msg.channel.send("Playback finished.")
-                    })
-                    }else{
-                        executeQueue(msg, queue)
-                    setTimeout(() => {
-                    const dispatcher = voiceConnection.playFile(`./audio_cache/${filename}.mp3`)
-                    dispatcher.on('end', () => {
-                    msg.channel.send("Playback finished.")
-                    })
-                    }, 5000)
-                    }
-                })
-                .catch(console.log);
-                })
-
-                } )
+                )
             }else{
-            //Get the video info from youtube-dl.
-            yt.getInfo(Video, (err, info) => {
-                //Verify the info.
-                if (err || info.video_id === undefined) {
-                    return response.edit('Invalid video!');
-                }
-                //Queue the video.
-                response.edit('**Queued:** ' + info.title).then(() => {
-                    queue.push(info);
-                    if (fs.existsSync(`./audio_cache/${filename}.mp3`)) {
-                    const dispatcher = voiceConnection.playFile(`./audio_cache/${filename}.mp3`)
-                    dispatcher.on('end', () => {
-                    msg.channel.send("Playback finished.")
-                    })
-                    }else{
-                        executeQueue(msg, queue)
-                    setTimeout(() => {
-                    const dispatcher = voiceConnection.playFile(`./audio_cache/${filename}.mp3`)
-                    dispatcher.on('end', () => {
-                    msg.channel.send("Playback finished.")
-                    })
-                    }, 5000)
-                    }
-                })
-                .catch(console.log);
-            });
+                yt.downloadFromInfo(queuedvideo, {'filter': 'audioonly'})
+                .pipe(fs.createWriteStream(`./audio_cache/${id}.mp3`));
+                setTimeout(() => {
+                const dispatcher = voiceConnection.playFile(`./audio_cache/${id}.mp3`)
+                dispatcher.on('end', () => {
+                        msg.channel.send(`Finished playing ${title}`)
+                        queue.shift()
+                        }
+                    )
+                }, 4000)
             }
-        })
-        .catch(console.log);
-
+    }
+    function addtoqueue(msg, queue) {
+        if (!Video.toLowerCase().startsWith('http')) {
+            search(Video, searchopts, function(err, results) {
+                if (err) return msg.reply("I had an error while try to search for your song!")
+                var firstV = results[0]
+                if (firstV.kind != "youtube#video") {
+                    firstV = results[1]
+                }
+                yt.getInfo(firstV.link, (err, info) => {
+                    if (err || info.video_id === undefined) {
+                        return msg.reply('error while try to get Information about the song');
+                        }
+                    queue.push(info);
+                    msg.channel.send(`**Queued:** ${info.title}`)
+                        }
+                    )
+                }
+            )
+        }else{
+            yt.getInfo(Video, (err, info) => {
+                if (err || info.video_id === undefined) {
+                    return msg.reply('error while try to get Information about the song');
+                    }
+                queue.push(info);
+                msg.channel.send(`**Queued:** ${info.title}`)
+                }
+            )
+        }
+    }
+        msg.channel.send('Searching...')
+        addtoqueue(msg, queue)
+        setInterval(function() {
+            playqueue(msg, queue)
+        }, 7000)
 
 
     console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
