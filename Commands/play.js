@@ -6,28 +6,55 @@ const searchopts                            = {
       "maxResults": 10,
       "key": config.GoogleApiKey
 };
+let queues = {};
+let dispatchers = {};
+function getDispatcher(guild) {
+    if (!dispatchers[guild]) dispatchers[guild] = []
+    return dispatchers[guild]
+}
+function getQueue(guild) {
+    if (!queues[guild]) queues[guild] = [];
+    return queues[guild];
+}
+exports.queue = msg => {
+    const queue = getQueue(msg.guild.id);
+    if(queue.length < 1) {
+        msg.reply("there are no songs currently in queue!")
+    }else{
+        queue.forEach(function(element) {
+            msg.channel.send(element.title)
+            }
+        );
+    }
+}
+exports.skip = msg => {
+    var dispatchertoskip = getDispatcher(msg.guild.id)
+    var dispatcher       = dispatchertoskip[0]
+    if(dispatcher === undefined) return msg.channel.send("i dont play music at the moment!")
+    dispatcher.end()
+    msg.channel.send("Skipped the played Song!")
+
+}
 exports.run = (client, msg, args) => {
     if (msg.channel.type != "text") return msg.channel.send("You can run this command only on a Server!")
     var voiceConnection = msg.guild.voiceConnection
-    let queues = {};
     var Video  = msg.content.slice(config.prefix.length + 5)
     if (voiceConnection === null) return msg.reply(`You must let me join a Voice Channel with ${config.prefix}join!`)
     if (!Video) return msg.reply('No video specified!');
-    function getQueue(guild) {
-    if (!queues[guild]) queues[guild] = [];
-    return queues[guild];
-    }
     const queue = getQueue(msg.guild.id);
+    const dispatcherStorage = getDispatcher(msg.guild.id, msg)
     function playqueue(msg, queue) {
             if(voiceConnection.speaking === true) return;
             if(queue.length < 1) return;
             const queuedvideo = queue[0]
             const id          = queuedvideo.video_id
             const title       = queuedvideo.title
-            const dispatcher = voiceConnection.playFile(`./audio_cache/${id}.mp3`)
+            const dispatcher  = voiceConnection.playFile(`./audio_cache/${id}.mp3`)
+            dispatcherStorage.push(dispatcher)
             dispatcher.on('end', () => {
                 msg.channel.send(`Finished playing ${title}`)
                 queue.shift()
+                dispatcherStorage.shift()
                 }
             )
 
@@ -42,7 +69,7 @@ exports.run = (client, msg, args) => {
                 }
                 yt.getInfo(firstV.link, (err, info) => {
                     if (err || info.video_id === undefined) {
-                        return msg.reply('error while try to get Information about the song');
+                        return msg.reply('error while try to get Information about the song!');
                         }
                     queue.push(info);
                     msg.channel.send(`**Queued:** ${info.title}`)
@@ -57,7 +84,7 @@ exports.run = (client, msg, args) => {
         }else{
             yt.getInfo(Video, (err, info) => {
                 if (err || info.video_id === undefined) {
-                    return msg.reply('error while try to get Information about the song');
+                    return msg.reply('error while try to get Information about the song only Youtube songs are currently playable');
                     }
                 queue.push(info);
                 msg.channel.send(`**Queued:** ${info.title}`)
@@ -74,8 +101,8 @@ exports.run = (client, msg, args) => {
         setTimeout(function() {
             setInterval(function() {
                 playqueue(msg, queue)
-            }, 5000) }
-        , 2000)
+            }, 3000) }
+        , 5000)
 
 
 
