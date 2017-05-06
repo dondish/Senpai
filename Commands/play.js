@@ -24,25 +24,13 @@ exports.run = (client, msg, args) => {
             const queuedvideo = queue[0]
             const id          = queuedvideo.video_id
             const title       = queuedvideo.title
-            if(fs.exists(`./audio_cache/${id}.mp3`)) {
-                const dispatcher = voiceConnection.playFile(`./audio_cache/${id}.mp3`)
-                dispatcher.on('end', () => {
-                        msg.channel.send(`Finished playing ${title}`)
-                        queue.shift()
-                    }
-                )
-            }else{
-                yt.downloadFromInfo(queuedvideo, {'filter': 'audioonly'})
-                .pipe(fs.createWriteStream(`./audio_cache/${id}.mp3`));
-                setTimeout(() => {
-                const dispatcher = voiceConnection.playFile(`./audio_cache/${id}.mp3`)
-                dispatcher.on('end', () => {
-                        msg.channel.send(`Finished playing ${title}`)
-                        queue.shift()
-                        }
-                    )
-                }, 4000)
-            }
+            const dispatcher = voiceConnection.playFile(`./audio_cache/${id}.mp3`)
+            dispatcher.on('end', () => {
+                msg.channel.send(`Finished playing ${title}`)
+                queue.shift()
+                }
+            )
+
     }
     function addtoqueue(msg, queue) {
         if (!Video.toLowerCase().startsWith('http')) {
@@ -58,6 +46,10 @@ exports.run = (client, msg, args) => {
                         }
                     queue.push(info);
                     msg.channel.send(`**Queued:** ${info.title}`)
+                            if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
+                                yt.downloadFromInfo(info, {'filter': 'audioonly'})
+                                .pipe(fs.createWriteStream(`./audio_cache/${info.video_id}.mp3`));
+                            }
                         }
                     )
                 }
@@ -69,15 +61,22 @@ exports.run = (client, msg, args) => {
                     }
                 queue.push(info);
                 msg.channel.send(`**Queued:** ${info.title}`)
+                    if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
+                        yt.downloadFromInfo(info, {'filter': 'audioonly'})
+                        .pipe(fs.createWriteStream(`./audio_cache/${info.video_id}.mp3`));
+                    }
                 }
             )
         }
     }
         msg.channel.send('Searching...')
         addtoqueue(msg, queue)
-        setInterval(function() {
-            playqueue(msg, queue)
-        }, 7000)
+        setTimeout(function() {
+            setInterval(function() {
+                playqueue(msg, queue)
+            }, 5000) }
+        , 2000)
+
 
 
     console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
