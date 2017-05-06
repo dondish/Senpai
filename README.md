@@ -37,6 +37,8 @@ i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript
 - **Join** Joins a Voice Channel to play Music in it
 - **disconnect** leaves a Voice Channel
 - **play** Plays a song from Youtube
+- **skip** skips the current playing song
+- **queue** shows the queue on the current server
 
 
 ### Will be added in the Future
