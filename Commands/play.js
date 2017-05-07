@@ -17,7 +17,7 @@ function getQueue(guild) {
     return queues[guild];
 }
 exports.queue = msg => {
-    const queue = getQueue(msg.guild.id);
+    var queue = getQueue(msg.guild.id);
     if(queue.length < 1) {
         msg.reply("there are no songs currently in queue!")
     }else{
@@ -26,6 +26,27 @@ exports.queue = msg => {
             }
         );
     }
+}
+exports.disconnect = msg => {
+    var queue = getQueue(msg.guild.id);
+    if (queue.size > 0) {
+        queue.length = 0
+    }
+    if (msg.guild.voiceConnection.speaking === true) {
+            var dispatchertoskip = getDispatcher(msg.guild.id)
+            var dispatcher       = dispatchertoskip[0]
+            dispatcher.end()
+    }
+}
+exports.clearqueue = msg => {
+    var queue = getQueue(msg.guild.id);
+    if (queue.size > 0) {
+        queue.length = 0
+    }
+}
+exports.deletesong = (msg, number) => {
+    var queue = getQueue(msg.guild.id);
+
 }
 exports.skip = msg => {
     var dispatchertoskip = getDispatcher(msg.guild.id)
