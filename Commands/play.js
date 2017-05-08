@@ -48,6 +48,7 @@ exports.deletesong = (msg, number) => {
     var queue = getQueue(msg.guild.id);
     if (number > queue.length) return msg.channel.send("You can't try to delete a song that is not there!")
     const indexnumber = number - 1
+    msg.channel.send(`I've deleted the Song ${queue[indexnumber].title} from the queue`)
     queue.splice(indexnumber, 1)
 }
 exports.skip = msg => {
