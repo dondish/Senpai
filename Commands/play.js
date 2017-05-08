@@ -46,7 +46,9 @@ exports.clearqueue = msg => {
 }
 exports.deletesong = (msg, number) => {
     var queue = getQueue(msg.guild.id);
-
+    if (number > queue.length) return msg.channel.send("You can't try to delete a song that is not there!")
+    const indexnumber = number - 1
+    queue.splice(indexnumber, 1)
 }
 exports.skip = msg => {
     var dispatchertoskip = getDispatcher(msg.guild.id)
@@ -76,9 +78,13 @@ exports.run = (client, msg, args) => {
                 msg.channel.send(`Finished playing ${title}`)
                 queue.shift()
                 dispatcherStorage.shift()
+                loop(msg, queue)
                 }
             )
 
+    }
+    function loop(msg, queue) {
+        playqueue(msg, queue)
     }
     function addtoqueue(msg, queue) {
         if (!Video.toLowerCase().startsWith('http')) {
@@ -97,7 +103,7 @@ exports.run = (client, msg, args) => {
                             if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
                                 yt.downloadFromInfo(info, {'filter': 'audioonly'})
                                 .pipe(fs.createWriteStream(`./audio_cache/${info.video_id}.mp3`));
-                            }
+                                }
                         }
                     )
                 }
@@ -112,7 +118,7 @@ exports.run = (client, msg, args) => {
                     if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
                         yt.downloadFromInfo(info, {'filter': 'audioonly'})
                         .pipe(fs.createWriteStream(`./audio_cache/${info.video_id}.mp3`));
-                    }
+                        }
                 }
             )
         }
@@ -120,9 +126,8 @@ exports.run = (client, msg, args) => {
         msg.channel.send('Searching...')
         addtoqueue(msg, queue)
         setTimeout(function() {
-            setInterval(function() {
-                playqueue(msg, queue)
-            }, 3000) }
+            playqueue(msg, queue)
+        }
         , 5000)
 
 
