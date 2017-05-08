@@ -27,6 +27,19 @@ exports.queue = msg => {
         );
     }
 }
+exports.showVolume = msg => {
+    var getdispatcher = getDispatcher(msg.guild.id)
+    var dispatcher       = getdispatcher[0]
+    if(dispatcher === undefined) return msg.channel.send("i dont play music at the moment!")
+    msg.channel.send(`the current volume is ${dispatcher.volume}`)
+}
+exports.changeVolume = (msg, number) => {
+    var dispatchertochange = getDispatcher(msg.guild.id)
+    var dispatcher       = dispatchertochange[0]
+    if(dispatcher === undefined) return msg.channel.send("i dont play music at the moment!")
+    dispatcher.setVolumeLogarithmic(number)
+    msg.channel.send(`You set the Volume to ${number}`)
+}
 exports.disconnect = msg => {
     var queue = getQueue(msg.guild.id);
     if (queue.size > 0) {
@@ -70,10 +83,11 @@ exports.run = (client, msg, args) => {
     function playqueue(msg, queue) {
             if(voiceConnection.speaking === true) return;
             if(queue.length < 1) return;
+            if(!voiceConnection) return;
             const queuedvideo = queue[0]
             const id          = queuedvideo.video_id
             const title       = queuedvideo.title
-            const dispatcher  = voiceConnection.playFile(`./audio_cache/${id}.mp3`)
+            const dispatcher  = voiceConnection.playFile(`./audio_cache/${id}.mp3`, {"volume": 0.2})
             dispatcherStorage.push(dispatcher)
             dispatcher.on('end', () => {
                 msg.channel.send(`Finished playing ${title}`)
@@ -103,7 +117,9 @@ exports.run = (client, msg, args) => {
                     msg.channel.send(`**Queued:** ${info.title}`)
                             if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
                                 yt.downloadFromInfo(info, {'filter': 'audioonly'})
-                                .pipe(fs.createWriteStream(`./audio_cache/${info.video_id}.mp3`));
+                                .pipe(fs.createWriteStream(`./audio_cache/${info.video_id}.mp3`).on('finish', function() { playqueue(msg, queue) }));
+                                } else {
+                                    playqueue(msg, queue);
                                 }
                         }
                     )
@@ -118,7 +134,9 @@ exports.run = (client, msg, args) => {
                 msg.channel.send(`**Queued:** ${info.title}`)
                     if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
                         yt.downloadFromInfo(info, {'filter': 'audioonly'})
-                        .pipe(fs.createWriteStream(`./audio_cache/${info.video_id}.mp3`));
+                        .pipe(fs.createWriteStream(`./audio_cache/${info.video_id}.mp3`).on('finish', function() { playqueue(msg, queue) }));
+                        } else {
+                            playqueue(msg, queue);
                         }
                 }
             )
@@ -126,10 +144,6 @@ exports.run = (client, msg, args) => {
     }
         msg.channel.send('Searching...')
         addtoqueue(msg, queue)
-        setTimeout(function() {
-            playqueue(msg, queue)
-        }
-        , 5000)
 
 
 
