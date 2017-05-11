@@ -8,5 +8,6 @@ module.exports = client => {
 
   client.on('ready', () => reqEvent('ready')(client));
   client.on('message', reqEvent('message'));
+  client.on('messageUpdate', reqEvent('messageUpdate'))
   setTimeout(Update, 35000);
 };
