@@ -1,6 +1,7 @@
 const yt                                    = require('ytdl-core');
 const fs                                    = require('fs');
 const config                                = require('../config/config.js')
+var   ypi                                   = require('youtube-playlist-info');
 const search                                = require('youtube-search');
 const searchopts                            = {
       "maxResults": 10,
@@ -42,7 +43,7 @@ exports.changeVolume = (msg, number) => {
 }
 exports.disconnect = msg => {
     var queue = getQueue(msg.guild.id);
-    if (queue.size > 0) {
+    if (queue.length > 0) {
         queue.length = 0
     }
     if (msg.guild.voiceConnection.speaking === true) {
@@ -53,7 +54,7 @@ exports.disconnect = msg => {
 }
 exports.clearqueue = msg => {
     var queue = getQueue(msg.guild.id);
-    if (queue.size > 0) {
+    if (queue.length > 0) {
         queue.length = 0
     }
 }
@@ -82,15 +83,20 @@ exports.run = (client, msg, args) => {
     const dispatcherStorage = getDispatcher(msg.guild.id, msg)
     function playqueue(msg, queue) {
             if(voiceConnection.speaking === true) return;
-            if(queue.length < 1) return;
+            if(queue.length === 0) return;
             if(!voiceConnection) return;
             const queuedvideo = queue[0]
             const id          = queuedvideo.video_id
             const title       = queuedvideo.title
+            const author      = queuedvideo.requestedBy
             const dispatcher  = voiceConnection.playFile(`./audio_cache/${id}.mp3`, {"volume": 0.2})
             dispatcherStorage.push(dispatcher)
+            dispatcher.on('start', () => {
+                    msg.channel.send(`**Start playing: ${title} Requested by** ${author}`)
+                } 
+            )
             dispatcher.on('end', () => {
-                msg.channel.send(`Finished playing ${title}`)
+                msg.channel.send(`**Finished playing:** ${title}`)
                 queue.shift()
                 dispatcherStorage.shift()
                 loop(msg, queue)
@@ -126,10 +132,12 @@ exports.run = (client, msg, args) => {
                 }
             )
         }else{
+            if(Video.startsWith("watch", 24)) {
             yt.getInfo(Video, (err, info) => {
                 if (err || info.video_id === undefined) {
                     return msg.reply('error while try to get Information about the song only Youtube songs are currently playable');
-                    }
+                }
+                info.requestedBy = msg.author
                 queue.push(info);
                 msg.channel.send(`**Queued:** ${info.title}`)
                     if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
@@ -140,6 +148,33 @@ exports.run = (client, msg, args) => {
                         }
                 }
             )
+            }else if(Video.startsWith("playlist", 24)) {
+                var playlistid = Video.slice(38)
+                ypi.playlistInfo(config.GoogleApiKey, playlistid, function(playlistItems) {
+                        for(var i = 0; i < playlistItems.length; i++) {
+                                    var VideoObj = playlistItems[i]
+                                    var VideoUrl = "https://www.youtube.com/watch?v=" + VideoObj.resourceId.videoId
+                                     yt.getInfo(VideoUrl, (err, info) => {
+                                        if (err || info.video_id === undefined) {
+                                            return msg.reply('error while try to get Information about the song only Youtube songs are currently playable');
+                                        }
+                                        info.requestedBy = msg.author
+                                        queue.push(info);
+                                        msg.channel.send(`**Queued:** ${info.title}`)
+                                            if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
+                                            yt.downloadFromInfo(info, {'filter': 'audioonly'})
+                                            .pipe(fs.createWriteStream(`./audio_cache/${info.video_id}.mp3`).on('finish', function() { playqueue(msg, queue) }));
+                                            } else {
+                                            playqueue(msg, queue);
+                                            }
+                                        }
+                                    )
+                                }
+                            }
+                        )
+            }else{
+                msg.channel.send("I dont think your link is valid :thinking: search for an valid Link!")
+            }
         }
     }
         msg.channel.send('Searching...')
@@ -152,6 +187,6 @@ exports.run = (client, msg, args) => {
 
 exports.help = {
     'name': 'Play',
-    'description': 'play a Song from Youtube or search for it if you not enter a link',
-    'usage': 'play [Link to a Youtube Song/Name of a song]'
+    'description': 'play a Song/playlist from Youtube or search for it if you not enter a link',
+    'usage': 'play [Link to a Youtube Song or playlist/Name of a song]'
 }

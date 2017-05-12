@@ -6,7 +6,7 @@ Here you can find the Source code of my own Bot "Senpai" for [Discord](https://d
 
 ## Language and Libs
 
-i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript also i used 9 Libs so far
+i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript also i used 10 Libs so far
 - [Discord.js](https://nodejs.org)
 - [request](https://github.com/request/request)
 - [relevant-urban](https://www.npmjs.com/package/relevant-urban)
@@ -16,6 +16,7 @@ i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript
 - [moments](https://www.npmjs.com/package/moment)
 - [ytdl-core](https://github.com/fent/node-ytdl-core)
 - [youtube-search](https://www.npmjs.com/package/youtube-search)
+- [youtube-playlist-info](https://www.npmjs.com/package/youtube-playlist-info)
 
 ## Commands and Future
 
