@@ -1,7 +1,7 @@
 exports.run = (client, msg) => {
     var play = client.commands.get("PLAY");
     play.clearqueue(msg)
-    msg.send("I've cleared the whole queue")
+    msg.channel.send("I've cleared the whole queue")
     console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 

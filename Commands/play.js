@@ -93,7 +93,7 @@ exports.run = (client, msg, args) => {
             dispatcherStorage.push(dispatcher)
             dispatcher.on('start', () => {
                     msg.channel.send(`**Start playing: ${title} Requested by** ${author}`)
-                } 
+                }
             )
             dispatcher.on('end', () => {
                 msg.channel.send(`**Finished playing:** ${title}`)
@@ -118,7 +118,8 @@ exports.run = (client, msg, args) => {
                 yt.getInfo(firstV.link, (err, info) => {
                     if (err || info.video_id === undefined) {
                         return msg.reply('error while try to get Information about the song!');
-                        }
+                    }
+                    info.requestedBy = msg.author
                     queue.push(info);
                     msg.channel.send(`**Queued:** ${info.title}`)
                             if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
