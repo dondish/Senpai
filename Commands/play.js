@@ -60,6 +60,7 @@ exports.clearqueue = msg => {
 }
 exports.deletesong = (msg, number) => {
     var queue = getQueue(msg.guild.id);
+    if (number <= 0) return msg.channel.send("There is no Song which is in queue place 0 or less :thinking:")
     if (number > queue.length) return msg.channel.send("You can't try to delete a song that is not there!")
     const indexnumber = number - 1
     msg.channel.send(`I've deleted the Song ${queue[indexnumber].title} from the queue`)
@@ -74,7 +75,7 @@ exports.skip = msg => {
 
 }
 exports.run = (client, msg, args) => {
-    if (msg.channel.type != "text") return msg.channel.send("You can run this command only on a Server!")
+    if (msg.channel.type !== "text") return msg.channel.send("You can run this command only on a Server!")
     var voiceConnection = msg.guild.voiceConnection
     var Video  = msg.content.slice(config.prefix.length + 5)
     if (voiceConnection === null) return msg.reply(`You must let me join a Voice Channel with ${config.prefix}join!`)
@@ -93,6 +94,10 @@ exports.run = (client, msg, args) => {
             dispatcherStorage.push(dispatcher)
             dispatcher.on('start', () => {
                     msg.channel.send(`**Start playing: ${title} Requested by** ${author}`)
+                }
+            )
+            dispatcher.on('error', error => {
+                console.log(error)
                 }
             )
             dispatcher.on('end', () => {
