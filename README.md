@@ -1,22 +1,17 @@
 # Senpai-Bot
 
 ## About
-Here you can find the Source code of my own Bot "Senpai" for [Discord](https://discordapp.com/) feel free to use and modify it if you want
+Here you can find the Source code of my own Bot "Senpai" for [Discord](https://discordapp.com/). You can use this Source-Code under the [MIT](https://en.wikipedia.org/wiki/MIT_License) license at any time.
 
 
 ## Language and Libs
 
-i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript also i used 10 Libs so far
-- [Discord.js](https://github.com/hydrabolt/discord.js)
-- [request](https://github.com/request/request)
-- [relevant-urban](https://www.npmjs.com/package/relevant-urban)
-- [MALjs](https://github.com/ricklancee/maljs)
-- [node-osu](https://www.npmjs.com/package/node-osu)
-- [Mysql](https://github.com/mysqljs/mysql)
-- [moments](https://www.npmjs.com/package/moment)
-- [ytdl-core](https://github.com/fent/node-ytdl-core)
-- [youtube-search](https://www.npmjs.com/package/youtube-search)
-- [youtube-playlist-info](https://www.npmjs.com/package/youtube-playlist-info)
+This bot is written in Javascript and use [Nodejs](https://nodejs.org/en/) to run.
+
+if you want to use this bot yourself you need to install Windows Build tools Global run this command in a cmd **npm install --global --production windows-build-tools**
+after that you should install the dependencies by run a **npm install** in the Bots directory.
+also you need a Mysql server.
+
 
 ## Commands and Future
 
@@ -40,9 +35,10 @@ i used the Language [Nodejs](https://nodejs.org/en/) what is based on Javascript
 - **play** Plays a song from Youtube
 - **skip** skips the current playing song
 - **queue** shows the queue on the current server
+- **osu** search for an User/Beatmap from [Osu!](https://osu.ppy.sh/)
 
 
 ### Will be added in the Future
 
 - **Mute** mute a mentioned user
-- **osu** Search for a specific Player on [Osu!](https://osu.ppy.sh)
+

@@ -1,6 +1,6 @@
 {
   "name": "senpai-bot",
-  "version": "3.7.2",
+  "version": "3.8.0",
   "description": "Selfmade Nodejs Discord bot",
   "main": "app.js",
   "scripts": {
@@ -11,17 +11,31 @@
     "url": "git+https://github.com/Fr3akGam3r/Senpai-Bot-Discord.git"
   },
   "keywords": [
-    "node",
-    "npm"
+    "Discord",
+    "Discord.js"
   ],
   "author": "Yukine",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Fr3akGam3r/Senpai-Bot-Discord/issues"
   },
   "homepage": "https://github.com/Fr3akGam3r/Senpai-Bot-Discord#readme",
   "devDependencies": {
-    "eslint": "^3.19.0",
-    "discordjs": "11.1.0"
+    "eslint": "^3.19.0"
+  },
+  "dependencies": {
+    "MALjs": "^0.1.0",
+    "discord.js": "^11.1.0",
+    "ffmpeg-binaries": "^3.2.2-3",
+    "moment": "^2.18.1",
+    "mysql": "^2.13.0",
+    "node-opus": "^0.2.6",
+    "node-osu": "^1.2.0",
+    "relevant-urban": "^2.0.0",
+    "request": "^2.81.0",
+    "uws": "^0.14.5",
+    "youtube-playlist-info": "^0.1.0",
+    "youtube-search": "^1.0.9",
+    "ytdl-core": "^0.14.1"
   }
 }

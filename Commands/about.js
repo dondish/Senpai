@@ -9,7 +9,7 @@ exports.run = (client, msg) => {
         .addField('Creator/Dev', 'Yukine')
         .setColor("DARK_GREEN")
         .addField('Total Servers', client.guilds.size)
-        .addField('Libary', `Discord.js ${Package.devDependencies.discordjs}`)
+        .addField('Libary', `Discord.js ${Discord.version}`)
         .addField('GitHub', "https://github.com/Fr3akGam3r/Senpai-Bot-Discord")
         .setTimestamp(dateformatted)
     msg.channel.send({embed})
