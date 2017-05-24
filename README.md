@@ -9,8 +9,10 @@ Here you can find the Source code of my own Bot "Senpai" for [Discord](https://d
 This bot is written in Javascript and use [Nodejs](https://nodejs.org/en/) to run.
 
 if you want to use this bot yourself you need to install Windows Build tools Global run this command in a cmd **npm install --global --production windows-build-tools**
+
 after that you should install the dependencies by run a **npm install** in the Bots directory.
-also you need a Mysql server.
+
+also you need a **Mysql server**.
 
 
 ## Commands and Future

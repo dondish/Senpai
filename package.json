@@ -1,6 +1,6 @@
 {
   "name": "senpai-bot",
-  "version": "3.8.0",
+  "version": "3.9.0",
   "description": "Selfmade Nodejs Discord bot",
   "main": "app.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Fr3akGam3r/Senpai-Bot-Discord.git"
+    "url": "git+https://github.com/Dev-Yukine/Senpai-Bot-Discord.git"
   },
   "keywords": [
     "Discord",
@@ -17,9 +17,9 @@
   "author": "Yukine",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Fr3akGam3r/Senpai-Bot-Discord/issues"
+    "url": "https://github.com/Dev-Yukine/Senpai-Bot-Discord/issues"
   },
-  "homepage": "https://github.com/Fr3akGam3r/Senpai-Bot-Discord#readme",
+  "homepage": "https://github.com/Dev-Yukine/Senpai-Bot-Discord#readme",
   "devDependencies": {
     "eslint": "^3.19.0"
   },
@@ -27,10 +27,13 @@
     "MALjs": "^0.1.0",
     "discord.js": "^11.1.0",
     "ffmpeg-binaries": "^3.2.2-3",
+    "googleapis": "^19.0.0",
+    "libsodium-wrappers": "^0.5.1",
     "moment": "^2.18.1",
     "mysql": "^2.13.0",
     "node-opus": "^0.2.6",
     "node-osu": "^1.2.0",
+    "openweathermapapi": "^1.0.4",
     "relevant-urban": "^2.0.0",
     "request": "^2.81.0",
     "uws": "^0.14.5",

@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const Package = require('../package.json')
 exports.run = (client, msg) => {
-    var dateformatted =new Date().toISOString()
+var dateformatted = new Date().toISOString()
 
     const embed = new Discord.RichEmbed()
         .setTitle("About Senpai version: " + Package.version)
