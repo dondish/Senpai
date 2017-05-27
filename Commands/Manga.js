@@ -1,27 +1,40 @@
-const config                                = require('../config/config.js');
-const MALjs                                 = require('MALjs');
-const mal                                   = new MALjs(config.MyAnimeListUsername, config.MyAnimeListPassword);
+const Kitsu                                 = require('kitsu.js');
+const kitsu                                 = new Kitsu();
 exports.run = (client, msg, params) => {
     if (params.length < 1) return msg.reply('You must add a word to search for');
-      mal.manga.search(msg.content.slice(7))
-        .then(result => {
-          var Mangares = result.manga[0]
-          msg.channel.send([
-          "**Title JP:**",   Mangares.title,
-          "**Title EN:**",   Mangares.english,
-          "**Url:**",        "https://myanimelist.net/manga/" + Mangares.id,
-          "**Score:**",      Mangares.score,
-          "**Type:**",       Mangares.type,
-          "**Chapters:**",   Mangares.chapters,
-          "**Status:**",     Mangares.status,
-          "**Synopsis:**",
-          Mangares.synopsis
-          ])
-        })
-        .catch(err => {
-          msg.reply("I had a error while trying to fetch the data from MyAnimeList Sorry! But dont blame me, blame the search API from MyAnimeList")
-          console.error(err)
-        });
+    msg.channel.send("*fetching information from kitsu!*").then(message => {
+    kitsu.searchManga(params.join(" "))
+      .then(result => {
+          const filter = message => {
+            if(message.content === "1" || message.content === "2" || message.content === "3" || message.content === "4" || message.content === "5") {
+              return true
+            } else {
+              return false
+            }
+          }
+          message.edit(`Okay i found 5 possible matches which do you want to see? (just write the first number, it will be canceled after 30 seconds)\n1: ${result[0].titles.enJp}\n2: ${result[1].titles.enJp}\n3: ${result[2].titles.enJp}\n4: ${result[3].titles.enJp}\n5: ${result[4].titles.enJp}`)
+          msg.channel.awaitMessages(filter, {
+              "max": 4,
+              "maxMatches": 1,
+              "time": 30000,
+              "errors": ['time']
+              }
+            ).then(message => {
+                if (message.size === 0) return
+                const number = Number(message.first().content) - 1
+                msg.channel.send(`**Title EN/JP:** ${result[number].titles.enJp}\n\n**Type:** ${result[number].subType}\n\n**Start Date:** ${result[number].startDate}\n\n**End Date:** ${result[number].endDate} (if this is null then its still in progress)\n\n**PopularityRank:** ${result[number].popularityRank}\n\n**Synopsis:** ${result[number].synopsis}\n**Link:** https://kitsu.io/manga/${result[number].id}`)
+              }
+            )
+
+        }
+      )
+      .catch(() => {
+          message.edit("I had a error while trying to fetch the data from Kitsu Sorry! did you spell the Anime name right?")
+          msg.react("❓")
+          }
+        );
+      }
+    )
     console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 

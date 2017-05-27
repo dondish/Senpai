@@ -1,6 +1,4 @@
 const config                                = require('../config/config.js');
-const MALjs                                 = require('MALjs');
-const mal                                   = new MALjs(config.MyAnimeListUsername, config.MyAnimeListPassword);
 const mysql                                 = require("mysql")
 var   moment                                = require('moment');
 var   firstStartup                          = true
@@ -18,14 +16,6 @@ module.exports = bot => {
   console.log('Channels:      ' + bot.channels.size);
   console.log('-----------------------------------------------------------------------------');
   console.log('Other API Status:')
-  mal.verifyCredentials()
-    .then(result => {
-      if (undefined != result)
-        {
-          console.log("MAL API READY")
-        }
-    })
-    .catch(err => console.error(err));
   console.log('-----------------------------------------------------------------------------');
   bot.user.setGame("%help")
   if(firstStartup)
