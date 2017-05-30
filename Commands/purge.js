@@ -8,8 +8,13 @@ exports.run = (client, msg, args) => {
   if(messagecount > 100) return msg.reply("You can only delete 100 Messages at the time!")
   msg.channel.fetchMessages({'limit': messagecount}).then(messages => {
       msg.channel.bulkDelete(messages)
-      msg.channel.send("i've deleted " + messages.size + " Messages")
-      .then(message => message.delete(10000).catch(console.warn))
+      .then(() => {
+        msg.channel.send("i've deleted " + messages.size + " Messages")
+        .then(message => message.delete(10000).catch(console.warn))
+      })
+      .catch(() => {
+          msg.channel.send("I may only delete Messages that are not older than 14 Days! thats is a Limit from Discord")
+      })
      }
   )
   .catch(console.error);

@@ -4,7 +4,7 @@ exports.run = (client, msg) => {
         const embed = new Discord.RichEmbed()
         .setAuthor(`${msg.client.user.username}`, `${msg.client.user.avatarURL}`)
         .setTitle("Pong! :ping_pong:")
-        .addField("Hearthbeat", `${Math.floor(msg.client.ping)}ms`  , true)
+        .addField("Heartbeat", `${Math.floor(msg.client.ping)}ms`  , true)
         .addField("Message", `${sent.createdTimestamp - msg.createdTimestamp}ms`, true)
         .setColor(0x80ff00)
         .setTimestamp()

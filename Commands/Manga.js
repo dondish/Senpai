@@ -12,11 +12,11 @@ exports.run = (client, msg, params) => {
               return false
             }
           }
-          message.edit(`Okay i found 5 possible matches which do you want to see? (just write the first number, it will be canceled after 30 seconds)\n1: ${result[0].titles.enJp}\n2: ${result[1].titles.enJp}\n3: ${result[2].titles.enJp}\n4: ${result[3].titles.enJp}\n5: ${result[4].titles.enJp}`)
+          message.edit(`Okay i found 5 possible matches which do you want to see? (just write the first number, it will be canceled after 60 seconds)\n1: ${result[0].titles.enJp}\n2: ${result[1].titles.enJp}\n3: ${result[2].titles.enJp}\n4: ${result[3].titles.enJp}\n5: ${result[4].titles.enJp}`)
           msg.channel.awaitMessages(filter, {
-              "max": 4,
+              "max": 20,
               "maxMatches": 1,
-              "time": 30000,
+              "time": 60000,
               "errors": ['time']
               }
             ).then(message => {
@@ -25,6 +25,7 @@ exports.run = (client, msg, params) => {
                 msg.channel.send(`**Title EN/JP:** ${result[number].titles.enJp}\n\n**Type:** ${result[number].subType}\n\n**Start Date:** ${result[number].startDate}\n\n**End Date:** ${result[number].endDate} (if this is null then its still in progress)\n\n**PopularityRank:** ${result[number].popularityRank}\n\n**Synopsis:** ${result[number].synopsis}\n**Link:** https://kitsu.io/manga/${result[number].id}`)
               }
             )
+            .catch(() => msg.reply("Command canceled due Timer"))
 
         }
       )
