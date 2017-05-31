@@ -1,3 +1,4 @@
+const package                               = require('../package.json')
 const config                                = require('../config/config.js');
 const mysql                                 = require("mysql")
 var   moment                                = require('moment');
@@ -17,7 +18,7 @@ module.exports = bot => {
   console.log('-----------------------------------------------------------------------------');
   console.log('Other API Status:')
   console.log('-----------------------------------------------------------------------------');
-  bot.user.setGame("%help")
+  bot.user.setGame(`%help || Version:${package.version}`)
   if(firstStartup)
   {
     bot.users.forEach( user => {

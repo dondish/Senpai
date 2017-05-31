@@ -8,8 +8,7 @@ exports.run = (client, msg) => {
         var url = body.slice(33, -2);
         var file = "http://random.cat/i/" + url
         msg.reply("here you go enjoy your cat");
-        msg.channel.send( {file} );
-        console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")") }
+        msg.channel.send( {file} )  }
         );
 }
 

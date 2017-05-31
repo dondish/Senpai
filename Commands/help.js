@@ -13,7 +13,6 @@ exports.run = (client, msg, params) => {
       msg.channel.send(`= ${command.help.name} = \n${command.help.description}\nUsage: ${config.prefix}${command.help.usage}`, {"code": "asciidoc"});
     }
   }
-  console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 };
 
 exports.help = {

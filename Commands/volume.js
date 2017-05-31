@@ -8,7 +8,6 @@ exports.run = (client, msg, args) => {
     if(number > 2 || number < 0.1) return msg.channel.send("You can only choose a number between 2 and 0.1 where 2=200% volume and 0.1=10% volume from the current volume!")
     play.changeVolume(msg, number)
     }
-    console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 
 exports.help = {

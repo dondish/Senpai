@@ -13,7 +13,6 @@ var dateformatted = new Date().toISOString()
         .addField('GitHub', "https://github.com/Fr3akGam3r/Senpai-Bot-Discord")
         .setTimestamp(dateformatted)
     msg.channel.send({embed})
-    console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 
 exports.help = {

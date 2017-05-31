@@ -8,7 +8,6 @@ exports.run = (client, msg) => {
     if (voiceConnection !== null) return msg.reply(`Im already in a Voice channel on this Server!`)
     voiceChannel.join().catch(console.log)
     msg.channel.send("successful joined your Voice Channel")
-    console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 
 exports.help = {

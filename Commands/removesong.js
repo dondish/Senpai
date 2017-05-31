@@ -6,7 +6,6 @@ exports.run = (client, msg, args) => {
     if (number === 1) return msg.reply(`You try to delete the current playing song from the queue use ${config.prefix}skip instead`)
     if (isNaN(number)) return msg.reply("I only accpet the queue number in this command")
     play.deletesong(msg, number)
-    console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 
 exports.help = {

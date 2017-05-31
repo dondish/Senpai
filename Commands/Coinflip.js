@@ -24,7 +24,6 @@ exports.run = (client, msg, params) => {
      }else{
        msg.reply("You can only choose Head or Number!")
      }
-    console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 
 exports.help = {

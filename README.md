@@ -26,7 +26,7 @@ also you need a **Mysql server**.
 - **8ball** Ask a Question and get a answer
 - **Cat** Shows a random Cat image
 - **Urban** Search for a word in the Urban Dictunary
-- **Anime/Manga** search for a Anime/Manga on [MyAnimeList](https://myanimelist.net/)
+- **Anime/Manga** search for a Anime/Manga on [Kitsu](https://kitsu.io/)
 - **Cookie** Give someone a Cookie
 - **Eval** Evaluate code on the Bot (Because of security measures, only the owner can execute this command!)
 - **Ping** shows the ping of the bot

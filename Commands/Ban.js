@@ -7,7 +7,6 @@ exports.run = (client, msg, args) => {
     if (!msg.guild.member(user).bannable) return msg.reply('I have no rights to ban that User');
     if (reason.length < 1) return msg.reply('You must supply a reason for the ban.');
     msg.guild.ban(user)
-    console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
     msg.guild.defaultChannel.send( {
     "embed": {
         "color": 0x00AE86,

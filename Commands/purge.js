@@ -18,7 +18,6 @@ exports.run = (client, msg, args) => {
      }
   )
   .catch(console.error);
-  console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 };
 
 exports.help = {

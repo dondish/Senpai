@@ -11,7 +11,6 @@ exports.run = (client, msg) => {
         .setFooter("Senpai Bot by Yukine")
         sent.edit({embed})
         })
-    console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 
 exports.help = {

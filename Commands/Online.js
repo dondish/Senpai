@@ -13,6 +13,7 @@ exports.run = (client, msg) => {
     if (msg.mentions.users.size < 1)
     {
         let user    = msg.author
+            if (msg.author.presence.status === "offline") return msg.reply("You are showed as offline you cant get your online time because of that Sorry!")
             connection.query(`SELECT * FROM discord_user_online.user WHERE user_id=${user.id} `, function (error, results, fields) {
             if (error) throw error;
             var timeDB          = results[0].time
@@ -42,7 +43,7 @@ exports.run = (client, msg) => {
         let user    = msg.mentions.users.first()
             if(user.presence.status === "offline") return msg.reply("This User is Offline so i cant fetch how long he was Online!")
             connection.query(`SELECT * FROM discord_user_online.user WHERE user_id=${user.id} `, function (error, results, fields) {
-            if (error) throw error;
+            if (error) msg.reply("I had an error while try to search your ID in my DB if this happens mutiple times please contact my DEV")
             var timeDB          = results[0].time
             var currenttime     = moment().unix()
             var OnlineTime      = currenttime - timeDB
@@ -67,7 +68,6 @@ exports.run = (client, msg) => {
             msg.channel.send(`The User ${user} was ${ShowTime} ${TimeType}/s online!`)
             });
     }
-    console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 
 exports.help = {

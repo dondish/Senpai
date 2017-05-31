@@ -19,7 +19,6 @@ exports.run = (client, msg, params) => {
         ])
       })
       .catch(err => { console.error(err) })
-    console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 
 exports.help = {

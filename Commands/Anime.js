@@ -36,7 +36,6 @@ exports.run = (client, msg, params) => {
         );
       }
     )
-    console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 
 exports.help = {

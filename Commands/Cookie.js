@@ -9,7 +9,6 @@ exports.run = (client, msg) => {
     if (err) console.error(err)
     });
     msg.channel.send(`${msg.mentions.users.first().username} has a total of ` + cookies[msg.mentions.users.first().id].cookies + ' Cookies!')
-    console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 
 exports.help = {

@@ -188,7 +188,6 @@ exports.run = (client, msg, args) => {
 
 
 
-    console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 
 exports.help = {

@@ -19,7 +19,6 @@ exports.run = (client, msg, params) => {
                 msg.channel.send("Oh something went wrong! did you spell the City name right?")
             }
         )
-    console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 
 exports.help = {

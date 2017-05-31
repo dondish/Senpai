@@ -7,7 +7,6 @@ exports.run = (client, msg) => {
     voiceConnection.disconnect()
     msg.channel.send("By By :wave:")
 
-    console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
 }
 
 exports.help = {
