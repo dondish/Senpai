@@ -1,5 +1,5 @@
 exports.run = (client, msg) => {
-    var play = client.commands.get("PLAY");
+    let play = client.commands.get("PLAY");
     play.queue(msg)
 }
 

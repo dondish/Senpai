@@ -1,8 +1,8 @@
 const config                                = require('../config/config.js')
 const mysql                                 = require("mysql")
-var   moment                                = require('moment');
+let   moment                                = require('moment');
 const recentlyUpdated                       = [];
-var   connection                            = mysql.createConnection({
+let   connection                            = mysql.createConnection({
   "host"     : 'localhost',
   "user"     : config.MySQLUsername,
   "password" : config.MysQLPassword,

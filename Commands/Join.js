@@ -1,6 +1,6 @@
 exports.run = (client, msg) => {
     const voiceChannel = msg.member.voiceChannel;
-    var voiceConnection = msg.guild.voiceConnection
+    let voiceConnection = msg.guild.voiceConnection
     if (msg.channel.type != "text") return msg.channel.send("You can run this command only on a Server!")
     if (!voiceChannel) return msg.reply("You must be in a Voice channel to use this Command!")
     if (!voiceChannel.joinable) return msg.reply("I have no rights to join your Voice channel!")

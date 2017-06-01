@@ -1,6 +1,6 @@
 const urban       = require('relevant-urban');
 exports.run = (client, msg, params) => {
-    var InputUrban = msg.content.slice(7)
+    let InputUrban = msg.content.slice(7)
     if (params.length < 1) return msg.reply('You must add a word to search for');
      urban.random(InputUrban)
       .then(result => {

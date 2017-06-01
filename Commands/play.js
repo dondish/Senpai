@@ -1,7 +1,7 @@
 const yt                                    = require('ytdl-core');
 const fs                                    = require('fs');
 const config                                = require('../config/config.js')
-var   ypi                                   = require('youtube-playlist-info');
+let   ypi                                   = require('youtube-playlist-info');
 const search                                = require('youtube-search');
 const searchopts                            = {
       "maxResults": 10,
@@ -18,7 +18,7 @@ function getQueue(guild) {
     return queues[guild];
 }
 exports.queue = msg => {
-    var queue = getQueue(msg.guild.id);
+    let queue = getQueue(msg.guild.id);
     if(queue.length < 1) {
         msg.reply("there are no songs currently in queue!")
     }else{
@@ -29,37 +29,37 @@ exports.queue = msg => {
     }
 }
 exports.showVolume = msg => {
-    var getdispatcher = getDispatcher(msg.guild.id)
-    var dispatcher       = getdispatcher[0]
+    let getdispatcher = getDispatcher(msg.guild.id)
+    let dispatcher       = getdispatcher[0]
     if(dispatcher === undefined) return msg.channel.send("i dont play music at the moment!")
     msg.channel.send(`the current volume is ${dispatcher.volume}`)
 }
 exports.changeVolume = (msg, number) => {
-    var dispatchertochange = getDispatcher(msg.guild.id)
-    var dispatcher       = dispatchertochange[0]
+    let dispatchertochange = getDispatcher(msg.guild.id)
+    let dispatcher       = dispatchertochange[0]
     if(dispatcher === undefined) return msg.channel.send("i dont play music at the moment!")
     dispatcher.setVolumeLogarithmic(number)
     msg.channel.send(`You set the Volume to ${number}`)
 }
 exports.disconnect = msg => {
-    var queue = getQueue(msg.guild.id);
+    let queue = getQueue(msg.guild.id);
     if (queue.length > 0) {
         queue.length = 0
     }
     if (msg.guild.voiceConnection.speaking === true) {
-            var dispatchertoskip = getDispatcher(msg.guild.id)
-            var dispatcher       = dispatchertoskip[0]
+            let dispatchertoskip = getDispatcher(msg.guild.id)
+            let dispatcher       = dispatchertoskip[0]
             dispatcher.end()
     }
 }
 exports.clearqueue = msg => {
-    var queue = getQueue(msg.guild.id);
+    let queue = getQueue(msg.guild.id);
     if (queue.length > 0) {
         queue.length = 0
     }
 }
 exports.deletesong = (msg, number) => {
-    var queue = getQueue(msg.guild.id);
+    let queue = getQueue(msg.guild.id);
     if (number <= 0) return msg.channel.send("There is no Song which is in queue place 0 or less :thinking:")
     if (number > queue.length) return msg.channel.send("You can't try to delete a song that is not there!")
     const indexnumber = number - 1
@@ -67,8 +67,8 @@ exports.deletesong = (msg, number) => {
     queue.splice(indexnumber, 1)
 }
 exports.skip = msg => {
-    var dispatchertoskip = getDispatcher(msg.guild.id)
-    var dispatcher       = dispatchertoskip[0]
+    let dispatchertoskip = getDispatcher(msg.guild.id)
+    let dispatcher       = dispatchertoskip[0]
     if(dispatcher === undefined) return msg.channel.send("i dont play music at the moment!")
     dispatcher.end()
     msg.channel.send("Skipped the played Song!")
@@ -76,8 +76,8 @@ exports.skip = msg => {
 }
 exports.run = (client, msg, args) => {
     if (msg.channel.type !== "text") return msg.channel.send("You can run this command only on a Server!")
-    var voiceConnection = msg.guild.voiceConnection
-    var Video  = msg.content.slice(config.prefix.length + 5)
+    let voiceConnection = msg.guild.voiceConnection
+    let Video  = msg.content.slice(config.prefix.length + 5)
     if (voiceConnection === null) return msg.reply(`You must let me join a Voice Channel with ${config.prefix}join!`)
     if (!Video) return msg.reply('No video specified!');
     const queue = getQueue(msg.guild.id);
@@ -116,7 +116,7 @@ exports.run = (client, msg, args) => {
         if (!Video.toLowerCase().startsWith('http')) {
             search(Video, searchopts, function(err, results) {
                 if (err) return msg.reply("I had an error while try to search for your song!")
-                var firstV = results[0]
+                let firstV = results[0]
                 if (firstV.kind != "youtube#video") {
                     firstV = results[1]
                 }
@@ -155,11 +155,11 @@ exports.run = (client, msg, args) => {
                 }
             )
             }else if(Video.startsWith("playlist", 24)) {
-                var playlistid = Video.slice(38)
+                let playlistid = Video.slice(38)
                 ypi.playlistInfo(config.GoogleApiKey, playlistid, function(playlistItems) {
-                        for(var i = 0; i < playlistItems.length; i++) {
-                                    var VideoObj = playlistItems[i]
-                                    var VideoUrl = "https://www.youtube.com/watch?v=" + VideoObj.resourceId.videoId
+                        for(let i = 0; i < playlistItems.length; i++) {
+                                    let VideoObj = playlistItems[i]
+                                    let VideoUrl = "https://www.youtube.com/watch?v=" + VideoObj.resourceId.videoId
                                      yt.getInfo(VideoUrl, (err, info) => {
                                         if (err || info.video_id === undefined) {
                                             return msg.reply('error while try to get Information about the song only Youtube songs are currently playable');

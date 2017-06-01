@@ -1,6 +1,6 @@
 exports.run = (client, msg, args) => {
-    var play = client.commands.get("PLAY");
-    var number = Number(args[0])
+    let play = client.commands.get("PLAY");
+    let number = Number(args[0])
     if(args[0] === undefined) {
     play.showVolume(msg)
     } else {

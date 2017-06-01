@@ -10,7 +10,7 @@ module.exports = (oldMessage, newMessage) => {
     cmd = client.commands.get(command);
   }
   if (cmd) {
-    console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
+    console.log("[Command]     ", newMessage.author.username + "/" + newMessage.author.id, "(" + newMessage.content + ")")
     cmd.run(client, newMessage, params);
   }
 

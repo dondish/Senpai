@@ -5,8 +5,8 @@ exports.run = (client, msg) => {
            console.error(error)
            return;
         }
-        var url = body.slice(33, -2);
-        var file = "http://random.cat/i/" + url
+        let url = body.slice(33, -2);
+        let file = "http://random.cat/i/" + url
         msg.reply("here you go enjoy your cat");
         msg.channel.send( {file} )  }
         );

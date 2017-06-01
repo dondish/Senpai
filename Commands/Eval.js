@@ -8,8 +8,8 @@ exports.run = (client, msg, params) => {
             return text;
           }
         try {
-        var code = params.join(" ");
-        var evaled = eval(code);
+        let code = params.join(" ");
+        let evaled = eval(code);
         if (typeof evaled !== "string")
           evaled = require("util").inspect(evaled);
           msg.channel.send(clean(evaled), {"code": 'xl'});

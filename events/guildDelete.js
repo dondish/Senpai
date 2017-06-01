@@ -5,5 +5,5 @@ module.exports = guild => {
         .set('Authorization', config.discordOrgToken)
         .send({"server_count": guild.client.guilds.size})
         .then(console.log('Updated dbots.org status.'))
-    console.log(`Senpai Joined the Guild ${guild.name} size is now ${guild.client.size}`)
+    console.log(`Senpai left the Guild ${guild.name} size is now ${guild.client.guilds.size}`)
 }

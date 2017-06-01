@@ -1,11 +1,12 @@
 const   osu         = require('node-osu');
 const   config      = require('../config/config.js');
-var     osuApi      = new osu.Api(config.OsuToken, {
+let     osuApi      = new osu.Api(config.OsuToken, {
     "notFoundAsError": true,
     "completeScores": false
 })
 exports.run = (client, msg, args) => {
     const type = args[0]
+    if(!type) return msg.reply(`thats not how my Osu Command work look up how you can use it by doing ${config.prefix}help osu`)
     msg.channel.send("*Okay, im fetching the Data from Osu!*").then(message => {
             if(type.toLowerCase() === "user") {
                 osuApi.getUser({"u": args[1]}).then(user => {
