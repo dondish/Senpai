@@ -2,7 +2,7 @@ const package                               = require('../package.json')
 const config                                = require('../config/config.json');
 const mysql                                 = require("mysql")
 let   moment                                = require('moment');
-let   firstStartup                          = false
+let   firstStartup                          = true
 let   connection                            = mysql.createConnection({
   "host"     : 'localhost',
   "user"     : config.MySQLUsername,
