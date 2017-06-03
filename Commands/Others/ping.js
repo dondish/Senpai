@@ -18,3 +18,5 @@ exports.help = {
     'description': 'shows the ping of the Bot in ms',
     'usage': 'ping'
 }
+
+exports.alias = ["latency"]

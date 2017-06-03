@@ -25,3 +25,5 @@ exports.help = {
     'description': 'Delete X amount of messages from the current channel ',
     'usage': 'purge <number>'
 }
+
+exports.alias = ["prune", "bulkdelete"]

@@ -9,3 +9,5 @@ exports.help = {
     'description': 'clears the whole Music queue of me on this server',
     'usage': 'clearqueue'
 }
+
+exports.alias = []

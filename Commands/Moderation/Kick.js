@@ -33,3 +33,5 @@ exports.help = {
     'description': 'kicks the mentioned User',
     'usage': 'kick [@user] [reason]'
 }
+
+exports.alias = []

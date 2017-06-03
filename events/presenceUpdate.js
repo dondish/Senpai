@@ -1,4 +1,4 @@
-const config                                = require('../config/config.js')
+const config                                = require('../config/config.json')
 const mysql                                 = require("mysql")
 let   moment                                = require('moment');
 const recentlyUpdated                       = [];

@@ -8,3 +8,5 @@ exports.help = {
     'description': 'skips the current playing song from the bot',
     'usage': 'skip'
 }
+
+exports.alias = ["next"]

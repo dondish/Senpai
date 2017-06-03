@@ -26,3 +26,5 @@ exports.help = {
     'description': 'search for a word on the Urban Dictonary',
     'usage': 'Urban [word]'
 }
+
+exports.alias = []

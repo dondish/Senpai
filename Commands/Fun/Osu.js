@@ -1,5 +1,5 @@
 const   osu         = require('node-osu');
-const   config      = require('../config/config.js');
+const   config      = require('../../config/config.json');
 let     osuApi      = new osu.Api(config.OsuToken, {
     "notFoundAsError": true,
     "completeScores": false
@@ -39,3 +39,5 @@ exports.help = {
     'description': 'shows the stats of an Osu! player or map',
     'usage': 'Osu [user/map] [username/beatmapid]'
 }
+
+exports.alias = ["osu!"]

@@ -1,6 +1,6 @@
 const yt                                    = require('ytdl-core');
 const fs                                    = require('fs');
-const config                                = require('../config/config.js')
+const config                                = require('../../config/config.json')
 let   ypi                                   = require('youtube-playlist-info');
 const search                                = require('youtube-search');
 const searchopts                            = {
@@ -124,6 +124,8 @@ exports.run = (client, msg, args) => {
                     if (err || info.video_id === undefined) {
                         return msg.reply('error while try to get Information about the song!');
                     }
+                    const length = Number(info.length_seconds)
+                    if(length > 1800) return msg.channel.send("The Video can't be longer than 30 minutes!")
                     info.requestedBy = msg.author
                     queue.push(info);
                     msg.channel.send(`**Queued:** ${info.title}`)
@@ -143,6 +145,8 @@ exports.run = (client, msg, args) => {
                 if (err || info.video_id === undefined) {
                     return msg.reply('error while try to get Information about the song only Youtube songs are currently playable');
                 }
+                const length = Number(info.length_seconds)
+                if(length > 1800) return msg.channel.send("The Video can't be longer than 30 minutes!")
                 info.requestedBy = msg.author
                 queue.push(info);
                 msg.channel.send(`**Queued:** ${info.title}`)
@@ -164,6 +168,8 @@ exports.run = (client, msg, args) => {
                                         if (err || info.video_id === undefined) {
                                             return msg.reply('error while try to get Information about the song only Youtube songs are currently playable');
                                         }
+                                        const length = Number(info.length_seconds)
+                                        if(length > 1800) return msg.channel.send("One Video can't be played because its longer than 30 minutes!")
                                         info.requestedBy = msg.author
                                         queue.push(info);
                                         msg.channel.send(`**Queued:** ${info.title}`)
@@ -195,3 +201,5 @@ exports.help = {
     'description': 'play a Song/playlist from Youtube or search for it if you not enter a link',
     'usage': 'play [Link to a Youtube Song or playlist/Name of a song]'
 }
+
+exports.alias = []

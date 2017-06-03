@@ -15,3 +15,5 @@ exports.help = {
     'description': 'show/change the volume on the current playing song from the bot',
     'usage': 'volume or volume [number between 0.1 and 1]'
 }
+
+exports.alias = []

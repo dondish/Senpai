@@ -14,3 +14,5 @@ exports.help = {
     'description': 'leave a Voice channel',
     'usage': 'leave'
 }
+
+exports.alias = []

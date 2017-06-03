@@ -1,8 +1,8 @@
 const package                               = require('../package.json')
-const config                                = require('../config/config.js');
+const config                                = require('../config/config.json');
 const mysql                                 = require("mysql")
 let   moment                                = require('moment');
-let   firstStartup                          = true
+let   firstStartup                          = false
 let   connection                            = mysql.createConnection({
   "host"     : 'localhost',
   "user"     : config.MySQLUsername,
@@ -18,7 +18,7 @@ module.exports = bot => {
   console.log('-----------------------------------------------------------------------------');
   console.log('Other API Status:')
   console.log('-----------------------------------------------------------------------------');
-  bot.user.setGame(`%help || Version:${package.version}`)
+  bot.user.setGame(`%help || Version: ${package.version}`)
   if(firstStartup)
   {
     bot.users.forEach( user => {

@@ -8,3 +8,5 @@ exports.help = {
     'description': 'shows the current music queue of this guild',
     'usage': 'queue'
 }
+
+exports.alias = ["songs", "playlist", "list"]

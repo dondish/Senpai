@@ -1,5 +1,5 @@
 const snekfetch = require('snekfetch')
-const config    = require('../config/config.js')
+const config    = require('../config/config.json')
 module.exports = guild => {
     snekfetch.post(`https://discordbots.org/api/bots/${guild.client.user.id}/stats`)
         .set('Authorization', config.discordOrgToken)

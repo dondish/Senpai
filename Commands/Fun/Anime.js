@@ -43,3 +43,5 @@ exports.help = {
     'description': 'search for an Anime on MyAnimeList',
     'usage': 'Anime [anime]'
 }
+
+exports.alias = []

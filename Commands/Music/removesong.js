@@ -1,4 +1,4 @@
-const config                                = require('../config/config.js')
+const config                                = require('../../config/config.json')
 exports.run = (client, msg, args) => {
     let play = client.commands.get("PLAY");
     if(args.length > 1) return msg.reply("You must add the number of the Song which you wanna remove!")
@@ -13,3 +13,5 @@ exports.help = {
     'description': 'delete 1 song from the queue',
     'usage': 'removesong <queue number>'
 }
+
+exports.alias = ["deletesong"]

@@ -15,3 +15,5 @@ exports.help = {
     'description': 'Joins a Voice channel to play Music from play',
     'usage': 'join'
 }
+
+exports.alias = ["summon"]

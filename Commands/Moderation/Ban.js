@@ -32,3 +32,5 @@ exports.help = {
     'description': 'Bans the mentioned User',
     'usage': 'Ban [@user] [reason]'
 }
+
+exports.alias = ["banne", "banhammer"]

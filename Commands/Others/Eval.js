@@ -1,4 +1,4 @@
-const config                                = require('../config/config.js');
+const config                                = require('../../config/config.json');
 exports.run = (client, msg, params) => {
     if(msg.author.id != config.OwnerID) return msg.channel.send("Because of security measures, only the owner can execute this command!")
     function clean(text) {
@@ -23,3 +23,5 @@ exports.help = {
     'description': 'Evaluate code on the Bot (Because of security measures, only the owner can execute this command!)',
     'usage': 'Eval [Code]'
 }
+
+exports.alias = []

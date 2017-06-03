@@ -1,4 +1,4 @@
-const config                                = require('../config/config.js');
+const config                                = require('../../config/config.json');
 exports.run = (client, msg, params) => {
     let input = msg.content.toUpperCase()
     function coinFlip() {
@@ -31,3 +31,5 @@ exports.help = {
     'description': 'try a Coinflip',
     'usage': 'coinflip [Head/Number]'
 }
+
+exports.alias = []

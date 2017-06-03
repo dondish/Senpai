@@ -1,4 +1,4 @@
-const config   = require('../config/config.js')
+const config   = require('../config/config.json')
 module.exports = (oldMessage, newMessage) => {
   let client = newMessage.client;
   if (newMessage.author.bot) return;
@@ -8,6 +8,8 @@ module.exports = (oldMessage, newMessage) => {
   let cmd;
   if (client.commands.has(command)) {
     cmd = client.commands.get(command);
+  } else if(client.aliases.has(command)) {
+    cmd = client.commands.get(client.aliases.get(command));
   }
   if (cmd) {
     console.log("[Command]     ", newMessage.author.username + "/" + newMessage.author.id, "(" + newMessage.content + ")")

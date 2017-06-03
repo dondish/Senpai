@@ -1,6 +1,6 @@
 const Discord                               = require('discord.js');
 const WeatherApi                            = require('openweathermapapi')
-const config                                = require('../config/config.js');
+const config                                = require('../../config/config.json');
 exports.run = (client, msg, params) => {
     if(params.length === 0) return msg.reply("You must add a City for that command")
     const City  = params[0]
@@ -26,3 +26,5 @@ exports.help = {
     'description': 'shows the weather of a City',
     'usage': 'weather [Cityname]'
 }
+
+exports.alias = []

@@ -1,4 +1,4 @@
-const config                                = require('../config/config.js');
+const config                                = require('../../config/config.json');
 const mysql                                 = require("mysql")
 let   moment                                = require('moment');
 let   connection                            = mysql.createConnection({
@@ -75,3 +75,5 @@ exports.help = {
     'description': 'shows how long a user were online since he connected if you not mention someone it will shows your time',
     'usage': 'online [@User]'
 }
+
+exports.alias = []

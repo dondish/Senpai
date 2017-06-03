@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const Package = require('../package.json')
+const Package = require('../../package.json')
 exports.run = (client, msg) => {
 const dateformatted = new Date().toISOString()
 
@@ -22,3 +22,5 @@ exports.help = {
     'description': 'shows information about me and my creator',
     'usage': 'about'
 }
+
+exports.alias = ["info"]

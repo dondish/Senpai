@@ -1,4 +1,4 @@
-const config        = require('../config/config.js')
+const config        = require('../../config/config.json')
 exports.run = (client, msg, params) => {
   if (!params[0]) {
     const commandNames = Array.from(client.commands.keys());
@@ -10,7 +10,7 @@ exports.run = (client, msg, params) => {
     let command = params[0].toUpperCase();
     if (client.commands.has(command)) {
       command = client.commands.get(command);
-      msg.channel.send(`= ${command.help.name} = \n${command.help.description}\nUsage: ${config.prefix}${command.help.usage}`, {"code": "asciidoc"});
+      msg.channel.send(`= ${command.help.name} = \n${command.help.description}\nAlias ${command.alias.join(" ")}\nUsage: ${config.prefix}${command.help.usage}`, {"code": "asciidoc"});
     }
   }
 };
@@ -20,3 +20,6 @@ exports.help = {
     'description': 'Displays all commands of the bot',
     'usage': 'help [command]'
 }
+
+exports.alias = ["halp", "h"]
+
