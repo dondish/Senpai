@@ -1,15 +1,15 @@
 const Discord                               = require('discord.js');
-const bot                                   = new Discord.Client( {"fetchAllMembers": true} );
+const bot                                   = new Discord.Client();
 const config                                = require('./config/config.json');
-const LoginToken                            = config.BotToken;
 const fs                                    = require('fs');
+bot.login(process.env.CLIENT_TOKEN); 
 require('./Util/eventloader.js')(bot);
 
 
 bot.commands = new Discord.Collection();
 bot.aliases  = new Discord.Collection();
 
-fs.readdir('./Commands/Fun', (err, files) => {
+fs.readdir('../Commands/Fun', (err, files) => {
   if (err) console.error(err);
   console.log(`Loading Module Fun (${files.length} Commands).`);
   files.forEach(file => {
@@ -22,7 +22,7 @@ fs.readdir('./Commands/Fun', (err, files) => {
     });
   });
 
-fs.readdir('./Commands/Moderation', (err, files) => {
+fs.readdir('../Commands/Moderation', (err, files) => {
   if (err) console.error(err);
   console.log(`Loading Module Moderation (${files.length} Commands).`);
   files.forEach(file => {
@@ -35,7 +35,7 @@ fs.readdir('./Commands/Moderation', (err, files) => {
     });
   });
 
-fs.readdir('./Commands/Music', (err, files) => {
+fs.readdir('../Commands/Music', (err, files) => {
   if (err) console.error(err);
   console.log(`Loading Module Music (${files.length} Commands).`);
   files.forEach(file => {
@@ -48,7 +48,7 @@ fs.readdir('./Commands/Music', (err, files) => {
     });
   });
 
-fs.readdir('./Commands/Others', (err, files) => {
+fs.readdir('../Commands/Others', (err, files) => {
   if (err) console.error(err);
   console.log(`Loading Module Others (${files.length} Commands).`);
   files.forEach(file => {
@@ -61,7 +61,7 @@ fs.readdir('./Commands/Others', (err, files) => {
     });
   });
 
-bot.login(LoginToken);
+
 
 process.on('unhandledRejection', function(reason, p){
     console.log("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);

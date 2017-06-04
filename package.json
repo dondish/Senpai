@@ -1,8 +1,8 @@
 {
   "name": "senpai-bot",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "description": "Selfmade Nodejs Discord bot",
-  "main": "app.js",
+  "main": "./Util/ShardManager.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
