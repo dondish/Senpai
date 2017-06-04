@@ -9,7 +9,7 @@ require('./Util/eventloader.js')(bot);
 bot.commands = new Discord.Collection();
 bot.aliases  = new Discord.Collection();
 
-fs.readdir('../Commands/Fun', (err, files) => {
+fs.readdir('./Commands/Fun', (err, files) => {
   if (err) console.error(err);
   console.log(`Loading Module Fun (${files.length} Commands).`);
   files.forEach(file => {
@@ -22,7 +22,7 @@ fs.readdir('../Commands/Fun', (err, files) => {
     });
   });
 
-fs.readdir('../Commands/Moderation', (err, files) => {
+fs.readdir('./Commands/Moderation', (err, files) => {
   if (err) console.error(err);
   console.log(`Loading Module Moderation (${files.length} Commands).`);
   files.forEach(file => {
@@ -35,7 +35,7 @@ fs.readdir('../Commands/Moderation', (err, files) => {
     });
   });
 
-fs.readdir('../Commands/Music', (err, files) => {
+fs.readdir('./Commands/Music', (err, files) => {
   if (err) console.error(err);
   console.log(`Loading Module Music (${files.length} Commands).`);
   files.forEach(file => {
@@ -48,7 +48,7 @@ fs.readdir('../Commands/Music', (err, files) => {
     });
   });
 
-fs.readdir('../Commands/Others', (err, files) => {
+fs.readdir('./Commands/Others', (err, files) => {
   if (err) console.error(err);
   console.log(`Loading Module Others (${files.length} Commands).`);
   files.forEach(file => {
