@@ -1,14 +1,7 @@
-const package                               = require('../package.json')
-const config                                = require('../config/config.json');
-const mysql                                 = require("mysql")
-let   moment                                = require('moment');
-let   firstStartup                          = true
-let   connection                            = mysql.createConnection({
-  "host"     : 'localhost',
-  "user"     : config.MySQLUsername,
-  "password" : config.MysQLPassword,
-  "database" : 'discord_user_online'
-});
+const packageJson                             = require('../package.json')
+const moment                                  = require('moment');
+const rethink                                 = require('rethinkdb')
+
 module.exports = bot => {
   console.log('-----------------------------------------------------------------------------');
   console.log('Username:      ' + bot.user.username);
@@ -18,17 +11,58 @@ module.exports = bot => {
   console.log('-----------------------------------------------------------------------------');
   console.log('Other API Status:')
   console.log('-----------------------------------------------------------------------------');
-  bot.user.setGame(`%help || Version: ${package.version}`)
-  if(firstStartup)
-  {
-    bot.users.forEach( user => {
-    if(user.presence.status === "offline") return
-    connection.query(`INSERT INTO discord_user_online.user (user_id, time) VALUES ('${user.id}', '${moment().unix()}')`, function (error, results, fields) {
-      if (error) throw error;
-    });
-  });
-  console.log("Inserted All User Times into the MySQL Database!")
-  firstStartup = false
+  bot.user.setGame(`%help || Version: ${packageJson.version}`)
+  function createAndUseDB() {
+    return new Promise(async function(resolve, reject) {
+      const connection = await rethink.connect()
+      rethink.dbList().run(connection, function(err, result) {
+        if (err) reject(new Error("Error while try to fetch all DB from rethink"))
+        if(!result.includes("Discord")) {
+          rethink.dbCreate('Discord').run(connection, () => {
+            connection.use('Discord')
+            resolve(connection)
+          })
+        }else{
+          connection.use('Discord')
+          resolve(connection)
+        }
+      })
+     });
   }
+  function createTable() {
+    return new Promise(async function(resolve, reject) {
+    const connection = await createAndUseDB()
+    rethink.tableList().run(connection, (err, result) => {
+      if (err) reject(new Error("Something went wrong while trying to fetch all Tables"))
+      if(!result.includes("OnlineTime")) {
+        rethink.tableCreate('OnlineTime').run(connection, err => {
+          if (err) reject(new Error("Something went wrong while trying to create a Table"))
+          resolve(connection)
+        })
+      }else{
+        resolve(connection)
+      }
+    })
+    })
+  }
+  async function insertIntoDB(users) {
+    const connection = await createTable()
+    let timer = 0
+    users.forEach(user => {
+      rethink.table('OnlineTime').insert(
+        {
+          "id": `${user.id}`,
+          "Time": `${moment().format()}`
+        },
+        {"conflict": "replace"}
+      )
+      .run(connection, () => {
+      timer++;
+      if(timer === users.size) connection.close()
+      })
+    });
+  }
+
+  insertIntoDB(bot.users)
 };
 

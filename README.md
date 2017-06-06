@@ -12,7 +12,7 @@ if you want to use this bot yourself you need to install Windows Build tools Glo
 
 after that you should install the dependencies by run a **npm install** in the Bots directory.
 
-also you need a **Mysql server**.
+also you need a **RethinkDB server**.
 
 
 ## Commands and Future
@@ -27,7 +27,6 @@ also you need a **Mysql server**.
 - **Cat** Shows a random Cat image
 - **Urban** Search for a word in the Urban Dictunary
 - **Anime/Manga** search for a Anime/Manga on [Kitsu](https://kitsu.io/)
-- **Cookie** Give someone a Cookie
 - **Eval** Evaluate code on the Bot (Because of security measures, only the owner can execute this command!)
 - **Ping** shows the ping of the bot
 - **purge** Delete X amount of messages from the current channel 

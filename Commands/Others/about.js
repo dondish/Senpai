@@ -13,7 +13,7 @@ const dateformatted = new Date().toISOString()
         .addField('Total Servers:', client.guilds.size, true)
         .addField('Total Users:', client.users.size, true)
         .addField('Total Shards:', `${client.shard.count}`, true)
-        .addField('GitHub', "https://github.com/Fr3akGam3r/Senpai-Bot-Discord")
+        .addField('GitHub', "https://github.com/Dev-Yukine/Senpai-Bot-Discord")
         .setTimestamp(dateformatted)
     msg.channel.send({embed})
 }

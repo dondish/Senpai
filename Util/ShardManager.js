@@ -1,4 +1,4 @@
-const { ShardingManager } = require('discord.js');
+const {ShardingManager} = require('discord.js');
 const token = require("../config/config.json")
 const Manager = new ShardingManager('./app.js',
                                                 {

@@ -3,8 +3,6 @@
       "prefix"              :"",
       "OsuToken"            :"",
       "OwnerID"             :"",
-      "MySQLUsername"       :"",
-      "MysQLPassword"       :"",
       "GoogleApiKey"        :"",
       "OWMApiKey"           :"",
       "discordOrgToken"     :""
