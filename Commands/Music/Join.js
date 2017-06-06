@@ -6,8 +6,10 @@ exports.run = (client, msg) => {
     if (!voiceChannel.joinable) return msg.reply("I have no rights to join your Voice channel!")
     if (!voiceChannel.speakable) return msg.reply("I have no rights to speak in your Voice channel!")
     if (voiceConnection !== null) return msg.reply(`Im already in a Voice channel on this Server!`)
-    voiceChannel.join().catch(console.log)
+    voiceChannel.join().then(() => {
     msg.channel.send("successful joined your Voice Channel")
+    })
+    .catch(console.log)
 }
 
 exports.help = {

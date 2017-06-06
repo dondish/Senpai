@@ -32,7 +32,7 @@ exports.run = async function(client, msg)  {
         }else{
             timetype = "Second/s"
         }
-        msg.channel.send(`The User ${user} was ${difference} ${timetype} online!`)
+        msg.channel.send(`The User ${user} was ${Math.round(difference)} ${timetype} online!`)
         connection.close()
     })
 }

@@ -11,5 +11,5 @@ module.exports = client => {
   client.on('messageUpdate', reqEvent('messageUpdate'));
   client.on('guildCreate', reqEvent('guildCreate'));
   client.on('guildDelete', reqEvent('guildDelete'));
-  setTimeout(Update, 35000);
+  setTimeout(Update, 5000);
 };
