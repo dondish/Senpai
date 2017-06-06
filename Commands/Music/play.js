@@ -90,7 +90,7 @@ exports.run = (client, msg, args) => {
             const id          = queuedvideo.video_id
             const title       = queuedvideo.title
             const author      = queuedvideo.requestedBy
-            const dispatcher  = voiceConnection.playFile(`../audio_cache/${id}.mp3`, {"volume": 0.2})
+            const dispatcher  = voiceConnection.playFile(`./audio_cache/${id}.mp3`, {"volume": 0.2})
             dispatcherStorage.push(dispatcher)
             dispatcher.on('start', () => {
                     msg.channel.send(`**Start playing: ${title} Requested by** ${author}`)
@@ -129,7 +129,7 @@ exports.run = (client, msg, args) => {
                     info.requestedBy = msg.author
                     queue.push(info);
                     msg.channel.send(`**Queued:** ${info.title}`)
-                            if(!fs.exists(`../audio_cache/${info.video_id}.mp3`)) {
+                            if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
                                 yt.downloadFromInfo(info, {'filter': 'audioonly'})
                                 .pipe(fs.createWriteStream(`./audio_cache/${info.video_id}.mp3`).on('finish', function() { playqueue(msg, queue) }));
                                 } else {
@@ -150,7 +150,7 @@ exports.run = (client, msg, args) => {
                 info.requestedBy = msg.author
                 queue.push(info);
                 msg.channel.send(`**Queued:** ${info.title}`)
-                    if(!fs.exists(`../audio_cache/${info.video_id}.mp3`)) {
+                    if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
                         yt.downloadFromInfo(info, {'filter': 'audioonly'})
                         .pipe(fs.createWriteStream(`./audio_cache/${info.video_id}.mp3`).on('finish', function() { playqueue(msg, queue) }));
                         } else {
@@ -173,7 +173,7 @@ exports.run = (client, msg, args) => {
                                         info.requestedBy = msg.author
                                         queue.push(info);
                                         msg.channel.send(`**Queued:** ${info.title}`)
-                                            if(!fs.exists(`../audio_cache/${info.video_id}.mp3`)) {
+                                            if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
                                             yt.downloadFromInfo(info, {'filter': 'audioonly'})
                                             .pipe(fs.createWriteStream(`./audio_cache/${info.video_id}.mp3`).on('finish', function() { playqueue(msg, queue) }));
                                             } else {
