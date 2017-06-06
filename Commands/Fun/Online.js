@@ -25,7 +25,8 @@ exports.run = async function(client, msg)  {
             difference = moment(usertime).diff(time, 'minutes', true)
             timetype = "minute/s"
         }
-        msg.channel.send(`The User ${user} was ${difference} ${timetype} online!`)
+        let rounded = Math.ceil(difference*100000)/100000
+        msg.channel.send(`The User ${user} was ${rounded} ${timetype} online!`)
         connection.close()
     })
 }
