@@ -19,14 +19,14 @@ exports.run = async function(client, msg)  {
         if (result === null) return msg.channel.send("oh looks like i have an leak in my DB! Im sorry but i cant tell you how long you were Online")
         let usertime = result.time
         let timetype = "hour/s"
-        let difference = moment(usertime).diff(time, 'hours', true)
+        let difference = moment(usertime).diff(time, 'hours')
         if(difference < 1)
         {
-            difference = moment(usertime).diff(time, 'minutes', true)
+            difference = moment(usertime).diff(time, 'minutes')
             timetype = "minute/s"
         }
-        let rounded = Math.ceil(difference*100000)/100000
-        msg.channel.send(`The User ${user} was ${rounded} ${timetype} online!`)
+        if(difference === 0) return msg.reply("The Online Time of that User is under 1 minute so ask in some minutes again")
+        msg.channel.send(`The User ${user} was ${difference} ${timetype} online!`)
         connection.close()
     })
 }
