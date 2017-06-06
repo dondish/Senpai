@@ -20,19 +20,20 @@ exports.run = async function(client, msg)  {
         let timeDB = result.time
         let difference = time - timeDB
         let timetype
+        let resultTime
         if(difference > 60) {
             timetype = "Minute/s"
-            difference /=60
+            resultTime = difference/60
         }else if(difference > 3600) {
             timetype = "Hour/s"
-            difference /=3600
+            resultTime = difference/3600
         }else if(difference > 86400) {
             timetype = "Day/s"
-            difference /=86400
+            resultTime = difference/86400
         }else{
             timetype = "Second/s"
         }
-        msg.channel.send(`The User ${user} was ${Math.round(difference)} ${timetype} online!`)
+        msg.channel.send(`The User ${user} was ${Math.round(resultTime)} ${timetype} online!`)
         connection.close()
     })
 }
