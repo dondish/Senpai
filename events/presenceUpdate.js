@@ -17,7 +17,7 @@ if(newMember.presence.status  === "online" && oldMember.presence.status === "off
         .insert(
         {
           "id": `${newMember.id}`,
-          "Time": `${moment().format()}`
+          "Time": `${moment().unix()}`
         },
         {"conflict": "replace"}
       )

@@ -15,4 +15,4 @@ exports.help = {
     'usage': 'leave'
 }
 
-exports.alias = []
+exports.alias = ["leave"]

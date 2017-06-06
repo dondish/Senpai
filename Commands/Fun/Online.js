@@ -3,7 +3,7 @@ const rethink                               = require('rethinkdb')
 exports.run = async function(client, msg)  {
     const connection = await rethink.connect();
     connection.use('Discord')
-    const time = moment().format();
+    const time = moment().unix();
     let user;
     if(msg.mentions.users.size < 1)
     {
@@ -17,15 +17,21 @@ exports.run = async function(client, msg)  {
     .run(connection, (err, result) => {
         if (err) return msg.channel.send("I had an erro while trying to fetch information from my DB please contact my DEV!")
         if (result === null) return msg.channel.send("oh looks like i have an leak in my DB! Im sorry but i cant tell you how long you were Online")
-        let usertime = result.time
-        let timetype = "hour/s"
-        let difference = moment(usertime).diff(time, 'hours')
-        if(difference < 1)
-        {
-            difference = moment(usertime).diff(time, 'minutes')
-            timetype = "minute/s"
+        let timeDB = result.time
+        let difference = time - timeDB
+        let timetype
+        if(difference > 60) {
+            timetype = "Minute/s"
+            difference /=60
+        }else if(difference > 3600) {
+            timetype = "Hour/s"
+            difference /=3600
+        }else if(difference > 86400) {
+            timetype = "Day/s"
+            difference /=86400
+        }else{
+            timetype = "Second/s"
         }
-        if(difference === 0) return msg.reply("The Online Time of that User is under 1 minute so ask in some minutes again")
         msg.channel.send(`The User ${user} was ${difference} ${timetype} online!`)
         connection.close()
     })

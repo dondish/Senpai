@@ -52,7 +52,7 @@ module.exports = bot => {
       rethink.table('OnlineTime').insert(
         {
           "id": `${user.id}`,
-          "Time": `${moment().format()}`
+          "time": `${moment().unix()}`
         },
         {"conflict": "replace"}
       )
