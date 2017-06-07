@@ -32,6 +32,7 @@ exports.run = async function(client, msg)  {
             resultTime = difference/86400
         }else{
             timetype = "Second/s"
+            resultTime = difference
         }
         msg.channel.send(`The User ${user} was ${Math.round(resultTime)} ${timetype} online!`)
         connection.close()
