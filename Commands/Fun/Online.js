@@ -21,15 +21,15 @@ exports.run = async function(client, msg)  {
         let difference = time - timeDB
         let timetype
         let resultTime
-        if(difference > 60) {
-            timetype = "Minute/s"
-            resultTime = difference/60
+        if(difference > 86400) {
+            timetype = "Day/s"
+            resultTime = difference/86400
         }else if(difference > 3600) {
             timetype = "Hour/s"
             resultTime = difference/3600
-        }else if(difference > 86400) {
-            timetype = "Day/s"
-            resultTime = difference/86400
+        }else if(difference > 60) {
+            timetype = "Minute/s"
+            resultTime = difference/60
         }else{
             timetype = "Second/s"
             resultTime = difference
