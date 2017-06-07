@@ -10,7 +10,7 @@ exports.run = (client, msg, args) => {
       msg.channel.bulkDelete(messages)
       .then(() => {
         msg.channel.send("i've deleted " + messages.size + " Messages")
-        .then(message => message.delete(10000).catch(console.warn))
+        .then(message => message.delete(10000).catch(e => {}))
       })
       .catch(() => {
           msg.channel.send("I may only delete Messages that are not older than 14 Days! thats is a Limit from Discord")

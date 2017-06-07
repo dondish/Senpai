@@ -49,6 +49,7 @@ module.exports = bot => {
     const connection = await createTable()
     let timer = 0
     users.forEach(user => {
+      if(user.presence.status === 'offline') return
       rethink.table('OnlineTime').insert(
         {
           "id": `${user.id}`,
