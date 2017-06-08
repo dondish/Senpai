@@ -19,7 +19,7 @@ const dateformatted = new Date().toISOString()
 }
 
 exports.help = {
-    'name': 'About',
+    'name': 'about',
     'description': 'shows information about me and my creator',
     'usage': 'about'
 }

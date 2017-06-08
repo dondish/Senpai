@@ -22,9 +22,9 @@ exports.run = (client, msg, params) => {
 }
 
 exports.help = {
-    'name': 'Urban',
-    'description': 'search for a word on the Urban Dictonary',
-    'usage': 'Urban [word]'
+    'name': 'urban',
+    'description': 'search for a word on the urban dictonary',
+    'usage': 'urban [word]'
 }
 
 exports.alias = []

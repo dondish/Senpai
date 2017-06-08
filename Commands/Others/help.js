@@ -17,7 +17,7 @@ exports.run = (client, msg, params) => {
 
 exports.help = {
     'name': 'help',
-    'description': 'Displays all commands of the bot',
+    'description': 'displays all commands of the bot',
     'usage': 'help [command]'
 }
 

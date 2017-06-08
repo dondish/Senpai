@@ -5,8 +5,8 @@ exports.run = (client, msg, params) => {
 }
 
 exports.help = {
-    'name': '8Ball',
-    'description': 'Answers a Question',
+    'name': '8ball',
+    'description': 'answers a question',
     'usage': '8ball [Question]',
 }
 

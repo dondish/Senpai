@@ -11,7 +11,7 @@ exports.run = (client, msg) => {
 
 exports.help = {
     'name': 'disconnect',
-    'description': 'leave a Voice channel',
+    'description': 'leave a voice channel',
     'usage': 'leave'
 }
 

@@ -39,7 +39,7 @@ exports.run = (client, msg, args) => {
 
 exports.help = {
     'name': 'softban',
-    'description': 'Bans a mentioned Member and Unban him after that so all of his messages in the last 7 Days are deleted',
+    'description': 'bans a mentioned Member and unban him after that so all of his messages in the last 7 days are deleted',
     'usage': 'softban [@User] [reason]'
 }
 

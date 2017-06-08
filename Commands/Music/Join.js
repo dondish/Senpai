@@ -14,7 +14,7 @@ exports.run = (client, msg) => {
 
 exports.help = {
     'name': 'join',
-    'description': 'Joins a Voice channel to play Music from play',
+    'description': 'joins a voice channel to play music',
     'usage': 'join'
 }
 

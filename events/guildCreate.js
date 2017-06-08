@@ -25,8 +25,10 @@ module.exports = async guild => {
             )
             .run(connection, err => {
             if (err) throw err
+            connection.close();
             })
         }else{
+            connection.close();
             return
         }
     })

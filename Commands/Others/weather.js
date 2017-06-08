@@ -22,7 +22,7 @@ exports.run = (client, msg, params) => {
 }
 
 exports.help = {
-    'name': 'Weather',
+    'name': 'weather',
     'description': 'shows the weather of a City',
     'usage': 'weather [Cityname]'
 }

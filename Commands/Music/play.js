@@ -197,8 +197,8 @@ exports.run = (client, msg, args) => {
 }
 
 exports.help = {
-    'name': 'Play',
-    'description': 'play a Song/playlist from Youtube or search for it if you not enter a link',
+    'name': 'play',
+    'description': 'play a Song/playlist from youtube or search for it if you not enter a link',
     'usage': 'play [Link to a Youtube Song or playlist/Name of a song]'
 }
 

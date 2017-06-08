@@ -61,7 +61,18 @@ fs.readdir('./Commands/Others', (err, files) => {
     });
   });
 
-
+fs.readdir('./Commands/Economy', (err, files) => {
+  if (err) console.error(err);
+  console.log(`Loading Module Fun (${files.length} Commands).`);
+  files.forEach(file => {
+    let Module = require(`./Commands/Economy/${file}`);
+    bot.commands.set(Module.help.name.toUpperCase(), Module);
+    console.log(`Loading Command: ${Module.help.name} from Economy.`);
+      Module.alias.forEach(alias => {
+      bot.aliases.set(alias.toUpperCase(), Module.help.name.toUpperCase());
+      });
+    });
+  });
 
 process.on('unhandledRejection', function(reason, p){
     console.log("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);

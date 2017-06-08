@@ -45,9 +45,26 @@ module.exports = bot => {
     })
     })
   }
+  function createTable2() {
+    return new Promise(async function(resolve, reject) {
+      const connection = await createAndUseDB()
+      rethink.tableList().run(connection, (err, result) => {
+        if (err) reject(new Error("Something went wrong while trying to fetch all Tables"))
+      if(!result.includes("economy")) {
+        rethink.tableCreate('economy').run(connection, err => {
+          if (err) reject(new Error("Something went wrong while trying to create a Table"))
+          resolve()
+        })
+      }else{
+        resolve()
+      }
+      })
+    })
+  }
   async function insertIntoDB(users) {
-    const connection = await createTable()
-    let timer = 0
+    const connection = await createTable();
+    await createTable2();
+    let timer = 0;
     users.forEach(user => {
       if(user.presence.status === 'offline') return
       rethink.table('OnlineTime').insert(

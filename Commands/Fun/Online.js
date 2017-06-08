@@ -40,8 +40,8 @@ exports.run = async function(client, msg)  {
 }
 
 exports.help = {
-    'name': 'Online',
-    'description': 'shows how long a user were online since i connected to your Server if you not mention someone it will shows your time',
+    'name': 'online',
+    'description': 'shows how long a user were online since i connected to your server if you not mention someone it will shows your time',
     'usage': 'online [@User]'
 }
 

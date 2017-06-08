@@ -9,9 +9,9 @@ exports.run = (client, msg) => {
 }
 
 exports.help = {
-    'name': 'Cat',
-    'description': 'Shows a random Cat',
-    'usage': 'Cat'
+    'name': 'cat',
+    'description': 'shows a random cat',
+    'usage': 'cat'
 }
 
 exports.alias = ["pussy"]

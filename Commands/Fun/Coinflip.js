@@ -27,8 +27,8 @@ exports.run = (client, msg, params) => {
 }
 
 exports.help = {
-    'name': 'Coinflip',
-    'description': 'try a Coinflip',
+    'name': 'coinflip',
+    'description': 'try a coinflip',
     'usage': 'coinflip [Head/Number]'
 }
 

@@ -36,9 +36,9 @@ exports.run = (client, msg, args) => {
 }
 
 exports.help = {
-    'name': 'Ban',
-    'description': 'Bans the mentioned User',
-    'usage': 'Ban [@user] [reason]'
+    'name': 'ban',
+    'description': 'bans the mentioned user',
+    'usage': 'ban [@user] [reason]'
 }
 
 exports.alias = ["banne", "banhammer"]

@@ -6,7 +6,7 @@ exports.run = (client, msg) => {
 
 exports.help = {
     'name': 'clearqueue',
-    'description': 'clears the whole Music queue of me on this server',
+    'description': 'clears the whole music queue of me on this server',
     'usage': 'clearqueue'
 }
 

@@ -19,9 +19,9 @@ exports.run = (client, msg, params) => {
 }
 
 exports.help = {
-    'name': 'Eval',
-    'description': 'Evaluate code on the Bot (Because of security measures, only the owner can execute this command!)',
-    'usage': 'Eval [Code]'
+    'name': 'eval',
+    'description': 'evaluate code on the bot (Because of security measures, only the owner can execute this command!)',
+    'usage': 'eval [Code]'
 }
 
 exports.alias = []

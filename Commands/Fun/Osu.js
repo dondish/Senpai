@@ -35,9 +35,9 @@ exports.run = (client, msg, args) => {
 }
 
 exports.help = {
-    'name': 'Osu',
-    'description': 'shows the stats of an Osu! player or map',
-    'usage': 'Osu [user/map] [username/beatmapid]'
+    'name': 'osu',
+    'description': 'shows the stats of an osu! player or map',
+    'usage': 'osu [user/map] [username/beatmapid]'
 }
 
 exports.alias = ["osu!"]

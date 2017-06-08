@@ -34,7 +34,7 @@ exports.run = (client, msg, args) => {
 
 exports.help = {
     'name': 'kick',
-    'description': 'kicks the mentioned User',
+    'description': 'kicks the mentioned user',
     'usage': 'kick [@user] [reason]'
 }
 
