@@ -4,6 +4,7 @@ module.exports = msg => {
   let client = msg.client;
   if (msg.author.bot) return;
   economy.run(client, msg.author)
+  if (msg.mentions.users.first() === client.user) msg.channel.send(`my current prefix is ${config.prefix}`)
   if (!msg.content.startsWith(config.prefix)) return;
   let command = msg.content.split(' ')[0].slice(config.prefix.length).toUpperCase();
   let params = msg.content.split(' ').slice(1);
