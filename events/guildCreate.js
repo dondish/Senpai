@@ -2,15 +2,19 @@ const snekfetch = require('snekfetch')
 const config    = require('../config/config.json')
 const rethink   = require('rethinkdb')
 const moment    = require('moment')
+function closeConnection(connection) {
+    connection.close()
+}
 module.exports = async guild => {
     snekfetch.post(`https://discordbots.org/api/bots/${guild.client.user.id}/stats`)
         .set('Authorization', config.discordOrgToken)
         .send({"server_count": guild.client.guilds.size})
+        .then(console.log('Updated dbots.org status.'))
     console.log(`Senpai Joined the Guild ${guild.name} size is now ${guild.client.guilds.size}`)
     const members = guild.members
     const connection = await rethink.connect()
     members.forEach(function(member) {
-    if(member.presence.status === 'offline') return connection.close()
+    if(member.presence.status === 'offline') return
     rethink.db('Discord').table('OnlineTime')
     .get(`${member.id}`)
     .run(connection, (err, result) => {
@@ -25,12 +29,11 @@ module.exports = async guild => {
             )
             .run(connection, err => {
             if (err) throw err
-            connection.close();
             })
         }else{
-            connection.close();
             return
         }
     })
     });
+    setTimeout(closeConnection(connection), 180000)
 }
