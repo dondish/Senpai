@@ -8,10 +8,11 @@ exports.run = async (client, user) => {
   {
     recentlyUpdated.splice(recentlyUpdated.indexOf(user.id), 1)
   }
- const connection = await rethink.connect()
- rethink.db('Discord').table('economy')
- .get(user.id)
- .run(connection, (err, result) => {
+  async function addMoney() {
+  const connection = await rethink.connect()
+  rethink.db('Discord').table('economy')
+    .get(user.id)
+    .run(connection, (err, result) => {
      if (err) throw err
      if(result === null) return connection.close()
      const money = result.Cash
@@ -22,7 +23,9 @@ exports.run = async (client, user) => {
          if (err) throw err
          connection.close()
      })
- })
+  })
+}
+  setTimeout(addMoney, 5000)
   setTimeout(removeIDFromArray, 5000);
 }
 

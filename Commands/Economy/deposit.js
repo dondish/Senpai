@@ -18,8 +18,8 @@ exports.run = async (client, msg, params) => {
     let currency = client.guilds.get("199857240037916672").emojis.get("322135966322262056")
     if(change === "all" ||change === "-a"||change === "everything")
     {
-        realchange = Number(cash)
-    }else {
+        realchange = cash
+    } else {
         realchange = params[0]
     }
     let amount = Number(realchange)
