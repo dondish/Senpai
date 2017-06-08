@@ -13,7 +13,7 @@ exports.run = async (client, user) => {
  .get(user.id)
  .run(connection, (err, result) => {
      if (err) throw err
-     if(result === null) return
+     if(result === null) return connection.close()
      const money = result.Cash
      let newMoney = money + 10
      rethink.db('Discord').table('economy')

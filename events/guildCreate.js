@@ -10,7 +10,7 @@ module.exports = async guild => {
     const members = guild.members
     const connection = await rethink.connect()
     members.forEach(function(member) {
-    if(member.presence.status === 'offline') return
+    if(member.presence.status === 'offline') return connection.close()
     rethink.db('Discord').table('OnlineTime')
     .get(`${member.id}`)
     .run(connection, (err, result) => {

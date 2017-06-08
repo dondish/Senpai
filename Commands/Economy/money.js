@@ -15,11 +15,15 @@ exports.run = async (client, msg) => {
     .get(user.id)
     .run(connection, (err, result) => {
         if (err) throw err
-        if (result === null) return msg.reply(`looks like you or the user you mentioned haven't registered for the economy system yet you or the user can do that by writing ${config.prefix}register!`)
+        if (result === null) {
+            connection.close()
+            return msg.reply(`looks like you or the user you mentioned haven't registered for the economy system yet you or the user can do that by writing ${config.prefix}register!`)
+        }
         let Cash = result.Cash;
         let Bank = result.Bank;
         let Total = Cash + Bank
         msg.reply(`You have ${Cash} ${currency} on your hand and ${Bank} ${currency} in the Bank thats a Total of ${Total} ${currency}. Good on you!`)
+        connection.close()
     })
 }
 

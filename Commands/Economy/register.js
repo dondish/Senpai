@@ -5,7 +5,11 @@ exports.run = async (client, msg) => {
  .get(msg.author.id)
  .run(connection, (err, result) => {
      if (err) throw err
-     if(result !== null) return msg.reply("You are already registered :thinking:")
+     if(result !== null)
+        {
+            connection.close()
+            return msg.reply("You are already registered :thinking:")
+        }
      rethink.db('Discord').table('economy')
      .insert(
             {
@@ -18,6 +22,7 @@ exports.run = async (client, msg) => {
      .run(connection, err => {
         if (err) throw err
         msg.channel.send("You successfully registered to the economy system!")
+        connection.close()
      })
  })
 }
