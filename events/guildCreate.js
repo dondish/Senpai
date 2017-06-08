@@ -2,9 +2,7 @@ const snekfetch = require('snekfetch')
 const config    = require('../config/config.json')
 const rethink   = require('rethinkdb')
 const moment    = require('moment')
-function closeConnection(connection) {
-    connection.close()
-}
+
 module.exports = async guild => {
     snekfetch.post(`https://discordbots.org/api/bots/${guild.client.user.id}/stats`)
         .set('Authorization', config.discordOrgToken)
@@ -35,5 +33,7 @@ module.exports = async guild => {
         }
     })
     });
-    setTimeout(closeConnection(connection), 180000)
+    setTimeout(function () {
+        connection.close()
+    }, 180000)
 }
