@@ -15,6 +15,7 @@ exports.run = async (client, msg, params) => {
     let bank = result.Bank;
     let change = params[0]
     let realchange;
+    let currency = client.guilds.get("199857240037916672").emojis.get("322135966322262056")
     if(change === "all" ||change === "-a"||change === "everything")
     {
         realchange = Number(bank)
@@ -40,7 +41,7 @@ exports.run = async (client, msg, params) => {
     })
     .run(connection, err => {
         if (err) throw err
-        msg.reply(`You successfully withdraw ${amount} from the bank!`)
+        msg.reply(`You successfully withdraw ${amount} ${currency} from the bank!`)
         connection.close()
     })
  })

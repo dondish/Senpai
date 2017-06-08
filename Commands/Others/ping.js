@@ -14,8 +14,8 @@ exports.run = (client, msg) => {
 }
 
 exports.help = {
-    'name': 'Ping',
-    'description': 'shows the ping of the Bot in ms',
+    'name': 'ping',
+    'description': 'shows the ping of the bot in ms',
     'usage': 'ping'
 }
 

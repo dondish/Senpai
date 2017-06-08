@@ -23,8 +23,8 @@ exports.run = (client, msg, params) => {
 
 exports.help = {
     'name': 'weather',
-    'description': 'shows the weather of a City',
-    'usage': 'weather [Cityname]'
+    'description': 'shows the weather of a city',
+    'usage': 'weather [cityname]'
 }
 
 exports.alias = []

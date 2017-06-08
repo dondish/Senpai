@@ -7,7 +7,7 @@ exports.run = (client, msg, params) => {
 exports.help = {
     'name': '8ball',
     'description': 'answers a question',
-    'usage': '8ball [Question]',
+    'usage': '8ball [question]',
 }
 
 exports.alias = []
