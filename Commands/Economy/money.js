@@ -5,11 +5,14 @@ exports.run = async (client, msg) => {
     let currency = client.guilds.get("199857240037916672").emojis.get("322135966322262056")
     const connection = await rethink.connect()
     let user;
+    let display;
     if(msg.mentions.users.size < 1)
     {
         user = msg.author
+        display = user
     }else{
         user = msg.mentions.users.first()
+        display = user
     }
      rethink.db('Discord').table('economy')
     .get(user.id)
@@ -22,7 +25,7 @@ exports.run = async (client, msg) => {
         let Cash = result.Cash;
         let Bank = result.Bank;
         let Total = Cash + Bank
-        msg.reply(`You have ${Cash} ${currency} on your hand and ${Bank} ${currency} in the Bank thats a Total of ${Total} ${currency}. Good on you!`)
+        msg.channel.send(`${display} have ${Cash} ${currency} on the hand and ${Bank} ${currency} in the Bank thats a Total of ${Total} ${currency}.`)
         connection.close()
     })
 }
