@@ -10,7 +10,7 @@ exports.run = (client, msg, params) => {
     let command = params[0].toUpperCase();
     if (client.commands.has(command)) {
       command = client.commands.get(command);
-      msg.channel.send(`= ${command.help.name} = \n${command.help.description}\nAlias ${command.alias.join(" ")}\nUsage: ${config.prefix}${command.help.usage}`, {"code": "asciidoc"});
+      msg.channel.send(`= ${command.help.name} = \n${command.help.description}\nAliase ${command.alias.join(", ")}\nUsage: ${config.prefix}${command.help.usage}`, {"code": "asciidoc"});
     }else{
       msg.channel.send("looks like i have no command like that :thinking:")
       msg.react("🤔")

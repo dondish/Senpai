@@ -1,6 +1,7 @@
 const packageJson                             = require('../package.json')
 const moment                                  = require('moment');
 const rethink                                 = require('rethinkdb')
+let firststartup                            = true
 
 module.exports = bot => {
   console.log('-----------------------------------------------------------------------------');
@@ -80,7 +81,9 @@ module.exports = bot => {
       })
     });
   }
-
-  insertIntoDB(bot.users)
+  if(firststartup) {
+    insertIntoDB(bot.users)
+    firststartup = false
+  }
 };
 
