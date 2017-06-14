@@ -5,7 +5,7 @@ exports.run = (client, msg) => {
     let play = client.commands.get("PLAY");
     play.disconnect(msg)
     voiceConnection.disconnect()
-    msg.channel.send("By By :wave:")
+    msg.channel.send("Bye Bye :wave:")
 
 }
 

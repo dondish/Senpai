@@ -1,6 +1,6 @@
 const config                                = require('../../config/config.json');
 exports.run = (client, msg, params) => {
-    if(msg.author.id != config.OwnerID) return msg.channel.send("Because of security measures, only the owner can execute this command!")
+    if(msg.author.id !== config.OwnerID) return msg.channel.send("Because of security measures, only the owner can execute this command!")
     function clean(text) {
         if (typeof(text) === "string")
             return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));

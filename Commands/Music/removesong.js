@@ -1,5 +1,6 @@
 const config                                = require('../../config/config.json')
 exports.run = (client, msg, args) => {
+    if (msg.channel.type != "text") return msg.channel.send("You can run this command only on a Server!")
     let play = client.commands.get("PLAY");
     if(args.length > 1) return msg.reply("You must add the number of the Song which you wanna remove!")
     let number = parseInt(args[0], 10)

@@ -1,4 +1,5 @@
 exports.run = (client, msg, args) => {
+    if (msg.channel.type != "text") return msg.channel.send("You can run this command only on a Server!")
     let play = client.commands.get("PLAY");
     let number = Number(args[0])
     if(args[0] === undefined) {

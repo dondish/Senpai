@@ -1,7 +1,7 @@
 const rethink = require('rethinkdb')
 const recentlyUpdated = [];
 
-exports.run = (client, user) => {
+exports.messageUpdate = (client, user) => {
   if (recentlyUpdated.includes(user.id)) return;
   recentlyUpdated.push(user.id);
   function removeIDFromArray()
@@ -30,3 +30,12 @@ exports.run = (client, user) => {
   setTimeout(removeIDFromArray, 5000);
 }
 
+exports.bankUpdate = async () => {
+  const connection = await rethink.connect()
+  rethink.db("Discord").table("economy")
+    .update({"Bank": rethink.round(rethink.row("Bank").mul(1.05))})
+    .run(connection, err => {
+      if (err) throw err
+    })
+
+}

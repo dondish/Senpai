@@ -3,6 +3,7 @@ const rethink   = require('rethinkdb')
 exports.run = async (client, msg, params) => {
     if(!params[0]) return msg.reply("You must specify a amount!")
     const Gambleamount = Number(params[0])
+    let currency = client.guilds.get("199857240037916672").emojis.get("322135966322262056")
     const user = msg.author
     if(isNaN(Gambleamount)) return msg.reply("that is not a valid number :thinking:")
     const connection = await rethink.connect()
@@ -14,7 +15,7 @@ exports.run = async (client, msg, params) => {
             connection.close()
             return msg.reply(`looks like you haven't registered for the economy system yet you can do that by writing ${config.prefix}register!`)
         }
-        const money = result.C
+        const money = result.Cash
         if(Gambleamount > money) {
             connection.close()
             return msg.reply("You dont have that much money")
@@ -23,7 +24,7 @@ exports.run = async (client, msg, params) => {
         let newCash;
         if (random > 0.5) {
             newCash = money + Gambleamount
-            msg.channel.send("You won! Your amount was doubled.")
+            msg.channel.send(`You won ${Gambleamount} ${currency}`)
             rethink.db('Discord').table('economy')
             .get(user.id)
             .update({"Cash": newCash})
@@ -32,7 +33,7 @@ exports.run = async (client, msg, params) => {
             })
         }else if(random < 0.5) {
             newCash = money - Gambleamount
-            msg.channel.send("You lost! Your amount is gone.")
+            msg.channel.send(`You lost ${Gambleamount} ${currency}`)
             rethink.db('Discord').table('economy')
             .get(user.id)
             .update({"Cash": newCash})
@@ -42,6 +43,7 @@ exports.run = async (client, msg, params) => {
         }
     })
 }
+
 
 exports.help = {
     'name': 'coinflip',
