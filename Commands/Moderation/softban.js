@@ -25,7 +25,7 @@ exports.run = (client, msg, args) => {
             .catch(() => msg.author.send(`I have no rights to write in the channel called ${msg.guild.channels.find(nameTest).name} so i can't write my Logs there when im used with Admin/Moderational commands\nPlease considering changing that in the Future so you have nice Logs form me there`))
             } else {
             msg.guild.defaultChannel.send("i dont found a channel that has a name started with log.\nCreate one so my Logs will be seperated from a normal Chat channel!", {embed})
-            .catch(() => msg.author.send("Hello i have no rights to write in your defaultChannel so i dm you with that information\nYou should create a Channel called 'logs' because i would automatically create logs there when i'm used to moderation\n"))
+            .catch(() => msg.author.send("i have no rights to write in your defaultChannel so i dm you with that information\nYou should create a Channel called 'logs' because i would automatically send my logs there when my Moderation tools are used\n"))
         }
     }
     let reason = args.slice(1).join(' ');
