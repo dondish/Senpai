@@ -41,7 +41,7 @@ exports.run = (client, msg, params) => {
 exports.help = {
     'name': 'manga',
     'description': 'search for an manga on kitsu',
-    'usage': 'manga [anime]'
+    'usage': 'manga [manga]'
 }
 
 exports.alias = []
