@@ -22,10 +22,9 @@ exports.queue = msg => {
     if(queue.length < 1) {
         msg.reply("there are no songs currently in queue!")
     }else{
-        queue.forEach(function(element) {
-            msg.channel.send(element.title)
-            }
-        );
+        const songs = queue.map(Song => `${Song.title} requested by ${Song.requestedBy.username}`).join("\n")
+        msg.channel.send(songs)
+        
     }
 }
 exports.showVolume = msg => {
@@ -74,7 +73,7 @@ exports.skip = msg => {
     msg.channel.send("Skipped the played Song!")
 
 }
-exports.run = (client, msg, args) => {
+exports.run = async (client, msg, args) => {
     if (msg.channel.type !== "text") return msg.channel.send("You can run this command only on a Server!")
     let voiceConnection = msg.guild.voiceConnection
     let Video  = msg.content.slice(config.prefix.length + 5)
@@ -115,20 +114,20 @@ exports.run = (client, msg, args) => {
     function addtoqueue(msg, queue) {
         if (!Video.toLowerCase().startsWith('http')) {
             search(Video, searchopts, function(err, results) {
-                if (err) return msg.reply("I had an error while try to search for your song!")
+                if (err) return msg.edit("I had an error while try to search for your song!")
                 let firstV = results[0]
                 if (firstV.kind != "youtube#video") {
                     firstV = results[1]
                 }
                 yt.getInfo(firstV.link, (err, info) => {
                     if (err || info.video_id === undefined) {
-                        return msg.reply('error while try to get Information about the song!');
+                        return msg.edit('error while try to get Information about the song!');
                     }
                     const length = Number(info.length_seconds)
-                    if(length > 1800) return msg.channel.send("The Video can't be longer than 30 minutes!")
+                    if(length > 1800) return msg.edit("The Video can't be longer than 30 minutes!")
                     info.requestedBy = msg.author
                     queue.push(info);
-                    msg.channel.send(`**Queued:** ${info.title}`)
+                    msg.edit(`**Queued:** ${info.title}`)
                             if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
                                 yt.downloadFromInfo(info, {'filter': 'audioonly'})
                                 .pipe(fs.createWriteStream(`./audio_cache/${info.video_id}.mp3`).on('finish', function() { playqueue(msg, queue) }));
@@ -143,13 +142,13 @@ exports.run = (client, msg, args) => {
             if(Video.startsWith("watch", 24)) {
             yt.getInfo(Video, (err, info) => {
                 if (err || info.video_id === undefined) {
-                    return msg.reply('error while try to get Information about the song only Youtube songs are currently playable');
+                    return msg.edit('error while try to get Information about the song only Youtube songs are currently playable');
                 }
                 const length = Number(info.length_seconds)
-                if(length > 1800) return msg.channel.send("The Video can't be longer than 30 minutes!")
+                if(length > 1800) return msg.edit("The Video can't be longer than 30 minutes!")
                 info.requestedBy = msg.author
                 queue.push(info);
-                msg.channel.send(`**Queued:** ${info.title}`)
+                msg.edit(`**Queued:** ${info.title}`)
                     if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
                         yt.downloadFromInfo(info, {'filter': 'audioonly'})
                         .pipe(fs.createWriteStream(`./audio_cache/${info.video_id}.mp3`).on('finish', function() { playqueue(msg, queue) }));
@@ -185,12 +184,12 @@ exports.run = (client, msg, args) => {
                             }
                         )
             }else{
-                msg.channel.send("I dont think your link is valid :thinking: search for an valid Link!")
+                msg.edit("I dont think your link is valid :thinking: search for an valid Link!")
             }
         }
     }
-        msg.channel.send('Searching...')
-        addtoqueue(msg, queue)
+        const message = await msg.channel.send('Searching...')
+        addtoqueue(message, queue)
 
 
 
