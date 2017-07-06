@@ -111,7 +111,7 @@ exports.run = async (client, msg, args) => {
     function loop(msg, queue) {
         playqueue(msg, queue)
     }
-    function addtoqueue(msg, queue) {
+    function addtoqueue(msg, queue, user) {
         if (!Video.toLowerCase().startsWith('http')) {
             search(Video, searchopts, function(err, results) {
                 if (err) return msg.edit("I had an error while try to search for your song!")
@@ -125,7 +125,7 @@ exports.run = async (client, msg, args) => {
                     }
                     const length = Number(info.length_seconds)
                     if(length > 1800) return msg.edit("The Video can't be longer than 30 minutes!")
-                    info.requestedBy = msg.author
+                    info.requestedBy = user
                     queue.push(info);
                     msg.edit(`**Queued:** ${info.title}`)
                             if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
@@ -146,7 +146,7 @@ exports.run = async (client, msg, args) => {
                 }
                 const length = Number(info.length_seconds)
                 if(length > 1800) return msg.edit("The Video can't be longer than 30 minutes!")
-                info.requestedBy = msg.author
+                info.requestedBy = user
                 queue.push(info);
                 msg.edit(`**Queued:** ${info.title}`)
                     if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
@@ -169,7 +169,7 @@ exports.run = async (client, msg, args) => {
                                         }
                                         const length = Number(info.length_seconds)
                                         if(length > 1800) return msg.channel.send("One Video can't be played because its longer than 30 minutes!")
-                                        info.requestedBy = msg.author
+                                        info.requestedBy = user
                                         queue.push(info);
                                         msg.channel.send(`**Queued:** ${info.title}`)
                                             if(!fs.exists(`./audio_cache/${info.video_id}.mp3`)) {
@@ -189,7 +189,7 @@ exports.run = async (client, msg, args) => {
         }
     }
         const message = await msg.channel.send('Searching...')
-        addtoqueue(message, queue)
+        addtoqueue(message, queue, msg.author)
 
 
 
