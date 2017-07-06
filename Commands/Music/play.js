@@ -22,7 +22,7 @@ exports.queue = msg => {
     if(queue.length < 1) {
         msg.reply("there are no songs currently in queue!")
     }else{
-        const songs = queue.map(Song => `${Song.title} requested by ${Song.requestedBy.username}`).join("\n")
+        const songs = queue.map(Song => `**${Song.title} requested by** ${Song.requestedBy.username}`).join("\n")
         msg.channel.send(songs)
         
     }
@@ -92,7 +92,7 @@ exports.run = async (client, msg, args) => {
             const dispatcher  = voiceConnection.playFile(`./audio_cache/${id}.mp3`, {"volume": 0.2})
             dispatcherStorage.push(dispatcher)
             dispatcher.on('start', () => {
-                    msg.channel.send(`**Start playing: ${title} Requested by** ${author}`)
+                    msg.channel.send(`**Start playing: ${title} Requested by** ${author.username}`)
                 }
             )
             dispatcher.on('error', error => {
