@@ -51,6 +51,34 @@ exports.disconnect = msg => {
             dispatcher.end()
     }
 }
+function shuffle(array) {
+   var currentIndex = array.length,
+    randomIndex,
+    temporaryValue;
+   // While there remain elements to shuffle...
+   while (currentIndex !== 0) {
+
+     // Pick a remaining element...
+     randomIndex = Math.floor(Math.random() * currentIndex);
+     currentIndex -= 1;
+
+    // And swap it with the current element.
+     temporaryValue = array[currentIndex];
+     array[currentIndex] = array[randomIndex];
+     array[randomIndex] = temporaryValue;
+   }
+
+   return array;
+ }
+
+
+ exports.shufflequeue = msg => {
+     let queue = getQueue(msg.guild.id);
+     if (queue.length < 2) return msg.channel.send("You need atleast 2 songs in the queue to shuffle!")
+       queue = shuffle(queue);
+       msg.channel.send("successfully shuffled the queue!")
+ }
+
 exports.clearqueue = msg => {
     let queue = getQueue(msg.guild.id);
     if (queue.length > 0) {
