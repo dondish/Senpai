@@ -7,9 +7,9 @@ const dateformatted = new Date().toISOString()
                     function pad(s){
                         return (s < 10 ? '0' : '') + s;
                     }
-                var hours = Math.floor(seconds / (60*60));
-                var minutes = Math.floor(seconds % (60*60) / 60);
-                var seconds2 = Math.floor(seconds % 60);
+                let hours = Math.floor(seconds / (60*60));
+                let minutes = Math.floor(seconds % (60*60) / 60);
+                let seconds2 = Math.floor(seconds % 60);
 
                 return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds2);
         }

@@ -17,21 +17,42 @@ function getQueue(guild) {
     if (!queues[guild]) queues[guild] = [];
     return queues[guild];
 }
+function format(seconds){
+    function pad(s){
+        return (s < 10 ? '0' : '') + s;
+    }
+    let hours = Math.floor(seconds / (60*60));
+    let minutes = Math.floor(seconds % (60*60) / 60);
+    let seconds2 = Math.floor(seconds % 60);
+        return pad(hours) + 'h:' + pad(minutes) + 'm:' + pad(seconds2)+ 's';
+}
 exports.queue = msg => {
     let queue = getQueue(msg.guild.id);
     if(queue.length < 1) {
         msg.reply("there are no songs currently in queue!")
     }else{
-        const songs = queue.map(Song => `**${Song.title} requested by** ${Song.requestedBy.username}`)
+        //Print the total amount of time in the playlist
+        let totalTimeInSec = 0;
+
+        //Get the length of every song in seconds
+        const songsLength = queue.map(Song => Number(Song.length_seconds));
+
+        //Add all the lengths into totalTimeInSec
+        for (let i = 0; i < songsLength.length; i++) {
+            totalTimeInSec += songsLength[i];
+        }
+        const time = format(Math.floor(totalTimeInSec))
+        const songs = queue.map(Song => `${Song.title} requested by **${Song.requestedBy.username}**`)
         if(songs.length > 20) {
             let before = songs.length
             songs.length = 20;
-            songs[21] = `\n and ${before - 20} Songs more...`
+            songs[21] = `**and ${before - 20} songs more...**\n`
+            songs[22] = `**total length: ${time}**`
             msg.channel.send(songs.join("\n"))
         } else {
             msg.channel.send(songs.join("\n"))
+            msg.channel.send(`**total length: ${time}**`)
         }
-
     }
 }
 exports.showVolume = msg => {
@@ -62,14 +83,14 @@ function shuffle(array) {
    var currentIndex = array.length,
     randomIndex,
     temporaryValue;
-   // While there remain elements to shuffle...
+   //While there remain elements to shuffle...
    while (currentIndex !== 0) {
 
-     // Pick a remaining element...
+     //Pick a remaining element...
      randomIndex = Math.floor(Math.random() * currentIndex);
      currentIndex -= 1;
 
-    // And swap it with the current element.
+    //And swap it with the current element.
      temporaryValue = array[currentIndex];
      array[currentIndex] = array[randomIndex];
      array[randomIndex] = temporaryValue;
