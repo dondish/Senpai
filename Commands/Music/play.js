@@ -22,9 +22,16 @@ exports.queue = msg => {
     if(queue.length < 1) {
         msg.reply("there are no songs currently in queue!")
     }else{
-        const songs = queue.map(Song => `**${Song.title} requested by** ${Song.requestedBy.username}`).join("\n")
-        msg.channel.send(songs)
-        
+        const songs = queue.map(Song => `**${Song.title} requested by** ${Song.requestedBy.username}`)
+        if(songs.length > 20) {
+            let before = songs.length
+            songs.length = 20;
+            songs[21] = `\n and ${before - 20} Songs more...`
+            msg.channel.send(songs.join("\n"))
+        } else {
+            msg.channel.send(songs.join("\n"))
+        }
+
     }
 }
 exports.showVolume = msg => {
@@ -75,8 +82,8 @@ function shuffle(array) {
  exports.shufflequeue = msg => {
      let queue = getQueue(msg.guild.id);
      if (queue.length < 2) return msg.channel.send("You need atleast 2 songs in the queue to shuffle!")
-       queue = shuffle(queue);
-       msg.channel.send("successfully shuffled the queue!")
+        queues[msg.guild.id] = shuffle(queue);
+        msg.channel.send("successfully shuffled the queue!")
  }
 
 exports.clearqueue = msg => {
@@ -193,7 +200,7 @@ exports.run = async (client, msg, args) => {
                                     let VideoUrl = "https://www.youtube.com/watch?v=" + VideoObj.resourceId.videoId
                                      yt.getInfo(VideoUrl, (err, info) => {
                                         if (err || info.video_id === undefined) {
-                                            return msg.reply('error while try to get Information about the song only Youtube songs are currently playable');
+                                            return msg.channel.send(`${user}, error while try to get Information about 1 song`);
                                         }
                                         const length = Number(info.length_seconds)
                                         if(length > 1800) return msg.channel.send("One Video can't be played because its longer than 30 minutes!")

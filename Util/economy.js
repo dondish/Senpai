@@ -16,7 +16,7 @@ exports.messageUpdate = (client, user) => {
      if (err) throw err
      if(result === null) return connection.close()
      const money = result.Cash
-     let newMoney = money + 10
+     let newMoney = money + 5
      rethink.db('Discord').table('economy')
      .get(user.id)
      .update({"Cash": newMoney})
@@ -33,7 +33,7 @@ exports.messageUpdate = (client, user) => {
 exports.bankUpdate = async () => {
   const connection = await rethink.connect()
   rethink.db("Discord").table("economy")
-    .update({"Bank": rethink.round(rethink.row("Bank").mul(1.05))})
+    .update({"Bank": rethink.round(rethink.row("Bank").mul(1.01))})
     .run(connection, err => {
       if (err) throw err
     })
