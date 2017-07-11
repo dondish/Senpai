@@ -2,7 +2,7 @@ const Discord                               = require('discord.js');
 const bot                                   = new Discord.Client();
 const config                                = require('./config/config.json');
 const fs                                    = require('fs');
-bot.login(process.env.CLIENT_TOKEN); 
+bot.login(process.env.CLIENT_TOKEN);
 require('./Util/eventloader.js')(bot);
 
 

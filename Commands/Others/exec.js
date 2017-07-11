@@ -14,7 +14,7 @@ exports.run = (client, msg, args) => {
                 .addField(':inbox_tray: Input', Input)
                 .addField(':x: Error', Error)
                 .setColor(0x80ff00)
-                .setFooter(`Selfbot version ${packagejs.version} by Yukine`)
+                .setFooter(`Senpai-Bot version ${packagejs.version} by Yukine`)
                 .setTimestamp();
             return msg.channel.send({embed});
         }
@@ -26,7 +26,7 @@ exports.run = (client, msg, args) => {
                 .addField(':inbox_tray: Input', Input)
                 .addField(':outbox_tray: Output', Output)
                 .setColor(0x80ff00)
-                .setFooter(`Selfbot version ${packagejs.version} by Yukine`)
+                .setFooter(`Senpai-Bot version ${packagejs.version} by Yukine`)
                 .setTimestamp();
             msg.channel.send({embed});
         } else {
@@ -37,7 +37,7 @@ exports.run = (client, msg, args) => {
                 .addField(':inbox_tray: Input', Input)
                 .addField(':x: Error', Error)
                 .setColor(0x80ff00)
-                .setFooter(`Selfbot version ${packagejs.version} by Yukine`)
+                .setFooter(`Senpai-Bot version ${packagejs.version} by Yukine`)
                 .setTimestamp();
             msg.channel.send({embed});
         }

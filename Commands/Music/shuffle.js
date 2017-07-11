@@ -1,7 +1,7 @@
+const music = require('../../Util/music.js')
 exports.run = (client, msg) => {
     if (msg.channel.type != "text") return msg.channel.send("You can run this command only on a Server!")
-    let play = client.commands.get("PLAY");
-    play.shufflequeue(msg)
+    music.shufflequeue(msg)
 }
 
 exports.help = {

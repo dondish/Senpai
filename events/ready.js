@@ -1,7 +1,7 @@
 const packageJson                             = require('../package.json')
 const moment                                  = require('moment');
 const rethink                                 = require('rethinkdb')
-let firststartup                            = true
+let firststartup                              = true
 
 module.exports = bot => {
   console.log('-----------------------------------------------------------------------------');
