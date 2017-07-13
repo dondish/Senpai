@@ -278,7 +278,7 @@ function downloadSong(SongInfo) {
         //test if the file already exists
         if(fs.existsSync(`./audio_cache/${SongInfo.video_id}.aac`) === false) {
             //if File not exist try to download the Song
-            yt.downloadFromInfo(SongInfo, {'format': 'aac'})
+             yt.downloadFromInfo(SongInfo, {'filter': 'audioonly'})
             //and write it to a file
             .pipe(fs.createWriteStream(`./audio_cache/${SongInfo.video_id}.aac`)
                 //if finished resolve the promise
@@ -335,12 +335,9 @@ async function playqueue(Guild, channel) {
         )
     //log if the error event is emitted
     dispatcher.on('error', error => {
-        console.log(error)
+        console.error(error)
         }
     )
-    dispatcher.on('debug', info => {
-        console.log(info)
-    })
     //output form the end event + delete the current played Song aswell the current Dispatcher from the Storage also loop this function
     dispatcher.on('end', () => {
     channel.send(`**Finished playing:** ${title}`)

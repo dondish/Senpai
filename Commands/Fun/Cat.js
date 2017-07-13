@@ -3,8 +3,7 @@ exports.run = (client, msg) => {
         snekfetch.get("http://random.cat/meow")
             .then(respond => {
               const Link = respond.body.file
-                msg.reply("here you go enjoy your cat")
-                msg.channel.send({"files": [Link]})
+                msg.channel.send("here you go enjoy your cat", {"files": [Link]})
             })
 }
 

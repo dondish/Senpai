@@ -1,10 +1,12 @@
 const Discord = require('discord.js')
+const config    = require('../../config/config.json');
 const exec = require('child_process').exec;
 const packagejs = require('../../package.json')
 
 exports.run = (client, msg, args) => {
-
+if(msg.author.id !== config.OwnerID) return msg.channel.send("Because of security measures, only the owner can execute this command!");
    const input = args.join(" ")
+   if(!input) return msg.channel.send("You provided no input are you stupid?")
     exec(input, function (error, stdout, stderr) {
         if (error !== null) {
             const Input = '```Bash\n' + input + '\n```'
