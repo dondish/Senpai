@@ -4,8 +4,8 @@ exports.run = (client, msg, params) => {
     const commandNames = Array.from(client.commands.keys());
     const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
     msg.channel.send("i've sent you an PM")
-    .then(message => message.delete(10000).catch(e => {}))
-    msg.author.send(`= Command List =\n\n[Use help <commandname> for details]\n\n${client.commands.map(c => `${c.help.name}${' '.repeat(longest - c.help.name.length)} :: ${c.help.description}`).join('\n')}`, {"code": "asciidoc"})
+    .then(message => message.delete(10000).catch())
+    msg.author.send(`= Command List =\n\n[Use help <commandname> for details]\n\n${client.commands.map(command => `${command.help.name}${' '.repeat(longest - command.help.name.length)} :: ${command.help.description}`).join('\n')}`, {"code": "asciidoc"})
     .catch(() => {
       msg.channel.send('I had an error while trying to DM you look your Direct Message settings up!')
     })

@@ -1,6 +1,6 @@
 {
   "name": "senpai-bot",
-  "version": "4.6.1",
+  "version": "4.6.4",
   "description": "Selfmade Nodejs Discord bot",
   "main": "Util/ShardManager.js",
   "scripts": {

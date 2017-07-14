@@ -18,7 +18,9 @@ exports.run = (client, msg, params) => {
           `${result.thumbsDown} :thumbsdown:`
         ])
       })
-      .catch(err => { console.error(err) })
+      .catch(() => {
+        msg.channel.send("Seems like i didn't find anything on urban dictonary that match your word/s")
+      })
 }
 
 exports.help = {

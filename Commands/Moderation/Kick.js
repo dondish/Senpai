@@ -5,8 +5,9 @@ exports.run = (client, msg, args) => {
     }
      async function kick(member, reason, channel) {
         const message = await channel.send(`trying to kick ${member.user.tag}`)
-        const kick = await member.kick(reason)
-        const newMessage = await message.edit(`successfully kicked ${member.user.tag}`)
+        try{
+        await member.kick(reason)
+        await message.edit(`successfully kicked ${member.user.tag}`)
         const embed = new Discord.RichEmbed()
             .setAuthor(msg.author.username, msg.author.avatarURL)
             .setColor(0x00AE86)
@@ -21,6 +22,9 @@ exports.run = (client, msg, args) => {
             } else {
             msg.guild.defaultChannel.send("i dont found a channel that has a name started with log.\nCreate one so my Logs will be seperated from a normal Chat channel!", {embed})
             .catch(() => msg.author.send("i have no rights to write in your defaultChannel so i dm you with that information\nYou should create a Channel called 'logs' because i would automatically send my logs there when my Moderation tools are used\n"))
+        }
+        }catch(error) {
+            message.edit(`i had an error while trying to kick the member if this happens often & i have the needed permissions you should contact my DEV!`)
         }
     }
     let reason = args.slice(1).join(' ');

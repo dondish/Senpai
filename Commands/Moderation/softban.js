@@ -5,13 +5,14 @@ exports.run = (client, msg, args) => {
     }
      async function banAndUnban(member, reason, channel) {
         const message = await channel.send(`trying to softban ${member.user.tag}`)
+        try{
         const ban = await member.ban({
                 reason,
                 "days": 7
         })
         const newMessage = await message.edit(`successfully banned ${member.user.tag} Awaiting unban ...`)
         const unban = await member.guild.unban(ban.user)
-        const newMessage2 = await newMessage.edit(`successfully softbanned ${unban.tag}`)
+        await newMessage.edit(`successfully softbanned ${unban.tag}`)
         const embed = new Discord.RichEmbed()
             .setAuthor(msg.author.username, msg.author.avatarURL)
             .setColor(0x00AE86)
@@ -26,6 +27,9 @@ exports.run = (client, msg, args) => {
             } else {
             msg.guild.defaultChannel.send("i dont found a channel that has a name started with log.\nCreate one so my Logs will be seperated from a normal Chat channel!", {embed})
             .catch(() => msg.author.send("i have no rights to write in your defaultChannel so i dm you with that information\nYou should create a Channel called 'logs' because i would automatically send my logs there when my Moderation tools are used\n"))
+        }
+        }catch(error) {
+            message.edit(`i had an error while trying to softban the member if this happens often & i have the needed permissions you should contact my DEV!`)
         }
     }
     let reason = args.slice(1).join(' ');

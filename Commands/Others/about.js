@@ -4,8 +4,8 @@ exports.run = (client, msg) => {
 const dateformatted = new Date().toISOString()
 
                 function format(seconds){
-                    function pad(s){
-                        return (s < 10 ? '0' : '') + s;
+                    function pad(seconds3){
+                        return (seconds3 < 10 ? '0' : '') + seconds3;
                     }
                 let hours = Math.floor(seconds / (60*60));
                 let minutes = Math.floor(seconds % (60*60) / 60);

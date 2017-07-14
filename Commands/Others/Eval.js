@@ -11,21 +11,19 @@ exports.run = (client, msg, args) => {
                     return text;
             }
             function token(input) {
+                function hasToken(value) {
+                    if(typeof(value) !== 'string') {
+                        return true;
+                    }else if(value === msg.client.token) {
+                        return false;
+                    }else{
+                        return true
+                        }
+                    }
                 if(typeof(input) === 'string') {
                     return input.replace(msg.client.token, "[SECRET!]")
                 }else if(typeof(input) === 'object') {
                     if(Array.isArray(input)){
-                        function hasToken(value) {
-                            if(typeof(value) !== 'string') {
-                                return true;
-                            }else {
-                                if(value === msg.client.token) {
-                                    return false;
-                                }else{
-                                    return true
-                                }
-                            }
-                        }
                         return input.filter(hasToken);
                     } else {
                         return input;
@@ -62,7 +60,7 @@ exports.run = (client, msg, args) => {
                     .setColor(0x80ff00)
                     msg.channel.send({embed});
                     })
-                    .catch(err => {
+                    .catch(() => {
                     const embed = new Discord.RichEmbed()
                     .addField('EVAL', `**Type:** ${type}`)
                     .addField(':inbox_tray: Input', Input)
@@ -96,7 +94,7 @@ exports.run = (client, msg, args) => {
                     .setColor(0x80ff00)
                     msg.channel.send({embed});
                     })
-                    .catch(err => {
+                    .catch(() => {
                     const embed = new Discord.RichEmbed()
                     .addField('EVAL', `**Type:** Error`)
                     .addField(':inbox_tray: Input', Input)
