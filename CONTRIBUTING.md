@@ -12,6 +12,9 @@ if you wanna submit to Senpai watch the following steps
 if you wanna report an issue pls include following information to me:
 
 when did it happen?
+
 what did you do? (which command)
+
 what did you expect to happen?
+
 what actually happen?
