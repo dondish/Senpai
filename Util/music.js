@@ -78,8 +78,8 @@ exports.queue = msg => {
         const songsLength = queue.map(Song => Number(Song.length_seconds));
 
         //Add all the lengths into totalTimeInSec
-        for (let i = 0; i < songsLength.length; i++) {
-            totalTimeInSec += songsLength[i];
+        for (let index = 0; index < songsLength.length; index++) {
+            totalTimeInSec += songsLength[index];
         }
         const time = format(Math.floor(totalTimeInSec))
         const songs = queue.map(Song => `${Song.title} requested by **${Song.requestedBy.username}**`)
@@ -313,7 +313,7 @@ async function playqueue(Guild, channel) {
     try {
         await downloadSong(CurrentSong)
     }catch(error) {
-        channel.send("I had an error while trying to download the Current Song so i skipped it!")
+        channel.send("I had an error while trying to download the Current Song so i skipped it! if this happens more than 1 time please contact my DEV!")
         queue.shift()
         return playqueue(Guild, channel);
     }
@@ -335,19 +335,22 @@ async function playqueue(Guild, channel) {
         )
     //log if the error event is emitted
     dispatcher.on('error', error => {
-        console.error(error)
+            channel.send("I had an error while trying to play the Current Song so i skipped it! if this happens more than 1 time please contact my DEV!");
+            queue.shift();
+            console.error(error);
+            return playqueue(Guild, channel);
         }
     )
     //output form the end event + delete the current played Song aswell the current Dispatcher from the Storage also loop this function
     dispatcher.on('end', () => {
-    channel.send(`**Finished playing:** ${title}`)
-    queue.shift()
-    dispatcherStorage.shift()
-    playqueue(Guild, channel)
+    channel.send(`**Finished playing:** ${title}`);
+    queue.shift();
+    dispatcherStorage.shift();
+    playqueue(Guild, channel);
         }
     )
 }
 
 exports.playqueue = (Guild, channel) => {
-    playqueue(Guild, channel)
+    playqueue(Guild, channel);
 }

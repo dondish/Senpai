@@ -2,12 +2,11 @@ const {ShardingManager} = require('discord.js');
 const token = require("../config/config.json")
 const economy = require('./economy.js')
 const Manager = new ShardingManager('./app.js',
-                                                {
+                                                  {
                                                   "totalShards": "auto",
                                                   "respawn": true,
                                                   "token": token.BotToken
-                                                });
-
+                                                  });
 //spawn shards
 Manager.spawn();
 //Bank Update
