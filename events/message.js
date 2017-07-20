@@ -1,14 +1,14 @@
 const config   = require('../config/config.json')
 const economy  = require('../Util/economy.js')
 module.exports = msg => {
-  let client = msg.client;
+  const client = msg.client;
   if (msg.author.bot) return;
   economy.messageUpdate(client, msg.author)
-  if (msg.mentions.users.first() === client.user) msg.channel.send(`my current prefix is ${config.prefix}`)
-  if (!msg.content.startsWith(config.prefix)) return;
-  let command = msg.content.split(' ')[0].slice(config.prefix.length).toUpperCase();
-  let params = msg.content.split(' ').slice(1);
+  const command = msg.content.split(' ')[0].slice(config.prefix.length).toUpperCase();
+  const params = msg.content.split(' ').slice(1);
   let cmd;
+  if (msg.mentions.users.first() === client.user) return msg.channel.send(`it's not like i noticed you, b-baka`)
+  if (!msg.content.startsWith(config.prefix)) return;
   if (client.commands.has(command)) {
     cmd = client.commands.get(command);
   } else if(client.aliases.has(command)) {
