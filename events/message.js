@@ -7,7 +7,6 @@ module.exports = msg => {
   const command = msg.content.split(' ')[0].slice(config.prefix.length).toUpperCase();
   const params = msg.content.split(' ').slice(1);
   let cmd;
-  if (msg.mentions.users.first() === client.user) return msg.channel.send(`it's not like i noticed you, b-baka`)
   if (!msg.content.startsWith(config.prefix)) return;
   if (client.commands.has(command)) {
     cmd = client.commands.get(command);
