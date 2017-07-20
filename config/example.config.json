@@ -5,5 +5,7 @@
       "OwnerID"             :"",
       "GoogleApiKey"        :"",
       "OWMApiKey"           :"",
-      "discordOrgToken"     :""
+      "discordOrgToken"     :"",
+      "InviteLink"          :"",
+      "SupportServerLink"   :""
 }

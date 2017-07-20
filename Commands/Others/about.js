@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const Package = require('../../package.json')
+const config  = require('../../config/config.json')
 exports.run = (client, msg) => {
 const dateformatted = new Date().toISOString()
 
@@ -25,8 +26,9 @@ const dateformatted = new Date().toISOString()
         .addField('Total Users:', client.users.size, true)
         .addField('Total Shards:', `${client.shard.count}`, true)
         .addField('Uptime', `${format(process.uptime())}`)
+        .addField("Bot Invite Link", `[Link](${config.InviteLink})`,true )
         .addField('GitHub', "[Senpai-Bot Github Repo](https://github.com/Dev-Yukine/Senpai-Bot-Discord)", true)
-        .addField('Support Server', "[Server](https://discord.gg/7hmMuXR)", true)
+        .addField('Support Server', `[Server](${config.SupportServerLink})`, true)
         .setTimestamp(dateformatted)
     msg.channel.send({embed})
 }
