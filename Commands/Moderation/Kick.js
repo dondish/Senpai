@@ -1,8 +1,7 @@
 const Discord = require('discord.js');
+const rethink = require('rethinkdb');
+const config  = require('../../config/config.json')
 exports.run = (client, msg, args) => {
-    function nameTest(channel) {
-        return channel.name.toLowerCase().startsWith("log")
-    }
      async function kick(member, reason, channel) {
         const message = await channel.send(`trying to kick ${member.user.tag}`)
         try{
@@ -16,23 +15,35 @@ exports.run = (client, msg, args) => {
             .addField("Member", `${member.user.tag} (${member.user.id})`)
             .addField("Reason", reason)
 
-        if (msg.guild.channels.find(nameTest)) {
-            msg.guild.channels.find(nameTest).send({embed})
-            .catch(() => msg.author.send(`I have no rights to write in the channel called ${msg.guild.channels.find(nameTest).name} so i can't write my Logs there when im used with Admin/Moderational commands\nPlease considering changing that in the Future so you have nice Logs form me there`))
-            } else {
-            msg.guild.defaultChannel.send("i dont found a channel that has a name started with log.\nCreate one so my Logs will be seperated from a normal Chat channel!", {embed})
-            .catch(() => msg.author.send("i have no rights to write in your defaultChannel so i dm you with that information\nYou should create a Channel called 'logs' because i would automatically send my logs there when my Moderation tools are used\n"))
-        }
+        const connection = await rethink.connect()
+        connection.use('Discord')
+        rethink.table('guildConfig')
+            .get(msg.guild.id)
+            .run(connection, (err, result) => {
+                if (err) throw err
+                if (result.ModlogID !== "None") {
+                    let prefix
+                    if(result.customPrefix === "None") {
+                        prefix = config.prefix
+                    } else {
+                        prefix = result.customPrefix
+                    }
+                    msg.guild.defaultChannel.send(`You didn't added a Modlog so i write my Logs in the default Channel\nadd one with ${prefix}setmodlog, so my logs are seperated`, {embed})
+                }else{
+                    msg.guild.channels.get(result.ModlogID).send({embed})
+                }
+            })
+
         }catch(error) {
             message.edit(`i had an error while trying to kick the member if this happens often & i have the needed permissions you should contact my DEV!`)
         }
     }
-    let reason = args.slice(1).join(' ');
-    let member   = msg.mentions.members.first()
     if(msg.channel.type != "text") return msg.channel.send("You can run this command only on a Server!")
     if(!msg.member.hasPermission(2)) return msg.reply("*You need a role that provide the right to kick People!*")
     if (msg.mentions.members.size < 1) return msg.reply('You must mention someone for this Command.')
+    let member   = msg.mentions.members.first()
     if (!member.kickable) return msg.reply('I have no rights to kick that User');
+    let reason = args.slice(1).join(' ');
     if (reason.length < 1) return msg.reply('You must supply a reason for the kick.');
 
     kick(member, reason, msg.channel)

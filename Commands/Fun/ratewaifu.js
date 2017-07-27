@@ -1,6 +1,8 @@
 const Discord = require('discord.js')
 exports.run = (client, msg, params) => {
-    const waifu = params[0];
+    let waifu = params[0];
+    if(!waifu) return msg.channel.send("You must supply a waifu to rate!")
+    if(msg.mentions.users.size === 1) waifu = msg.mentions.users.first().username
     const random = Math.floor(Math.random() * 10);
     const embed = new Discord.RichEmbed()
         .setAuthor(msg.client.user.username, msg.client.user.displayAvatarURL)

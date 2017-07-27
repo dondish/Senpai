@@ -5,6 +5,7 @@ const yt                                    = require('ytdl-core');
 const config                                = require('../config/config.json')
 let   ypi                                   = require('youtube-playlist-info');
 const search                                = require('youtube-search');
+const rethink                               = require('rethinkdb')
 const searchopts                            = {
       "maxResults": 10,
       "key": config.GoogleApiKey
@@ -351,6 +352,19 @@ async function playqueue(Guild, channel) {
     )
 }
 
-exports.playqueue = (Guild, channel) => {
-    playqueue(Guild, channel);
+exports.playqueue = async (Guild, channel) => {
+    let outputChannel
+    const connection = await rethink.connect()
+    connection.use('Discord')
+    rethink.table('guildConfig')
+    .get(Guild.id)
+    .run(connection, (err, result) => {
+        if (err) throw err
+        if (result.MusicID === 'None') {
+            outputChannel = channel
+        } else {
+            outputChannel = Guild.channels.get(result.MusicID)
+        }
+        playqueue(Guild, outputChannel);
+    })
 }

@@ -9,7 +9,7 @@ module.exports = async guild => {
     snekfetch.post(`https://discordbots.org/api/bots/${guild.client.user.id}/stats`)
         .set('Authorization', config.discordOrgToken)
         .send({"server_count": guildsizes})
-        .then(() => console.log(`Senpai Joined the Guild ${guild.name} size is now ${guild.client.guilds.size}`))
+        .then(() => console.log(`${guild.client.user.username} Joined the Guild ${guild.name} size is now ${guildsizes}`))
         .catch(() => console.log("dbots website down"))
     const members = guild.members
     const connection = await rethink.connect()

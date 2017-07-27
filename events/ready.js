@@ -10,8 +10,6 @@ module.exports = bot => {
   console.log('Servers:       ' + bot.guilds.size );
   console.log('Channels:      ' + bot.channels.size);
   console.log('-----------------------------------------------------------------------------');
-  console.log('Other API Status:')
-  console.log('-----------------------------------------------------------------------------');
   bot.user.setGame(`%help || Version: ${packageJson.version}`)
   function createAndUseDB() {
     return new Promise(async function(resolve, reject) {
@@ -62,28 +60,67 @@ module.exports = bot => {
       })
     })
   }
-  async function insertIntoDB(users) {
-    const connection = await createTable();
-    await createTable2();
-    let timer = 0;
-    users.forEach(user => {
-      if(user.presence.status === 'offline') return
-      rethink.table('OnlineTime').insert(
-        {
-          "id": `${user.id}`,
-          "time": `${moment().unix()}`
-        },
-        {"conflict": "replace"}
-      )
-      .run(connection, () => {
-      timer++;
-      if(timer === users.size) connection.close()
+  function createTable3() {
+    return new Promise(async (resolve, reject) => {
+      const connection = await createAndUseDB()
+      rethink.tableList().run(connection, (err, result) => {
+          if(err) reject(new Error("Something went wrong while trying to fetch all Tables"));
+        if(!result.includes("guildConfig")) {
+          rethink.tableCreate('guildConfig').run(connection, err => {
+            if (err) reject(new Error("Something went wrong while trying to create a Table"));
+              resolve();
+          })
+        }else{
+          resolve();
+        }
       })
-    });
+    })
+  }
+    function createTable4() {
+    return new Promise(async (resolve, reject) => {
+      const connection = await createAndUseDB()
+      rethink.tableList().run(connection, (err, result) => {
+          if(err) reject(new Error("Something went wrong while trying to fetch all Tables"));
+        if(!result.includes("StarboardMessages")) {
+          rethink.tableCreate('StarboardMessages').run(connection, err => {
+            if (err) reject(new Error("Something went wrong while trying to create a Table"));
+              resolve();
+          })
+        }else{
+          resolve();
+        }
+      })
+    })
+  }
+  async function insertIntoDB(users) {
+    try{
+      const connection = await createTable();
+      await createTable2();
+      await createTable3();
+      await createTable4();
+        users.forEach(user => {
+          if(user.presence.status === 'offline') return
+          rethink.table('OnlineTime').insert(
+            {
+              "id": `${user.id}`,
+              "time": `${moment().unix()}`
+            },
+            {"conflict": "replace"}
+          )
+          .run(connection, err => {
+            if (err) throw err
+          })
+          setTimeout(function() {
+          connection.close()
+        }, 180000)
+        });
+    }catch(err){
+    throw new Error('had the following error with the DB:' + err);
+    }
   }
   if(firststartup) {
     insertIntoDB(bot.users)
     firststartup = false
   }
-};
+}
 

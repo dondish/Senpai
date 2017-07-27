@@ -1,6 +1,6 @@
 {
   "name": "senpai-bot",
-  "version": "4.7.1",
+  "version": "4.8.0",
   "description": "Selfmade Nodejs Discord bot",
   "main": "Util/ShardManager.js",
   "scripts": {
@@ -21,11 +21,12 @@
   },
   "homepage": "https://github.com/Dev-Yukine/Senpai-Bot-Discord#readme",
   "devDependencies": {
-    "eslint": "^4.2.0"
+    "eslint": "^4.3.0"
   },
   "dependencies": {
     "async": "^2.5.0",
     "bl": "^1.2.1",
+    "bufferutil": "^3.0.2",
     "discord.js": "^11.1.0",
     "ffmpeg-binaries": "^3.2.2",
     "googleapis": "^20.1.0",
@@ -39,9 +40,8 @@
     "request": "^2.81.0",
     "rethinkdb": "^2.3.3",
     "snekfetch": "^3.2.4",
-    "uws": "^8.14.0",
     "youtube-playlist-info": "^0.1.0",
     "youtube-search": "^1.0.10",
-    "ytdl-core": "^0.14.4"
+    "ytdl-core": "^0.15.0"
   }
 }

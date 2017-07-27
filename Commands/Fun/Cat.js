@@ -1,9 +1,9 @@
-const snekfetch             = require('snekfetch')
+const snekfetch = require('snekfetch')
 exports.run = (client, msg) => {
         snekfetch.get("http://random.cat/meow")
             .then(respond => {
               const Link = respond.body.file
-                msg.channel.send("here you go enjoy your cat", {"files": [Link]})
+                msg.channel.send("enjoy your cat", {"files": [Link]})
             })
 }
 

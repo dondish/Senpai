@@ -1,13 +1,50 @@
 const config   = require('../config/config.json')
 const economy  = require('../Util/economy.js')
-module.exports = msg => {
+const rethink  = require('rethinkdb')
+module.exports = async msg => {
+  function checkCustomPrefix(guild) {
+    return new Promise(async (resolve, reject) => {
+      const connection = await rethink.connect()
+      connection.use('Discord')
+      rethink.table('guildConfig')
+      .get(guild.id)
+      .run(connection, (err, result) => {
+        if (err) reject(err)
+        if(result === null) {
+          rethink.table('guildConfig').insert({
+            "id":                 guild.id,
+            "customPrefix":       "None",
+            "ModlogID":           "None",
+            "StarboardID":        "None",
+            "MusicID":            "None"
+          })
+          .run(connection, err => {
+            if (err) reject(err);
+            resolve();
+          })
+        } else if(result.customPrefix === "None") {
+            resolve();
+          }else{
+            resolve(result.customPrefix)
+          }
+      })
+    })
+  }
+
   const client = msg.client;
   if (msg.author.bot) return;
   economy.messageUpdate(client, msg.author)
-  const command = msg.content.split(' ')[0].slice(config.prefix.length).toUpperCase();
+  let prefix
+  if(msg.guild) {
+    prefix = await checkCustomPrefix(msg.guild)
+  }
+  if(prefix === undefined) {
+      prefix = config.prefix
+    }
+  const command = msg.content.split(' ')[0].slice(prefix.length).toUpperCase();
   const params = msg.content.split(' ').slice(1);
   let cmd;
-  if (!msg.content.startsWith(config.prefix)) return;
+  if (!msg.content.startsWith(prefix)) return;
   if (client.commands.has(command)) {
     cmd = client.commands.get(command);
   } else if(client.aliases.has(command)) {
@@ -17,5 +54,4 @@ module.exports = msg => {
     console.log("[Command]     ", msg.author.username + "/" + msg.author.id, "(" + msg.content + ")")
     cmd.run(client, msg, params);
   }
-
 };
