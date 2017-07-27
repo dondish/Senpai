@@ -17,6 +17,7 @@ exports.run = async (client, msg, params) => {
     .update({StarboardID})
     .run(connection, err => {
         if (err) throw err
+        connection.close()
         const embed = new Discord.RichEmbed()
         .setTitle(`Updated Starboard Channel for ${msg.guild.name}`)
         .addField('New Starboard Channel', `<#${StarboardID}>`)

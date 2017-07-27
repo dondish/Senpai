@@ -30,6 +30,7 @@ exports.run = async (client, msg, params) => {
             .update({"Cash": newCash})
             .run(connection, err => {
             if (err) throw err
+            connection.close()
             })
         }else if(random < 0.5) {
             newCash = money - Gambleamount
@@ -39,6 +40,7 @@ exports.run = async (client, msg, params) => {
             .update({"Cash": newCash})
             .run(connection, err => {
             if (err) throw err
+            connection.close()
             })
         }
     })

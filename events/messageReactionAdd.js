@@ -16,6 +16,7 @@ module.exports = async (messageReaction, user) => {
                 .get(message.guild.id)
                 .run(connection, (err, result) => {
                     if(err) throw err
+                    connection.close()
                     if(result.StarboardID !== 'None') {
                     const embed = new Discord.RichEmbed()
                         .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)

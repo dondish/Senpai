@@ -366,5 +366,6 @@ exports.playqueue = async (Guild, channel) => {
             outputChannel = Guild.channels.get(result.MusicID)
         }
         playqueue(Guild, outputChannel);
+        connection.close()
     })
 }

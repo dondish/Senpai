@@ -17,6 +17,7 @@ exports.run = async (client, msg, params) => {
     .update({ModlogID})
     .run(connection, err => {
         if (err) throw err
+        connection.close()
         const embed = new Discord.RichEmbed()
         .setTitle(`Updated Modlog for ${msg.guild.name}`)
         .addField('New Modlog Channel', `<#${ModlogID}>`)

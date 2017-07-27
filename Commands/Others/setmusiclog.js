@@ -17,6 +17,7 @@ exports.run = async (client, msg, params) => {
     .update({MusicID})
     .run(connection, err => {
         if (err) throw err
+        connection.close()
         const embed = new Discord.RichEmbed()
         .setTitle(`Updated Music Channel for ${msg.guild.name}`)
         .addField('New Music Channel', `<#${MusicID}>`)

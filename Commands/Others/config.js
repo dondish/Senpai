@@ -8,6 +8,7 @@ exports.run = async (client, msg) => {
       .get(msg.guild.id)
       .run(connection, (err, result) => {
         if (err) throw err
+        connection.close()
         let ModlogChannel = msg.guild.channels.get(result.ModlogID)
         if (ModlogChannel === undefined) ModlogChannel = 'None'
         let StarboardChannel = msg.guild.channels.get(result.StarboardID)

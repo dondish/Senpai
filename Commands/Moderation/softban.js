@@ -26,6 +26,7 @@ exports.run = (client, msg, args) => {
             .get(msg.guild.id)
             .run(connection, (err, result) => {
                 if (err) throw err
+                connection.close()
                 if (result.ModlogID !== "None") {
                     let prefix
                     if(result.customPrefix === "None") {

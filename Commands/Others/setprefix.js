@@ -10,6 +10,7 @@ exports.run = async (client, msg, params) => {
     .update({"customPrefix": params[0]})
     .run(connection, err => {
         if (err) throw err
+        connection.close()
         const embed = new Discord.RichEmbed()
         .setTitle(`Updated Prefix for ${msg.guild.name}`)
         .addField('New Prefix', params[0])

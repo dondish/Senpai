@@ -20,11 +20,14 @@ module.exports = async msg => {
           })
           .run(connection, err => {
             if (err) reject(err);
+            connection.close()
             resolve();
           })
         } else if(result.customPrefix === "None") {
+            connection.close()
             resolve();
           }else{
+            connection.close()
             resolve(result.customPrefix)
           }
       })
