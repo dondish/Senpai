@@ -23,7 +23,8 @@ exports.run = async (client, msg, args) => {
                 let number = parseInt(args[0], 10)
                 if (number === 1) return msg.reply(`You try to delete the current playing song from the queue use ${config.prefix}skip instead`)
                 if (isNaN(number)) return msg.reply("I only accpet the queue number in this command")
-                music.deletesong(msg, number)            })
+                music.deletesong(msg, number)            
+            })
         })
 }
 
