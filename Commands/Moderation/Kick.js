@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 const rethink = require('rethinkdb');
 const config  = require('../../config/config.json')
-exports.run = (client, msg, args) => {
+const async   = require('async')
+exports.run = async (client, msg, args) => {
      async function kick(member, reason, channel) {
         const message = await channel.send(`trying to kick ${member.user.tag}`)
         try{
@@ -21,8 +22,8 @@ exports.run = (client, msg, args) => {
             .get(msg.guild.id)
             .run(connection, (err, result) => {
                 if (err) throw err
-                connection.close() 
-                if (result.ModlogID !== "None") {
+                connection.close()
+                if (result.ModlogID === "None") {
                     let prefix
                     if(result.customPrefix === "None") {
                         prefix = config.prefix
@@ -40,14 +41,30 @@ exports.run = (client, msg, args) => {
         }
     }
     if(msg.channel.type != "text") return msg.channel.send("You can run this command only on a Server!")
-    if(!msg.member.hasPermission(2)) return msg.reply("*You need a role that provide the right to kick People!*")
-    if (msg.mentions.members.size < 1) return msg.reply('You must mention someone for this Command.')
-    let member   = msg.mentions.members.first()
-    if (!member.kickable) return msg.reply('I have no rights to kick that User');
-    let reason = args.slice(1).join(' ');
-    if (reason.length < 1) return msg.reply('You must supply a reason for the kick.');
-
-    kick(member, reason, msg.channel)
+    const connection = await rethink.connect()
+    connection.use('Discord')
+    rethink.table('guildConfig')
+    .get(msg.guild.id)
+    .run(connection, (err, result) => {
+        if (err) throw err
+        const ModroleIDs = result.ModerationRolesIDs
+        let prefix = result.customPrefix
+        if(prefix === "None") prefix = config.prefix
+        let haveModerationRole = false
+        async.forEach(ModroleIDs, function(ID, callback) {
+            if(msg.member.roles.has(ID)) haveModerationRole = true
+            callback();
+        }, function() {
+            if(haveModerationRole === false && msg.guild.owner.id !== msg.author.id) return msg.reply(`You have no role that is registered as an Moderation Role! add/remove these in my configuration with ${prefix}modrole`)
+            if (msg.mentions.members.size < 1) return msg.reply('You must mention someone for this Command.')
+            let member   = msg.mentions.members.first()
+            if (!member.kickable) return msg.reply('I have no rights to kick that User');
+            if(msg.member.highestRole.comparePositionTo(member.highestRole) <= 0 && msg.guild.owner.id !== msg.author.id) return msg.reply("You can't kick someone with an higher or the same roleposition!")
+            let reason = args.slice(1).join(' ');
+            if (reason.length < 1) return msg.reply('You must supply a reason for the kick.');
+            kick(member, reason, msg.channel)
+        })
+    })
 }
 
 exports.help = {

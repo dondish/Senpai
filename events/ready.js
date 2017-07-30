@@ -1,4 +1,5 @@
 const packageJson                             = require('../package.json')
+const config                                  = require('../config/config.json')
 const moment                                  = require('moment');
 const rethink                                 = require('rethinkdb')
 let firststartup                              = true
@@ -10,7 +11,7 @@ module.exports = bot => {
   console.log('Servers:       ' + bot.guilds.size );
   console.log('Channels:      ' + bot.channels.size);
   console.log('-----------------------------------------------------------------------------');
-  bot.user.setGame(`%help || Version: ${packageJson.version}`)
+  bot.user.setGame(`${config.prefix}help || Version: ${packageJson.version}`)
   function createAndUseDB() {
     return new Promise(async function(resolve, reject) {
       const connection = await rethink.connect()

@@ -11,7 +11,7 @@ This bot is written in Javascript and use [Nodejs](https://nodejs.org/en/) to ru
 
 [![dependencies Status](https://david-dm.org/Dev-Yukine/Senpai-Bot-Discord/status.svg)](https://david-dm.org/Dev-Yukine/Senpai-Bot-Discord)
 
-if you want to host this bot yourself you need to install Windows Build tools Global run this command in a cmd **npm install --global --production windows-build-tools**
+if you want to host this bot yourself you need to install python 2.7 and a C compiler if you are on Windows you can run this command in a cmd line **npm install --global --production windows-build-tools** on linux you must install that yourself.
 
 after that you should install the dependencies by run a **npm install** in the Bots directory.
 

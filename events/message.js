@@ -16,7 +16,10 @@ module.exports = async msg => {
             "customPrefix":       "None",
             "ModlogID":           "None",
             "StarboardID":        "None",
-            "MusicID":            "None"
+            "MusicID":            "None",
+            "ModerationRolesIDs": [],
+            "MusicRolesIDs":      []
+
           })
           .run(connection, err => {
             if (err) reject(err);

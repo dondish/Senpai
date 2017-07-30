@@ -34,8 +34,6 @@ function shuffle(queue) {
 //Storage for the queues
 let queues = {};
 //Storage for the Dispatcher
-let dispatchers = {};
-
 
 //function to get the current queue
 function getqueue(ID){
@@ -43,11 +41,6 @@ function getqueue(ID){
     return queues[ID];
 }
 
-//function to get the current Dispatcher
-function getDispatcher(ID) {
-    if (!dispatchers[ID]) dispatchers[ID] = []
-    return dispatchers[ID]
-}
 //format function
 function format(seconds){
     function pad(seconds3){
@@ -98,15 +91,13 @@ exports.queue = msg => {
 }
 //export showVolume function
 exports.showVolume = msg => {
-    let getdispatcher = getDispatcher(msg.guild.id)
-    let dispatcher       = getdispatcher[0]
+    let dispatcher = msg.guild.voiceConnection.dispatcher
     if(dispatcher === undefined) return msg.channel.send("i dont play music at the moment!")
     msg.channel.send(`the current volume is ${dispatcher.volume}`)
 }
 //export changeVolume function
 exports.changeVolume = (msg, number) => {
-    let dispatchertochange = getDispatcher(msg.guild.id)
-    let dispatcher       = dispatchertochange[0]
+    let dispatcher       = msg.guild.voiceConnection.dispatcher
     if(dispatcher === undefined) return msg.channel.send("i dont play music at the moment!")
     dispatcher.setVolumeLogarithmic(number)
     msg.channel.send(`You set the Volume to ${number}`)
@@ -129,24 +120,20 @@ exports.deletesong = (msg, number) => {
 }
 //export skip function
 exports.skip = msg => {
-    let dispatchertoskip = getDispatcher(msg.guild.id)
-    let dispatcher       = dispatchertoskip[0]
+    let dispatcher       = msg.guild.voiceConnection.dispatcher
     if(dispatcher === undefined) return msg.channel.send("i dont play music at the moment!")
     dispatcher.end()
     msg.channel.send("Skipped the played Song!")
 
 }
-
+//expor the disconnect function
 exports.disconnect = msg => {
     let queue = getqueue(msg.guild.id);
-    if (queue.length > 0) {
-        queue.length = 0
-    }
-    if (msg.guild.voiceConnection.speaking === true) {
-            let dispatchertoskip = getDispatcher(msg.guild.id)
-            let dispatcher       = dispatchertoskip[0]
-            dispatcher.end()
-    }
+    let voiceConnection = msg.guild.voiceConnection
+    let dispatcher   = voiceConnection.dispatcher;
+    if (queue.length > 0) queue.length = 0
+    if (dispatcher) dispatcher.end()
+    voiceConnection.disconnect()
 }
 //get playlist function returns a promise
 function getPlaylist(ApiKey, playlistID) {
@@ -321,14 +308,11 @@ async function playqueue(Guild, channel) {
     //if Queue has 2 or more Songs Download the next also
     if(queue.length > 1) downloadSong(NextSong);
     //get some stuff from the Info object we need
-    const dispatcherStorage = getDispatcher(Guild.id)
     const id          = CurrentSong.video_id
     const title       = CurrentSong.title
     const author      = CurrentSong.requestedBy
     //get the Dispatcher
     const dispatcher  = voiceConnection.playFile(`./audio_cache/${id}.aac`, {"volume": 0.4})
-    //add the Dispatcher to the Storage
-    dispatcherStorage.push(dispatcher)
     //output from the start event
     dispatcher.on('start', () => {
         channel.send(`**Start playing:** ${title} Requested by **${author.tag}**`)
@@ -342,11 +326,11 @@ async function playqueue(Guild, channel) {
             return playqueue(Guild, channel);
         }
     )
-    //output form the end event + delete the current played Song aswell the current Dispatcher from the Storage also loop this function
+    //output form the end event + delete the current played Song also loop this function
     dispatcher.on('end', () => {
     channel.send(`**Finished playing:** ${title}`);
     queue.shift();
-    dispatcherStorage.shift();
+
     playqueue(Guild, channel);
         }
     )

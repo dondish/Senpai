@@ -21,6 +21,7 @@ module.exports = async (messageReaction, user) => {
                     const embed = new Discord.RichEmbed()
                         .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
                         .addField(`ID:`, `${message.id}`)
+                        .addField('Channel', `${message.channel}`)
                         .addField(`Message:`, `${message.content}`)
                         .setTimestamp()
                         .setColor(0x80ff00)
