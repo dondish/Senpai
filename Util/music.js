@@ -316,8 +316,9 @@ async function playqueue(Guild, channel) {
     //output from the start event
     dispatcher.on('start', () => {
         channel.send(`**Start playing:** ${title} Requested by **${author.tag}**`)
-            }
-        )
+        voiceConnection.player.streamingData.pausedTime = 0;
+        }
+    )
     //log if the error event is emitted
     dispatcher.on('error', error => {
             channel.send("I had an error while trying to play the Current Song so i skipped it! if this happens more than 1 time please contact my DEV!");
@@ -330,7 +331,6 @@ async function playqueue(Guild, channel) {
     dispatcher.on('end', () => {
     channel.send(`**Finished playing:** ${title}`);
     queue.shift();
-
     playqueue(Guild, channel);
         }
     )
