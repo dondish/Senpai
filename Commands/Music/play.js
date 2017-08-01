@@ -22,6 +22,7 @@ exports.run = async (client, msg, args) => {
             if(msg.member.roles.has(ID)) haveMusicrole = true;
             callback();
             },async () => {
+                connection.close()
                 if(haveMusicrole === false && msg.guild.owner.id !== msg.author.id) return msg.reply(`You have no role that is registered as an Music Role so you have no permission to do that! add/remove these in my configuration with ${prefix}musicrole`)
                 const message = await msg.channel.send('trying to add your Song/Playlist to the queue....')
                 music.addtoqueue(Link, msg.member)

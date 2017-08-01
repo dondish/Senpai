@@ -18,12 +18,13 @@ exports.run = async (client, msg, args) => {
             if(msg.member.roles.has(ID)) haveMusicrole = true;
             callback();
             }, () => {
+                connection.close()
                 if(haveMusicrole === false && msg.guild.owner.id !== msg.author.id) return msg.reply(`You have no role that is registered as an Music Role so you have no permission to do that! add/remove these in my configuration with ${prefix}musicrole`)
                 if(args.length > 1) return msg.reply("You must add the number of the Song which you wanna remove!")
                 let number = parseInt(args[0], 10)
                 if (number === 1) return msg.reply(`You try to delete the current playing song from the queue use ${config.prefix}skip instead`)
                 if (isNaN(number)) return msg.reply("I only accpet the queue number in this command")
-                music.deletesong(msg, number)            
+                music.deletesong(msg, number)
             })
         })
 }

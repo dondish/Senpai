@@ -22,6 +22,7 @@ exports.run = async (client, msg, args) => {
             if(msg.member.roles.has(ID)) haveMusicrole = true;
             callback();
             }, () => {
+                connection.close()
                 if(haveMusicrole === false && msg.guild.owner.id !== msg.author.id) return msg.reply(`You have no role that is registered as an Music Role so you have no permission to do that! add/remove these in my configuration with ${prefix}musicrole`)
                     if (isNaN(number)) return msg.channel.send("This command only accept numbers!")
                     if(number > 2 || number < 0.1) return msg.channel.send("You can only choose a number between 2 and 0.1 where 2=200% volume and 0.1=10% volume from the current volume!")

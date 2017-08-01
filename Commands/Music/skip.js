@@ -18,6 +18,7 @@ exports.run = async (client, msg) => {
             if(msg.member.roles.has(ID)) haveMusicrole = true;
             callback();
             }, () => {
+                connection.close()
                 if(haveMusicrole === false && msg.guild.owner.id !== msg.author.id) return msg.reply(`You have no role that is registered as an Music Role so you have no permission to do that! add/remove these in my configuration with ${prefix}musicrole`)
                 music.skip(msg)
             })
