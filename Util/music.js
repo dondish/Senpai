@@ -13,9 +13,11 @@ const searchopts                            = {
 
 //Shuffle function
 function shuffle(queue) {
+    let firstSong = queue.shift()
     let currentIndex = queue.length,
     randomIndex,
     temporaryValue;
+
    //While there remain elements to shuffle...
    while (currentIndex !== 0) {
 
@@ -29,11 +31,14 @@ function shuffle(queue) {
      queue[randomIndex] = temporaryValue;
    }
 
+   //Add first song again to queue
+   queue.unshift(firstSong);
+
+   //Return queue
    return queue;
  }
 //Storage for the queues
 let queues = {};
-//Storage for the Dispatcher
 
 //function to get the current queue
 function getqueue(ID){
@@ -55,7 +60,7 @@ function format(seconds){
 //export the shuffle function
  exports.shufflequeue = msg => {
      let queue = getqueue(msg.guild.id);
-     if (queue.length < 2) return msg.channel.send("You need atleast 2 songs in the queue to shuffle!")
+     if (queue.length < 3) return msg.channel.send("You need atleast 3 songs in the queue to shuffle!")
         queues[msg.guild.id] = shuffle(queue);
         msg.channel.send("successfully shuffled the queue!")
  }
@@ -187,6 +192,67 @@ function addEverySong(Songs, queue, member) {
             });
     })
 }
+
+//add to queue function
+exports.addAsNextToQueue = (url, member) => new Promise(function(resolve, reject) {
+    //Test if the URL array has 1 or more Items
+    if(url.length === 1) {
+        let Link = url[0]
+        //Test if its a Video
+        if(Link.includes("watch") || Link.includes("youtu.be")) {
+            //get info about that Video
+            yt.getInfo(Link, (err, info) => {
+                //if error reject the Promise
+                if (err || info.video_id === undefined) return reject(new Error("get Info about that Song failed"))
+                const length = Number(info.length_seconds)
+                //if Video is longer than 30 mins reject it
+                if(length > 1800) return reject(new Error("Video is longer than 30 minutes"))
+                //get the username of the User who requested and add it to the info object
+                info.requestedBy = member.user;
+                //get the queue
+                let queue = getqueue(member.guild.id);
+                //add it to the queue
+                queue.splice(1, 0, info);
+                //resolve the Promise
+                resolve([`**Queued:** ${info.title}`]);
+            })
+        //Test if its a Playlist
+    } else {
+            //if its a Link but not from Youtube reject the Promise
+            reject(new Error("Url is not an Youtube Video"))
+        }
+    }else{
+        let Name = url.join(" ")
+        //search for that Song
+        search(Name, searchopts, function(error, result) {
+            if(error) return reject(new Error("searching for that Song failed"));
+            let firstResult = result[0];
+            let index;
+            //get the next object until its an Video
+            while(firstResult.kind !== "youtube#video") {
+                index += 1
+                firstResult = result[index]
+            }
+            //get Info about that Video
+            yt.getInfo(firstResult.link, (err, info) => {
+                //if error reject the Promise
+                if (err || info.video_id === undefined) return reject(new Error("get Info about that Song failed"))
+                const length = Number(info.length_seconds)
+                //if Video is longer than 30 mins reject it
+                if(length > 1800) return reject(new Error("Video is longer than 30 minutes"))
+                //get the username of the User who requested and add it to the info object
+                info.requestedBy = member.user;
+                //get the queue
+                let queue = getqueue(member.guild.id);
+                //add it to the queue
+                queue.splice(1, 0, info);
+                //resolve the Promise
+                resolve([`**Queued:** ${info.title}`]);
+                })
+            })
+    }
+})
+
 
 //add to queue function
 exports.addtoqueue = (url, member) => new Promise(async function(resolve, reject) {
