@@ -47,15 +47,18 @@ module.exports = bot => {
   }
   function createTable2() {
     return new Promise(async function(resolve, reject) {
-      const connection = await createAndUseDB()
+      const connection = await rethink.connect()
+      connection.use('Discord')
       rethink.tableList().run(connection, (err, result) => {
         if (err) reject(new Error("Something went wrong while trying to fetch all Tables"))
       if(!result.includes("economy")) {
         rethink.tableCreate('economy').run(connection, err => {
+          connection.close()
           if (err) reject(new Error("Something went wrong while trying to create a Table"))
           resolve()
         })
       }else{
+        connection.close()
         resolve()
       }
       })
@@ -63,15 +66,18 @@ module.exports = bot => {
   }
   function createTable3() {
     return new Promise(async (resolve, reject) => {
-      const connection = await createAndUseDB()
+      const connection = await rethink.connect()
+      connection.use('Discord')
       rethink.tableList().run(connection, (err, result) => {
           if(err) reject(new Error("Something went wrong while trying to fetch all Tables"));
         if(!result.includes("guildConfig")) {
           rethink.tableCreate('guildConfig').run(connection, err => {
+            connection.close()
             if (err) reject(new Error("Something went wrong while trying to create a Table"));
               resolve();
           })
         }else{
+          connection.close()
           resolve();
         }
       })
@@ -79,26 +85,51 @@ module.exports = bot => {
   }
     function createTable4() {
     return new Promise(async (resolve, reject) => {
-      const connection = await createAndUseDB()
+      const connection = await rethink.connect()
+      connection.use('Discord')
       rethink.tableList().run(connection, (err, result) => {
           if(err) reject(new Error("Something went wrong while trying to fetch all Tables"));
         if(!result.includes("StarboardMessages")) {
           rethink.tableCreate('StarboardMessages').run(connection, err => {
+            connection.close()
             if (err) reject(new Error("Something went wrong while trying to create a Table"));
               resolve();
           })
         }else{
+          connection.close()
           resolve();
         }
       })
     })
   }
+
+    function createTable5() {
+    return new Promise(async (resolve, reject) => {
+      const connection = await rethink.connect()
+      connection.use('Discord')
+      rethink.tableList().run(connection, (err, result) => {
+          if(err) reject(new Error("Something went wrong while trying to fetch all Tables"));
+        if(!result.includes("Blacklist")) {
+          rethink.tableCreate('Blacklist').run(connection, err => {
+            connection.close()
+            if (err) reject(new Error("Something went wrong while trying to create a Table"));
+              resolve();
+          })
+        }else{
+          connection.close()
+          resolve();
+        }
+      })
+    })
+  }
+
   async function insertIntoDB(users) {
     try{
       const connection = await createTable();
       await createTable2();
       await createTable3();
       await createTable4();
+      await createTable5();
         users.forEach(user => {
           if(user.presence.status === 'offline') return
           rethink.table('OnlineTime').insert(

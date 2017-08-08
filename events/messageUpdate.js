@@ -19,6 +19,26 @@ module.exports = async (oldMessage, newMessage) => {
       })
     })
   }
+  function checkBlacklisted(user) {
+    return new Promise(async (resolve, reject) => {
+      try{
+      const connection = await rethink.connect();
+      connection.use('Discord');
+      rethink.table('Blacklist')
+        .get(user.id)
+        .run(connection, (err, result) => {
+          if (err) reject(err)
+            if(result !== null) {
+              resolve(true)
+            } else {
+              resolve(false)
+            }
+        })
+      }catch(error) {
+        reject(error)
+      }
+    })
+  }
   const msg = newMessage
   if (msg.author.bot) return;
   let prefix
@@ -28,6 +48,8 @@ module.exports = async (oldMessage, newMessage) => {
   if(prefix === undefined) {
       prefix = config.prefix
     }
+  const ignore = await checkBlacklisted(msg.author);
+  if(ignore) return;
   let client = newMessage.client;
   if (newMessage.author.bot) return;
   if (!newMessage.content.startsWith(prefix)) return;

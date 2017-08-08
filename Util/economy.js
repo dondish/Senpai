@@ -27,7 +27,7 @@ exports.messageUpdate = (client, user) => {
   })
 }
   setTimeout(addMoney, 5000)
-  setTimeout(removeIDFromArray, 5000);
+  setTimeout(removeIDFromArray, 30000);
 }
 
 exports.bankUpdate = async () => {

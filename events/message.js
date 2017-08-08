@@ -36,17 +36,39 @@ module.exports = async msg => {
       })
     })
   }
+  function checkBlacklisted(user) {
+    return new Promise(async (resolve, reject) => {
+      try{
+      const connection = await rethink.connect();
+      connection.use('Discord');
+      rethink.table('Blacklist')
+        .get(user.id)
+        .run(connection, (err, result) => {
+          if (err) reject(err)
+            if(result !== null) {
+              resolve(true)
+            } else {
+              resolve(false)
+            }
+        })
+      }catch(error) {
+        reject(error)
+      }
+    })
+  }
 
   const client = msg.client;
   if (msg.author.bot) return;
-  economy.messageUpdate(client, msg.author)
-  let prefix
+  economy.messageUpdate(client, msg.author);
+  let prefix;
   if(msg.guild) {
-    prefix = await checkCustomPrefix(msg.guild)
+    prefix = await checkCustomPrefix(msg.guild);
   }
   if(prefix === undefined) {
-      prefix = config.prefix
+      prefix = config.prefix;
     }
+  const ignore = await checkBlacklisted(msg.author);
+  if(ignore) return;
   const command = msg.content.split(' ')[0].slice(prefix.length).toUpperCase();
   const params = msg.content.split(' ').slice(1);
   let cmd;

@@ -10,7 +10,7 @@ const Manager = new ShardingManager('./app.js',
 //spawn shards
 Manager.spawn();
 //Bank Update
-setInterval(economy.bankUpdate, 36000000)
+setInterval(economy.bankUpdate, 7200000)
 
 Manager.on('launch', shard => {
     console.log(`Shard spawned with ID ${shard.id}`)
