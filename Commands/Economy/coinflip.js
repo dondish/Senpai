@@ -1,4 +1,3 @@
-const config    = require('../../config/config.json');
 const rethink   = require('rethinkdb')
 exports.run = async (client, msg, params) => {
     if(!params[0]) return msg.reply("You must specify a amount!")
@@ -13,7 +12,7 @@ exports.run = async (client, msg, params) => {
         if (err) throw err
         if (result === null) {
             connection.close()
-            return msg.reply(`looks like you haven't registered for the economy system yet you can do that by writing ${config.prefix}register!`)
+            return msg.reply(`looks like you haven't registered for the economy system yet you can do that by using the register command!`)
         }
         const money = result.Cash
         if(Gambleamount > money) {

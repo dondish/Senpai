@@ -28,6 +28,7 @@ module.exports = async (oldMessage, newMessage) => {
         .get(user.id)
         .run(connection, (err, result) => {
           if (err) reject(err)
+            connection.close()
             if(result !== null) {
               resolve(true)
             } else {

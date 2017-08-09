@@ -14,10 +14,10 @@ const dateformatted = new Date().toISOString()
 
                 return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds2);
         }
-
+    const owner = client.users.get(config.OwnerID)
     const embed = new Discord.RichEmbed()
         .setTitle("About Senpai version: " + Package.version)
-        .setAuthor("Yukine", "https://images-ext-2.discordapp.net/.eJwFwVEOwiAMANC7cAA6KiuwxHiWUjqdUUcA_dDs7r73M-_2MIu5jVH7AiDlZcvWZW-Fa7WyP4E_PLh1cNHTCRFDTJ7mMOEMXLKQUEZN5B0FVZdJV1JGDaske6_XS9--enYYzfEHhdAiAA.COLvqNfJ1q2tD1aEnwOV-DNW7xQ?width=80&height=80")
+        .setAuthor(owner.username, owner.displayAvatarURL)
         .addField('Creator/Dev', 'Yukine', true)
         .addField('RAM usage:', `${Math.round(process.memoryUsage().heapTotal/1000000)}MB`, true)
         .setColor("DARK_GREEN")

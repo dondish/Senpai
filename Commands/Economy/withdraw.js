@@ -1,6 +1,4 @@
 const rethink = require('rethinkdb');
-const config  = require('../../config/config.json');
-
 exports.run = async (client, msg, params) => {
  const connection = await rethink.connect()
  rethink.db('Discord').table('economy')
@@ -9,7 +7,7 @@ exports.run = async (client, msg, params) => {
     if (err) throw err
     if (result === null) {
         connection.close()
-        return msg.reply(`looks like you haven't registered for the economy system yet you can do that by writing ${config.prefix}register!`)
+        return msg.reply(`looks like you haven't registered for the economy system yet you can do that by using the register command!`)
     }
     let cash = result.Cash;
     let bank = result.Bank;

@@ -1,6 +1,4 @@
 const rethink = require('rethinkdb');
-const config  = require('../../config/config.json');
-
 exports.run = async (client, msg) => {
     let currency = client.guilds.get("199857240037916672").emojis.get("322135966322262056")
     const connection = await rethink.connect()
@@ -20,7 +18,7 @@ exports.run = async (client, msg) => {
         if (err) throw err
         if (result === null) {
             connection.close()
-            return msg.reply(`looks like you or the user you mentioned haven't registered for the economy system yet you or the user can do that by writing ${config.prefix}register!`)
+            return msg.reply(`looks like you or the user you mentioned haven't registered for the economy system yet you or the user can do that by using the register command!`)
         }
         let Cash = result.Cash;
         let Bank = result.Bank;
