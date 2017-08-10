@@ -5,7 +5,8 @@ exports.run = (client, msg, params) => {
     msg.channel.send("*fetching information from kitsu!*").then(message => {
     kitsu.searchManga(params.join(" "))
       .then(result => {
-          const filter = message => {
+          function filter(message) {
+            if(message.author.id !== msg.author.id) return false
             if(message.content === "1" || message.content === "2" || message.content === "3" || message.content === "4" || message.content === "5") {
               return true
             } else {
@@ -22,7 +23,7 @@ exports.run = (client, msg, params) => {
             ).then(message => {
                 if (message.size === 0) return
                 const number = Number(message.first().content) - 1
-                msg.channel.send(`**Title EN/JP:** ${result[number].titles.enJp}\n\n**Type:** ${result[number].subType}\n\n**Start Date:** ${result[number].startDate}\n\n**End Date:** ${result[number].endDate} (if this is null then its still in progress)\n\n**PopularityRank:** ${result[number].popularityRank}\n\n**Synopsis:** ${result[number].synopsis}\n**Link:** https://kitsu.io/manga/${result[number].id}`)
+                msg.channel.send(`**Title EN/JP:** ${result[number].titles.enJp}\n**Type:** ${result[number].subType}\n**Start Date:** ${result[number].startDate}\n**End Date:** ${result[number].endDate || 'in Progress'}\n**PopularityRank:** ${result[number].popularityRank}\n**Link:** <https://kitsu.io/manga/${result[number].id}>\n**Synopsis:** ${result[number].synopsis}`)
               }
             )
             .catch(() => msg.reply("Command canceled due Timer"))
