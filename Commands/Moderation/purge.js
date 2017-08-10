@@ -17,7 +17,6 @@ exports.run = async (client, msg, args) => {
         .catch(console.error);
     }
   if (args.length < 1) return msg.reply('You must add a Number of the amount of to deleting messages behind!');
-  if(!msg.member.hasPermission(8192)) return msg.reply("*You need a role that provide the right to Delete/Manage Messages!*")
   if(!msg.deletable) return msg.reply("I have no rights to delete Messages!")
   let messagecount = parseInt(args.join(' '), 10);
   if(isNaN(messagecount)) return msg.reply("This Command only accept numbers!")
@@ -30,6 +29,7 @@ exports.run = async (client, msg, args) => {
     .get(msg.guild.id)
     .run(connection, (err, result) => {
         if (err) throw err
+        connection.close()
         const ModroleIDs = result.ModerationRolesIDs
         let prefix = result.customPrefix
         if(prefix === "None") prefix = config.prefix

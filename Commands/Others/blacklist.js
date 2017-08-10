@@ -53,7 +53,7 @@ exports.run = (client, msg, params) => {
     let addOrDelete = params[0];
     if(!addOrDelete) return msg.reply('you must choose if you wanna add or delete a user to the blacklist list :eyes:');
     let user = params[1];
-    let reason = params[2];
+    let reason = params.slice(2).join(" ");
     if(msg.author.id !== OwnerID) return msg.channel.send('Only my owner can execute that command');
     if(!user) return msg.channel.send("You must supply an ID/Mention of the user to blacklist :eyes:");
     if(!reason) reason = 'no reason provided';
