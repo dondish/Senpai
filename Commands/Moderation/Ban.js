@@ -58,7 +58,7 @@ exports.run = async (client, msg, args) => {
             if(msg.member.roles.has(ID)) haveModerationRole = true
             callback();
         }, function() {
-            if(haveModerationRole === false && msg.guild.owner.id !== msg.author.id) return msg.reply(`You have no role that is registered as an Moderation Role! add/remove these in my configuration with ${prefix}modrole`)
+            if(haveModerationRole === false && msg.guild.owner.id !== msg.author.id && msg.author.id !== config.OwnerID) return msg.reply(`You have no role that is registered as an Moderation Role! add/remove these in my configuration with ${prefix}modrole`)
             if (msg.mentions.members.size < 1) return msg.reply('You must mention someone for this Command.')
             let member   = msg.mentions.members.first()
             if (!member.kickable) return msg.reply('I have no rights to ban that User');

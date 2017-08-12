@@ -331,21 +331,26 @@ function downloadSong(SongInfo) {
     return new Promise(function(resolve, reject) {
         //test if the file already exists
         if(fs.existsSync(`./audio_cache/${SongInfo.video_id}.aac`) === false) {
-            //if File not exist try to download the Song
-             yt.downloadFromInfo(SongInfo, {'filter': 'audioonly'})
-            //and write it to a file
-            .pipe(fs.createWriteStream(`./audio_cache/${SongInfo.video_id}.aac`)
-                //if finished resolve the promise
-                .on('finish', () => {
-                        resolve();
-                    }
+            //Run it in a try/catch so it catches errors while trying to download
+            try{
+                //if File not exist try to download the Song
+                yt.downloadFromInfo(SongInfo, {'filter': 'audioonly'})
+                //and write it to a file
+                .pipe(fs.createWriteStream(`./audio_cache/${SongInfo.video_id}.aac`)
+                    //if finished resolve the promise
+                    .on('finish', () => {
+                            resolve();
+                        }
+                    )
+                    //if error occourd reject the promise with that error
+                    .on('error', error => {
+                            reject(new Error(error))
+                        }
+                    )
                 )
-                //if error occourd reject the promise with that error
-                .on('error', error => {
-                        reject(new Error(error))
-                    }
-                )
-            )
+            }catch(error) {
+                reject(error);
+            }
         } else {
             //if file already exists resolve the Promise
             resolve();
