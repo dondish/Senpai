@@ -1,0 +1,7 @@
+{
+    "BOTOWNER": 0,
+    "SERVEROWNER": 1,
+    "MODERATORROLE": 2,
+    "MUSICROLE": 3,
+    "NOTHING": 4
+}

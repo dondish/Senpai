@@ -3,17 +3,22 @@
 ## About
 Here you can find the Source code of my own Bot "Senpai" for [Discord](https://discordapp.com/). You can use this Source-Code under the [MIT](https://en.wikipedia.org/wiki/MIT_License) license at any time.
 
-This software uses libraries from the FFmpeg project under the LGPLv2.1
+after the rewrite it makes fully usage of classes &  ES2017's async/await functionality.
 
 ## Language and Libs
 
 This bot is written in Javascript and use [Nodejs](https://nodejs.org/en/) to run.
 
+also it uses the Libary [Discord.js](https://github.com/hydrabolt/discord.js/pulls) to interact with the Discord API
+
 [![dependencies Status](https://david-dm.org/Dev-Yukine/Senpai-Bot-Discord/status.svg)](https://david-dm.org/Dev-Yukine/Senpai-Bot-Discord)
 
-if you want to host this bot yourself you need to install python 2.7 and a C compiler if you are on Windows you can run this command in a cmd line **npm install --global --production windows-build-tools** on linux you must install that yourself.
+if you want to host this bot yourself you need to install python 2.7 and a C compiler if you are on Windows you can run this command in a cmd line **npm install --global --production windows-build-tools** on some Linux distributions it is pre installed on some others not.
+
+if you are on linux you need install FFMPEG yourself if you are on windows you mostly wont need since one of my dependencies handle that.
 
 after that you should install the dependencies by run a **npm install** in the Bots directory.
+
 
 also you need a **RethinkDB server**.
 
@@ -30,8 +35,4 @@ also you need a **RethinkDB server**.
 - [Suggestions](https://github.com/Dev-Yukine/Senpai-Bot-Discord/issues?utf8=%E2%9C%93&q=is%3Aopen%20Suggestion%3A%20)
 
 ## Legal advises
-
-### FFmpeg
-
-This software uses code of [FFmpeg](http://ffmpeg.org) licensed under the [LGPLv2.1](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html) and its source can be downloaded [here.](https://github.com/FFmpeg/FFmpeg)
 

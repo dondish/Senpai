@@ -1,0 +1,25 @@
+{
+    "guild":  {
+        "moderationRolesIDs": [] ,
+        "modlogID":  "" ,
+        "musicID":  "" ,
+        "musicRolesIDs": [] ,
+        "starboardID":  "" ,
+        "prefix":  "" ,
+        "id":  ""
+    },
+    "blacklist" : {
+        "id": "",
+        "reason": ""
+    },
+    "starboardMessages" : {
+        "id": "",
+        "messages": []
+    },
+    "money":{
+        "id": "",
+        "guildID": "",
+        "cash": 0,
+        "bank": 0
+    }
+}
