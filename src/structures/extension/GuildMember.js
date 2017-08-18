@@ -57,6 +57,7 @@ class GuildMemberExtension extends Extension {
                 await client.db.money.insertDate({
                     "id": `${this.id}${this.guild.id}`,
                     "guildID": this.guild.id,
+                    "userID": this.id,
                     "cash": 0,
                     "bank": 0
 

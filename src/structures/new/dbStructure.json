@@ -19,6 +19,7 @@
     "money":{
         "id": "",
         "guildID": "",
+        "userID": "",
         "cash": 0,
         "bank": 0
     }

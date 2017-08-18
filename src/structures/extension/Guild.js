@@ -2,6 +2,18 @@ const Extension = require('./Extend.js')
 
 class GuildExtension extends Extension {
 
+    getLeaderboard(client) {
+        return new Promise(async (resolve, reject) => {
+            try{
+                const data = await client.db.money.filterAndSort({"guildID": this.id}, element => element('bank') + element('cash'))
+                data.length = 9
+                resolve(data)
+            }catch(error){
+                reject(error)
+            }
+        })
+    }
+
     getConfig(client) {
         return new Promise(async (resolve, reject) => {
             try{
