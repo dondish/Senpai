@@ -46,21 +46,10 @@ class GuildExtension extends Extension {
 
     getQueue() {
         const queue = this.queue
-        return queue || []
-    }
-
-    pushToQueue(element) {
-        if(!element) throw new Error('you didn`t supplied a element to push to the Queue')
-        const queue = this.queue || []
-        queue.push(element)
-        if(!queue) this.queue = queue
-    }
-
-    addToQueue(element, index) {
-        if(typeof index !== 'number') throw new TypeError('index must be a number')
-        if(!element) throw new Error('you didn`t supplied a element to add to the Queue')
-        const queue = this.queue || []
-        queue.splice(index, 0, element)
+        if(!queue) {
+            this.queue = []
+        }
+        return this.queue
     }
 
     shiftQueue() {

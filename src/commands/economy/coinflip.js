@@ -20,6 +20,7 @@ class CoinflipCommand extends Commands {
             const data = await msg.member.getEconomy(this.client)
             if(!data) return msg.reply(`looks like you haven't registered for the economy system yet you can do that by using the register command!`)
             if(gambleamount > data.cash) return msg.reply("You dont have that much money")
+            if(gambleamount <= 0) return msg.reply("Your amount must be more than 0!")
             const random = Math.random()
             let cash = data.cash
             let message;

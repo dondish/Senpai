@@ -16,7 +16,6 @@ class LeaderboardCommand extends Commands {
     async run(msg) {
         try{
             const leaderboard = await msg.guild.getLeaderboard(this.client)
-            console.log(leaderboard)
             const mapped = leaderboard.map(player => `${msg.guild.members.get(player.userID).user.tag} ${player.cash + player.bank}`)
             const embed = new RichEmbed()
             .setTitle(`Leaderboard for ${msg.guild.name}`)

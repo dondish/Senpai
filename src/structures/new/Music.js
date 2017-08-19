@@ -1,7 +1,7 @@
 const fs = require('fs');
 const yt = require('ytdl-core');
 const ypi = require('youtube-playlist-info');
-const {googleAPIKey} = require('../config/config.json')
+const {googleAPIKey} = require('../../config/config.json')
 const search = require('youtube-search');
 const searchopts = {
     "maxResults": 10,
@@ -10,6 +10,56 @@ const searchopts = {
 
 
 class Music {
+
+    static async playqueue(channel) {
+        //define voiceConnection
+        const voiceConnection = channel.guild.voiceConnection;
+        //get current queue
+        let queue = channel.guild.getQueue();
+        //define current Song
+        let CurrentSong   = queue[0];
+        //define Next Song
+        let NextSong      = queue[1];
+        //test if you can play a Song on that voiceConnection if not return
+        if(!voiceConnection || voiceConnection.speaking === true || queue.length === 0) return;
+        //await the download of that Song
+        try {
+            await this.handleDownload(CurrentSong)
+        }catch(error) {
+            channel.send("I had an error while trying to download the Current Song so i skipped it! if this happens more than 1 time please contact my DEV!")
+            console.error(error)
+            queue.shift()
+            return this.playqueue(channel);
+        }
+        //if Queue has 2 or more Songs Download the next also
+        if(queue.length > 1) this.handleDownload(NextSong);
+        //get some stuff from the Info object we need
+        const id          = CurrentSong.video_id
+        const title       = CurrentSong.title
+        const author      = CurrentSong.requestedBy
+        //get the Dispatcher
+        const dispatcher  = voiceConnection.playFile(`../audio_cache/${id}.aac`, {"volume": 0.5})
+        //output from the start event
+        dispatcher.on('start', () => {
+            channel.send(`**Start playing:** ${title} Requested by **${author.tag}**`)
+            voiceConnection.player.streamingData.pausedTime = 0;
+            }
+        )
+        //log if the error event is emitted
+        dispatcher.on('error', error => {
+                channel.send("I had an error while trying to play the Current Song so i skipped it! if this happens more than 1 time please contact my DEV!");
+                queue.shift();
+                console.error(error);
+                return this.playqueue(channel);
+            }
+        )
+        //output form the end event + delete the current played Song also loop this function
+        dispatcher.on('end', () => {
+            channel.send(`**Finished playing:** ${title}`);
+            queue.shift();
+            this.playqueue(channel);
+        })
+    }
 
     static handleDownload(SongInfo) {
         return new Promise((resolve, reject) => {
@@ -39,7 +89,7 @@ class Music {
         return new Promise((resolve, reject) => {
             try{
                 yt.getInfo(url, (err, result) => {
-                    if(err) return reject(err)
+                    if (err || result.video_id === undefined) return reject(err)
                     resolve(result)
                 })
             }catch(error){
@@ -78,26 +128,28 @@ class Music {
         })
     }
 
-    static handleSong(input, isLink, queue) {
+    static handleSong(input, isLink, queue, requestedBy) {
         return new Promise(async (resolve, reject) => {
             if(isLink) {
                 try{
-                    const songinfo = await this.construtor.getInfo(input)
+                    let songinfo = await this.getInfo(input)
                     const length = Number(songinfo.length_seconds)
                     if(length > 1800) throw new Error("Song is too long!")
+                    songinfo.requestedBy = requestedBy
                     queue.push(songinfo)
-                    resolve(songinfo)
+                    resolve(`**Queued:** ${songinfo.title}`)
                 }catch(error){
                     reject(error)
                 }
             }else{
                try{
-                    const result = await this.construtor.getByName(input)
-                    const songresult = await this.construtor.getInfo(result.link)
+                    const result = await this.getByName(input)
+                    const songresult = await this.getInfo(result.link)
                     const length = Number(songresult.length_seconds)
                     if(length > 1800) throw new Error("Song is too long!")
+                    songresult.requestedBy = requestedBy
                     queue.push(songresult)
-                    resolve(songresult)
+                    resolve(`**Queued:** ${songresult.title}`)
                }catch(error){
                     reject(error)
                }
@@ -105,20 +157,21 @@ class Music {
         })
     }
 
-    static handlePlaylist(link, queue) {
+    static handlePlaylist(link, queue, requestedBy) {
         return new Promise(async (resolve, reject) => {
             try{
                 let playlistID = link.slice(38)
-                const playlist = await this.construtor.getPlaylist(playlistID)
+                const playlist = await this.getPlaylist(playlistID)
                 let SongsAdded = 0;
                 let SongsTooLong = 0;
                 let SongsClaimed = 0;
                 for(let song of playlist) {
                     const url = "https://www.youtube.com/watch?v=" + song.resourceId.videoId
                     try{
-                        const result = await this.construtor.getInfo(url)
+                        const result = await this.getInfo(url)
                         const length = Number(result.length_seconds)
                         if(length > 1800) throw new Error("Song is too long!")
+                            result.requestedBy = requestedBy
                         queue.push(result)
                         SongsAdded++
                     }catch(error){
