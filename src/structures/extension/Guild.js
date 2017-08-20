@@ -35,9 +35,21 @@ class GuildExtension extends Extension {
                     "musicRolesIDs": [] ,
                     "starboardID":  "None" ,
                     "prefix":  "None" ,
+                    "musicLimited": false,
                     "id":  this.id
                  })
                  resolve(result)
+            }catch(error){
+                reject(error)
+            }
+        })
+    }
+
+    updateConfig(client, data) {
+        return new Promise(async (resolve, reject) => {
+            try{
+                const result = await client.db.guild.updateData(this.id, data)
+                resolve(result)
             }catch(error){
                 reject(error)
             }

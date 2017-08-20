@@ -13,6 +13,8 @@ class bulkdeleteCommand extends Commands {
     }
 
     async run(msg, params) {
+        const permissionLevel = await msg.member.getPermissionsLevel(this.client)
+        if(permissionLevel >= 3) return msg.reply("You dont have permission to use this Command!")
         if (params.length < 1) return msg.reply('You must add a Number of the amount of to deleting messages!');
         if(!msg.deletable) return msg.reply("I have no rights to delete Messages!")
         let messagecount = parseInt(params.join(' '), 10);

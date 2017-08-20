@@ -14,7 +14,12 @@ class ReadyEvent extends Events {
         console.log('Servers:       ' + client.guilds.size );
         console.log('Channels:      ' + client.channels.size);
         console.log('-----------------------------------------------------------------------------');
-        client.user.setGame(`${client.config.prefix}help || Version: ${client.version}`)
+        client.user.setPresence({
+            'game': {
+                'name': `${client.config.prefix}help || Version: ${client.version}`,
+                'type': 0
+            }
+        });
     }
 }
 

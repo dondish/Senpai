@@ -6,7 +6,7 @@ const info = {
     "examples": ["queue"]
 }
 
-class QueueShow extends Commands {
+class QueueCommand extends Commands {
 
     constructor(client, group) {
         super(client, info, group)
@@ -52,4 +52,4 @@ class QueueShow extends Commands {
     }
 }
 
-module.exports = QueueShow
+module.exports = QueueCommand

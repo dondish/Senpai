@@ -6,6 +6,7 @@
         "musicRolesIDs": [] ,
         "starboardID":  "" ,
         "prefix":  "" ,
+        "musicLimited": false,
         "id":  ""
     },
     "blacklist" : {

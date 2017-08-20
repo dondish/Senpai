@@ -30,6 +30,7 @@ class DepositCommand extends Commands {
                 }
             if (isNaN(amount)) return msg.reply("that looks not like a valid number :thinking:")
             if (amount > cash) return msg.reply("you don't have that much money!")
+            if(amount <= 0) return msg.reply("Your amount must be more than 0!")
             cash -= amount
             bank += amount
             await msg.member.updateEconomy(this.client, cash, bank)

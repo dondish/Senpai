@@ -26,7 +26,7 @@ class Music {
         try {
             await this.handleDownload(CurrentSong)
         }catch(error) {
-            channel.send("I had an error while trying to download the Current Song so i skipped it! if this happens more than 1 time please contact my DEV!")
+            channel.send(`I had an error while trying to download the Current Song so i skipped it the reason was following ${error.message}`)
             console.error(error)
             queue.shift()
             return this.playqueue(channel);
