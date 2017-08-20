@@ -3,6 +3,7 @@ const rethink = require('rethinkdb')
 const recentlyUpdated = [];
 
 exports.messageUpdate = member => {
+  if(!member) return
   if (recentlyUpdated.includes(member.user.id)) return;
   recentlyUpdated.push(member.user.id);
   function removeIDFromArray()
