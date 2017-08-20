@@ -17,6 +17,7 @@ class LeaderboardCommand extends Commands {
         try{
             const leaderboard = await msg.guild.getLeaderboard(this.client)
             let currency = this.client.guilds.get("199857240037916672").emojis.get("322135966322262056")
+            await msg.guild.fetchMembers()
             const mapped = leaderboard.map(player => `${msg.guild.members.get(player.userID).user.tag} ${player.cash + player.bank}${currency}`)
             const embed = new RichEmbed()
             .setTitle(`Leaderboard for ${msg.guild.name}`)
