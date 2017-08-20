@@ -43,6 +43,6 @@
     "snekfetch": "^3.2.9",
     "youtube-playlist-info": "^0.1.0",
     "youtube-search": "^1.0.10",
-    "ytdl-core": "^0.15.2"
+    "ytdl-core": "^0.16.0"
   }
 }
