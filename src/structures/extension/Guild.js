@@ -1,12 +1,16 @@
 const Extension = require('./Extend.js')
+const rethink = require('rethinkdb')
 
 class GuildExtension extends Extension {
 
     getLeaderboard(client) {
         return new Promise(async (resolve, reject) => {
             try{
-                const data = await client.db.money.filterAndSort({"guildID": this.id}, element => element('bank') + element('cash'))
-                if(data.length > 9) data.length = 9
+                const data = await client.db.money.filterAndSort({"guildID": this.id}, rethink.desc(function(element) {
+                    return rethink.add(element('cash'), element('bank'))
+                  })
+                )
+                if(data.length > 10) data.length = 10
                 resolve(data)
             }catch(error){
                 reject(error)

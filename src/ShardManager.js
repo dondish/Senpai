@@ -15,7 +15,6 @@ Manager.spawn();
 setInterval(bankUpdate, 18000000)
 
 
-
 Manager.on('launch', shard => {
     console.log(`Shard spawned with ID ${shard.id}`)
 })
