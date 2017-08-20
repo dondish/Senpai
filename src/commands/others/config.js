@@ -411,8 +411,10 @@ class ConfigCommand extends Commands {
                                 const param3 = params[2].toLowerCase()
                                 if(param3 === "enable" || param3 === "on"){
                                     await msg.guild.updateConfig(this.client, {'musicLimited': true})
+                                    await msg.channel.send("enabled Limitation of my music feature to the Musicroles!")
                                 }else if(param3 === "disable" || param3 === "off") {
                                     await msg.guild.updateConfig(this.client, {'musicLimited': false})
+                                    await msg.channel.send("disabled Limitation of my music feature to the Musicroles!")
                                 }else{
                                     await msg.reply("You provided an wrong third parameter")
                                     break;

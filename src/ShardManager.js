@@ -1,5 +1,6 @@
 const {ShardingManager} = require('discord.js');
 const {bottoken} = require('./config/config.json')
+const {bankUpdate} = require('./util/economy.js')
 const Manager = new ShardingManager('./main.js',
     {
         "totalShards": "auto",
@@ -8,6 +9,12 @@ const Manager = new ShardingManager('./main.js',
     });
 //spawn shards
 Manager.spawn();
+
+//economy Bank update
+
+setInterval(bankUpdate, 18000000)
+
+
 
 Manager.on('launch', shard => {
     console.log(`Shard spawned with ID ${shard.id}`)
