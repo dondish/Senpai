@@ -41,7 +41,7 @@ class GuildMemberExtension extends Extension {
         return new Promise(async (resolve, reject) => {
             try{
                 const data = await client.db.money.getByID(`${this.id}${this.guild.id}`)
-                if(!data) return reject(new Error("this user did not registered for the economy system!"))
+                if(!data) return reject(new Error("seems like you/the mentioned user did not registrate for the economy system! you can do that by using the register command"))
                 resolve(data)
             }catch(error){
                 reject(error)

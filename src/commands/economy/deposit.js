@@ -23,7 +23,7 @@ class DepositCommand extends Commands {
             let amount
             if(change === "all" ||change === "-a"||change === "everything")
                 {
-                    amount = bank
+                    amount = cash
                 } else {
                     amount = params[0]
                     amount = Number(amount)
