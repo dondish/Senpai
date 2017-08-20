@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/Dev-Yukine/Senpai-Bot-Discord#readme",
   "devDependencies": {
-    "eslint": "^4.4.1"
+    "eslint": "^4.5.0"
   },
   "dependencies": {
     "async": "^2.5.0",
