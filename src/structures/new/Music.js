@@ -103,6 +103,7 @@ class Music {
             search(songname, searchopts, (err, result) => {
                 if (err) return reject(err)
                 let song = result[0]
+                if(!song) reject(new Error("searching for that song failed!"))
                 let index = 0;
                 while(song.kind !== "youtube#video") {
                     index += 1
