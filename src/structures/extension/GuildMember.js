@@ -26,11 +26,11 @@ class GuildMemberExtension extends Extension {
     updateEconomy(client, cash, bank) {
         return new Promise(async (resolve, reject) => {
             try{
-                await client.db.money.updateData(`${this.id}${this.guild.id}`, {
+                const result = await client.db.money.updateData(`${this.id}${this.guild.id}`, {
                     cash,
                     bank
                 })
-                resolve()
+                resolve(result)
             }catch(error){
                 reject(error)
             }

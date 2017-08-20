@@ -25,6 +25,7 @@ class PlayCommand extends Commands {
         if (voiceConnection === null) return msg.reply(`You must let me join a Voice Channel with ${prefix}join!`)
         const message = await msg.channel.send('trying to add your Song/Playlist to the queue....')
         let link = params[0]
+        if(!link) return message.edit("You must add a Link to add behind!")
         if(link.startsWith('http')) {
             if(link.includes("watch") || link.includes("youtu.be")) {
                 try{
