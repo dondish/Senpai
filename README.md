@@ -9,7 +9,7 @@ after the rewrite it makes fully usage of classes &  ES2017's async/await functi
 
 This bot is written in Javascript and use [Nodejs](https://nodejs.org/en/) to run.
 
-also it uses the Libary [Discord.js](https://github.com/hydrabolt/discord.js/pulls) to interact with the Discord API
+also it uses the Libary [Discord.js](https://github.com/hydrabolt/discord.js) to interact with the Discord API
 
 [![dependencies Status](https://david-dm.org/Dev-Yukine/Senpai-Bot-Discord/status.svg)](https://david-dm.org/Dev-Yukine/Senpai-Bot-Discord)
 

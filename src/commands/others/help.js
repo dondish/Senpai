@@ -24,7 +24,8 @@ class HelpCommand extends Commands {
                   "code": "asciidoc",
                   "split": true
                 })
-                await msg.channel.send("i've sent you an PM")
+                const message = await msg.channel.send("i've sent you an PM")
+                message.delete(10000)
             }catch(error){
                 await msg.channel.send('I had an error while trying to DM you, look your Direct Message settings up!')
             }
