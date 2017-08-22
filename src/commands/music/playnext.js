@@ -29,7 +29,7 @@ class PlayNextCommand extends Commands {
         if(link.startsWith('http')) {
             if(link.includes("watch") || link.includes("youtu.be")) {
                 try{
-                    const result = await this.client.music.handleSong(link, true, msg.guild.getQueue(), msg.author)
+                    const result = await this.client.music.handleSongAsNext(link, true, msg.guild.getQueue(), msg.author)
                     message.edit(result)
                 }catch(error){
                     message.edit(`Could not add the Song/Playlist because this reason ${error.message}`)
@@ -40,7 +40,7 @@ class PlayNextCommand extends Commands {
         }else{
             try{
                 const searchTerm = params.join(" ")
-                const result = await this.client.music.handleSong(searchTerm, false, msg.guild.getQueue(), msg.author)
+                const result = await this.client.music.handleSongAsNext(searchTerm, false, msg.guild.getQueue(), msg.author)
                 message.edit(result)
             }catch(error){
                 message.edit(`Could not add the Song/Playlist because this reason ${error.message}`)

@@ -2,7 +2,7 @@ const Commands = require('../../structures/new/Command.js')
 const {RichEmbed} = require('discord.js')
 const info = {
     "name": "blacklist",
-    "description": "blacklist a user from using me (only the Bot Owner can use this command!)",
+    "description": "blacklist a user from using me",
     "aliases": ["block"],
     "examples": ["blacklist add @User [reason]", "blacklist delete @User", "blacklist show @User"]
 }
@@ -16,7 +16,7 @@ class BlacklistCommand extends Commands {
     async run(msg, params) {
         const client = this.client
         const permissionLevel = await msg.member.getPermissionsLevel(client)
-        if(permissionLevel !== 2) return msg.channel.send("Because of security measures, only the Bot Owner can execute this command")
+        if(permissionLevel >= 3) return msg.reply("You dont have permission to use this Command!")
         let parameter1 = params[0]
         if(!parameter1){
             return msg.reply('you must choose if you wanna add or delete a user to the blacklist list :eyes:');
