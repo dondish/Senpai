@@ -158,6 +158,35 @@ class Music {
         })
     }
 
+    static handleSongAsNext(input, isLink, queue, requestedBy) {
+        return new Promise(async (resolve, reject) => {
+            if(isLink) {
+                try{
+                    let songinfo = await this.getInfo(input)
+                    const length = Number(songinfo.length_seconds)
+                    if(length > 1800) throw new Error("Song is too long!")
+                    songinfo.requestedBy = requestedBy
+                    queue.splice(1, 0, songinfo)
+                    resolve(`**Queued:** ${songinfo.title}`)
+                }catch(error){
+                    reject(error)
+                }
+            }else{
+               try{
+                    const result = await this.getByName(input)
+                    const songresult = await this.getInfo(result.link)
+                    const length = Number(songresult.length_seconds)
+                    if(length > 1800) throw new Error("Song is too long!")
+                    songresult.requestedBy = requestedBy
+                    queue.splice(1, 0, songresult)
+                    resolve(`**Queued:** ${songresult.title}`)
+               }catch(error){
+                    reject(error)
+               }
+            }
+        })
+    }
+
     static handlePlaylist(link, queue, requestedBy) {
         return new Promise(async (resolve, reject) => {
             try{

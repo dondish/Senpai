@@ -3,7 +3,7 @@ const {RichEmbed} = require('discord.js')
 const exec = require('child_process').exec;
 const info = {
     "name": "exec",
-    "description": "execute a command in a commandline",
+    "description": "execute a command in a commandline (only the Bot Owner can use this command!)s",
     "aliases": [],
     "examples": ["exec node -v", "exec npm -v"]
 }

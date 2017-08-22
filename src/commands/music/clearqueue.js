@@ -1,12 +1,12 @@
 const Commands = require('../../structures/new/Command.js')
 const info = {
-    "name": "skip",
-    "description": "skip the current playing song",
-    "aliases": ["next"],
-    "examples": ["skip"]
+    "name": "clearqueue",
+    "description": "clear the whole queue only the playing song will stay!",
+    "aliases": [],
+    "examples": ["clearqueue"]
 }
 
-class SkipCommand extends Commands {
+class ClearQueueCommand extends Commands {
 
     constructor(client, group) {
         super(client, info, group)
@@ -22,9 +22,10 @@ class SkipCommand extends Commands {
             const permissionLevel = await msg.member.getPermissionsLevel(this.client)
             if(permissionLevel > 3) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to do this Command!")
         }
-        dispatcher.end()
-        await msg.channel.send("Skipped the played Song!")
+        let queue = msg.guild.getQueue()
+        queue.length = 1
+        await msg.channel.send("i cleared the whole queue only the playing Song is left!")
     }
 }
 
-module.exports = SkipCommand
+module.exports = ClearQueueCommand
