@@ -54,7 +54,7 @@ class GuildMemberExtension extends Extension {
             try{
                 const test = await client.db.money.getByID(`${this.id}${this.guild.id}`)
                 if(test) return reject(new Error("already registered"))
-                await client.db.money.insertDate({
+                await client.db.money.insertData({
                     "id": `${this.id}${this.guild.id}`,
                     "guildID": this.guild.id,
                     "userID": this.id,

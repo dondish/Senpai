@@ -80,7 +80,7 @@ class HandleTable {
         })
     }
 
-    insertDate(data) {
+    insertData(data) {
         return new Promise(async (resolve, reject) => {
             const connection = await this.createConnection()
             const tableName = this.tableName

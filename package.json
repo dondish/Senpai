@@ -1,6 +1,6 @@
 {
   "name": "senpai-bot",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Selfmade Nodejs Discord bot",
   "main": "src/main.js",
   "scripts": {
@@ -43,6 +43,6 @@
     "snekfetch": "^3.2.9",
     "youtube-playlist-info": "^0.1.0",
     "youtube-search": "^1.0.10",
-    "ytdl-core": "^0.16.0"
+    "ytdl-core": "^0.16.2"
   }
 }

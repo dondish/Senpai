@@ -20,6 +20,8 @@ class OsuCommand extends Commands {
             "notFoundAsError": true,
             "completeScores": false
         })
+        if(!params[0]) return msg.reply("You must provide a first parameter!")
+        if(!params[1]) return msg.reply("You must provide a second parameter")
         const Parameter1 = params[0].toLowerCase()
         if(Parameter1 !== 'user' && Parameter1 !== 'map') return msg.reply("your usage of my Osu! command is wrong. you can get some examples with the help command!")
         const message = await msg.channel.send("*Okay, im fetching the Data from Osu!*")

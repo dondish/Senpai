@@ -38,7 +38,7 @@ class BlacklistCommand extends Commands {
             if(parameter1 === "add"){
                 const result = await client.db.blacklist.getByID(member.user.id)
                 if(result) return msg.reply("this user is already blacklisted")
-                await client.db.blacklist.insertDate({
+                await client.db.blacklist.insertData({
                         'id': member.user.id,
                         reason
                 })

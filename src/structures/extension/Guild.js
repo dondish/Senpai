@@ -18,6 +18,37 @@ class GuildExtension extends Extension {
         })
     }
 
+    getStarboardMessages(client) {
+        return new Promise(async (resolve, reject) => {
+            try{
+                let result = await client.db.starboardMessages.getByID(this.id)
+                if(!result) {
+                    await client.db.starboardMessages.insertData({
+                        'id': this.id,
+                        'messages': []
+                    })
+                    result = await client.db.starboardMessages.getByID(this.id)
+                }
+                resolve(result.messages)
+            }catch(error){
+                reject(error)
+            }
+        })
+    }
+
+    addStarboardMessage(client, id) {
+        return new Promise(async (resolve, reject) => {
+            try{
+                let result = await client.db.starboardMessages.getByID(this.id)
+                result.push(id)
+                await client.db.starboardMessages.updateData(this.id, {'messages': result})
+                resolve()
+            }catch(error){
+                reject(error)
+            }
+        })
+    }
+
     getConfig(client) {
         return new Promise(async (resolve, reject) => {
             try{
@@ -32,7 +63,7 @@ class GuildExtension extends Extension {
     createConfig(client) {
         return new Promise(async (resolve, reject) => {
             try{
-                const result = await client.db.guild.insertDate({
+                const result = await client.db.guild.insertData({
                     "moderationRolesIDs": [] ,
                     "modlogID":  "None" ,
                     "musicID":  "None" ,
