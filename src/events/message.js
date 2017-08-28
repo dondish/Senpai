@@ -32,8 +32,8 @@ class MessageEvent extends Events {
         }
         if(cmd) {
             try{
-                await cmd.run(msg, params, prefix)
                 this.client.emit('commandRun', this, msg)
+                await cmd.run(msg, params, prefix)
             }catch(error){
                 this.client.emit('commandError', error, this, msg)
                 const Owner = this.client.users.get(this.client.config.ownerID)

@@ -19,7 +19,6 @@ class LeaderboardCommand extends Commands {
             let currency = this.client.guilds.get("199857240037916672").emojis.get("322135966322262056")
             await msg.guild.fetchMembers();
             const mapped = [];
-            console.log(leaderboard)
             for(let player of leaderboard) {
                 try {
                 const thisPlayer = msg.guild.members.get(player.userID)
