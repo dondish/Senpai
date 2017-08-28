@@ -1,6 +1,6 @@
 {
   "name": "senpai-bot",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "Selfmade Nodejs Discord bot",
   "main": "src/main.js",
   "scripts": {
@@ -31,7 +31,7 @@
     "discord.js": "^11.1.0",
     "ffmpeg-binaries": "^3.2.2",
     "file": "^0.2.2",
-    "googleapis": "^20.1.0",
+    "googleapis": "^21.2.0",
     "kitsu.js": "^1.1.1",
     "libsodium-wrappers": "^0.5.2",
     "moment": "^2.18.1",
@@ -43,6 +43,6 @@
     "snekfetch": "^3.2.9",
     "youtube-playlist-info": "^0.1.0",
     "youtube-search": "^1.0.10",
-    "ytdl-core": "^0.16.2"
+    "ytdl-core": "^0.17.0"
   }
 }

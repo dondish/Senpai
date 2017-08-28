@@ -10,7 +10,6 @@ class GuildExtension extends Extension {
                     return rethink.add(element('cash'), element('bank'))
                   })
                 )
-                if(data.length > 10) data.length = 10
                 resolve(data)
             }catch(error){
                 reject(error)

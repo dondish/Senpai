@@ -17,8 +17,18 @@ class LeaderboardCommand extends Commands {
         try{
             const leaderboard = await msg.guild.getLeaderboard(this.client)
             let currency = this.client.guilds.get("199857240037916672").emojis.get("322135966322262056")
-            await msg.guild.fetchMembers()
-            const mapped = leaderboard.map(player => `${msg.guild.members.get(player.userID).user.tag} ${player.cash + player.bank}${currency}`)
+            await msg.guild.fetchMembers();
+            const mapped = [];
+            console.log(leaderboard)
+            for(let player of leaderboard) {
+                try {
+                const thisPlayer = msg.guild.members.get(player.userID)
+                mapped.push(`${thisPlayer.user.tag} ${player.cash + player.bank}${currency}`)
+                } catch (error) {
+                   //nothing kek
+                }
+            }
+            if(mapped.length > 10) mapped.length = 10
             const embed = new RichEmbed()
             .setTitle(`Leaderboard for ${msg.guild.name}`)
             let index = 1;

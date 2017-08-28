@@ -1,11 +1,12 @@
 {
-      "BotToken"            :"",
+      "bottoken"            :"",
       "prefix"              :"",
-      "OsuToken"            :"",
-      "OwnerID"             :"",
-      "GoogleApiKey"        :"",
-      "OWMApiKey"           :"",
+      "osuToken"            :"",
+      "ownerID"             :"",
+      "googleAPIKey"        :"",
+      "owmAPIKey"           :"",
       "discordOrgToken"     :"",
-      "InviteLink"          :"",
-      "SupportServerLink"   :""
-}
+      "inviteURL"           :"",
+      "supportServerLink"   :""
+  }
+  
