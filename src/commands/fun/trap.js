@@ -24,13 +24,19 @@ class TrapCommand extends Commands {
             let base = new Image();
             let userPicture = new Image();
             base.src = file
-            let avatar = msg.author.displayAvatarURL
-            avatar = avatar.substring(0, avatar.length - 13);
-            const result = await snekfetch.get(avatar + "png?size=2048")
+            let avatar;
+            if(msg.mentions.users.size > 0) {
+                avatar = msg.mentions.users.first().displayAvatarURL
+            } else {
+                avatar = msg.author.displayAvatarURL
+            }
+            avatar = avatar.split(".")
+            avatar = `${avatar[0]}.${avatar[1]}.${avatar[2]}.png?size=2048`
+            const result = await snekfetch.get(avatar)
             userPicture.src = result.body
             ctx.drawImage(base, 0, 0, base.width, base.height);
             ctx.rotate(-0.15);
-            ctx.drawImage(userPicture, 20, 45, userPicture.width / 2, userPicture.height / 2)
+            ctx.drawImage(userPicture, 20, 45, 124, 124)
             await msg.channel.send({
                 "files": [
                     {

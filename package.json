@@ -1,6 +1,6 @@
 {
   "name": "senpai-bot",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "Selfmade Nodejs Discord bot",
   "main": "src/main.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "discord.js": "^11.1.0",
     "ffmpeg-binaries": "^3.2.2",
     "file": "^0.2.2",
-    "googleapis": "^21.2.0",
+    "googleapis": "^21.3.0",
     "kitsu.js": "^1.1.1",
     "libsodium-wrappers": "^0.5.2",
     "moment": "^2.18.1",
