@@ -17,7 +17,7 @@ class DogCommand extends Commands {
         const response = await snekfetch.get("https://dog.ceo/api/breeds/image/random")
         if(response.body.status !== "success") return msg.reply('The website for the API request had an error')
         const Link = response.body.message
-        msg.channel.send("enjoy your cat", {"files": [Link]})
+        msg.channel.send("enjoy your dog", {"files": [Link]})
     }
 }
 

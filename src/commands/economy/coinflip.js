@@ -2,7 +2,7 @@ const Commands = require('../../structures/new/Command.js')
 const info = {
     "name": "coinflip",
     "description": "register for the economy system",
-    "aliases": [],
+    "aliases": ["bet"],
     "examples": ["coinflip -a", "coinflip 1000", "coinflip everything"]
 }
 

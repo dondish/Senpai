@@ -2,7 +2,7 @@ const Commands = require('../../structures/new/Command.js')
 const info = {
     "name": "money",
     "description": "shows your current money or the money of someone you mention",
-    "aliases": ["cash", "current"],
+    "aliases": ["cash", "current", "balance", "bal"],
     "examples": ["money", "money @User"]
 }
 
