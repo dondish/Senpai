@@ -1,6 +1,6 @@
 {
   "name": "senpai-bot",
-  "version": "5.0.5",
+  "version": "5.1.0",
   "description": "Selfmade Nodejs Discord bot",
   "main": "src/main.js",
   "scripts": {
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/Dev-Yukine/Senpai-Bot-Discord#readme",
   "devDependencies": {
-    "eslint": "^4.5.0"
+    "eslint": "^4.6.1"
   },
   "dependencies": {
     "async": "^2.5.0",
@@ -29,21 +29,21 @@
     "bufferutil": "^3.0.2",
     "canvas": "^1.6.6",
     "chalk": "^2.1.0",
-    "discord.js": "^11.1.0",
+    "discord.js": "^11.2.1",
     "ffmpeg-binaries": "^3.2.2",
     "file": "^0.2.2",
     "googleapis": "^21.3.0",
     "kitsu.js": "^1.1.1",
-    "libsodium-wrappers": "^0.5.2",
+    "libsodium-wrappers": "^0.5.4",
     "moment": "^2.18.1",
     "node-opus": "^0.2.6",
     "node-osu": "^1.2.0",
     "openweathermapapi": "^1.0.4",
     "relevant-urban": "^2.0.0",
     "rethinkdb": "^2.3.3",
-    "snekfetch": "^3.2.9",
+    "snekfetch": "^3.3.0",
     "youtube-playlist-info": "^0.1.0",
     "youtube-search": "^1.0.10",
-    "ytdl-core": "^0.17.0"
+    "ytdl-core": "^0.17.1"
   }
 }

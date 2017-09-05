@@ -90,6 +90,15 @@ class GuildExtension extends Extension {
         })
     }
 
+    getLoop() {
+        if(this.loop === undefined) this.loop = false
+        return this.loop
+    }
+
+    setLoop(boolean) {
+        this.loop = boolean
+    }
+
     getQueue() {
         const queue = this.queue
         if(!queue) {

@@ -68,6 +68,115 @@ class GuildMemberExtension extends Extension {
             }
         })
     }
+
+    getHistory(client) {
+        return new Promise(async (resolve, reject) => {
+            try{
+                let history = await client.db.history.getByID(`${this.id}${this.guild.id}`)
+                if(!history) history = {
+                    "id": `${this.id}${this.guild.id}`,
+                    "guildID": this.guild.id,
+                    "userID": this.id,
+                    "warnings": [],
+                    "kicks": [],
+                    "bans": []
+                }
+                resolve(history)
+            }catch(error){
+                reject(error)
+            }
+        })
+    }
+
+    addWarn(client, reason) {
+        return new Promise(async (resolve, reject) => {
+            try{
+                let needCreate = false
+                let history = await client.db.history.getByID(`${this.id}${this.guild.id}`)
+                if(!history) {
+                    needCreate = true
+                    history = {
+                    "id": `${this.id}${this.guild.id}`,
+                    "guildID": this.guild.id,
+                    "userID": this.id,
+                    "warnings": [],
+                    "kicks": [],
+                    "bans": []
+                    }
+                }
+                const warnings = history.warnings
+                warnings.push(reason)
+                if(needCreate){
+                    await client.db.history.insertData(history)
+                }else{
+                    await client.db.history.updateData(`${this.id}${this.guild.id}`, {warnings})
+                }
+                resolve()
+            }catch(error){
+                reject(error)
+            }
+        })
+    }
+
+    addKick(client, reason) {
+        return new Promise(async (resolve, reject) => {
+            try{
+                let needCreate = false
+                let history = await client.db.history.getByID(`${this.id}${this.guild.id}`)
+                if(!history) {
+                    needCreate = true
+                    history = {
+                    "id": `${this.id}${this.guild.id}`,
+                    "guildID": this.guild.id,
+                    "userID": this.id,
+                    "warnings": [],
+                    "kicks": [],
+                    "bans": []
+                    }
+                }
+                const kicks = history.kicks
+                kicks.push(reason)
+                if(needCreate){
+                    await client.db.history.insertData(history)
+                }else{
+                    await client.db.history.updateData(`${this.id}${this.guild.id}`, {kicks})
+                }
+                resolve()
+            }catch(error){
+                reject(error)
+            }
+        })
+    }
+
+    addBan(client,reason) {
+        return new Promise(async (resolve, reject) => {
+            try{
+                let needCreate = false
+                let history = await client.db.history.getByID(`${this.id}${this.guild.id}`)
+                if(!history) {
+                    needCreate = true
+                    history = {
+                    "id": `${this.id}${this.guild.id}`,
+                    "guildID": this.guild.id,
+                    "userID": this.id,
+                    "warnings": [],
+                    "kicks": [],
+                    "bans": []
+                    }
+                }
+                const bans = history.bans
+                bans.push(reason)
+                if(needCreate){
+                    await client.db.history.insertData(history)
+                }else{
+                    await client.db.history.updateData(`${this.id}${this.guild.id}`, {bans})
+                }
+                resolve()
+            }catch(error){
+                reject(error)
+            }
+        })
+    }
 }
 
 module.exports = GuildMemberExtension

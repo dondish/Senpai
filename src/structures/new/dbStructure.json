@@ -23,5 +23,19 @@
         "userID": "",
         "cash": 0,
         "bank": 0
+    },
+    "history": {
+        "id": "",
+        "guildID": "",
+        "userID": "",
+        "warnings": [
+            ""
+        ],
+        "kicks": [
+            ""
+        ],
+        "bans": [
+            ""
+        ]
     }
 }

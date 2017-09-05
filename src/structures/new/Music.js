@@ -56,7 +56,8 @@ class Music {
         //output form the end event + delete the current played Song also loop this function
         dispatcher.on('end', () => {
             channel.send(`**Finished playing:** ${title}`);
-            queue.shift();
+            const shifted = queue.shift();
+            if(channel.guild.getLoop()) queue.push(shifted)
             this.playqueue(channel);
         })
     }
