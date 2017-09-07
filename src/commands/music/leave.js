@@ -25,7 +25,7 @@ class LeaveCommand extends Commands {
             let voiceConnection = msg.guild.voiceConnection
             let dispatcher   = voiceConnection.dispatcher;
             if (queue.length > 0) queue.length = 0
-            if(msg.guild.getLoop()) await msg.guild.setLoop(false)
+            if(msg.guild.getLoop()) msg.guild.setLoop(false)
             if (dispatcher) dispatcher.end()
             await voiceConnection.disconnect()
             await msg.channel.send("bye bye :wave:")

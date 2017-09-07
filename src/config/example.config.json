@@ -8,6 +8,7 @@
       "dBotsToken"          :"",
       "discordBotsToken"    :"",
       "inviteURL"           :"",
-      "supportServerLink"   :""
+      "supportServerLink"   :"",
+      "voteLink"            :""
   }
   

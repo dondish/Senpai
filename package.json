@@ -33,7 +33,7 @@
     "ffmpeg-binaries": "^3.2.2",
     "file": "^0.2.2",
     "googleapis": "^21.3.0",
-    "kitsu.js": "^1.1.1",
+    "kitsu.js": "^2.0.0",
     "libsodium-wrappers": "^0.5.4",
     "moment": "^2.18.1",
     "node-opus": "^0.2.6",
