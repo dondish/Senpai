@@ -18,9 +18,12 @@ class MessageReactionAddEvent extends Events {
             const starboardMessages = await guild.getStarboardMessages(this.client)
             if(starboardMessages.includes(message.id)) return;
             const serverConfig = await guild.getConfig(this.client)
-            const neededReactionCount = Math.floor(guild.members.filter(member => member.presence.status !== 'offline').size / 100)
+            let neededReactions = 1;
+            if(serverConfig.starboardNeededReactions) {
+                neededReactions = serverConfig.starboardNeededReactions
+            }
             const reactionCount = messageReaction.count
-            if(reactionCount < neededReactionCount) return;
+            if(reactionCount < neededReactions) return;
             const embed = new RichEmbed()
                 .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
                 .addField(`ID:`, `${message.id}`)
@@ -29,6 +32,9 @@ class MessageReactionAddEvent extends Events {
                 .setTimestamp()
                 .setFooter('1⭐')
                 .setColor(0x80ff00)
+            if(message.attachments.size === 1) {
+                if(message.attachments.first().filename.include(/\.(gif|jpg|jpeg|tiff|png)$/i)) embed.setImage(`${message.attachments.first().url}`)
+            }
             const channel = guild.channels.get(serverConfig.starboardID)
             if(channel) {
                 const Message = await channel.send({embed})

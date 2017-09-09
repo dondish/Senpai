@@ -70,6 +70,7 @@ class GuildExtension extends Extension {
                     "starboardID":  "None" ,
                     "prefix":  "None" ,
                     "musicLimited": false,
+                    "starboardNeededReactions": 1,
                     "id":  this.id
                  })
                  resolve(result)

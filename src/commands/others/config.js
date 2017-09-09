@@ -33,6 +33,10 @@ class ConfigCommand extends Commands {
             }else{
                 musicboolean = 'false'
             }
+            let neededStars = '1';
+            if(result.starboardNeededReactions) {
+                neededStars = `${result.starboardNeededReactions}`
+            }
             const embed = new RichEmbed()
                 .setTitle(`Configuration for ${msg.guild.name}`)
                 .setThumbnail(msg.guild.iconURL)
@@ -44,6 +48,7 @@ class ConfigCommand extends Commands {
                 .addField('Moderation Roles', ModerationRoles)
                 .addField('Music Roles', MusicRoles)
                 .addField('Music feature limited to role?', musicboolean)
+                .addField('needed Stars for Starboard', neededStars)
                 .setTimestamp()
                 .setFooter('Senpai Bot by Yukine');
                 await msg.channel.send({embed});
@@ -214,7 +219,7 @@ class ConfigCommand extends Commands {
                                     }
                                     await msg.guild.updateConfig(this.client, {'starboardID': starboard.id})
                                     const embed = new RichEmbed()
-                                        .setTitle(`Updated Starbpard Channel for ${msg.guild.name}`)
+                                        .setTitle(`Updated Starboard Channel for ${msg.guild.name}`)
                                         .addField('New Starboard Channel', starboard.toString())
                                         .setTimestamp()
                                         .setFooter('Senpai Bot by Yukine')
@@ -229,6 +234,21 @@ class ConfigCommand extends Commands {
                                     await msg.guild.updateConfig(this.client, {'starboardID': "None"})
                                     await msg.channel.send("i deleted the Starboard channel from my config!")
                                 }catch(error){
+                                    await msg.reply("im sorry i had an error with my Database please try again!")
+                                    break;
+                                }
+                            }else if(param2 === 'count' || param2 === 'votes'){
+                                try {
+                                    const number = Number(params[2])
+                                    if(number <= 0 || isNaN(number)) return msg.reply("the third parameter must be a number greater than 0 !")
+                                    await msg.guild.updateConfig(this.client, {'starboardNeededReactions': number})
+                                    const embed = new RichEmbed()
+                                        .setTitle(`Updated needed Stars for ${msg.guild.name}`)
+                                        .addField('New required Star Count', `${number}`)
+                                        .setTimestamp()
+                                        .setFooter('Senpai Bot by Yukine')
+                                    await msg.channel.send({embed})
+                                } catch (error) {
                                     await msg.reply("im sorry i had an error with my Database please try again!")
                                     break;
                                 }
