@@ -12,7 +12,7 @@ module.exports = Client => {
                     let Command = require(`../commands/${folder}/${file}`);
                     let Module = new Command(Client, folder)
                     Client.commands.set(Module.name, Module);
-                    console.log(`Loading Command: ${Module.name} from ${folder}.`);
+                    Client.log.debug(`Loading Command: ${Module.name} from ${folder}.`)
                     Module.aliases.forEach(alias => {
                         Client.aliases.set(alias, Module.name);
                     });

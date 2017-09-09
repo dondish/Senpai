@@ -18,6 +18,6 @@ eventloader(Client)
 
 Client.login(Client.config.bottoken);
 
-process.on('unhandledRejection', function(reason, promise){
-    console.log("Possibly Unhandled Rejection at: Promise ", promise, " reason: ", reason);
+process.on('unhandledRejection', (reason, promise) => {
+    console.log("Possibly Unhandled Rejection at: Promise ", promise, " reason: ", reason.message);
 });

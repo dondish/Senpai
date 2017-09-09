@@ -1,5 +1,4 @@
 const Events = require('../structures/new/Event.js')
-const chalk = require('chalk')
 
 class commandError extends Events {
     constructor(client) {
@@ -9,11 +8,11 @@ class commandError extends Events {
 
     run(error, messageEvent, msg) {
         const client = this.client
-        console.log("   ")
-        console.log(chalk.red(`[Error]   ${error.name}: ${error.message}`))
-        console.log(chalk.red(`          with this message ${msg.content}`))
-        console.log("   ")
-        client.users.get(client.config.ownerID).send('An error occurred. look at the Logs!')
+        client.log.info("   ")
+        client.log.info(`[Error]   ${error.name}: ${error.message}`)
+        client.log.info(`          with this message ${msg.content}`)
+        client.log.info("   ")
+        client.users.get(client.config.ownerID).send(`The Following Error occourd "${error.name}: ${error.message}" for more info look at the logs!`)
     }
 }
 

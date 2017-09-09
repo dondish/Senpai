@@ -13,6 +13,7 @@ class MessageReactionAddEvent extends Events {
             if(messageReaction.emoji.name !== "⭐") return
             const message = messageReaction.message
             const guild = message.guild
+            if(message.author.id === user.id) return;
             if(!guild) return
             const starboardMessages = await guild.getStarboardMessages(this.client)
             if(starboardMessages.includes(message.id)) return;
@@ -26,11 +27,23 @@ class MessageReactionAddEvent extends Events {
                 .addField('Channel', `${message.channel}`)
                 .addField(`Message:`, `${message.content}`)
                 .setTimestamp()
-                .setFooter('⭐')
+                .setFooter('1⭐')
                 .setColor(0x80ff00)
             const channel = guild.channels.get(serverConfig.starboardID)
             if(channel) {
-                await channel.send({embed})
+                const Message = await channel.send({embed})
+                const collector = message.createReactionCollector(reaction => reaction.emoji.name === '⭐', {"time": 60000})
+                collector.on('collect', async reaction => {
+                    const embed = new RichEmbed()
+                    .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
+                    .addField(`ID:`, `${message.id}`)
+                    .addField('Channel', `${message.channel}`)
+                    .addField(`Message:`, `${message.content}`)
+                    .setTimestamp()
+                    .setFooter(`${reaction.count}⭐`)
+                    .setColor(0x80ff00)
+                    await Message.edit({embed})
+                });
                 await guild.addStarboardMessage(this.client, message.id)
             }
         }catch(error){

@@ -39,8 +39,8 @@ class GuildExtension extends Extension {
         return new Promise(async (resolve, reject) => {
             try{
                 let result = await client.db.starboardMessages.getByID(this.id)
-                result.push(id)
-                await client.db.starboardMessages.updateData(this.id, {'messages': result})
+                result.messages.push(id)
+                await client.db.starboardMessages.updateData(this.id, {'messages': result.messages})
                 resolve()
             }catch(error){
                 reject(error)

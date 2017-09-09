@@ -8,18 +8,13 @@ class ReadyEvent extends Events {
 
     run() {
         const client = this.client
-        console.log('-----------------------------------------------------------------------------');
-        console.log('Username:      ' + client.user.username);
-        console.log('ID:            ' + client.user.id);
-        console.log('Servers:       ' + client.guilds.size );
-        console.log('Channels:      ' + client.channels.size);
-        console.log('-----------------------------------------------------------------------------');
-        client.user.setPresence({
-            'game': {
-                'name': `${client.config.prefix}help || Version: ${client.version}`,
-                'type': 0
-            }
-        });
+        client.log.info('-----------------------------------------------------------------------------');
+        client.log.info('Username:      ' + client.user.username);
+        client.log.info('ID:            ' + client.user.id);
+        client.log.info('Servers:       ' + client.guilds.size );
+        client.log.info('Channels:      ' + client.channels.size);
+        client.log.info('-----------------------------------------------------------------------------');
+        client.user.setGame(`${client.config.prefix}help || Version: ${client.version}`);
     }
 }
 

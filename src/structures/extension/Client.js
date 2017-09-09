@@ -3,6 +3,7 @@ const {version} = require('../../../package.json')
 const DBHandler = require('../new/HandleDB.js')
 const Music = require('../new/Music.js')
 const Database = new DBHandler('Discord')
+const Log = require('../new/Log.js')
 
 class SenpaiClient extends Client {
     constructor(options) {
@@ -13,6 +14,7 @@ class SenpaiClient extends Client {
         this.version = version
         this.commands = new Collection();
         this.aliases = new Collection();
+        this.log = new Log(this.shard.id)
     }
 }
 

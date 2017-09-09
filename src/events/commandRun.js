@@ -1,5 +1,4 @@
 const Events = require('../structures/new/Event.js')
-const chalk = require('chalk')
 
 class commandRun extends Events {
     constructor(client) {
@@ -8,7 +7,7 @@ class commandRun extends Events {
     }
 
     run(messageEvent, msg) {
-        console.log(chalk.blue(`[Command]   ${msg.author.tag}/${msg.author.id} (${msg.content})`))
+        this.client.log.info(`[Command]   ${msg.author.tag}/${msg.author.id} (${msg.content})`)
     }
 }
 

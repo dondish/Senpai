@@ -1,6 +1,5 @@
 const Events = require('../structures/new/Event.js')
 const snekfetch = require('snekfetch')
-const chalk = require('chalk')
 
 class LeaveEvent extends Events {
     constructor(client) {
@@ -18,9 +17,9 @@ class LeaveEvent extends Events {
             await snekfetch.post(`https://bots.discord.pw/api/bots/${guild.client.user.id}/stats`)
                 .set('Authorization', this.client.config.discordBotsToken)
                 .send({"server_count": guildsizes})
-            console.log(chalk.bgCyan(`${guild.client.user.username} left the Guild ${guild.name} size is now ${guildsizes}`))
+            this.client.log.info( `${guild.client.user.username} left the Guild ${guild.name} size is now ${guildsizes}`)
         }catch(error){
-            console.error(chalk.red(`tried to update stats due guildDelete but errored with following Error`, error.message))
+            this.client.log.error(`tried to update stats due guildDelete but errored with following Error ${error.message}`)
         }
     }
 }
