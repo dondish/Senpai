@@ -22,18 +22,20 @@ class MessageReactionAddEvent extends Events {
             if(serverConfig.starboardNeededReactions) {
                 neededReactions = serverConfig.starboardNeededReactions
             }
+            await messageReaction.fetchUsers()
             const reactionCount = messageReaction.count
             if(reactionCount < neededReactions) return;
             const embed = new RichEmbed()
-                .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
-                .addField(`ID:`, `${message.id}`)
-                .addField('Channel', `${message.channel}`)
-                .addField(`Message:`, `${message.content}`)
+                .setAuthor(`${message.author.username}`)
+                .setThumbnail(message.author.displayAvatarURL)
+                .addField(`ID:`, `${message.id}`, true)
+                .addField('Channel', `${message.channel}`, true)
+                .addField(`Message:`, `**${message.content}**`, true)
                 .setTimestamp()
-                .setFooter('1⭐')
+                .setFooter(`${reactionCount}⭐`)
                 .setColor(0x80ff00)
             if(message.attachments.size === 1) {
-                if(message.attachments.first().filename.include(/\.(gif|jpg|jpeg|tiff|png)$/i)) embed.setImage(`${message.attachments.first().url}`)
+                if(/\.(gif|jpg|jpeg|tiff|png)$/i.test(message.attachments.first().filename)) embed.setImage(`${message.attachments.first().url}`)
             }
             const channel = guild.channels.get(serverConfig.starboardID)
             if(channel) {
@@ -48,12 +50,13 @@ class MessageReactionAddEvent extends Events {
                     .setTimestamp()
                     .setFooter(`${reaction.count}⭐`)
                     .setColor(0x80ff00)
+                    if(/\.(gif|jpg|jpeg|tiff|png)$/i.test(message.attachments.first().filename)) embed.setImage(`${message.attachments.first().url}`)
                     await Message.edit({embed})
                 });
                 await guild.addStarboardMessage(this.client, message.id)
             }
         }catch(error){
-            return;
+            this.client.log.error(`${error.name}: ${error.message}`);
         }
     }
 }
