@@ -40,6 +40,7 @@ class MessageReactionAddEvent extends Events {
             }
             const channel = guild.channels.get(serverConfig.starboardID)
             if(channel) {
+                if(message.channel.id === channel.id) return;
                 const Message = await channel.send({embed})
                 const collector = message.createReactionCollector(reaction => reaction.emoji.name === '⭐', {"time": 60000})
                 collector.on('collect', async reaction => {
