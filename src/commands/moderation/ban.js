@@ -40,7 +40,7 @@ class BanCommand extends Commands {
                 .addField("Reason", reason)
             if(guildsettings.modlogID !== "None") msg.guild.channels.get(guildsettings.modlogID).send({embed})
         }catch(error){
-            message.channel.send(`i had an error!`)
+            message.channel.send(`i had the following Error: ${error.message}`)
         }
     }
 }
