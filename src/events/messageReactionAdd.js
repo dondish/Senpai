@@ -23,7 +23,8 @@ class MessageReactionAddEvent extends Events {
                 neededReactions = serverConfig.starboardNeededReactions
             }
             await messageReaction.fetchUsers()
-            const reactionCount = messageReaction.count
+            let reactionCount = messageReaction.count
+            if(messageReaction.users.has(message.author.id)) reactionCount -= 1
             if(reactionCount < neededReactions) return;
             const embed = new RichEmbed()
                 .setAuthor(`${message.author.username}`)
@@ -44,13 +45,15 @@ class MessageReactionAddEvent extends Events {
                 collector.on('collect', async reaction => {
                     const embed = new RichEmbed()
                     .setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
-                    .addField(`ID:`, `${message.id}`)
-                    .addField('Channel', `${message.channel}`)
-                    .addField(`Message:`, `${message.content}`)
+                    .addField(`ID:`, `${message.id}`, true)
+                    .addField('Channel', `${message.channel}`, true)
+                    .addField(`Message:`, `**${message.content}**`, true)
                     .setTimestamp()
                     .setFooter(`${reaction.count}⭐`)
                     .setColor(0x80ff00)
-                    if(/\.(gif|jpg|jpeg|tiff|png)$/i.test(message.attachments.first().filename)) embed.setImage(`${message.attachments.first().url}`)
+                    if(message.attachments.size === 1) {
+                        if(/\.(gif|jpg|jpeg|tiff|png)$/i.test(message.attachments.first().filename)) embed.setImage(`${message.attachments.first().url}`)
+                    }
                     await Message.edit({embed})
                 });
                 await guild.addStarboardMessage(this.client, message.id)
