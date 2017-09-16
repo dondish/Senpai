@@ -18,7 +18,7 @@ class TimerCommand extends Commands {
 		const timeObject = this.parseTime(params.join(' '));
 		const time = timeObject.startDate.getTime() - Date.now();
 		msg.channel.send(`I will remind you in ${this.format(time / 1000)}`);
-		setTimeout(() => msg.channel.send(`${msg.author} you wanted me to remind you. Reason: ${this.clean(timeObject.eventTitle)}`), time);
+		setTimeout(() => msg.channel.send(`${msg.author} you wanted me to remind you. Reason: ${this.clean(timeObject.eventTitle) ? this.clean(timeObject.eventTitle) : 'no reason provided'}`), time);
 	}
 
 	parseTime(input) {
