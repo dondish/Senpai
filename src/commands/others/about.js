@@ -14,16 +14,6 @@ class AboutCommand extends Commands {
 
 	async run(msg) {
 		const { client } = this;
-		function format(seconds) {
-			function pad(seconds3) {
-				return (seconds3 < 10 ? '0' : '') + seconds3;
-			}
-			let hours = Math.floor(seconds / (60 * 60));
-			let minutes = Math.floor(seconds % (60 * 60) / 60);
-			let seconds2 = Math.floor(seconds % 60);
-
-			return `${pad(hours)}:${pad(minutes)}:${pad(seconds2)}`;
-		}
 		const result = await client.shard.fetchClientValues('guilds.size');
 		const result2 = await client.shard.fetchClientValues('users.size');
 		const userCount = result2.reduce((prev, val) => prev + val, 0);
@@ -41,13 +31,26 @@ class AboutCommand extends Commands {
 			.addField('Total Servers:', serverCount, true)
 			.addField('Total Users:', userCount, true)
 			.addField('Total Shards:', `${client.shard.count}`, true)
-			.addField('Uptime', `${format(process.uptime())}`)
+			.addField('Uptime', `${this.format(process.uptime())}`)
 			.addField('Bot Invite Link', `[Link](${client.config.inviteURL})`, true)
 			.addField('GitHub', '[Senpai-Bot Github Repo](https://github.com/Dev-Yukine/Senpai-Bot-Discord)', true)
 			.addField('Support Server', `[Server](${client.config.supportServerLink})`, true)
 			.setTimestamp()
 			.setColor('DARK_GREEN');
 		msg.channel.send({ embed });
+	}
+
+	format(seconds) {
+		const { pad } = this;
+		let hours = Math.floor(seconds / (60 * 60));
+		let minutes = Math.floor(seconds % (60 * 60) / 60);
+		let seconds2 = Math.floor(seconds % 60);
+
+		return `${pad(hours)}:${pad(minutes)}:${pad(seconds2)}`;
+	}
+
+	pad(seconds) {
+		return (seconds < 10 ? '0' : '') + seconds;
 	}
 }
 
