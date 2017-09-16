@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 class Commands {
 	constructor(client, info, group) {
 		// Validate everything needed is there and right type
@@ -29,6 +31,15 @@ class Commands {
 			throw new TypeError('Command examples must be an Array of strings.');
 		}
 		if (typeof group !== 'string') throw new TypeError('group name must be a string.');
+	}
+
+	readFileAsync(path) {
+		return new Promise((resolve, reject) => {
+			fs.readFile(path, (err, result) => {
+				if (err) return reject(err);
+				resolve(result);
+			});
+		});
 	}
 }
 
