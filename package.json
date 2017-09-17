@@ -1,6 +1,6 @@
 {
   "name": "senpai-bot",
-  "version": "5.2.2",
+  "version": "5.2.3",
   "description": "Selfmade Nodejs Discord bot",
   "main": "src/main.js",
   "scripts": {

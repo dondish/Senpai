@@ -20,7 +20,7 @@ class TrapCommand extends Commands {
 		let base = new Image();
 		let userPicture = new Image();
 		try {
-			base.src = this.readFileAsync('./materials/pictures/trap.png');
+			base.src = await this.readFileAsync('./materials/pictures/trap.png');
 		} catch (error) {
 			return msg.channel.send('Something went wrong while reading a file! try again and if the error still happens contact my owner!');
 		}
