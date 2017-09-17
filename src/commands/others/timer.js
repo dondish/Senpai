@@ -2,9 +2,9 @@ const Commands = require('../../structures/new/Command.js');
 const { parse } = require('sherlockjs');
 const info = {
 	name: 'timer',
-	description: '',
+	description: 'remind you about something',
 	aliases: ['remindme', 'reminder'],
-	examples: ['vote']
+	examples: ['timer 5 minutes look after the food', 'timer 1h go sleep']
 };
 
 class TimerCommand extends Commands {
