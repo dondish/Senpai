@@ -16,8 +16,8 @@ class WeatherCommand extends Commands {
 	run(msg, params) {
 		if (params.length < 1) return msg.reply('You must add a word to search for');
 		weather.find({ search: params.join(' '), degreeType: 'C' }, async (err, result) => {
+			if (err || !result || !result[0]) return msg.channel.send('Something went wrong! did you spell the city name right?');
 			let realResult = result[0];
-			if (err || !realResult) return msg.channel.send('Something went wrong! did you spell the city name right?');
 			Canvas.registerFont('./materials/fonts/Roboto-Regular.ttf', { family: 'Roboto' });
 			const { Image } = Canvas;
 			const canvas = Canvas.createCanvas(400, 180);
