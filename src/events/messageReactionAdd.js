@@ -45,7 +45,8 @@ class MessageReactionAddEvent extends Events {
 				const collector = message.createReactionCollector(reaction => reaction.emoji.name === '⭐', { time: 60000 });
 				collector.on('collect', async reaction => {
 					const newEmbed = new RichEmbed()
-						.setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
+						.setAuthor(`${message.author.username}`)
+						.setThumbnail(message.author.displayAvatarURL)
 						.addField(`ID:`, `${message.id}`, true)
 						.addField('Channel', `${message.channel}`, true)
 						.addField(`Message:`, `**${message.content}**`, true)
