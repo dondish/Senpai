@@ -61,7 +61,7 @@ class MessageReactionAddEvent extends Events {
 				await guild.addStarboardMessage(this.client, message.id);
 			}
 		} catch (error) {
-			this.client.log.error(`${error.name}: ${error.message}`);
+			this.client.log.error(`MessageReactionAdd Event encountered this Error ${error.name}: ${error.message}`);
 		}
 	}
 }

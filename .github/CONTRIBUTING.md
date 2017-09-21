@@ -3,7 +3,7 @@
 ## Pull requests
 if you wanna submit to Senpai watch the following steps
 
-1. Fork & clone the repository, and make sure you're on the newest **develop** branch!
+1. Fork & clone the repository, and make sure you're on the newest **master** branch!
 2. Code whatever you want!
 3. [Submit a pull request](https://github.com/Dev-Yukine/Senpai-Bot-Discord/compare)
 4. Wait until i review the code/changes

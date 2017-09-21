@@ -30,7 +30,7 @@ class EvalCommand extends Commands {
 			output = util.inspect(output, { depth: 0 });
 			output = output.replace(filter, '[TOKEN]');
 			output = `\`\`\`js\n${output}\n\`\`\``;
-			if (output.length < 1900) {
+			if (output.length < 1024) {
 				const embed = new RichEmbed()
 					.addField('EVAL', `**Type:** ${type}`)
 					.addField(':inbox_tray: Input', input)
@@ -52,7 +52,7 @@ class EvalCommand extends Commands {
 			}
 		} catch (error) {
 			const err = `\`\`\`js\n${error}\n\`\`\``;
-			if (err.length < 1900) {
+			if (err.length < 1024) {
 				const embed = new RichEmbed()
 					.addField('EVAL', `**Type:** Error`)
 					.addField(':inbox_tray: Input', input)

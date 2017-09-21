@@ -5,6 +5,13 @@ Here you can find the Source code of my own Bot "Senpai" for [Discord](https://d
 
 after the rewrite it makes fully usage of classes &  ES2017's async/await functionality.
 
+## Invite
+You can Invite Senpai to your Server with  [this Link](https://discordapp.com/oauth2/authorize?client_id=206955239985774593&scope=bot&permissions=2146959615)
+
+## Contributing
+
+Before creating an PR or Issue please read the [contribution guide](https://github.com/Dev-Yukine/Senpai-Bot-Discord/blob/master/.github/CONTRIBUTING.md) 
+
 ## Language and Libs
 
 This bot is written in Javascript and use [Nodejs](https://nodejs.org/en/) to run.
