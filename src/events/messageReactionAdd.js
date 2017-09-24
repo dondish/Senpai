@@ -31,7 +31,7 @@ class MessageReactionAddEvent extends Events {
 				.setThumbnail(message.author.displayAvatarURL)
 				.addField(`ID:`, `${message.id}`, true)
 				.addField('Channel', `${message.channel}`, true)
-				.addField(`Message:`, `**${message.content}**`, true)
+				.addField(`Message:`, `${message.content}`, true)
 				.setTimestamp()
 				.setFooter(`${reactionCount}⭐`)
 				.setColor(0x80ff00);
@@ -49,7 +49,7 @@ class MessageReactionAddEvent extends Events {
 						.setThumbnail(message.author.displayAvatarURL)
 						.addField(`ID:`, `${message.id}`, true)
 						.addField('Channel', `${message.channel}`, true)
-						.addField(`Message:`, `**${message.content}**`, true)
+						.addField(`Message:`, `${message.content}`, true)
 						.setTimestamp()
 						.setFooter(`${reaction.count}⭐`)
 						.setColor(0x80ff00);

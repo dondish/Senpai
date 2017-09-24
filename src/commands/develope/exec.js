@@ -3,7 +3,7 @@ const { RichEmbed } = require('discord.js');
 const { exec } = require('child_process');
 const info = {
 	name: 'exec',
-	description: 'execute a command in a commandline (only the Bot Owner can use this command!)s',
+	description: 'execute a command in a commandline (only the Bot Owner can use this command!)',
 	aliases: [],
 	examples: ['exec node -v', 'exec npm -v']
 };
@@ -16,7 +16,7 @@ class ExecCommand extends Commands {
 	async run(msg, params) {
 		const { client } = this;
 		const permissionLevel = await msg.member.getPermissionsLevel(client);
-		if (permissionLevel !== 0) return msg.channel.send('Because of security measures, only the Bot Owner can execute this command');
+		if (permissionLevel !== 0) return msg.react(this.client.emojis.get('361218228103675905'));
 		const code = params.join(' ');
 		if (!code) return msg.channel.send('You provided no input are you stupid?');
 		exec(code, (error, stdout, stderr) => {
