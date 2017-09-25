@@ -30,9 +30,11 @@ class MessageReactionAddEvent extends Events {
 				.setAuthor(`${message.author.username}`)
 				.setThumbnail(message.author.displayAvatarURL)
 				.addField(`ID:`, `${message.id}`, true)
-				.addField('Channel', `${message.channel}`, true)
-				.addField(`Message:`, `${message.content}`, true)
-				.setTimestamp()
+				.addField('Channel', `${message.channel}`, true);
+			if (message.content) {
+				embed.addField(`Message:`, `${message.content}`, true);
+			}
+			embed.setTimestamp()
 				.setFooter(`${reactionCount}⭐`)
 				.setColor(0x80ff00);
 			if (message.attachments.size === 1) {
@@ -48,9 +50,11 @@ class MessageReactionAddEvent extends Events {
 						.setAuthor(`${message.author.username}`)
 						.setThumbnail(message.author.displayAvatarURL)
 						.addField(`ID:`, `${message.id}`, true)
-						.addField('Channel', `${message.channel}`, true)
-						.addField(`Message:`, `${message.content}`, true)
-						.setTimestamp()
+						.addField('Channel', `${message.channel}`, true);
+					if (message.content) {
+						embed.addField(`Message:`, `${message.content}`, true);
+					}
+					embed.setTimestamp()
 						.setFooter(`${reaction.count}⭐`)
 						.setColor(0x80ff00);
 					if (message.attachments.size === 1) {
