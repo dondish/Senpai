@@ -31,9 +31,11 @@ class Music {
 			this.playing = true;
 			const embed = new RichEmbed()
 				.addField('\u200b', `[${title}](${link})`)
-				.setAuthor(requestedBy.tag, requestedBy.displayAvatarURL)
-				.setImage(picture)
-				.setColor('RANDOM');
+				.setAuthor(requestedBy.tag, requestedBy.displayAvatarURL);
+			if (picture) {
+				embed.setImage(picture);
+			}
+			embed.setColor('RANDOM');
 			channel.send({ embed });
 			voiceConnection.player.streamingData.pausedTime = 0;
 		}
@@ -188,7 +190,7 @@ class SongInfo {
 		this.link = `https://www.youtube.com/watch?v=${this.id}`;
 		this.title = info.snippet.title;
 		this.length = this.parseTime(info.contentDetails.duration);
-		this.picture = info.snippet.thumbnails.standard.url;
+		this.picture = info.snippet.thumbnails.standard ? info.snippet.thumbnails.standard.url : null;
 		this.requestedBy = requestedBy;
 	}
 

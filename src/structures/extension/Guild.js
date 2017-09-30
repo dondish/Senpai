@@ -105,6 +105,10 @@ class GuildExtension extends Extension {
 		}
 		return this.music;
 	}
+
+	overwriteQueue(queue) {
+		this.getMusic().queue = queue;
+	}
 }
 
 module.exports = GuildExtension;
