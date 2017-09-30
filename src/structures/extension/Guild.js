@@ -89,13 +89,13 @@ class GuildExtension extends Extension {
 		});
 	}
 
-	async getLoop() {
-		const music = await this.getMusic();
+	getLoop() {
+		const music = this.getMusic();
 		return music.loop;
 	}
 
-	async setLoop(boolean) {
-		const music = await this.getMusic();
+	setLoop(boolean) {
+		const music = this.getMusic();
 		music.loop = boolean;
 	}
 

@@ -23,10 +23,10 @@ class LoopCommand extends Commands {
 		if (queue.length === 0) return msg.reply('You can`t loop an empty queue :eyes:');
 		const boolean = loop;
 		if (boolean === true) {
-			await msg.guild.setLoop(false);
+			msg.guild.setLoop(false);
 			msg.channel.send('stopping the loop!');
 		} else if (boolean === false) {
-			await msg.guild.setLoop(true);
+			msg.guild.setLoop(true);
 			msg.channel.send('looping the current queue!');
 		}
 	}
