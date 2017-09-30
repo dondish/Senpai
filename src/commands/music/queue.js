@@ -21,15 +21,15 @@ class QueueCommand extends Commands {
 		return `${pad(hours)}h:${pad(minutes)}m:${pad(seconds2)}s`;
 	}
 
-	async run(msg) {
-		const queue = msg.guild.getQueue();
+	run(msg) {
+		const { queue } = msg.guild.getMusic();
 		if (queue.length < 1) {
-			await msg.reply('there are no songs currently in queue!');
+			msg.reply('there are no songs currently in queue!');
 		} else {
 			// Print the total amount of time in the playlist
 			let totalTimeInSec = 0;
 			// Get the length of every song in seconds
-			const songsLength = queue.map(Song => Number(Song.length_seconds));
+			const songsLength = queue.map(Song => Number(Song.length));
 
 			// Add all the lengths into totalTimeInSec
 			for (let index = 0; index < songsLength.length; index++) {
@@ -42,10 +42,10 @@ class QueueCommand extends Commands {
 				songs.length = 15;
 				songs[15] = `**and ${before - 15} songs more...**\n`;
 				songs[16] = `**total length: ${time}**`;
-				await msg.channel.send(songs.join('\n'));
+				msg.channel.send(songs.join('\n'));
 			} else {
-				await msg.channel.send(songs.join('\n'));
-				await msg.channel.send(`**total length: ${time}**`);
+				msg.channel.send(songs.join('\n'));
+				msg.channel.send(`**total length: ${time}**`);
 			}
 		}
 	}

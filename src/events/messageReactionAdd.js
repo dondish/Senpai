@@ -55,7 +55,7 @@ class MessageReactionAddEvent extends Events {
 						.setFooter(`${reaction.count}⭐`)
 						.setColor(0x80ff00);
 					if (message.content) {
-						embed.addField(`Message:`, `${message.content}`, true);
+						newEmbed.addField(`Message:`, `${message.content}`, true);
 					}
 					if (message.attachments.size === 1) {
 						if (/\.(gif|jpg|jpeg|tiff|png)$/i.test(message.attachments.first().filename)) embed.setImage(`${message.attachments.first().url}`);

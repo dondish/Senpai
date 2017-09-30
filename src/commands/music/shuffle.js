@@ -13,7 +13,7 @@ class ShuffleCommand extends Commands {
 
 	async run(msg) {
 		const { voiceConnection } = msg.guild;
-		let queue = msg.guild.getQueue();
+		let { queue } = msg.guild.getMusic();
 		const isLimited = await msg.guild.getConfig(this.client);
 		if (isLimited.musicLimited) {
 			const permissionLevel = await msg.member.getPermissionsLevel(this.client);

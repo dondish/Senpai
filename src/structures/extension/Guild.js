@@ -1,4 +1,5 @@
 const Extension = require('./Extend.js');
+const Music = require('../new/Music.js');
 const rethink = require('rethinkdb');
 
 class GuildExtension extends Extension {
@@ -88,40 +89,21 @@ class GuildExtension extends Extension {
 		});
 	}
 
-	getLoop() {
-		if (this.loop === undefined) this.loop = false;
-		return this.loop;
+	async getLoop() {
+		const music = await this.getMusic();
+		return music.loop;
 	}
 
-	setLoop(boolean) {
-		this.loop = boolean;
+	async setLoop(boolean) {
+		const music = await this.getMusic();
+		music.loop = boolean;
 	}
 
-	getQueue() {
-		const { queue } = this;
-		if (!queue) {
-			this.queue = [];
+	getMusic() {
+		if (!this.music) {
+			this.music = new Music(this);
 		}
-		return this.queue;
-	}
-
-	shiftQueue() {
-		const queue = this.queue || [];
-		if (!queue) return;
-		const shifted = queue.shift();
-		return shifted;
-	}
-
-	removeFromQueue(index) {
-		if (typeof index !== 'number') throw new TypeError('index must be a number');
-		const queue = this.queue || [];
-		if (!queue) return;
-		const element = queue.splice(index, 1);
-		return element;
-	}
-
-	overwriteQueue(array) {
-		this.queue = array;
+		return this.music;
 	}
 }
 

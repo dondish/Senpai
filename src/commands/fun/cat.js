@@ -15,7 +15,7 @@ class CatCommand extends Commands {
 	async run(msg) {
 		const response = await snekfetch.get('http://random.cat/meow');
 		const Link = response.body.file;
-		msg.channel.send('enjoy your cat', { files: [Link] });
+		msg.channel.send('Here\'s your cat', { files: [Link] });
 	}
 }
 

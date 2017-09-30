@@ -22,7 +22,7 @@ class SkipCommand extends Commands {
 			if (permissionLevel > 3) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to do this Command!");
 		}
 		dispatcher.end();
-		await msg.channel.send('Skipped the played Song!');
+		msg.channel.send('Skipped the played Song!');
 	}
 }
 

@@ -21,7 +21,7 @@ class ClearQueueCommand extends Commands {
 			const permissionLevel = await msg.member.getPermissionsLevel(this.client);
 			if (permissionLevel > 3) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to do this Command!");
 		}
-		let queue = msg.guild.getQueue();
+		let { queue } = msg.guild.getMusic();
 		queue.length = 1;
 		await msg.channel.send('i cleared the whole queue only the playing Song is left!');
 	}

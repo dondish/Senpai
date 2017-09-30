@@ -28,14 +28,14 @@ class PlayCommand extends Commands {
 		if (link.startsWith('http')) {
 			if (link.includes('watch') || link.includes('youtu.be')) {
 				try {
-					const result = await this.client.music.handleSong(link, true, msg.guild.getQueue(), msg.author);
-					message.edit(result);
+					const result = await msg.guild.getMusic().handleSong(link, msg.author, true, musicChannel);
+					message.edit(`**Queued:** ${result.title}`);
 				} catch (error) {
 					message.edit(`Could not add the Song/Playlist because this reason ${error.message}`);
 				}
 			} else if (link.includes('playlist')) {
 				try {
-					const result = await this.client.music.handlePlaylist(link, msg.guild.getQueue(), msg.author);
+					const result = await msg.guild.getMusic().handlePlaylist(link, msg.author, musicChannel);
 					message.edit(result);
 				} catch (error) {
 					message.edit(`Could not add the Song/Playlist because this reason ${error.message}`);
@@ -46,13 +46,12 @@ class PlayCommand extends Commands {
 		} else {
 			try {
 				const searchTerm = params.join(' ');
-				const result = await this.client.music.handleSong(searchTerm, false, msg.guild.getQueue(), msg.author);
-				message.edit(result);
+				const result = await msg.guild.getMusic().handleSong(searchTerm, msg.author, false, musicChannel);
+				message.edit(`**Queued:** ${result.title}`);
 			} catch (error) {
 				message.edit(`Could not add the Song/Playlist because this reason ${error.message}`);
 			}
 		}
-		this.client.music.playqueue(musicChannel);
 	}
 }
 

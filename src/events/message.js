@@ -22,8 +22,8 @@ class MessageEvent extends Events {
 		if (guildConfig.prefix === 'None') guildConfig.prefix = undefined;
 		const prefix = guildConfig.prefix || client.config.prefix;
 		if (!msg.content.startsWith(prefix)) return;
-		const params = this.constructor.createParams(msg);
-		const command = this.constructor.getCommand(msg, prefix);
+		const params = this.createParams(msg);
+		const command = this.getCommand(msg, prefix);
 		let cmd;
 		if (client.commands.has(command)) {
 			cmd = client.commands.get(command);
@@ -45,14 +45,22 @@ Please contact ${Owner.tag}${invite ? ` in this server: ${invite}` : '.'}`);
 		}
 	}
 
-	static createParams(msg) {
+	createParams(msg) {
 		const params = msg.content.split(' ').slice(1);
 		return params;
 	}
 
-	static getCommand(msg, prefix) {
+	getCommand(msg, prefix) {
 		const command = msg.content.split(' ')[0].slice(prefix.length).toLowerCase();
 		return command;
+	}
+
+	inviteLink(link) {
+		if (/(https:\/\/|http:\/\/)(discord.me\/)[a-z]*/.test(link) || /(https:\/\/|http:\/\/)(discord)(app\.com\/invite|\.gg)\/\w{5,7}/.test(link)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
 

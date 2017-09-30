@@ -1,96 +1,74 @@
-const fs = require('fs');
-const yt = require('ytdl-core');
-const ypi = require('youtube-playlist-info');
 const { googleAPIKey } = require('../../config/config.json');
+const promiseReflect = require('promise-reflect');
+const yt = require('ytdl-core');
+const YouTube = require('youtube-node');
+const youtube = new YouTube();
+youtube.setKey(googleAPIKey);
+const ypi = require('youtube-playlist-info');
 const search = require('youtube-search');
-const searchopts = {
+const { RichEmbed } = require('discord.js');
+const searchOptions = {
 	maxResults: 10,
 	key: googleAPIKey
 };
 
-
 class Music {
-	static async playqueue(channel) {
-		// Define voiceConnection
+	constructor(Guild) {
+		this.guild = Guild;
+		this.queue = [];
+		this.loop = false;
+		this.playing = false;
+	}
+
+	playqueue(channel) {
 		const { voiceConnection } = channel.guild;
-		// Get current queue
-		let queue = channel.guild.getQueue();
-		// Define current Song
-		let CurrentSong = queue[0];
-		// Define Next Song
-		let NextSong = queue[1];
-		// Test if you can play a Song on that voiceConnection if not return
-		if (!voiceConnection || voiceConnection.speaking === true || queue.length === 0) return;
-		// Await the download of that Song
-		try {
-			await this.handleDownload(CurrentSong);
-		} catch (error) {
-			channel.send(`I had an error while trying to download the Current Song so i skipped it the reason was following ${error.message}`);
-			console.error(error);
-			queue.shift();
-			return this.playqueue(channel);
-		}
-		// If Queue has 2 or more Songs Download the next also
-		if (queue.length > 1) this.handleDownload(NextSong);
-		// Get some stuff from the Info object we need
-		const id = CurrentSong.video_id;
-		const { title } = CurrentSong;
-		const author = CurrentSong.requestedBy;
-		// Get the Dispatcher
-		const dispatcher = voiceConnection.playFile(`../audio_cache/${id}.aac`, { volume: 0.5 });
-		// Output from the start event
+		let { queue } = this;
+		let [CurrentSong] = queue;
+		if (!voiceConnection || this.playing || queue.length === 0) return;
+		const { title, requestedBy, link, picture } = CurrentSong;
+		const dispatcher = voiceConnection.playStream(yt(link, { filter: 'audioonly' }));
 		dispatcher.on('start', () => {
-			channel.send(`**Start playing:** ${title} Requested by **${author.tag}**`);
+			this.playing = true;
+			const embed = new RichEmbed()
+				.addField('\u200b', `[${title}](${link})`)
+				.setAuthor(requestedBy.tag, requestedBy.displayAvatarURL)
+				.setImage(picture)
+				.setColor('RANDOM');
+			channel.send({ embed });
 			voiceConnection.player.streamingData.pausedTime = 0;
 		}
 		);
-		// Log if the error event is emitted
 		dispatcher.on('error', error => {
 			channel.send('I had an error while trying to play the Current Song so i skipped it! if this happens more than 1 time please contact my DEV!');
 			queue.shift();
-			console.error(error);
+			this.guild.client.log.error(`while trying to play a song this error occourd ${error.name}:${error.message}`);
+			this.playing = false;
 			return this.playqueue(channel);
 		}
 		);
-		// Output form the end event + delete the current played Song also loop this function
 		dispatcher.on('end', () => {
-			channel.send(`**Finished playing:** ${title}`);
 			const shifted = queue.shift();
-			if (channel.guild.getLoop()) queue.push(shifted);
+			if (this.loop) queue.push(shifted);
+			this.playing = false;
 			this.playqueue(channel);
 		});
 	}
 
-	static handleDownload(SongInfo) {
-		return new Promise((resolve, reject) => {
-			if (fs.existsSync(`../audio_cache/${SongInfo.video_id}.aac`) === false) {
-				try {
-					yt.downloadFromInfo(SongInfo, { filter: 'audioonly' })
-						.pipe(fs.createWriteStream(`../audio_cache/${SongInfo.video_id}.aac`)
-							.on('finish', () => {
-								resolve();
-							}
-							)
-							.on('error', error => {
-								reject(error);
-							}
-							)
-						);
-				} catch (error) {
-					reject(error);
-				}
-			} else {
-				resolve();
-			}
-		});
-	}
-
-	static getInfo(url) {
-		return new Promise((resolve, reject) => {
+	handlePlaylist(link, requestedBy, channel) {
+		return new Promise(async (resolve, reject) => {
 			try {
-				yt.getInfo(url, (err, result) => {
-					if (err || result.video_id === undefined) return reject(err);
-					resolve(result);
+				const playlist = await this.getPlaylist(link);
+				const promises = [];
+				for (const song of playlist) {
+					const url = `https://www.youtube.com/watch?v=${song.resourceId.videoId}`;
+					promises.push(this.getSongByUrl(url, requestedBy));
+				}
+				Promise.all(promises.map(promiseReflect)).then(values => {
+					let resolved = values.filter(value => value.status === 'resolved');
+					let rejected = values.filter(value => value.status === 'rejected');
+					resolved.map(song => this.queue.push(song.data));
+					resolve(`${resolved.length} Songs were added, ${rejected.length} could not be added due length, Copyright issues or it is Private`);
+					this.playqueue(channel);
 				});
 			} catch (error) {
 				reject(error);
@@ -98,29 +76,99 @@ class Music {
 		});
 	}
 
-	static getByName(songname) {
-		return new Promise((resolve, reject) => {
-			search(songname, searchopts, (err, result) => {
-				if (err) return reject(err);
-				let song = result[0];
-				if (!song) reject(new Error('searching for that song failed!'));
-				let index = 0;
-				while (song.kind !== 'youtube#video') {
-					index += 1;
-					song = result[index];
+	handleSong(input, requestedBy, isUrl, channel) {
+		return new Promise(async (resolve, reject) => {
+			if (isUrl) {
+				try {
+					const Song = await this.getSongByUrl(input, requestedBy);
+					this.queue.push(Song);
+					this.playqueue(channel);
+					resolve(Song);
+				} catch (error) {
+					reject(error);
 				}
-				resolve(song);
-			});
+			} else {
+				try {
+					const Song = await this.getSongByName(input, requestedBy);
+					this.queue.push(Song);
+					this.playqueue(channel);
+					resolve(Song);
+				} catch (error) {
+					reject(error);
+				}
+			}
 		});
 	}
 
-	static getPlaylist(playlistID) {
+	handleSongAsNext(input, requestedBy, isUrl, channel) {
+		return new Promise(async (resolve, reject) => {
+			if (isUrl) {
+				try {
+					const Song = await this.getSongByUrl(input, requestedBy);
+					this.queue.splice(1, 0, Song);
+					this.playqueue(channel);
+					resolve(Song);
+				} catch (error) {
+					reject(error);
+				}
+			} else {
+				try {
+					const Song = await this.getSongByName(input, requestedBy);
+					this.queue.splice(1, 0, Song);
+					this.playqueue(channel);
+					resolve(Song);
+				} catch (error) {
+					reject(error);
+				}
+			}
+		});
+	}
+
+	getSongByUrl(url, requestedBy) {
 		return new Promise((resolve, reject) => {
 			try {
-				ypi.playlistInfo(googleAPIKey, playlistID, playlistItems => {
-					// If no playlist is there ypi got an Error
-					if (!playlistItems) return reject(new Error('Invalid playlist'));
-					// If no error resolve with Playlist
+				const id = /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/g.exec(url);
+				if (!id) throw new Error('this Link isn\'s a Youtube Video');
+				youtube.getById(id[1], (err, result) => {
+					if (err) throw err;
+					const Song = new SongInfo(result.items[0], requestedBy);
+					if (Song.length > 1800) return reject(new Error('Song is too long! the maximun limit is 30 minutes'));
+					resolve(Song);
+				});
+			} catch (error) {
+				reject(error);
+			}
+		});
+	}
+
+	getSongByName(name, requestedBy) {
+		return new Promise((resolve, reject) => {
+			try {
+				search(name, searchOptions, async (err, result) => {
+					if (err) throw err;
+					if (!result || !result[0]) throw new Error('searching for that song failed');
+					let [song] = result;
+					let index = 0;
+					while (song.kind !== 'youtube#video') {
+						index += 1;
+						song = result[index];
+					}
+					const songInfo = await this.getSongByUrl(song.link, requestedBy);
+					resolve(songInfo);
+				});
+			} catch (error) {
+				reject(error);
+			}
+		});
+	}
+
+	getPlaylist(url) {
+		return new Promise((resolve, reject) => {
+			try {
+				const id = /[&?]list=([a-z0-9_-]+)/i.exec(url);
+				if (!id) throw new Error('this Link isn\'s a Youtube Playlist');
+				ypi.playlistInfo(googleAPIKey, id[1], playlistItems => {
+					if (!playlistItems) throw new Error('Invalid playlist');
 					resolve(playlistItems);
 				});
 			} catch (error) {
@@ -129,94 +177,33 @@ class Music {
 		});
 	}
 
-	static handleSong(input, isLink, queue, requestedBy) {
-		return new Promise(async (resolve, reject) => {
-			if (isLink) {
-				try {
-					let songinfo = await this.getInfo(input);
-					const length = Number(songinfo.length_seconds);
-					if (length > 1800) throw new Error('Song is too long!');
-					songinfo.requestedBy = requestedBy;
-					queue.push(songinfo);
-					resolve(`**Queued:** ${songinfo.title}`);
-				} catch (error) {
-					reject(error);
-				}
-			} else {
-				try {
-					const result = await this.getByName(input);
-					const songresult = await this.getInfo(result.link);
-					const length = Number(songresult.length_seconds);
-					if (length > 1800) throw new Error('Song is too long!');
-					songresult.requestedBy = requestedBy;
-					queue.push(songresult);
-					resolve(`**Queued:** ${songresult.title}`);
-				} catch (error) {
-					reject(error);
-				}
-			}
-		});
+	overwriteQueue(queue) {
+		this.queue = queue;
+	}
+}
+
+class SongInfo {
+	constructor(info, requestedBy) {
+		this.id = info.id;
+		this.link = `https://www.youtube.com/watch?v=${this.id}`;
+		this.title = info.snippet.title;
+		this.length = this.parseTime(info.contentDetails.duration);
+		this.picture = info.snippet.thumbnails.standard.url;
+		this.requestedBy = requestedBy;
 	}
 
-	static handleSongAsNext(input, isLink, queue, requestedBy) {
-		return new Promise(async (resolve, reject) => {
-			if (isLink) {
-				try {
-					let songinfo = await this.getInfo(input);
-					const length = Number(songinfo.length_seconds);
-					if (length > 1800) throw new Error('Song is too long!');
-					songinfo.requestedBy = requestedBy;
-					queue.splice(1, 0, songinfo);
-					resolve(`**Queued:** ${songinfo.title}`);
-				} catch (error) {
-					reject(error);
-				}
-			} else {
-				try {
-					const result = await this.getByName(input);
-					const songresult = await this.getInfo(result.link);
-					const length = Number(songresult.length_seconds);
-					if (length > 1800) throw new Error('Song is too long!');
-					songresult.requestedBy = requestedBy;
-					queue.splice(1, 0, songresult);
-					resolve(`**Queued:** ${songresult.title}`);
-				} catch (error) {
-					reject(error);
-				}
-			}
-		});
-	}
+	parseTime(time) {
+		if (!time) return null;
+		const match = time.match(/P(\d+M)?(\d+W)?(\d+D)?T(\d+H)?(\d+M)?(\d+S)?/);
 
-	static handlePlaylist(link, queue, requestedBy) {
-		return new Promise(async (resolve, reject) => {
-			try {
-				let playlistID = link.slice(38);
-				const playlist = await this.getPlaylist(playlistID);
-				let SongsAdded = 0;
-				let SongsTooLong = 0;
-				let SongsClaimed = 0;
-				for (let song of playlist) {
-					const url = `https://www.youtube.com/watch?v=${song.resourceId.videoId}`;
-					try {
-						const result = await this.getInfo(url);
-						const length = Number(result.length_seconds);
-						if (length > 1800) throw new Error('Song is too long!');
-						result.requestedBy = requestedBy;
-						queue.push(result);
-						SongsAdded++;
-					} catch (error) {
-						if (error.message === 'Song is too long!') {
-							SongsTooLong++;
-						} else {
-							SongsClaimed++;
-						}
-					}
-				}
-				resolve(`${SongsAdded} Songs were added, ${SongsTooLong} Songs are to long, ${SongsClaimed} Songs are claimed/taken down`);
-			} catch (error) {
-				reject(error);
-			}
-		});
+		const Month = parseInt(match[1]) || 0,
+			Weeks = parseInt(match[2]) || 0,
+			Days = parseInt(match[3]) || 0,
+			Hours = parseInt(match[4]) || 0,
+			minutes = parseInt(match[5]) || 0,
+			Seconds = parseInt(match[6]) || 0;
+
+		return Month * 2629744 + Weeks * 604800 + Days * 86400 + Hours * 3600 + minutes * 60 + Seconds; // eslint-disable-line no-mixed-operators
 	}
 }
 
