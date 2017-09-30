@@ -133,7 +133,7 @@ class Music {
 				if (!id) throw new Error('this Link isn\'s a Youtube Video');
 				youtube.getById(id[1], (err, result) => {
 					if (err) throw err;
-					if (!result.items[0].id) throw new Error('Song Unaviable!');
+					if (!result.items[0]) throw new Error('Song Unaviable!');
 					const Song = new SongInfo(result.items[0], requestedBy);
 					if (Song.length > 1800) return reject(new Error('Song is too long! the maximun limit is 30 minutes'));
 					resolve(Song);
