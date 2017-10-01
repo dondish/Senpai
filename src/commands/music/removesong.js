@@ -12,7 +12,8 @@ class RemoveSongCommand extends Commands {
 	}
 
 	async run(msg, params, prefix) {
-		const number = params[0];
+		let number = params[0];
+		number = Number(number);
 		const { queue } = msg.guild.getMusic();
 		const { voiceConnection } = msg.guild;
 		const isLimited = await msg.guild.getConfig(this.client);

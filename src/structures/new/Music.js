@@ -30,7 +30,7 @@ class Music {
 		dispatcher.on('start', () => {
 			this.playing = true;
 			const embed = new RichEmbed()
-				.addField('\u200b', `[${title}](${link})`)
+				.setDescription(`[${title}](${link})`)
 				.setAuthor(requestedBy.tag, requestedBy.displayAvatarURL);
 			if (picture) {
 				embed.setImage(picture);
