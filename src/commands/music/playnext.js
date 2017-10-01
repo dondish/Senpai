@@ -45,7 +45,6 @@ class PlayNextCommand extends Commands {
 				message.edit(`Could not add the Song/Playlist because this reason ${error.message}`);
 			}
 		}
-		this.client.music.playqueue(musicChannel);
 	}
 }
 

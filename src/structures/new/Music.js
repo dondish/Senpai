@@ -132,7 +132,7 @@ class Music {
 				const id = /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/g.exec(url);
 				if (!id) throw new Error('this Link isn\'s a Youtube Video');
 				youtube.getById(id[1], (err, result) => {
-					if (err) throw err;
+					if (err) return reject(err);
 					if (!result.items[0]) return reject(new Error('Song Unaviable'));
 					const Song = new SongInfo(result.items[0], requestedBy);
 					if (Song.length > 1800) return reject(new Error('Song is too long! the maximun limit is 30 minutes'));
@@ -148,16 +148,20 @@ class Music {
 		return new Promise((resolve, reject) => {
 			try {
 				search(name, searchOptions, async (err, result) => {
-					if (err) throw err;
-					if (!result || !result[0]) throw new Error('searching for that song failed');
-					let [song] = result;
-					let index = 0;
-					while (song.kind !== 'youtube#video') {
-						index += 1;
-						song = result[index];
+					try {
+						if (err) throw err;
+						if (!result || !result[0]) throw new Error('searching for that song failed');
+						let [song] = result;
+						let index = 0;
+						while (song.kind !== 'youtube#video') {
+							index += 1;
+							song = result[index];
+						}
+						const songInfo = await this.getSongByUrl(song.link, requestedBy);
+						resolve(songInfo);
+					} catch (error) {
+						reject(error);
 					}
-					const songInfo = await this.getSongByUrl(song.link, requestedBy);
-					resolve(songInfo);
 				});
 			} catch (error) {
 				reject(error);
