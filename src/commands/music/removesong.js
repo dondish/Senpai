@@ -29,8 +29,8 @@ class RemoveSongCommand extends Commands {
 		if (number <= 0) return msg.channel.send('There is no Song which is in queue place 0 or less :thinking:');
 		if (number > queue.length) return msg.channel.send("You can't try to delete a song that is not there!");
 		const indexnumber = number - 1;
+		await msg.channel.send(`I've deleted the Song ${queue[indexnumber].title} from the queue`);
 		queue.splice(indexnumber, 1);
-		msg.channel.send(`I've deleted the Song ${queue[indexnumber].title} from the queue`);
 	}
 }
 
