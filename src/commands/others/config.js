@@ -52,14 +52,14 @@ class ConfigCommand extends Commands {
 	}
 	async prefix(msg, param1, param2, param3) {
 		if (!param2) {
-			msg.reply('You must provide an second parameter!');
+			return msg.reply('You must provide an second parameter!');
 		} else if (param2 === 'set') {
 			try {
 				if (!param3) {
-					msg.reply('you must add a prefix to set!');
+					return msg.reply('you must add a prefix to set!');
 				}
 				if (param3.length > 3) {
-					msg.reply("a prefix's length must be between 1-3 characters long!");
+					return msg.reply("a prefix's length must be between 1-3 characters long!");
 				}
 				await msg.guild.updateConfig(this.client, { prefix: param3 });
 				const embed = new RichEmbed()
@@ -69,27 +69,27 @@ class ConfigCommand extends Commands {
 					.setFooter('Senpai Bot by Yukine');
 				msg.channel.send({ embed });
 			} catch (error) {
-				msg.reply('im sorry i had an error with my Database please try again!');
+				return msg.reply('im sorry i had an error with my Database please try again!');
 			}
 		} else if (param2 === 'remove' || param2 === 'delete') {
 			try {
 				await msg.guild.updateConfig(this.client, { prefix: 'None' });
 				msg.channel.send('i deleted the custom prefix from this server!');
 			} catch (error) {
-				msg.reply('im sorry i had an error with my Database please try again!');
+				return msg.reply('im sorry i had an error with my Database please try again!');
 			}
 		} else {
-			msg.reply('You provided an wrong second parameter');
+			return msg.reply('You provided an wrong second parameter');
 		}
 	}
 
 	async modlog(msg, param1, param2, param3) {
 		if (!param2) {
-			msg.reply('You must provide an second parameter!');
+			return msg.reply('You must provide an second parameter!');
 		} else if (param2 === 'set') {
 			try {
 				if (!param3) {
-					msg.reply('you must add channelID or Mention for this!');
+					return msg.reply('you must add channelID or Mention for this!');
 				}
 				let modlog;
 				if (msg.mentions.channels.size > 0) {
@@ -97,7 +97,7 @@ class ConfigCommand extends Commands {
 				} else {
 					modlog = msg.guild.channels.get(param3);
 					if (!modlog) {
-						msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
+						return msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
 					}
 				}
 				await msg.guild.updateConfig(this.client, { modlogID: modlog.id });
@@ -108,27 +108,27 @@ class ConfigCommand extends Commands {
 					.setFooter('Senpai Bot by Yukine');
 				msg.channel.send({ embed });
 			} catch (error) {
-				msg.reply('im sorry i had an error with my Database please try again!');
+				return msg.reply('im sorry i had an error with my Database please try again!');
 			}
 		} else if (param2 === 'remove' || param2 === 'delete') {
 			try {
 				await msg.guild.updateConfig(this.client, { modlogID: 'None' });
 				msg.channel.send('i deleted the modlog channel from my config!');
 			} catch (error) {
-				msg.reply('im sorry i had an error with my Database please try again!');
+				return msg.reply('im sorry i had an error with my Database please try again!');
 			}
 		} else {
-			msg.reply('You provided an wrong second parameter');
+			return msg.reply('You provided an wrong second parameter');
 		}
 	}
 
 	async musiclog(msg, param1, param2, param3) {
 		if (!param2) {
-			msg.reply('You must provide an second parameter!');
+			return msg.reply('You must provide an second parameter!');
 		} else if (param2 === 'set') {
 			try {
 				if (!param3) {
-					msg.reply('you must add channelID or Mention for this!');
+					return msg.reply('you must add channelID or Mention for this!');
 				}
 				let musiclog;
 				if (msg.mentions.channels.size > 0) {
@@ -136,7 +136,7 @@ class ConfigCommand extends Commands {
 				} else {
 					musiclog = msg.guild.channels.get(param3);
 					if (!musiclog) {
-						msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
+						return msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
 					}
 				}
 				await msg.guild.updateConfig(this.client, { musicID: musiclog.id });
@@ -147,27 +147,27 @@ class ConfigCommand extends Commands {
 					.setFooter('Senpai Bot by Yukine');
 				msg.channel.send({ embed });
 			} catch (error) {
-				msg.reply('im sorry i had an error with my Database please try again!');
+				return msg.reply('im sorry i had an error with my Database please try again!');
 			}
 		} else if (param2 === 'remove' || param2 === 'delete') {
 			try {
 				await msg.guild.updateConfig(this.client, { musicID: 'None' });
 				msg.channel.send('i deleted the Musiclog channel from my config!');
 			} catch (error) {
-				msg.reply('im sorry i had an error with my Database please try again!');
+				return msg.reply('im sorry i had an error with my Database please try again!');
 			}
 		} else {
-			msg.reply('You provided an wrong second parameter');
+			return msg.reply('You provided an wrong second parameter');
 		}
 	}
 
 	async starboard(msg, param1, param2, param3) {
 		if (!param2) {
-			msg.reply('You must provide an second parameter!');
+			return msg.reply('You must provide an second parameter!');
 		} else if (param2 === 'set') {
 			try {
 				if (!param3) {
-					msg.reply('you must add channelID or Mention for this!');
+					return msg.reply('you must add channelID or Mention for this!');
 				}
 				let starboard;
 				if (msg.mentions.channels.size > 0) {
@@ -175,7 +175,7 @@ class ConfigCommand extends Commands {
 				} else {
 					starboard = msg.guild.channels.get(param3);
 					if (!starboard) {
-						msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
+						return msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
 					}
 				}
 				await msg.guild.updateConfig(this.client, { starboardID: starboard.id });
@@ -186,14 +186,14 @@ class ConfigCommand extends Commands {
 					.setFooter('Senpai Bot by Yukine');
 				msg.channel.send({ embed });
 			} catch (error) {
-				msg.reply('im sorry i had an error with my Database please try again!');
+				return msg.reply('im sorry i had an error with my Database please try again!');
 			}
 		} else if (param2 === 'remove' || param2 === 'delete') {
 			try {
 				await msg.guild.updateConfig(this.client, { starboardID: 'None' });
 				msg.channel.send('i deleted the Starboard channel from my config!');
 			} catch (error) {
-				msg.reply('im sorry i had an error with my Database please try again!');
+				return msg.reply('im sorry i had an error with my Database please try again!');
 			}
 		} else if (param2 === 'count' || param2 === 'votes') {
 			try {
@@ -207,23 +207,23 @@ class ConfigCommand extends Commands {
 					.setFooter('Senpai Bot by Yukine');
 				msg.channel.send({ embed });
 			} catch (error) {
-				msg.reply('im sorry i had an error with my Database please try again!');
+				return msg.reply('im sorry i had an error with my Database please try again!');
 			}
 		} else {
-			msg.reply('You provided an wrong second parameter');
+			return msg.reply('You provided an wrong second parameter');
 		}
 	}
 
 	async modrole(msg, param1, param2, param3) {
 		if (await msg.member.getPermissionsLevel(this.client) > 1) {
-			msg.reply('Only the Owner can edit the Moderation Roles!');
+			return msg.reply('Only the Owner can edit the Moderation Roles!');
 		}
 		if (!param2) {
-			msg.reply('You must provide an second parameter!');
+			return msg.reply('You must provide an second parameter!');
 		} else if (param2 === 'add') {
 			try {
 				if (!param3) {
-					msg.reply('you must add RoleID or Mention for this!');
+					return msg.reply('you must add RoleID or Mention for this!');
 				}
 				let role;
 				if (msg.mentions.roles.size > 0) {
@@ -231,13 +231,13 @@ class ConfigCommand extends Commands {
 				} else {
 					role = msg.guild.roles.get(param3);
 					if (!role) {
-						msg.reply('Your provided ID is wrong! use a Rolemention instead maybe');
+						return msg.reply('Your provided ID is wrong! use a Rolemention instead maybe');
 					}
 				}
 				const result = await msg.guild.getConfig(this.client);
 				const array = result.moderationRolesIDs;
 				if (array.includes(role.id)) {
-					msg.reply('this Role is already an Modrole on this server!');
+					return msg.reply('this Role is already an Modrole on this server!');
 				}
 				array.push(role.id);
 				await msg.guild.updateConfig(this.client, { moderationRolesIDs: array });
@@ -250,12 +250,12 @@ class ConfigCommand extends Commands {
 					.setFooter('Senpai Bot by Yukine');
 				msg.channel.send({ embed });
 			} catch (error) {
-				msg.reply(`im sorry i had the following error ${error.message}`);
+				return msg.reply(`im sorry i had the following error ${error.message}`);
 			}
 		} else if (param2 === 'remove' || param2 === 'delete') {
 			try {
 				if (!param3) {
-					msg.reply('you must add RoleID or Mention for this!');
+					return msg.reply('you must add RoleID or Mention for this!');
 				}
 				let role;
 				if (msg.mentions.roles.size > 0) {
@@ -263,13 +263,13 @@ class ConfigCommand extends Commands {
 				} else {
 					role = msg.guild.roles.get(param3);
 					if (!role) {
-						msg.reply('Your provided ID is wrong! use a RoleMention instead maybe');
+						return msg.reply('Your provided ID is wrong! use a RoleMention instead maybe');
 					}
 				}
 				const result = await msg.guild.getConfig(this.client);
 				const array = result.moderationRolesIDs;
 				if (!array.includes(role.id)) {
-					msg.reply('this Role is not an Modrole on this server!');
+					return msg.reply('this Role is not an Modrole on this server!');
 				}
 				const index = array.indexOf(role.id);
 				array.splice(index, 1);
@@ -282,20 +282,20 @@ class ConfigCommand extends Commands {
 					.setFooter('Senpai Bot by Yukine');
 				msg.channel.send({ embed });
 			} catch (error) {
-				msg.reply(`im sorry i had the following error ${error.message}`);
+				return msg.reply(`im sorry i had the following error ${error.message}`);
 			}
 		} else {
-			msg.reply('You provided an wrong second parameter');
+			return msg.reply('You provided an wrong second parameter');
 		}
 	}
 
 	async musicrole(msg, param1, param2, param3) { // eslint-disable-line complexity  
 		if (!param2) {
-			msg.reply('You must provide an second parameter!');
+			return msg.reply('You must provide an second parameter!');
 		} else if (param2 === 'add') {
 			try {
 				if (!param3) {
-					msg.reply('you must add RoleID or Mention for this!');
+					return msg.reply('you must add RoleID or Mention for this!');
 				}
 				let role;
 				if (msg.mentions.roles.size > 0) {
@@ -303,13 +303,13 @@ class ConfigCommand extends Commands {
 				} else {
 					role = msg.guild.roles.get(param3);
 					if (!role) {
-						msg.reply('Your provided ID is wrong! use a Rolemention instead maybe');
+						return msg.reply('Your provided ID is wrong! use a Rolemention instead maybe');
 					}
 				}
 				const result = await msg.guild.getConfig(this.client);
 				const array = result.musicRolesIDs;
 				if (array.includes(role.id)) {
-					msg.reply('this Role is already an Musicrole on this server!');
+					return msg.reply('this Role is already an Musicrole on this server!');
 				}
 				array.push(role.id);
 				await msg.guild.updateConfig(this.client, { musicRolesIDs: array });
@@ -321,12 +321,12 @@ class ConfigCommand extends Commands {
 					.setFooter('Senpai Bot by Yukine');
 				msg.channel.send({ embed });
 			} catch (error) {
-				msg.reply(`im sorry i had the following error ${error.message}`);
+				return msg.reply(`im sorry i had the following error ${error.message}`);
 			}
 		} else if (param2 === 'remove' || param2 === 'delete') {
 			try {
 				if (!param3) {
-					msg.reply('you must add RoleID or Mention for this!');
+					return msg.reply('you must add RoleID or Mention for this!');
 				}
 				let role;
 				if (msg.mentions.roles.size > 0) {
@@ -334,13 +334,13 @@ class ConfigCommand extends Commands {
 				} else {
 					role = msg.guild.roles.get(param3);
 					if (!role) {
-						msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
+						return msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
 					}
 				}
 				const result = await msg.guild.getConfig(this.client);
 				const array = result.musicRolesIDs;
 				if (!array.includes(role.id)) {
-					msg.reply('this Role is not an Musicrole on this server!');
+					return msg.reply('this Role is not an Musicrole on this server!');
 				}
 				const index = array.indexOf(role.id);
 				array.splice(index, 1);
@@ -354,11 +354,11 @@ class ConfigCommand extends Commands {
 					.setFooter('Senpai Bot by Yukine');
 				msg.channel.send({ embed });
 			} catch (error) {
-				msg.reply(`im sorry i had the following error ${error.message}`);
+				return msg.reply(`im sorry i had the following error ${error.message}`);
 			}
 		} else if (param2 === 'limit') {
 			if (!param3) {
-				msg.reply('You must provide an third parameter!');
+				return msg.reply('You must provide an third parameter!');
 			} else if (param3 === 'enable' || param3 === 'on') {
 				await msg.guild.updateConfig(this.client, { musicLimited: true });
 				msg.channel.send('enabled Limitation of my music feature to the Musicroles!');
@@ -366,10 +366,10 @@ class ConfigCommand extends Commands {
 				await msg.guild.updateConfig(this.client, { musicLimited: false });
 				msg.channel.send('disabled Limitation of my music feature to the Musicroles!');
 			} else {
-				msg.reply('You provided an wrong third parameter');
+				return msg.reply('You provided an wrong third parameter');
 			}
 		} else {
-			msg.reply('You provided an wrong second parameter');
+			return msg.reply('You provided an wrong second parameter');
 		}
 	}
 
