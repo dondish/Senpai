@@ -29,7 +29,7 @@ class PlayNextCommand extends Commands {
 			if (link.includes('watch') || link.includes('youtu.be')) {
 				try {
 					const result = await msg.guild.getMusic().handleSongAsNext(link, msg.author, true, musicChannel);
-					message.edit(result);
+					message.edit(`**Queued:** ${result.title}`);
 				} catch (error) {
 					message.edit(`Could not add the Song/Playlist because this reason ${error.message}`);
 				}
@@ -40,7 +40,7 @@ class PlayNextCommand extends Commands {
 			try {
 				const searchTerm = params.join(' ');
 				const result = await msg.guild.getMusic().handleSongAsNext(searchTerm, msg.author, false, musicChannel);
-				message.edit(result);
+				message.edit(`**Queued:** ${result.title}`);
 			} catch (error) {
 				message.edit(`Could not add the Song/Playlist because this reason ${error.message}`);
 			}
