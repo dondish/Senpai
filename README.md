@@ -1,4 +1,5 @@
 # Senpai-Bot
+
 <div align="center">
   <br />
   <p>
@@ -6,6 +7,7 @@
     <a href="https://david-dm.org/Dev-Yukine/Senpai-Bot-Discord"><img src="https://david-dm.org/Dev-Yukine/Senpai-Bot-Discord/status.svg" alt="Dependencies" /></a>
   </p>
 </div>
+
 ## About
 Here you can find the Source code of my own Bot "Senpai" for [Discord](https://discordapp.com/). You can use this Source-Code under the [MIT](https://en.wikipedia.org/wiki/MIT_License) license at any time.
 
