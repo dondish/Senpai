@@ -8,6 +8,6 @@ cache:
 before_install:
   - 'npm install -g npm@latest'
 install: 
-  - npm install --only=dev
+  - npm install --only=dev -g
 script:
   - ./node_modules/.bin/eslint-changes
