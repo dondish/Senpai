@@ -23,7 +23,6 @@
   "homepage": "https://github.com/Dev-Yukine/Senpai-Bot-Discord#readme",
   "devDependencies": {
     "eslint": "^4.8.0",
-    "eslint-changes": "^0.1.2",
     "eslint-config-aqua": "^2.0.1"
   },
   "eslintConfig": {
