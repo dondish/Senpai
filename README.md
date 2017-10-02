@@ -1,9 +1,15 @@
 # Senpai-Bot
-
+<div align="center">
+  <br />
+  <p>
+    <a href="https://travis-ci.org/Dev-Yukine/Senpai-Bot-Discord"><img src="https://api.travis-ci.org/Dev-Yukine/Senpai-Bot-Discord.svg" alt="Build status" /></a>
+    <a href="https://david-dm.org/Dev-Yukine/Senpai-Bot-Discord"><img src="https://david-dm.org/Dev-Yukine/Senpai-Bot-Discord/status.svg" alt="Dependencies" /></a>
+  </p>
+</div>
 ## About
 Here you can find the Source code of my own Bot "Senpai" for [Discord](https://discordapp.com/). You can use this Source-Code under the [MIT](https://en.wikipedia.org/wiki/MIT_License) license at any time.
 
-after the rewrite it makes fully usage of classes &  ES2017's async/await functionality.
+after the rewrite it makes fully usage of classes & ES2017's async/await functionality.
 
 ## Invite
 You can Invite Senpai to your Server with  [this Link](https://discordapp.com/oauth2/authorize?client_id=206955239985774593&scope=bot&permissions=2146959615)
@@ -17,8 +23,6 @@ Before creating an PR or Issue please read the [contribution guide](https://gith
 This bot is written in Javascript and use [Nodejs](https://nodejs.org/en/) to run.
 
 also it uses the Libary [Discord.js](https://github.com/hydrabolt/discord.js) to interact with the Discord API
-
-[![dependencies Status](https://david-dm.org/Dev-Yukine/Senpai-Bot-Discord/status.svg)](https://david-dm.org/Dev-Yukine/Senpai-Bot-Discord)
 
 if you want to host this bot yourself you need to install python 2.7 and a C compiler if you are on Windows you can run this command in a cmd line **npm install --global --production windows-build-tools** on some Linux distributions it is pre installed on some others not.
 
