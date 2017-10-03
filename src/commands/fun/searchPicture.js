@@ -16,6 +16,7 @@ class PictureSearchCommand extends Commands {
 		if (params < 1) return msg.reply('You must add a word to search for behind!');
 		try {
 			const result = await searchImages(this.client.config.pixabayToken, params.join(' '));
+			if (result.total === 0) return msg.reply('Sorry i could not find anything on pixabay');
 			const Image = result.hits[Math.floor(Math.random() * result.hits.length)];
 			msg.channel.send('Here\'s your Picture', { files: [Image.webformatURL] });
 		} catch (error) {
