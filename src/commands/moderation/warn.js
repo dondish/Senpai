@@ -19,7 +19,7 @@ class WarnCommand extends Commands {
 		let member = msg.mentions.members.first();
 		if (msg.member.highestRole.comparePositionTo(member.highestRole) <= 0 && msg.guild.owner.id !== msg.author.id) return msg.reply("You can't warn someone with an higher or the same roleposition!");
 		let reason = params.slice(1).join(' ');
-		if (reason.length < 1) return msg.reply('You must supply a reason for the ban.');
+		if (reason.length < 1) return msg.reply('You must supply a reason for the warn.');
 		await member.addWarn(this.client, reason);
 		const guildsettings = await msg.guild.getConfig(this.client);
 		const embed = new RichEmbed()

@@ -9,6 +9,7 @@
       "discordBotsToken"    :"",
       "inviteURL"           :"",
       "supportServerLink"   :"",
-      "voteLink"            :""
+      "voteLink"            :"",
+      "pixabayToken"        :""
   }
   

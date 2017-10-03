@@ -21,9 +21,16 @@ class MessageEvent extends Events {
 		}
 		if (guildConfig.prefix === 'None') guildConfig.prefix = undefined;
 		const prefix = guildConfig.prefix || client.config.prefix;
-		if (!msg.content.startsWith(prefix)) return;
-		const params = this.createParams(msg);
-		const command = this.getCommand(msg, prefix);
+		if (!msg.content.startsWith(prefix) && !this.mentioned(msg.content)) return;
+		let params;
+		let command;
+		if (msg.content.startsWith(prefix)) {
+			params = this.createParams(msg);
+			command = this.getCommand(msg, prefix);
+		} else if (this.mentioned(msg.content)) {
+			params = this.createParamsMention(msg);
+			command = this.getCommandMention(msg);
+		}
 		let cmd;
 		if (client.commands.has(command)) {
 			cmd = client.commands.get(command);
@@ -45,6 +52,16 @@ Please contact ${Owner.tag}${invite ? ` in this server: ${invite}` : '.'}`);
 		}
 	}
 
+	createParamsMention(msg) {
+		const params = msg.content.split(' ').slice(2);
+		return params;
+	}
+
+	getCommandMention(msg) {
+		const command = msg.content.split(' ')[1].toLowerCase();
+		return command;
+	}
+
 	createParams(msg) {
 		const params = msg.content.split(' ').slice(1);
 		return params;
@@ -53,6 +70,11 @@ Please contact ${Owner.tag}${invite ? ` in this server: ${invite}` : '.'}`);
 	getCommand(msg, prefix) {
 		const command = msg.content.split(' ')[0].slice(prefix.length).toLowerCase();
 		return command;
+	}
+
+	mentioned(input) {
+		const RegEx = new RegExp(`^(<@)(!?)(${this.client.user.id}> )`);
+		return RegEx.test(input);
 	}
 
 	inviteLink(link) {
