@@ -195,7 +195,11 @@ class SongInfo {
 		this.link = `https://www.youtube.com/watch?v=${this.id}`;
 		this.title = info.snippet.title;
 		this.length = this.parseTime(info.contentDetails.duration);
-		this.picture = info.snippet.thumbnails.standard ? info.snippet.thumbnails.standard.url : null;
+		this.default = info.snippet.thumbnails.default ? info.snippet.thumbnails.default.url : null;
+		this.medium = info.snippet.thumbnails.medium ? info.snippet.thumbnails.medium.url : null;
+		this.high = info.snippet.thumbnails.high ? info.snippet.thumbnails.high.url : null;
+		this.standard = info.snippet.thumbnails.standard ? info.snippet.thumbnails.standard.url : null;
+		this.picture = this.standard || this.high || this.medium || this.default;
 		this.requestedBy = requestedBy;
 	}
 
