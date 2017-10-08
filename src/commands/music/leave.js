@@ -20,8 +20,7 @@ class LeaveCommand extends Commands {
 			if (permissionLevel > 3) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to do this Command!");
 		}
 		try {
-			let { queue, loop } = msg.guild.getMusic();
-			let { dispatcher } = voiceConnection;
+			let { queue, loop, dispatcher } = msg.guild.getMusic();
 			if (queue.length > 0) queue.length = 0;
 			if (loop) msg.guild.setLoop(false);
 			if (dispatcher) dispatcher.end();

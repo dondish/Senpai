@@ -14,7 +14,7 @@ class SkipCommand extends Commands {
 	async run(msg) {
 		const { voiceConnection } = msg.guild;
 		if (voiceConnection === null) return msg.reply(`Im not in a Voice channel on this Server!`);
-		const { dispatcher } = voiceConnection;
+		const { dispatcher } = msg.guild.getMusic();
 		if (!dispatcher) return msg.reply(`I don't play music at the moment!`);
 		const isLimited = await msg.guild.getConfig(this.client);
 		if (isLimited.musicLimited) {

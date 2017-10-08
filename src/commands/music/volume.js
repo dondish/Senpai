@@ -14,7 +14,7 @@ class VolumeCommand extends Commands {
 	async run(msg, params) {
 		const { voiceConnection } = msg.guild;
 		if (voiceConnection === null) return msg.reply(`Im not in a Voice channel on this Server!`);
-		const { dispatcher } = voiceConnection;
+		const { dispatcher } = msg.guild.getMusic();
 		if (!dispatcher) return msg.reply(`I don't play music at the moment!`);
 		if (!params[0]) {
 			await msg.channel.send(`the current volume is ${dispatcher.volume}`);

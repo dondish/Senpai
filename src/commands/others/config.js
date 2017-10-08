@@ -274,7 +274,8 @@ class ConfigCommand extends Commands {
 				const index = array.indexOf(role.id);
 				array.splice(index, 1);
 				await msg.guild.updateConfig(this.client, { moderationRolesIDs: array });
-				const Roles = array.map(ID => `<@&${ID}>`).join(', ');
+				let Roles = array.map(ID => `<@&${ID}>`).join(', ');
+				if (!Roles) Roles = 'None';
 				const embed = new RichEmbed()
 					.setTitle(`deleted Role ${role.name} from the Modroles`)
 					.addField('updated Modroles', `${Roles}`)

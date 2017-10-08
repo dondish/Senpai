@@ -27,7 +27,7 @@ class MessageReactionAddEvent extends Events {
 			if (messageReaction.users.has(message.author.id)) reactionCount -= 1;
 			if (reactionCount < neededReactions) return;
 			const embed = new RichEmbed()
-				.setAuthor(`${message.author.username}`)
+				.setAuthor(`${message.author.tag}`)
 				.setThumbnail(message.author.displayAvatarURL)
 				.addField(`ID:`, `${message.id}`, true)
 				.addField('Channel', `${message.channel}`, true)
@@ -36,6 +36,8 @@ class MessageReactionAddEvent extends Events {
 				.setColor(0x80ff00);
 			if (message.content) {
 				embed.addField(`Message:`, `${message.content}`, true);
+				const matches = message.content.match(/(http:\/\/|https:\/\/)([a-z, ., /, \d, -]+)(\.(gif|jpg|jpeg|tiff|png))/);
+				if (matches) embed.setImage(matches[0]);
 			}
 			if (message.attachments.size === 1) {
 				if (/\.(gif|jpg|jpeg|tiff|png)$/i.test(message.attachments.first().filename)) embed.setImage(`${message.attachments.first().url}`);
@@ -47,7 +49,7 @@ class MessageReactionAddEvent extends Events {
 				const collector = message.createReactionCollector(reaction => reaction.emoji.name === '⭐', { time: 60000 });
 				collector.on('collect', async reaction => {
 					const newEmbed = new RichEmbed()
-						.setAuthor(`${message.author.username}`)
+						.setAuthor(`${message.author.tag}`)
 						.setThumbnail(message.author.displayAvatarURL)
 						.addField(`ID:`, `${message.id}`, true)
 						.addField('Channel', `${message.channel}`, true)
@@ -56,6 +58,8 @@ class MessageReactionAddEvent extends Events {
 						.setColor(0x80ff00);
 					if (message.content) {
 						newEmbed.addField(`Message:`, `${message.content}`, true);
+						const matches = message.content.match(/(http:\/\/|https:\/\/)([a-z, ., /, \d, -]+)(\.(gif|jpg|jpeg|tiff|png))/);
+						if (matches) newEmbed.setImage(matches[0]);
 					}
 					if (message.attachments.size === 1) {
 						if (/\.(gif|jpg|jpeg|tiff|png)$/i.test(message.attachments.first().filename)) embed.setImage(`${message.attachments.first().url}`);
