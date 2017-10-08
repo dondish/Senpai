@@ -46,6 +46,7 @@ class Music {
 			queue.shift();
 			this.guild.client.log.error(`while trying to play a song this error occourd ${error.name}:${error.message}`);
 			this.playing = false;
+			this.dispatcher = null;
 			return this.playqueue(channel);
 		}
 		);
