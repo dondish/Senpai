@@ -15,18 +15,18 @@ class Economy {
 		if (!member) return;
 		if (this.recentlyUpdated.includes(member.user.id)) return;
 		this.recentlyUpdated.push(member.user.id);
-		try {
-			setTimeout(() => this._addMoney(member), 5000);
-			setTimeout(() => this._removeIDFromArray(member), 30000);
-		} catch (error) {
-			return; // eslint-disable-line no-useless-return
-		}
+		setTimeout(() => this._addMoney(member), 5000);
+		setTimeout(() => this._removeIDFromArray(member), 30000);
 	}
 
 	async _addMoney(member) {
-		let { cash, bank } = await member.getEconomy(this.client);
-		cash += 5;
-		await member.updateEconomy(this.client, cash, bank);
+		try {
+			let { cash, bank } = await member.getEconomy(this.client);
+			cash += 5;
+			await member.updateEconomy(this.client, cash, bank);
+		} catch (error) {
+			return; // eslint-disable-line no-useless-return
+		}
 	}
 
 	_removeIDFromArray(member) {
