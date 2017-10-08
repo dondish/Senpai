@@ -1,9 +1,9 @@
-const Table = require('./HandleTable.js');
+const Table = require('./TableHandler.js');
 const Structure = require('./dbStructure.json');
 const rethink = require('rethinkdb');
 
 
-class HandleDB {
+class DBHandler {
 	createConnection() {
 		return new Promise((resolve, reject) => {
 			rethink.connect()
@@ -57,4 +57,4 @@ class HandleDB {
 	}
 }
 
-module.exports = HandleDB;
+module.exports = DBHandler;

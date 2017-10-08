@@ -1,5 +1,6 @@
 const Extension = require('./Extend.js');
 const Music = require('../new/Music.js');
+const Economy = require('../new/Economy.js');
 const rethink = require('rethinkdb');
 
 class GuildExtension extends Extension {
@@ -106,8 +107,11 @@ class GuildExtension extends Extension {
 		return this.music;
 	}
 
-	overwriteQueue(queue) {
-		this.getMusic().queue = queue;
+	getEconomy() {
+		if (!this.economy) {
+			this.economy = new Economy(this.client);
+		}
+		return this.economy;
 	}
 }
 

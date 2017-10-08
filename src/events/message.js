@@ -1,5 +1,4 @@
 const Events = require('../structures/new/Event.js');
-const { messageUpdate } = require('../util/economy.js');
 
 class MessageEvent extends Events {
 	constructor(client) {
@@ -13,7 +12,7 @@ class MessageEvent extends Events {
 		const blacklisted = await msg.author.isBlacklisted(client);
 		if (blacklisted) return;
 		if (!msg.guild) return;
-		messageUpdate(msg.member);
+		msg.guild.getEconomy().messageUpdate(msg.member);
 		let guildConfig = await msg.guild.getConfig(client);
 		if (!guildConfig) {
 			await msg.guild.createConfig(client);

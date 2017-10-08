@@ -194,6 +194,7 @@ class Music {
 
 class SongInfo {
 	constructor(info, requestedBy) {
+		this.raw = info;
 		this.id = info.id;
 		this.link = `https://www.youtube.com/watch?v=${this.id}`;
 		this.title = info.snippet.title;

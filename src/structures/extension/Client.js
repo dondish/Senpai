@@ -1,6 +1,6 @@
 const { Client, Collection } = require('discord.js');
 const { version } = require('../../../package.json');
-const DBHandler = require('../new/HandleDB.js');
+const DBHandler = require('../new/DBHandler.js');
 const Log = require('../new/Log.js');
 
 class SenpaiClient extends Client {

@@ -1,6 +1,6 @@
 const rethink = require('rethinkdb');
 
-class HandleTable {
+class TableHandler {
 	readDate() {
 		return new Promise(async (resolve, reject) => {
 			const connection = await this.createConnection();
@@ -176,4 +176,4 @@ class HandleTable {
 	}
 }
 
-module.exports = HandleTable;
+module.exports = TableHandler;

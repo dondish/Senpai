@@ -23,7 +23,7 @@ class ShuffleCommand extends Commands {
 		if (!dispatcher) return msg.reply(`I don't play music at the moment!`);
 		if (queue.length < 3) return msg.channel.send('You need atleast 3 songs in the queue to shuffle!');
 		let newQueue = this.shuffle(queue);
-		msg.guild.overwriteQueue(newQueue);
+		msg.guild.getMusic().overwriteQueue(newQueue);
 		await msg.channel.send('successfully shuffled the queue!');
 	}
 
