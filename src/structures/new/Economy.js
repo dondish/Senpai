@@ -19,7 +19,7 @@ class Economy {
 			setTimeout(() => this._addMoney(member), 5000);
 			setTimeout(() => this._removeIDFromArray(member), 30000);
 		} catch (error) {
-			console.log(error) // eslint-disable-line no-useless-return
+			return; // eslint-disable-line no-useless-return
 		}
 	}
 
