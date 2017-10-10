@@ -25,6 +25,7 @@ class DepositCommand extends Commands {
 			} else {
 				[amount] = params;
 				amount = Number(amount);
+				amount = Math.floor(amount);
 			}
 			if (isNaN(amount)) return msg.reply('that looks not like a valid number :thinking:');
 			if (amount > cash) return msg.reply("you don't have that much money!");

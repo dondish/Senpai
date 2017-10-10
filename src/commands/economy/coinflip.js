@@ -1,7 +1,7 @@
 const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'coinflip',
-	description: 'register for the economy system',
+	description: 'double your bet or lose everything',
 	aliases: ['bet'],
 	examples: ['coinflip -a', 'coinflip 1000', 'coinflip everything']
 };
@@ -23,6 +23,7 @@ class CoinflipCommand extends Commands {
 			} else {
 				[gambleamount] = params;
 				gambleamount = Number(gambleamount);
+				gambleamount = Math.floor(gambleamount);
 			}
 			let currency = this.client.guilds.get('199857240037916672').emojis.get('322135966322262056');
 			if (isNaN(gambleamount)) return msg.reply('that is not a valid number :thinking:');

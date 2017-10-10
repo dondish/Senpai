@@ -4,8 +4,8 @@ class TableHandler {
 	readDate() {
 		return new Promise(async (resolve, reject) => {
 			const connection = await this.createConnection();
-			const { tableName } = this;
-			connection.use(this.dbName);
+			const { tableName, dbName } = this;
+			connection.use(dbName);
 			rethink.table(tableName)
 				.run(connection, (err, data) => {
 					if (err) reject(err);
@@ -20,8 +20,8 @@ class TableHandler {
 			if (!id) reject(new Error('missing ID parameter'));
 			if (typeof id !== 'string') reject(new TypeError('expected a string'));
 			const connection = await this.createConnection();
-			const { tableName } = this;
-			connection.use(this.dbName);
+			const { tableName, dbName } = this;
+			connection.use(dbName);
 			rethink.table(tableName)
 				.get(id)
 				.run(connection, (err, data) => {
@@ -35,8 +35,8 @@ class TableHandler {
 	readDatetAndFilter(filter) {
 		return new Promise(async (resolve, reject) => {
 			const connection = await this.createConnection();
-			const { tableName } = this;
-			connection.use(this.dbName);
+			const { tableName, dbName } = this;
+			connection.use(dbName);
 			rethink.table(tableName)
 				.filter(filter)
 				.run(connection, (err, data) => {
@@ -50,8 +50,8 @@ class TableHandler {
 	filterAndSort(filter, sort) {
 		return new Promise(async (resolve, reject) => {
 			const connection = await this.createConnection();
-			const { tableName } = this;
-			connection.use(this.dbName);
+			const { tableName, dbName } = this;
+			connection.use(dbName);
 			rethink.table(tableName)
 				.filter(filter)
 				.orderBy(sort)
@@ -66,10 +66,25 @@ class TableHandler {
 	updateData(id, data) {
 		return new Promise(async (resolve, reject) => {
 			const connection = await this.createConnection();
-			const { tableName } = this;
-			connection.use(this.dbName);
+			const { tableName, dbName } = this;
+			connection.use(dbName);
 			rethink.table(tableName)
 				.get(id)
+				.update(data)
+				.run(connection, (err, response) => {
+					if (err) reject(err);
+					connection.close();
+					resolve(response);
+				});
+		});
+	}
+
+	updateAll(data) {
+		return new Promise(async (resolve, reject) => {
+			const connection = await this.createConnection();
+			const { tableName, dbName } = this;
+			connection.use(dbName);
+			rethink.table(tableName)
 				.update(data)
 				.run(connection, (err, response) => {
 					if (err) reject(err);
@@ -82,8 +97,8 @@ class TableHandler {
 	insertData(data) {
 		return new Promise(async (resolve, reject) => {
 			const connection = await this.createConnection();
-			const { tableName } = this;
-			connection.use(this.dbName);
+			const { tableName, dbName } = this;
+			connection.use(dbName);
 			rethink.table(tableName)
 				.insert(data)
 				.run(connection, (err, response) => {
@@ -99,8 +114,8 @@ class TableHandler {
 			if (!id) reject(new Error('missing ID parameter'));
 			if (typeof id !== 'string') reject(new TypeError('expected a string'));
 			const connection = await this.createConnection();
-			const { tableName } = this;
-			connection.use(this.dbName);
+			const { tableName, dbName } = this;
+			connection.use(dbName);
 			rethink.table(tableName)
 				.get(id)
 				.delete()
@@ -123,8 +138,8 @@ class TableHandler {
 	testForTable() {
 		return new Promise(async (resolve, reject) => {
 			const connection = await this.createConnection();
-			const { tableName } = this;
-			connection.use(this.dbName);
+			const { tableName, dbName } = this;
+			connection.use(dbName);
 			rethink.tableList().run(connection, (err, data) => {
 				if (err) reject(err);
 				connection.close();
@@ -142,8 +157,8 @@ class TableHandler {
 	createTable() {
 		return new Promise(async (resolve, reject) => {
 			const connection = await this.createConnection();
-			const { tableName } = this;
-			connection.use(this.dbName);
+			const { tableName, dbName } = this;
+			connection.use(dbName);
 			rethink.tableCreate(tableName).run(connection, err => {
 				if (err) reject(err);
 				connection.close();
