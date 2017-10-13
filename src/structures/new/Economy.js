@@ -5,6 +5,7 @@ class Economy {
 		this.recentlyUpdated = [];
 		this.client = client;
 		this.db = client.db;
+		this.databaseTable = 'money';
 	}
 
 	static bankUpdate() {
@@ -35,9 +36,10 @@ class Economy {
 
 	static async _updatebank() {
 		const connection = await rethink.connect();
-		const { tableName, dbName } = this;
+		const { databaseTable } = this;
+		const { dbName } = this.db;
 		connection.use(dbName);
-		rethink.table(tableName)
+		rethink.table(databaseTable)
 			.update({ bank: rethink.round(rethink.row('bank').mul(1.01)) })
 			.run(connection, (err, response) => {
 				if (err) throw err;

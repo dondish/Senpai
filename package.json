@@ -42,7 +42,7 @@
     "googleapis": "^22.2.0",
     "kitsu.js": "^2.0.0",
     "libsodium-wrappers": "^0.5.4",
-    "moment": "^2.18.1",
+    "moment": "^2.19.1",
     "node-opus": "^0.2.7",
     "node-osu": "^1.3.0",
     "openweathermapapi": "^1.0.4",
@@ -51,12 +51,12 @@
     "relevant-urban": "^2.0.0",
     "rethinkdb": "^2.3.3",
     "sherlockjs": "^1.3.7",
-    "snekfetch": "^3.4.5",
+    "snekfetch": "^3.5.1",
     "weather-js": "^2.0.0",
     "winston": "^2.4.0",
     "youtube-node": "^1.3.2",
     "youtube-playlist-info": "^0.1.0",
     "youtube-search": "^1.0.10",
-    "ytdl-core": "^0.18.0"
+    "ytdl-core": "^0.18.1"
   }
 }
