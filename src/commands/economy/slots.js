@@ -53,7 +53,7 @@ class SlotsCommand extends Commands {
 			const result = this._runSlots();
 			const resultString = result.visualize();
 			const { winCount } = result;
-			const multiplier = winCount * 1.25;
+			const multiplier = winCount * 0.5;
 			let message;
 			if (winCount === 0) {
 				message = `\n\n**----Slots----**\n${resultString}\n**--------------**\n\n You lost ${gambleamount}${currency}`;
