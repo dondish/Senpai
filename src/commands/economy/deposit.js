@@ -15,8 +15,7 @@ class DepositCommand extends Commands {
 		try {
 			const data = await msg.member.getEconomy(this.client);
 			if (!data) return msg.reply(`looks like you haven't registered for the economy system yet you can do that by using the register command!`);
-			let { cash } = data;
-			let { bank } = data;
+			let { cash, bank } = data;
 			let currency = this.client.guilds.get('199857240037916672').emojis.get('322135966322262056');
 			let change = params[0];
 			let amount;

@@ -15,7 +15,7 @@ class CoinflipCommand extends Commands {
 		try {
 			const data = await msg.member.getEconomy(this.client);
 			if (!data) return msg.reply(`looks like you haven't registered for the economy system yet you can do that by using the register command!`);
-			let { cash } = data;
+			let { cash, bank } = data;
 			let change = params[0];
 			let gambleamount;
 			if (change === 'all' || change === '-a' || change === 'everything') {
@@ -38,7 +38,7 @@ class CoinflipCommand extends Commands {
 				cash -= gambleamount;
 				message = `You lost ${gambleamount} ${currency}`;
 			}
-			await msg.member.updateEconomy(this.client, cash, data.bank);
+			await msg.member.updateEconomy(this.client, cash, bank);
 			await msg.reply(message);
 		} catch (error) {
 			await msg.channel.send(`Errored with following Error: ${error.message}`);
