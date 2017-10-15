@@ -57,6 +57,7 @@ class MessageReactionRemoveEvent extends Events {
 	async deleteStarboardMessage(message, serverConfig) {
 		const channel = message.guild.channels.get(serverConfig.starboardID);
 		const messageObject = await message.guild.resolveStarboardMessage(this.client, message.id);
+		if (!messageObject) return;
 		const sentMessage = await channel.fetchMessage(messageObject.starMessageID);
 		await message.guild.deleteStarboardMessage(this.client, message.id);
 		await sentMessage.delete();

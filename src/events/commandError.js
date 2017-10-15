@@ -8,6 +8,7 @@ class commandError extends Events {
 
 	run(error, messageEvent, msg) {
 		const { client } = this;
+		if (error.message === 'Missing Permissions') return;
 		client.log.error(`[Error]   ${error.name}: ${error.message}`);
 		client.log.error(`          with this message ${msg.content}`);
 		client.users.get(client.config.ownerID).send(`The error: "${error.name}:${error.message}" has occured; Go to logs for more info.`);
