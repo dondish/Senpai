@@ -36,8 +36,8 @@ class Economy {
 
 	static async _updatebank() {
 		const connection = await rethink.connect();
-		const { databaseTable } = this;
-		const { dbName } = this.db;
+		const dbName = 'Discord';
+		const databaseTable = 'money';
 		connection.use(dbName);
 		rethink.table(databaseTable)
 			.update({ bank: rethink.round(rethink.row('bank').mul(1.01)) })

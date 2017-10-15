@@ -16,7 +16,12 @@
     },
     "starboardMessages" : {
         "id": "",
-        "messages": []
+        "messages": {
+            "originalMessageID": {
+                "starMessageID": "",
+                "starcount": 1
+            }
+        }
     },
     "money":{
         "id": "",

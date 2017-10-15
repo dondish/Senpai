@@ -63,6 +63,22 @@ class TableHandler {
 		});
 	}
 
+	getAndReplace(id, data) {
+		return new Promise(async (resolve, reject) => {
+			const connection = await this.createConnection();
+			const { tableName, dbName } = this;
+			connection.use(dbName);
+			rethink.table(tableName)
+				.get(id)
+				.replace(data)
+				.run(connection, (err, responseData) => {
+					if (err) reject(err);
+					connection.close();
+					resolve(responseData);
+				});
+		});
+	}
+
 	updateData(id, data) {
 		return new Promise(async (resolve, reject) => {
 			const connection = await this.createConnection();

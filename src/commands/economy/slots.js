@@ -60,7 +60,7 @@ class SlotsCommand extends Commands {
 				cash -= gambleamount;
 			} else {
 				const wonMoney = Math.round(gambleamount * multiplier);
-				message = `\n\n**----Slots----**\n${resultString}\n**--------------**\n\n You won ${wonMoney}${currency}`;
+				message = `\n\n**----Slots----**\n${resultString}\n**--------------**\n\n You won ${wonMoney}${currency} and got your bet back`;
 				cash += wonMoney;
 			}
 			await msg.member.updateEconomy(client, cash, bank);

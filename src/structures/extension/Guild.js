@@ -4,90 +4,74 @@ const Economy = require('../new/Economy.js');
 const rethink = require('rethinkdb');
 
 class GuildExtension extends Extension {
-	getLeaderboard(client) {
-		return new Promise(async (resolve, reject) => {
-			try {
-				const data = await client.db.money.filterAndSort({ guildID: this.id }, rethink.desc(element => rethink.add(element('cash'), element('bank')))
-				);
-				resolve(data);
-			} catch (error) {
-				reject(error);
-			}
-		});
+	async getLeaderboard(client) {
+		const data = await client.db.money.filterAndSort({ guildID: this.id }, rethink.desc(element => rethink.add(element('cash'), element('bank')))
+		);
+		return data;
 	}
 
-	getStarboardMessages(client) {
-		return new Promise(async (resolve, reject) => {
-			try {
-				let result = await client.db.starboardMessages.getByID(this.id);
-				if (!result) {
-					await client.db.starboardMessages.insertData({
-						id: this.id,
-						messages: []
-					});
-					result = await client.db.starboardMessages.getByID(this.id);
-				}
-				resolve(result.messages);
-			} catch (error) {
-				reject(error);
-			}
-		});
+	async getStarboardMessages(client) {
+		let result = await client.db.starboardMessages.getByID(this.id);
+		if (!result) {
+			await client.db.starboardMessages.insertData({
+				id: this.id,
+				messages: {}
+			});
+			result = await client.db.starboardMessages.getByID(this.id);
+		}
+		return result.messages;
 	}
 
-	addStarboardMessage(client, id) {
-		return new Promise(async (resolve, reject) => {
-			try {
-				let result = await client.db.starboardMessages.getByID(this.id);
-				result.messages.push(id);
-				await client.db.starboardMessages.updateData(this.id, { messages: result.messages });
-				resolve();
-			} catch (error) {
-				reject(error);
-			}
-		});
+	async updateStarboardMessage(client, { originalMessageID, starMessageID, starcount }) {
+		let result1 = await client.db.starboardMessages.getByID(this.id);
+		result1.messages[originalMessageID] = {
+			starMessageID,
+			starcount
+		};
+		const result2 = await client.db.starboardMessages.getAndReplace(this.id, result1);
+		return result2;
 	}
 
-	getConfig(client) {
-		return new Promise(async (resolve, reject) => {
-			try {
-				const config = await client.db.guild.getByID(this.id);
-				resolve(config);
-			} catch (error) {
-				reject(error);
-			}
-		});
+	async resolveStarboardMessage(client, id) {
+		let { messages } = await client.db.starboardMessages.getByID(this.id);
+		const result = messages[id];
+		if (!result) {
+			return null;
+		} else {
+			return result;
+		}
 	}
 
-	createConfig(client) {
-		return new Promise(async (resolve, reject) => {
-			try {
-				const result = await client.db.guild.insertData({
-					moderationRolesIDs: [],
-					modlogID: 'None',
-					musicID: 'None',
-					musicRolesIDs: [],
-					starboardID: 'None',
-					prefix: 'None',
-					musicLimited: false,
-					starboardNeededReactions: 1,
-					id: this.id
-				});
-				resolve(result);
-			} catch (error) {
-				reject(error);
-			}
-		});
+	async deleteStarboardMessage(client, id) {
+		let result1 = await client.db.starboardMessages.getByID(this.id);
+		delete result1.messages[id];
+		const result = await client.db.starboardMessages.getAndReplace(this.id, result1);
+		return result;
 	}
 
-	updateConfig(client, data) {
-		return new Promise(async (resolve, reject) => {
-			try {
-				const result = await client.db.guild.updateData(this.id, data);
-				resolve(result);
-			} catch (error) {
-				reject(error);
-			}
+	async getConfig(client) {
+		const config = await client.db.guild.getByID(this.id);
+		return config;
+	}
+
+	async createConfig(client) {
+		const result = await client.db.guild.insertData({
+			moderationRolesIDs: [],
+			modlogID: 'None',
+			musicID: 'None',
+			musicRolesIDs: [],
+			starboardID: 'None',
+			prefix: 'None',
+			musicLimited: false,
+			starboardNeededReactions: 1,
+			id: this.id
 		});
+		return result;
+	}
+
+	async updateConfig(client, data) {
+		const result = await client.db.guild.updateData(this.id, data);
+		return result;
 	}
 
 	getLoop() {

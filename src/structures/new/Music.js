@@ -59,74 +59,48 @@ class Music {
 		});
 	}
 
-	handlePlaylist(link, requestedBy, channel) {
-		return new Promise(async (resolve, reject) => {
-			try {
-				const playlist = await this.getPlaylist(link);
-				const promises = [];
-				for (const song of playlist) {
-					const url = `https://www.youtube.com/watch?v=${song.resourceId.videoId}`;
-					promises.push(this.getSongByUrl(url, requestedBy));
-				}
-				Promise.all(promises.map(promiseReflect)).then(values => {
-					let resolved = values.filter(value => value.status === 'resolved');
-					let rejected = values.filter(value => value.status === 'rejected');
-					resolved.map(song => this.queue.push(song.data));
-					resolve(`${resolved.length} Songs were added, ${rejected.length} could not be added due length, Copyright issues or it is Private`);
-					this.playqueue(channel);
-				});
-			} catch (error) {
-				reject(error);
-			}
+	async handlePlaylist(link, requestedBy, channel) {
+		const playlist = await this.getPlaylist(link);
+		const promises = [];
+		for (const song of playlist) {
+			const url = `https://www.youtube.com/watch?v=${song.resourceId.videoId}`;
+			promises.push(this.getSongByUrl(url, requestedBy));
+		}
+		Promise.all(promises.map(promiseReflect)).then(values => {
+			let resolved = values.filter(value => value.status === 'resolved');
+			let rejected = values.filter(value => value.status === 'rejected');
+			resolved.map(song => this.queue.push(song.data));
+			this.playqueue(channel);
+			return `${resolved.length} Songs were added, ${rejected.length} could not be added due length, Copyright issues or it is Private`;
 		});
 	}
 
-	handleSong(input, requestedBy, isUrl, channel) {
-		return new Promise(async (resolve, reject) => {
-			if (isUrl) {
-				try {
-					const Song = await this.getSongByUrl(input, requestedBy);
-					this.queue.push(Song);
-					this.playqueue(channel);
-					resolve(Song);
-				} catch (error) {
-					reject(error);
-				}
-			} else {
-				try {
-					const Song = await this.getSongByName(input, requestedBy);
-					this.queue.push(Song);
-					this.playqueue(channel);
-					resolve(Song);
-				} catch (error) {
-					reject(error);
-				}
-			}
-		});
+	async handleSong(input, requestedBy, isUrl, channel) {
+		if (isUrl) {
+			const Song = await this.getSongByUrl(input, requestedBy);
+			this.queue.push(Song);
+			this.playqueue(channel);
+			return Song;
+		} else {
+			const Song = await this.getSongByName(input, requestedBy);
+			this.queue.push(Song);
+			this.playqueue(channel);
+			return Song;
+		}
 	}
 
-	handleSongAsNext(input, requestedBy, isUrl, channel) {
-		return new Promise(async (resolve, reject) => {
-			if (isUrl) {
-				try {
-					const Song = await this.getSongByUrl(input, requestedBy);
-					this.queue.splice(1, 0, Song);
-					this.playqueue(channel);
-					resolve(Song);
-				} catch (error) {
-					reject(error);
-				}
-			} else {
-				try {
-					const Song = await this.getSongByName(input, requestedBy);
-					this.queue.splice(1, 0, Song);
-					this.playqueue(channel);
-					resolve(Song);
-				} catch (error) {
-					reject(error);
-				}
-			}
-		});
+	async handleSongAsNext(input, requestedBy, isUrl, channel) {
+		if (isUrl) {
+			const Song = await this.getSongByUrl(input, requestedBy);
+			this.queue.splice(1, 0, Song);
+			this.playqueue(channel);
+			return Song;
+		} else {
+			const Song = await this.getSongByName(input, requestedBy);
+			this.queue.splice(1, 0, Song);
+			this.playqueue(channel);
+			return Song;
+		}
 	}
 
 	getSongByUrl(url, requestedBy) {

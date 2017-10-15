@@ -33,7 +33,7 @@ class CoinflipCommand extends Commands {
 			let message;
 			if (random > 0.5) {
 				cash += gambleamount;
-				message = `You won ${gambleamount} ${currency}`;
+				message = `You won ${gambleamount}${currency} and got your bet back`;
 			} else {
 				cash -= gambleamount;
 				message = `You lost ${gambleamount} ${currency}`;
