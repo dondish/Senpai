@@ -66,13 +66,12 @@ class Music {
 			const url = `https://www.youtube.com/watch?v=${song.resourceId.videoId}`;
 			promises.push(this.getSongByUrl(url, requestedBy));
 		}
-		Promise.all(promises.map(promiseReflect)).then(values => {
-			let resolved = values.filter(value => value.status === 'resolved');
-			let rejected = values.filter(value => value.status === 'rejected');
-			resolved.map(song => this.queue.push(song.data));
-			this.playqueue(channel);
-			return `${resolved.length} Songs were added, ${rejected.length} could not be added due length, Copyright issues or it is Private`;
-		});
+		const values = await Promise.all(promises.map(promiseReflect));
+		let resolved = values.filter(value => value.status === 'resolved');
+		let rejected = values.filter(value => value.status === 'rejected');
+		resolved.map(song => this.queue.push(song.data));
+		this.playqueue(channel);
+		return `${resolved.length} Songs were added, ${rejected.length} could not be added due length, Copyright issues or it is Private`;
 	}
 
 	async handleSong(input, requestedBy, isUrl, channel) {
