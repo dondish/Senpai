@@ -23,7 +23,7 @@ class HelpCommand extends Commands {
 						code: 'asciidoc',
 						split: true
 					});
-				await msg.author.send('you can get a list of all my commands with usage and details here: \n http://yukine.ga/Senpai/commands/');
+				await msg.author.send('you can get a list of all my commands with usage and details here: \nhttp://yukine.ga/Senpai/commands/');
 				const message = await msg.channel.send("i've sent you an PM");
 				message.delete(10000);
 			} catch (error) {

@@ -16,15 +16,17 @@ class MessageReactionAddEvent extends Events {
 			const { guild } = message;
 			if (message.author.id === user.id) return;
 			if (!guild) return;
+			const serverConfig = await guild.getConfig(client);
+			const starboardChannel = message.guild.channels.get(serverConfig.starboardID);
+			if (!starboardChannel) return;
+			if (message.channel.id === starboardChannel.id) return;
 			const starboardMessages = await guild.getStarboardMessages(client);
 			if (starboardMessages[message.id]) {
-				const serverConfig = await guild.getConfig(client);
 				await messageReaction.fetchUsers();
 				let reactionCount = messageReaction.count;
 				if (messageReaction.users.has(message.author.id)) reactionCount -= 1;
 				await this.editStarboardMessage({ message, reactionCount, guild, serverConfig });
 			} else {
-				const serverConfig = await guild.getConfig(client);
 				let neededReactions = 1;
 				if (serverConfig.starboardNeededReactions) {
 					neededReactions = serverConfig.starboardNeededReactions;
@@ -58,10 +60,8 @@ class MessageReactionAddEvent extends Events {
 			if (/\.(gif|jpg|jpeg|tiff|png)$/i.test(message.attachments.first().filename)) embed.setImage(`${message.attachments.first().url}`);
 		}
 		const channel = message.guild.channels.get(serverConfig.starboardID);
-		if (channel) {
-			const sent = await channel.send({ embed });
-			await message.guild.updateStarboardMessage(this.client, { originalMessageID: message.id, starMessageID: sent.id, starcount: reactionCount });
-		}
+		const sent = await channel.send({ embed });
+		await message.guild.updateStarboardMessage(this.client, { originalMessageID: message.id, starMessageID: sent.id, starcount: reactionCount });
 	}
 
 	async editStarboardMessage({ message, reactionCount, serverConfig }) {
