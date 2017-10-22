@@ -1,4 +1,4 @@
-# Senpai-Bot
+# Senpai
 
 <div align="center">
   <br />
