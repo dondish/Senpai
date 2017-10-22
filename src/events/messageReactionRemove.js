@@ -48,6 +48,7 @@ class MessageReactionRemoveEvent extends Events {
 			if (/\.(gif|jpg|jpeg|tiff|png)$/i.test(message.attachments.first().filename)) embed.setImage(`${message.attachments.first().url}`);
 		}
 		const channel = message.guild.channels.get(serverConfig.starboardID);
+		if (!channel) return;
 		const messageObject = await message.guild.resolveStarboardMessage(this.client, message.id);
 		const sentMessage = await channel.fetchMessage(messageObject.starMessageID);
 		await sentMessage.edit({ embed });
