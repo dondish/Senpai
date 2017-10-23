@@ -9,7 +9,6 @@ class Log {
 		}
 		this.winston = new winston.Logger({
 			transports: [
-				// Colorize the output to the console
 				new winston.transports.Console({
 					timestamp: this.tsFormat,
 					colorize: true,

@@ -23,10 +23,10 @@ class Util {
 							Module.aliases.forEach(alias => { // eslint-disable-line max-nested-callbacks                        
 								Client.aliases.set(alias, Module.name);
 							});
-							resolve();
 						});
 					});
 				});
+				resolve();
 			});
 		});
 	}

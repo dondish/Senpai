@@ -40,7 +40,7 @@ also you need a **RethinkDB server**.
 
 ### Commands 
 
-- Will get a own website in the future!
+- [Commands](http://yukine.ga/Senpai/commands/)
 
 
 ### Will be added in the Future
