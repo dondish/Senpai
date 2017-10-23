@@ -3,8 +3,8 @@
 <div align="center">
   <br />
   <p>
-    <a href="https://travis-ci.org/Dev-Yukine/Senpai-Bot-Discord"><img src="https://api.travis-ci.org/Dev-Yukine/Senpai-Bot-Discord.svg" alt="Build status" /></a>
-    <a href="https://david-dm.org/Dev-Yukine/Senpai-Bot-Discord"><img src="https://david-dm.org/Dev-Yukine/Senpai-Bot-Discord/status.svg" alt="Dependencies" /></a>
+    <a href="https://travis-ci.org/Dev-Yukine/Senpai"><img src="https://api.travis-ci.org/Dev-Yukine/Senpai.svg" alt="Build status" /></a>
+    <a href="https://david-dm.org/Dev-Yukine/Senpai"><img src="https://david-dm.org/Dev-Yukine/Senpai/status.svg" alt="Dependencies" /></a>
   </p>
 </div>
 
