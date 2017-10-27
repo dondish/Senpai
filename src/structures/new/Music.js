@@ -50,13 +50,13 @@ class Music {
 			return this.playqueue(channel);
 		}
 		);
-		this.dispatcher.on('end', () => {
+		this.dispatcher.on('end', setTimeout(() => {
 			const shifted = queue.shift();
 			if (this.loop) queue.push(shifted);
 			this.playing = false;
 			this.dispatcher = null;
 			this.playqueue(channel);
-		});
+		}, 500));
 	}
 
 	async handlePlaylist(link, requestedBy, channel) {
