@@ -25,7 +25,7 @@ class Music {
 		const { voiceConnection } = channel.guild;
 		let { queue } = this;
 		let [CurrentSong] = queue;
-		if (!voiceConnection || this.playing || queue.length === 0) return;
+		if (!voiceConnection || this.playing || queue.length === 0 || !CurrentSong) return;
 		const { title, requestedBy, link, picture } = CurrentSong;
 		this.dispatcher = voiceConnection.playStream(yt(link, { filter: 'audioonly' }));
 		this.dispatcher.on('start', () => {

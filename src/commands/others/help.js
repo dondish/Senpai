@@ -31,7 +31,7 @@ class HelpCommand extends Commands {
 			try {
 				const message = await msg.channel.send("i've sent you a PM");
 				message.delete(10000);
-				await msg.author.send(`${categorieStrings.join('\n')}\nyou can get a list of all my commands with usage and details here: \nhttp://yukine.ga/Senpai/commands/`, { split: true });
+				await msg.author.send(`To run a command in ${msg.guild.name}, use ${prefix}command or @${this.client.user.tag} command.\nUse help <command> to view detailed information about a specific command.\n\n${categorieStrings.join('\n')}\nyou can get a list of all my commands with usage and details here: \nhttp://yukine.ga/Senpai/commands/`, { split: true });
 			} catch (error) {
 				await msg.channel.send('I had an error while trying to DM you, look your Direct Message settings up!');
 			}

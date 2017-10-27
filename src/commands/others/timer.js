@@ -1,5 +1,4 @@
 const Commands = require('../../structures/new/Command.js');
-const { parse } = require('sherlockjs');
 const info = {
 	name: 'timer',
 	description: 'remind you about something',
@@ -19,38 +18,6 @@ class TimerCommand extends Commands {
 		const time = timeObject.startDate.getTime() - Date.now();
 		msg.channel.send(`I will remind you in ${this.format(time / 1000)}`);
 		setTimeout(() => msg.channel.send(`${msg.author} you wanted me to remind you. Reason: ${this.clean(timeObject.eventTitle) ? this.clean(timeObject.eventTitle) : 'no reason provided'}`), time);
-	}
-
-	parseTime(input) {
-		const remindTime = parse(input);
-		return remindTime;
-	}
-
-	validateTime(input) {
-		const remindTime = parse(input);
-		if (!remindTime.startDate) return false;
-		return true;
-	}
-
-	clean(text) {
-		if (typeof text === 'string') {
-			return text.replace(/`/g, `\`${String.fromCharCode(8203)}`).replace(/@/g, `@${String.fromCharCode(8203)}`);
-		} else {
-			return text;
-		}
-	}
-
-	format(seconds) {
-		const { pad } = this;
-		let hours = Math.floor(seconds / (60 * 60));
-		let minutes = Math.floor(seconds % (60 * 60) / 60);
-		let seconds2 = Math.floor(seconds % 60);
-
-		return `${pad(hours)}:${pad(minutes)}:${pad(seconds2)}`;
-	}
-
-	pad(seconds) {
-		return (seconds < 10 ? '0' : '') + seconds;
 	}
 }
 

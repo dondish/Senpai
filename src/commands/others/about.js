@@ -23,7 +23,7 @@ class AboutCommand extends Commands {
 		const owner = client.users.get(client.config.ownerID);
 		const embed = new RichEmbed()
 			.setTitle(`Stats & Infos`)
-			.setAuthor(owner.username, owner.displayAvatarURL)
+			.setAuthor(owner.username, owner.displayAvatarURL, 'http://yukine.ga/')
 			.addField('Creator/Dev', 'Yukine', true)
 			.addField('RAM usage:', `${Math.round(process.memoryUsage().heapTotal / 1024 / 1024)}MB`, true)
 			.addField('Uptime', `${this.format(process.uptime())}`, true)
@@ -34,7 +34,7 @@ class AboutCommand extends Commands {
 			.addField('Total Users:', userCount, true)
 			.addField('Total Channels:', channelcount, true)
 			.addField('Bot Invite Link', `[Link](${client.config.inviteURL})`, true)
-			.addField('GitHub', '[Senpai-Bot Github Repo](https://github.com/Dev-Yukine/Senpai-Bot-Discord)', true)
+			.addField('GitHub', '[Senpai Github Repo](https://github.com/Dev-Yukine/Senpai)', true)
 			.addField('Support Server', `[Server](${client.config.supportServerLink})`, true)
 			.addField('Shards:', `${client.shard.id + 1}/${client.shard.count}`, true)
 			.setTimestamp()

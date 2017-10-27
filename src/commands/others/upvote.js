@@ -1,13 +1,13 @@
 const Commands = require('../../structures/new/Command.js');
 const { RichEmbed } = require('discord.js');
 const info = {
-	name: 'vote',
+	name: 'upvote',
 	description: 'shows where you can upvote Senpai and support me <3',
-	aliases: ['upvote'],
-	examples: ['vote']
+	aliases: [],
+	examples: ['upvote']
 };
 
-class VoteCommand extends Commands {
+class UpvoteCommand extends Commands {
 	constructor(client, group) {
 		super(client, info, group);
 	}
@@ -22,4 +22,4 @@ class VoteCommand extends Commands {
 	}
 }
 
-module.exports = VoteCommand;
+module.exports = UpvoteCommand;
