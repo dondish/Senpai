@@ -9,7 +9,7 @@
 </div>
 
 ## About
-Here you can find the Source code of my own Bot "Senpai" for [Discord](https://discordapp.com/). You can use this Source-Code under the [MIT](https://en.wikipedia.org/wiki/MIT_License) license at any time.
+Here you can find the Source code of my own Bot "Senpai" for [Discord](https://discordapp.com/). You can use this Source-Code under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) at any time.
 
 after the rewrite it makes fully usage of classes & ES2017's async/await functionality.
 
