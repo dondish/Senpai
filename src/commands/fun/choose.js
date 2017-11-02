@@ -14,6 +14,7 @@ class ChooseCommand extends Commands {
 
 	run(msg, params) {
 		const options = params.join(' ').split(',');
+		if (!options) return msg.reply('You have to provide words to choose from!');
 		const result = options[Math.floor(Math.random() * options.length)];
 		const embed = new RichEmbed()
 			.addField('I choose the following:', result)
