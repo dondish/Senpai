@@ -14,6 +14,7 @@ class AsciiCommand extends Commands {
 
 	run(msg, params) {
 		const text = params.join(' ');
+		if (!text) return msg.reply('You have to provide a word to display as ascii art!');
 		ascii.font(text, 'Doom', output => {
 			msg.channel.send(output, { code: 'ascii' });
 		});
