@@ -12,7 +12,7 @@ class Util {
 			fileP.walk('./commands', (error, dirPath, dirs) => {
 				if (error) reject(error);
 				dirs.forEach(dir => {
-					fs.readdir(`${dir}`, (err, files) => {
+					fs.readdir(dir, (err, files) => {
 						if (err) reject(err);
 						const folder = dir.slice(9);
 						files.forEach(file => {

@@ -24,7 +24,7 @@ class QueueCommand extends Commands {
 		}
 
 		const time = this.format(Math.floor(totalTimeInSec));
-		const songs = queue.map(Song => `${Song.title} requested by ${Song.requestedBy.tag}`);
+		const songs = queue.map(Song => `${Song.title}\nRequested by ${Song.requestedBy.tag}`);
 		const embed = this.constructRichEmbed(songs, msg, time);
 		msg.channel.send({ embed });
 	}
@@ -34,14 +34,16 @@ class QueueCommand extends Commands {
 		const embed = new RichEmbed()
 			.setAuthor(msg.author.username, msg.author.displayAvatarURL)
 			.addField('Currently Playing', `\`\`\`\n${first}\`\`\``)
-			.addField('Queue', `\`\`\`${songArray.join('\n')}\`\`\``)
 			.setColor('RANDOM');
-		if (songArray.length > 15) {
+		if (songArray.length > 5) {
 			let before = songArray.length;
-			songArray.length = 15;
-			embed.setFooter(`and ${before - 15} songs more... | total length: ${time}`);
+			songArray.length = 5;
+			embed.setFooter(`and ${before - songArray.length} songs more... | total queue length: ${time}`);
 		} else {
 			embed.setFooter(`total length: ${time}`);
+		}
+		for (const index in songArray) {
+			embed.addField(`#${Number(index) + 1}`, `\`\`\`\n${songArray[index]}\`\`\``);
 		}
 		return embed;
 	}
