@@ -1,5 +1,5 @@
 const Commands = require('../../structures/new/Command.js');
-const snekfetch = require('snekfetch');
+const { get } = require('snekfetch');
 const info = {
 	name: 'neko',
 	description: 'shows a picture of a neko',
@@ -13,7 +13,7 @@ class NekoCommand extends Commands {
 	}
 
 	async run(msg) {
-		const response = await snekfetch.get('https://nekos.life/api/neko');
+		const response = await get('https://nekos.life/api/neko');
 		const Link = response.body.neko;
 		msg.channel.send('Here\'s your neko', { files: [Link] });
 	}

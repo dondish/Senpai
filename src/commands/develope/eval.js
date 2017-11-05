@@ -1,7 +1,7 @@
 const Commands = require('../../structures/new/Command.js');
 const { RichEmbed } = require('discord.js');
 const util = require('util');
-const snekfetch = require('snekfetch');
+const { post } = require('snekfetch');
 const info = {
 	name: 'eval',
 	description: 'an command to evaluate javascript code (only the Bot Owner can use this command!)',
@@ -40,7 +40,7 @@ class EvalCommand extends Commands {
 					.setTimestamp();
 				await msg.channel.send({ embed });
 			} else {
-				const res = await snekfetch.post('https://www.hastebin.com/documents').send(output);
+				const res = await post('https://www.hastebin.com/documents').send(output);
 				const embed = new RichEmbed()
 					.addField('EVAL', `**Type:** ${type}`)
 					.addField(':inbox_tray: Input', input)
@@ -61,7 +61,7 @@ class EvalCommand extends Commands {
 					.setColor(0x80ff00);
 				msg.channel.send({ embed });
 			} else {
-				const res = await snekfetch.post('https://www.hastebin.com/documents').send(error);
+				const res = await post('https://www.hastebin.com/documents').send(error);
 				const embed = new RichEmbed()
 					.addField('EVAL', `**Type:** Error`)
 					.addField(':inbox_tray: Input', input)

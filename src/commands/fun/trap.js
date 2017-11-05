@@ -1,6 +1,6 @@
 const Commands = require('../../structures/new/Command.js');
 const Canvas = require('canvas');
-const snekfetch = require('snekfetch');
+const { get } = require('snekfetch');
 const info = {
 	name: 'trap',
 	description: 'turn the tables with your ultimate Yu-Gi-Oh trap card!',
@@ -38,7 +38,7 @@ class TrapCommand extends Commands {
 		} else {
 			avatar = 'https://discordapp.com/assets/0e291f67c9274a1abdddeb3fd919cbaa.png?size=2048';
 		}
-		const result = await snekfetch.get(avatar);
+		const result = await get(avatar);
 		userPicture.src = result.body;
 		ctx.drawImage(base, 0, 0, base.width, base.height);
 		ctx.rotate(-0.15);

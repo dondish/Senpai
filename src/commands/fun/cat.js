@@ -1,5 +1,5 @@
 const Commands = require('../../structures/new/Command.js');
-const snekfetch = require('snekfetch');
+const { get } = require('snekfetch');
 const info = {
 	name: 'cat',
 	description: 'shows a picture of a Cat',
@@ -13,7 +13,7 @@ class CatCommand extends Commands {
 	}
 
 	async run(msg) {
-		const response = await snekfetch.get('http://random.cat/meow');
+		const response = await get('http://random.cat/meow');
 		const Link = response.body.file;
 		msg.channel.send('Here\'s your cat', { files: [Link] });
 	}
