@@ -1,4 +1,5 @@
 const Commands = require('../../structures/new/Command.js');
+const { RichEmbed } = require('discord.js');
 const info = {
 	name: 'queue',
 	description: 'shows the music queue of this server',
@@ -11,43 +12,38 @@ class QueueCommand extends Commands {
 		super(client, info, group);
 	}
 
-	format(seconds) {
-		function pad(seconds3) {
-			return (seconds3 < 10 ? '0' : '') + seconds3;
-		}
-		let hours = Math.floor(seconds / (60 * 60));
-		let minutes = Math.floor(seconds % (60 * 60) / 60);
-		let seconds2 = Math.floor(seconds % 60);
-		return `${pad(hours)}h:${pad(minutes)}m:${pad(seconds2)}s`;
-	}
-
 	run(msg) {
 		const { queue } = msg.guild.getMusic();
-		if (queue.length < 1) {
-			msg.reply('there are no songs currently in queue!');
-		} else {
-			// Print the total amount of time in the playlist
-			let totalTimeInSec = 0;
-			// Get the length of every song in seconds
-			const songsLength = queue.map(Song => Number(Song.length));
+		if (queue.length < 1) return msg.reply('there are no songs currently in queue!');
+		let totalTimeInSec = 0;
 
-			// Add all the lengths into totalTimeInSec
-			for (let index = 0; index < songsLength.length; index++) {
-				totalTimeInSec += songsLength[index];
-			}
-			const time = this.format(Math.floor(totalTimeInSec));
-			const songs = queue.map(Song => `${Song.title} requested by **${Song.requestedBy.username}**`);
-			if (songs.length > 15) {
-				let before = songs.length;
-				songs.length = 15;
-				songs[15] = `**and ${before - 15} songs more...**\n`;
-				songs[16] = `**total length: ${time}**`;
-				msg.channel.send(songs.join('\n'));
-			} else {
-				msg.channel.send(songs.join('\n'));
-				msg.channel.send(`**total length: ${time}**`);
-			}
+		const songsLength = queue.map(Song => Number(Song.length));
+
+		for (let index = 0; index < songsLength.length; index++) {
+			totalTimeInSec += songsLength[index];
 		}
+
+		const time = this.format(Math.floor(totalTimeInSec));
+		const songs = queue.map(Song => `${Song.title} requested by ${Song.requestedBy.tag}`);
+		const embed = this.constructRichEmbed(songs, msg, time);
+		msg.channel.send({ embed });
+	}
+
+	constructRichEmbed(songArray, msg, time) {
+		const first = songArray.shift();
+		const embed = new RichEmbed()
+			.setAuthor(msg.author.username, msg.author.displayAvatarURL)
+			.addField('Currently Playing', `\`\`\`\n${first}\`\`\``)
+			.addField('Queue', `\`\`\`${songArray.join('\n')}\`\`\``)
+			.setColor('RANDOM');
+		if (songArray.length > 15) {
+			let before = songArray.length;
+			songArray.length = 15;
+			embed.setFooter(`and ${before - 15} songs more... | total length: ${time}`);
+		} else {
+			embed.setFooter(`total length: ${time}`);
+		}
+		return embed;
 	}
 }
 
