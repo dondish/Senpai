@@ -20,7 +20,7 @@ class Util {
 							let Module = new Command(Client, folder);
 							Client.commands.set(Module.name, Module);
 							Client.log.debug(`Loading Command: ${Module.name} from ${folder}.`);
-							Module.aliases.forEach(alias => { // eslint-disable-line max-nested-callbacks                        
+							Module.aliases.forEach(alias => { // eslint-disable-line max-nested-callbacks
 								Client.aliases.set(alias, Module.name);
 							});
 						});

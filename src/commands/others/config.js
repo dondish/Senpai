@@ -290,7 +290,7 @@ class ConfigCommand extends Commands {
 		}
 	}
 
-	async musicrole(msg, param1, param2, param3) { // eslint-disable-line complexity  
+	async musicrole(msg, param1, param2, param3) { // eslint-disable-line complexity
 		if (!param2) {
 			return msg.reply('You must provide an second parameter!');
 		} else if (param2 === 'add') {
