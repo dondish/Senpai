@@ -27,14 +27,14 @@ class EvalCommand extends Commands {
 			let output = eval(code);
 			if (output instanceof Promise) output = await output;
 			let type = typeof output;
-			output = util.inspect(output, { depth: 0 });
+			output = util.inspect(output, { depth: 0, maxArrayLength: 0 });
 			output = output.replace(filter, '[TOKEN]');
-			output = `\`\`\`js\n${output}\n\`\`\``;
+			const discordOutput = `\`\`\`js\n${output}\n\`\`\``;
 			if (output.length < 1024) {
 				const embed = new RichEmbed()
 					.addField('EVAL', `**Type:** ${type}`)
 					.addField(':inbox_tray: Input', input)
-					.addField(':outbox_tray: Output', output)
+					.addField(':outbox_tray: Output', discordOutput)
 					.setColor(0x80ff00)
 					.setFooter(`Senpai-Bot version ${client.version} by Yukine`)
 					.setTimestamp();
@@ -51,17 +51,19 @@ class EvalCommand extends Commands {
 				await msg.channel.send({ embed });
 			}
 		} catch (error) {
-			const err = `\`\`\`js\n${error}\n\`\`\``;
+			let err = util.inspect(error, { depth: 0, maxArrayLength: 0 });
+			err = err.replace(filter, '[TOKEN]');
+			const errDiscord = `\`\`\`js\n${err}\n\`\`\``;
 			if (err.length < 1024) {
 				const embed = new RichEmbed()
 					.addField('EVAL', `**Type:** Error`)
 					.addField(':inbox_tray: Input', input)
-					.addField(':x: ERROR', err, true)
+					.addField(':x: ERROR', errDiscord)
 					.setFooter(`Senpai-Bot version ${client.version} by Yukine`)
 					.setColor(0x80ff00);
 				msg.channel.send({ embed });
 			} else {
-				const res = await post('https://www.hastebin.com/documents').send(error);
+				const res = await post('https://www.hastebin.com/documents').send(err);
 				const embed = new RichEmbed()
 					.addField('EVAL', `**Type:** Error`)
 					.addField(':inbox_tray: Input', input)
