@@ -7,9 +7,9 @@ class Util {
 	}
 
 	async init() {
-		const { Client } = this;
-		await this._commandloader(Client);
-		await this._eventloader(Client);
+		const { client } = this;
+		await this._commandloader(client);
+		await this._eventloader(client);
 	}
 
 	_commandloader(Client) {
