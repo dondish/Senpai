@@ -14,9 +14,9 @@ class LeaveCommand extends Commands {
 	async run(msg) {
 		const { voiceConnection } = msg.guild;
 		if (voiceConnection === null) return msg.reply(`Im not in a Voice channel on this Server!`);
-		const isLimited = await msg.guild.getConfig(this.client);
+		const isLimited = await msg.guild.getConfig();
 		if (isLimited.musicLimited) {
-			const permissionLevel = await msg.member.getPermissionsLevel(this.client);
+			const permissionLevel = await msg.member.getPermissionsLevel();
 			if (permissionLevel > 3) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to do this Command!");
 		}
 		try {

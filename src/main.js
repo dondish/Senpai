@@ -10,9 +10,9 @@ GuildMemberExtension.extend(Discord.GuildMember);
 UserExtension.extend(Discord.User);
 
 const Client = new SenpaiClient({ disabledEvents: ['TYPING_START'] });
-const loader = new Util();
+const loader = new Util(Client);
 
-loader.init(Client).then(() => Client.login(Client.config.bottoken).catch(err => Client.log.error(`${err.name}: ${err.message}`))).catch(err => { throw err; });
+loader.init().then(() => Client.login(Client.config.bottoken).catch(err => Client.log.error(`${err.name}: ${err.message}`))).catch(err => { throw err; });
 
 process.on('unhandledRejection', (reason, promise) => {
 	console.log('Possibly Unhandled Rejection at: Promise ', promise, ' reason: ', reason.message);

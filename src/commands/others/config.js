@@ -13,7 +13,7 @@ class ConfigCommand extends Commands {
 	}
 
 	async showConfig(msg) {
-		const result = await msg.guild.getConfig(this.client);
+		const result = await msg.guild.getConfig();
 		let ModlogChannel = msg.guild.channels.get(result.modlogID);
 		if (!ModlogChannel) ModlogChannel = 'None';
 		let StarboardChannel = msg.guild.channels.get(result.starboardID);
@@ -61,7 +61,7 @@ class ConfigCommand extends Commands {
 				if (param3.length > 3) {
 					return msg.reply("a prefix's length must be between 1-3 characters long!");
 				}
-				await msg.guild.updateConfig(this.client, { prefix: param3 });
+				await msg.guild.updateConfig({ prefix: param3 });
 				const embed = new RichEmbed()
 					.setTitle(`Updated Prefix for ${msg.guild.name}`)
 					.addField('New Prefix', param3)
@@ -73,7 +73,7 @@ class ConfigCommand extends Commands {
 			}
 		} else if (param2 === 'remove' || param2 === 'delete') {
 			try {
-				await msg.guild.updateConfig(this.client, { prefix: 'None' });
+				await msg.guild.updateConfig({ prefix: 'None' });
 				msg.channel.send('i deleted the custom prefix from this server!');
 			} catch (error) {
 				return msg.reply('im sorry i had an error with my Database please try again!');
@@ -100,7 +100,7 @@ class ConfigCommand extends Commands {
 						return msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
 					}
 				}
-				await msg.guild.updateConfig(this.client, { modlogID: modlog.id });
+				await msg.guild.updateConfig({ modlogID: modlog.id });
 				const embed = new RichEmbed()
 					.setTitle(`Updated Modlog for ${msg.guild.name}`)
 					.addField('New Modlog', modlog.toString())
@@ -112,7 +112,7 @@ class ConfigCommand extends Commands {
 			}
 		} else if (param2 === 'remove' || param2 === 'delete') {
 			try {
-				await msg.guild.updateConfig(this.client, { modlogID: 'None' });
+				await msg.guild.updateConfig({ modlogID: 'None' });
 				msg.channel.send('i deleted the modlog channel from my config!');
 			} catch (error) {
 				return msg.reply('im sorry i had an error with my Database please try again!');
@@ -139,7 +139,7 @@ class ConfigCommand extends Commands {
 						return msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
 					}
 				}
-				await msg.guild.updateConfig(this.client, { musicID: musiclog.id });
+				await msg.guild.updateConfig({ musicID: musiclog.id });
 				const embed = new RichEmbed()
 					.setTitle(`Updated Musiclog for ${msg.guild.name}`)
 					.addField('New Musiclog', musiclog.toString())
@@ -151,7 +151,7 @@ class ConfigCommand extends Commands {
 			}
 		} else if (param2 === 'remove' || param2 === 'delete') {
 			try {
-				await msg.guild.updateConfig(this.client, { musicID: 'None' });
+				await msg.guild.updateConfig({ musicID: 'None' });
 				msg.channel.send('i deleted the Musiclog channel from my config!');
 			} catch (error) {
 				return msg.reply('im sorry i had an error with my Database please try again!');
@@ -178,7 +178,7 @@ class ConfigCommand extends Commands {
 						return msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
 					}
 				}
-				await msg.guild.updateConfig(this.client, { starboardID: starboard.id });
+				await msg.guild.updateConfig({ starboardID: starboard.id });
 				const embed = new RichEmbed()
 					.setTitle(`Updated Starboard Channel for ${msg.guild.name}`)
 					.addField('New Starboard Channel', starboard.toString())
@@ -190,7 +190,7 @@ class ConfigCommand extends Commands {
 			}
 		} else if (param2 === 'remove' || param2 === 'delete') {
 			try {
-				await msg.guild.updateConfig(this.client, { starboardID: 'None' });
+				await msg.guild.updateConfig({ starboardID: 'None' });
 				msg.channel.send('i deleted the Starboard channel from my config!');
 			} catch (error) {
 				return msg.reply('im sorry i had an error with my Database please try again!');
@@ -199,7 +199,7 @@ class ConfigCommand extends Commands {
 			try {
 				const number = Number(param3);
 				if (number <= 0 || isNaN(number)) return msg.reply('the third parameter must be a number greater than 0 !');
-				await msg.guild.updateConfig(this.client, { starboardNeededReactions: number });
+				await msg.guild.updateConfig({ starboardNeededReactions: number });
 				const embed = new RichEmbed()
 					.setTitle(`Updated needed Stars for ${msg.guild.name}`)
 					.addField('New required Star Count', `${number}`)
@@ -215,7 +215,7 @@ class ConfigCommand extends Commands {
 	}
 
 	async modrole(msg, param1, param2, param3) {
-		if (await msg.member.getPermissionsLevel(this.client) > 1) {
+		if (await msg.member.getPermissionsLevel() > 1) {
 			return msg.reply('Only the Owner can edit the Moderation Roles!');
 		}
 		if (!param2) {
@@ -234,13 +234,13 @@ class ConfigCommand extends Commands {
 						return msg.reply('Your provided ID is wrong! use a Rolemention instead maybe');
 					}
 				}
-				const result = await msg.guild.getConfig(this.client);
+				const result = await msg.guild.getConfig();
 				const array = result.moderationRolesIDs;
 				if (array.includes(role.id)) {
 					return msg.reply('this Role is already an Modrole on this server!');
 				}
 				array.push(role.id);
-				await msg.guild.updateConfig(this.client, { moderationRolesIDs: array });
+				await msg.guild.updateConfig({ moderationRolesIDs: array });
 				let Roles = array.map(ID => `<@&${ID}>`).join(', ');
 				if (!Roles) Roles = 'None';
 				const embed = new RichEmbed()
@@ -266,14 +266,14 @@ class ConfigCommand extends Commands {
 						return msg.reply('Your provided ID is wrong! use a RoleMention instead maybe');
 					}
 				}
-				const result = await msg.guild.getConfig(this.client);
+				const result = await msg.guild.getConfig();
 				const array = result.moderationRolesIDs;
 				if (!array.includes(role.id)) {
 					return msg.reply('this Role is not an Modrole on this server!');
 				}
 				const index = array.indexOf(role.id);
 				array.splice(index, 1);
-				await msg.guild.updateConfig(this.client, { moderationRolesIDs: array });
+				await msg.guild.updateConfig({ moderationRolesIDs: array });
 				let Roles = array.map(ID => `<@&${ID}>`).join(', ');
 				if (!Roles) Roles = 'None';
 				const embed = new RichEmbed()
@@ -307,13 +307,13 @@ class ConfigCommand extends Commands {
 						return msg.reply('Your provided ID is wrong! use a Rolemention instead maybe');
 					}
 				}
-				const result = await msg.guild.getConfig(this.client);
+				const result = await msg.guild.getConfig();
 				const array = result.musicRolesIDs;
 				if (array.includes(role.id)) {
 					return msg.reply('this Role is already an Musicrole on this server!');
 				}
 				array.push(role.id);
-				await msg.guild.updateConfig(this.client, { musicRolesIDs: array });
+				await msg.guild.updateConfig({ musicRolesIDs: array });
 				const Roles = array.map(ID => `<@&${ID}>`).join(', ');
 				const embed = new RichEmbed()
 					.setTitle(`Added Role ${role.name} to the Musicroles`)
@@ -338,14 +338,14 @@ class ConfigCommand extends Commands {
 						return msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
 					}
 				}
-				const result = await msg.guild.getConfig(this.client);
+				const result = await msg.guild.getConfig();
 				const array = result.musicRolesIDs;
 				if (!array.includes(role.id)) {
 					return msg.reply('this Role is not an Musicrole on this server!');
 				}
 				const index = array.indexOf(role.id);
 				array.splice(index, 1);
-				await msg.guild.updateConfig(this.client, { musicRolesIDs: array });
+				await msg.guild.updateConfig({ musicRolesIDs: array });
 				let Roles = array.map(ID => `<@&${ID}>`).join(', ');
 				if (!Roles) Roles = 'None';
 				const embed = new RichEmbed()
@@ -361,10 +361,10 @@ class ConfigCommand extends Commands {
 			if (!param3) {
 				return msg.reply('You must provide an third parameter!');
 			} else if (param3 === 'enable' || param3 === 'on') {
-				await msg.guild.updateConfig(this.client, { musicLimited: true });
+				await msg.guild.updateConfig({ musicLimited: true });
 				msg.channel.send('enabled Limitation of my music feature to the Musicroles!');
 			} else if (param3 === 'disable' || param3 === 'off') {
-				await msg.guild.updateConfig(this.client, { musicLimited: false });
+				await msg.guild.updateConfig({ musicLimited: false });
 				msg.channel.send('disabled Limitation of my music feature to the Musicroles!');
 			} else {
 				return msg.reply('You provided an wrong third parameter');
@@ -383,7 +383,7 @@ class ConfigCommand extends Commands {
 			if (param2) param2 = param2.toLowerCase();
 			if (param3) param3 = param3.toLowerCase();
 			if (param4) param4 = param4.toLowerCase();
-			const permissionLevel = await msg.member.getPermissionsLevel(this.client);
+			const permissionLevel = await msg.member.getPermissionsLevel();
 			if (permissionLevel > 2) return msg.reply("You dont have permission to do that since you dont have a moderation Role and also aren't the Owner of this server!");
 			switch (param1) {
 				case 'prefix':

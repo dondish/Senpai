@@ -15,8 +15,8 @@ class ExecCommand extends Commands {
 
 	async run(msg, params) {
 		const { client } = this;
-		const permissionLevel = await msg.member.getPermissionsLevel(client);
-		if (permissionLevel !== 0) return msg.react(this.client.emojis.get('361218228103675905'));
+		const permissionLevel = await msg.member.getPermissionsLevel();
+		if (permissionLevel !== 0) return msg.react(client.emojis.get('361218228103675905'));
 		const code = params.join(' ');
 		if (!code) return msg.channel.send('You provided no input are you stupid?');
 		exec(code, (error, stdout, stderr) => {

@@ -15,7 +15,7 @@ class HistoryCommand extends Commands {
 	async run(msg) {
 		let member = msg.mentions.members.first();
 		if (!member) member = msg.member;
-		const history = await member.getHistory(this.client);
+		const history = await member.getHistory();
 		let warning;
 		let kicks;
 		let bans;

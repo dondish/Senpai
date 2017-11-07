@@ -14,7 +14,7 @@ class BlacklistCommand extends Commands {
 
 	async run(msg, params) {
 		const { client } = this;
-		const permissionLevel = await msg.member.getPermissionsLevel(client);
+		const permissionLevel = await msg.member.getPermissionsLevel();
 		if (permissionLevel >= 3) return msg.reply('You dont have permission to use this Command!');
 		let parameter1 = params[0];
 		if (!parameter1) {

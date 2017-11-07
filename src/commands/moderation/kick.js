@@ -13,7 +13,7 @@ class KickCommand extends Commands {
 	}
 
 	async run(msg, params) {
-		const permissionLevel = await msg.member.getPermissionsLevel(this.client);
+		const permissionLevel = await msg.member.getPermissionsLevel();
 		if (permissionLevel >= 3) return msg.reply('You dont have permission to use this Command!');
 		if (msg.mentions.members.size < 1) return msg.reply('You must mention someone for this Command.');
 		let member = msg.mentions.members.first();
@@ -25,8 +25,8 @@ class KickCommand extends Commands {
 		try {
 			await member.kick({ reason });
 			await message.edit(`successfully kicked ${member.user.tag}`);
-			await member.addKick(this.client, reason);
-			const guildsettings = await msg.guild.getConfig(this.client);
+			await member.addKick(reason);
+			const guildsettings = await msg.guild.getConfig();
 			const embed = new RichEmbed()
 				.setAuthor(msg.author.username, msg.author.avatarURL)
 				.setColor(0x00AE86)

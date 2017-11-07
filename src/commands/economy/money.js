@@ -21,7 +21,7 @@ class MoneyCommand extends Commands {
 				member = msg.mentions.members.first();
 				if (!member) await msg.guild.fetchMember(msg.mentions.users.first());
 			}
-			const result = await member.getEconomy(this.client);
+			const result = await member.getEconomy();
 			if (!result) return msg.reply(`looks like you or the user you mentioned haven't registered for the economy system yet you or the user can do that by using the register command!`);
 			let { cash, bank } = result;
 			let Total = cash + bank;

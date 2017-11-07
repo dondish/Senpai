@@ -13,7 +13,7 @@ class SoftbanCommand extends Commands {
 	}
 
 	async run(msg, params) {
-		const permissionLevel = await msg.member.getPermissionsLevel(this.client);
+		const permissionLevel = await msg.member.getPermissionsLevel();
 		if (permissionLevel >= 3) return msg.reply('You dont have permission to use this Command!');
 		if (msg.mentions.members.size < 1) return msg.reply('You must mention someone for this Command.');
 		let member = msg.mentions.members.first();
@@ -30,8 +30,8 @@ class SoftbanCommand extends Commands {
 			const newMessage = await message.edit(`successfully banned ${member.user.tag} Awaiting unban ..`);
 			const unbanned = await member.guild.unban(banned.user);
 			await newMessage.edit(`successfully softbanned ${unbanned.tag}`);
-			await member.addKick(this.client, reason);
-			const guildsettings = await msg.guild.getConfig(this.client);
+			await member.addKick(reason);
+			const guildsettings = await msg.guild.getConfig();
 			const embed = new RichEmbed()
 				.setAuthor(msg.author.username, msg.author.avatarURL)
 				.setColor(0x00AE86)

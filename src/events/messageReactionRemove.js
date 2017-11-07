@@ -49,18 +49,18 @@ class MessageReactionRemoveEvent extends Events {
 		}
 		const channel = message.guild.channels.get(serverConfig.starboardID);
 		if (!channel) return;
-		const messageObject = await message.guild.resolveStarboardMessage(this.client, message.id);
+		const messageObject = await message.guild.resolveStarboardMessage(message.id);
 		const sentMessage = await channel.fetchMessage(messageObject.starMessageID);
 		await sentMessage.edit({ embed });
-		await message.guild.updateStarboardMessage(this.client, { originalMessageID: message.id, starMessageID: sentMessage.id, starcount: reactionCount });
+		await message.guild.updateStarboardMessage({ originalMessageID: message.id, starMessageID: sentMessage.id, starcount: reactionCount });
 	}
 
 	async deleteStarboardMessage(message, serverConfig) {
 		const channel = message.guild.channels.get(serverConfig.starboardID);
-		const messageObject = await message.guild.resolveStarboardMessage(this.client, message.id);
+		const messageObject = await message.guild.resolveStarboardMessage(message.id);
 		if (!messageObject) return;
 		const sentMessage = await channel.fetchMessage(messageObject.starMessageID);
-		await message.guild.deleteStarboardMessage(this.client, message.id);
+		await message.guild.deleteStarboardMessage(message.id);
 		await sentMessage.delete();
 	}
 }

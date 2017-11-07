@@ -2,7 +2,12 @@ const fileP = require('file');
 const fs = require('fs');
 
 class Util {
-	async init(Client) {
+	constructor(Client) {
+		this.client = Client;
+	}
+
+	async init() {
+		const { Client } = this;
 		await this._commandloader(Client);
 		await this._eventloader(Client);
 	}

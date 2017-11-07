@@ -14,7 +14,7 @@ class CoinflipCommand extends Commands {
 	async run(msg, params) {
 		try {
 			if (!msg.member) await msg.guild.fetchMember(msg.author);
-			const data = await msg.member.getEconomy(this.client);
+			const data = await msg.member.getEconomy();
 			if (!data) return msg.reply(`looks like you haven't registered for the economy system yet you can do that by using the register command!`);
 			let { cash, bank } = data;
 			let change = params[0];
@@ -39,7 +39,7 @@ class CoinflipCommand extends Commands {
 				cash -= gambleamount;
 				message = `You lost ${gambleamount} ${currency}`;
 			}
-			await msg.member.updateEconomy(this.client, cash, bank);
+			await msg.member.updateEconomy(cash, bank);
 			await msg.reply(message);
 		} catch (error) {
 			await msg.channel.send(`Errored with following Error: ${error.message}`);

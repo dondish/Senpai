@@ -4,13 +4,15 @@ const Economy = require('../new/Economy.js');
 const rethink = require('rethinkdb');
 
 class GuildExtension extends Extension {
-	async getLeaderboard(client) {
+	async getLeaderboard() {
+		const { client } = this;
 		const data = await client.db.money.filterAndSort({ guildID: this.id }, rethink.desc(element => rethink.add(element('cash'), element('bank')))
 		);
 		return data;
 	}
 
-	async getStarboardMessages(client) {
+	async getStarboardMessages() {
+		const { client } = this;
 		let result = await client.db.starboardMessages.getByID(this.id);
 		if (!result) {
 			await client.db.starboardMessages.insertData({
@@ -22,7 +24,8 @@ class GuildExtension extends Extension {
 		return result.messages;
 	}
 
-	async updateStarboardMessage(client, { originalMessageID, starMessageID, starcount }) {
+	async updateStarboardMessage({ originalMessageID, starMessageID, starcount }) {
+		const { client } = this;
 		let result1 = await client.db.starboardMessages.getByID(this.id);
 		result1.messages[originalMessageID] = {
 			starMessageID,
@@ -32,7 +35,8 @@ class GuildExtension extends Extension {
 		return result2;
 	}
 
-	async resolveStarboardMessage(client, id) {
+	async resolveStarboardMessage(id) {
+		const { client } = this;
 		let { messages } = await client.db.starboardMessages.getByID(this.id);
 		const result = messages[id];
 		if (!result) {
@@ -42,19 +46,22 @@ class GuildExtension extends Extension {
 		}
 	}
 
-	async deleteStarboardMessage(client, id) {
+	async deleteStarboardMessage(id) {
+		const { client } = this;
 		let result1 = await client.db.starboardMessages.getByID(this.id);
 		delete result1.messages[id];
 		const result = await client.db.starboardMessages.getAndReplace(this.id, result1);
 		return result;
 	}
 
-	async getConfig(client) {
+	async getConfig() {
+		const { client } = this;
 		const config = await client.db.guild.getByID(this.id);
 		return config;
 	}
 
-	async createConfig(client) {
+	async createConfig() {
+		const { client } = this;
 		const result = await client.db.guild.insertData({
 			moderationRolesIDs: [],
 			modlogID: 'None',
@@ -69,7 +76,8 @@ class GuildExtension extends Extension {
 		return result;
 	}
 
-	async updateConfig(client, data) {
+	async updateConfig(data) {
+		const { client } = this;
 		const result = await client.db.guild.updateData(this.id, data);
 		return result;
 	}

@@ -2,7 +2,8 @@ const Extension = require('./Extend.js');
 const permissionLevel = require('../new/Permissions.json');
 
 class GuildMemberExtension extends Extension {
-	async getPermissionsLevel(client) {
+	async getPermissionsLevel() {
+		const { client } = this;
 		if (this.id === client.config.ownerID) return permissionLevel.BOTOWNER;
 		if (this.id === this.guild.owner.id) return permissionLevel.SERVEROWNER;
 		const database = client.db;
@@ -16,7 +17,8 @@ class GuildMemberExtension extends Extension {
 		return permissionLevel.NOTHING;
 	}
 
-	async updateEconomy(client, cash, bank) {
+	async updateEconomy(cash, bank) {
+		const { client } = this;
 		const result = await client.db.money.updateData(`${this.id}${this.guild.id}`, {
 			cash,
 			bank
@@ -24,13 +26,15 @@ class GuildMemberExtension extends Extension {
 		return result;
 	}
 
-	async getEconomy(client) {
+	async getEconomy() {
+		const { client } = this;
 		const data = await client.db.money.getByID(`${this.id}${this.guild.id}`);
 		if (!data) throw new Error('seems like you/the mentioned user did not registrate for the economy system! you can do that by using the register command');
 		return data;
 	}
 
-	async addToEconomy(client) {
+	async addToEconomy() {
+		const { client } = this;
 		const test = await client.db.money.getByID(`${this.id}${this.guild.id}`);
 		if (test) throw new Error('already registered');
 		const result = await client.db.money.insertData({
@@ -43,7 +47,8 @@ class GuildMemberExtension extends Extension {
 		return result;
 	}
 
-	async getHistory(client) {
+	async getHistory() {
+		const { client } = this;
 		let history = await client.db.history.getByID(`${this.id}${this.guild.id}`);
 		if (!history) {
 			history = {
@@ -59,7 +64,8 @@ class GuildMemberExtension extends Extension {
 		return history;
 	}
 
-	async addWarn(client, reason) {
+	async addWarn(reason) {
+		const { client } = this;
 		let needCreate = false;
 		let history = await client.db.history.getByID(`${this.id}${this.guild.id}`);
 		if (!history) {
@@ -84,7 +90,8 @@ class GuildMemberExtension extends Extension {
 		return result;
 	}
 
-	async addKick(client, reason) {
+	async addKick(reason) {
+		const { client } = this;
 		let needCreate = false;
 		let history = await client.db.history.getByID(`${this.id}${this.guild.id}`);
 		if (!history) {
@@ -109,7 +116,8 @@ class GuildMemberExtension extends Extension {
 		return result;
 	}
 
-	async addBan(client, reason) {
+	async addBan(reason) {
+		const { client } = this;
 		let needCreate = false;
 		let history = await client.db.history.getByID(`${this.id}${this.guild.id}`);
 		if (!history) {
