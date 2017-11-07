@@ -27,7 +27,7 @@ class EvalCommand extends Commands {
 			let output = eval(code);
 			if (output instanceof Promise) output = await output;
 			let type = typeof output;
-			output = util.inspect(output, { depth: 0, maxArrayLength: 0 });
+			output = util.inspect(output, { depth: 0, maxArrayLength: null });
 			output = output.replace(filter, '[TOKEN]');
 			const discordOutput = `\`\`\`js\n${output}\n\`\`\``;
 			if (output.length < 1024) {
