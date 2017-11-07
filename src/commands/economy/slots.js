@@ -64,7 +64,7 @@ class SlotsCommand extends Commands {
 				message = `\n\n**----Slots----**\n${resultString}\n**--------------**\n\n You won ${wonMoney}${currency} and got your bet back`;
 				cash += wonMoney;
 			}
-			await msg.member.updateEconomy(client, cash, bank);
+			await msg.member.updateEconomy(cash, bank);
 			msg.reply(message);
 		} catch (error) {
 			await msg.channel.send(`Errored with following Error: ${error.message}`);

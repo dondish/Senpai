@@ -32,7 +32,7 @@ class DepositCommand extends Commands {
 			if (amount <= 0) return msg.reply('Your amount must be more than 0!');
 			cash -= amount;
 			bank += amount;
-			await msg.member.updateEconomy(this.client, cash, bank);
+			await msg.member.updateEconomy(cash, bank);
 			await msg.reply(`You successfully deposit ${amount} ${currency} to the bank!`);
 		} catch (error) {
 			await msg.channel.send(`Errored with following Error: ${error.message}`);
