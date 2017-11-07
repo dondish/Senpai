@@ -32,7 +32,7 @@ class TableHandler {
 		});
 	}
 
-	readDatetAndFilter(filter) {
+	readDataAndFilter(filter) {
 		return new Promise(async (resolve, reject) => {
 			const connection = await this.createConnection();
 			const { tableName, dbName } = this;

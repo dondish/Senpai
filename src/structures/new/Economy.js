@@ -22,9 +22,9 @@ class Economy {
 
 	async _addMoney(member) {
 		try {
-			let { cash, bank } = await member.getEconomy(this.client);
+			let { cash, bank } = await member.getEconomy();
 			cash += 5;
-			await member.updateEconomy(this.client, cash, bank);
+			await member.updateEconomy(cash, bank);
 		} catch (error) {
 			return; // eslint-disable-line no-useless-return
 		}

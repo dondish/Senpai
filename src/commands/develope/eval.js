@@ -1,6 +1,6 @@
 const Commands = require('../../structures/new/Command.js');
 const { RichEmbed } = require('discord.js');
-const util = require('util');
+const { inspect } = require('util');
 const { post } = require('snekfetch');
 const info = {
 	name: 'eval',
@@ -27,7 +27,7 @@ class EvalCommand extends Commands {
 			let output = eval(code);
 			if (output instanceof Promise) output = await output;
 			let type = typeof output;
-			output = util.inspect(output, { depth: 0, maxArrayLength: null });
+			output = inspect(output, { depth: 0, maxArrayLength: null });
 			output = output.replace(filter, '[TOKEN]');
 			const discordOutput = `\`\`\`js\n${output}\n\`\`\``;
 			if (output.length < 1024) {
@@ -51,7 +51,7 @@ class EvalCommand extends Commands {
 				await msg.channel.send({ embed });
 			}
 		} catch (error) {
-			let err = util.inspect(error, { depth: 0, maxArrayLength: 0 });
+			let err = inspect(error, { depth: 0, maxArrayLength: 0 });
 			err = err.replace(filter, '[TOKEN]');
 			const errDiscord = `\`\`\`js\n${err}\n\`\`\``;
 			if (err.length < 1024) {
