@@ -74,6 +74,22 @@ class Commands {
 	pad(seconds) {
 		return (seconds < 10 ? '0' : '') + seconds;
 	}
+
+	_constructTitles(data) {
+		const array = [];
+		const { _constructTitle } = this;
+		for (let i = 0; i < 5; i++) {
+			array.push(`\n${i + 1}:`);
+			array.push(_constructTitle(i, data));
+		}
+		return array.join(' ');
+	}
+
+	_constructTitle(index, data) {
+		const string1 = data[index].titles.en_jp ? data[index].titles.en_jp : '';
+		const string2 = data[index].titles.en ? `/${data[index].titles.en}` : '';
+		return `${string1}${string2}`;
+	}
 }
 
 module.exports = Commands;
