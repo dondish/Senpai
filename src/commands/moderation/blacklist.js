@@ -21,12 +21,13 @@ class BlacklistCommand extends Commands {
 			return msg.reply('you must choose if you wanna add or delete a user to the blacklist list :eyes:');
 		} else {
 			parameter1 = parameter1.toLowerCase();
+			const parameter2 = params[1];
 			let reason = params.slice(2).join(' ');
 			if (!reason) reason = 'no reason provided';
 			let member;
 			if (msg.mentions.users.size === 0) {
 				try {
-					member = await msg.guild.fetchMember(member);
+					member = await msg.guild.fetchMember(parameter2);
 				} catch (error) {
 					return msg.reply('the provided UserID is not valid :eyes:');
 				}
