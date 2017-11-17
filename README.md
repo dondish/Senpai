@@ -5,6 +5,7 @@
   <p>
     <a href="https://travis-ci.org/Dev-Yukine/Senpai"><img src="https://api.travis-ci.org/Dev-Yukine/Senpai.svg" alt="Build status" /></a>
     <a href="https://david-dm.org/Dev-Yukine/Senpai"><img src="https://david-dm.org/Dev-Yukine/Senpai/status.svg" alt="Dependencies" /></a>
+    <a href="https://discordbots.org/bot/206955935229280256"><img src="https://discordbots.org/api/widget/206955935229280256.png" alt="Discord Bots" /></a>
   </p>
 </div>
 

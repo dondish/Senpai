@@ -53,11 +53,12 @@
     "slot-machine": "^2.1.0",
     "snekfetch": "^3.5.8",
     "sodium": "^2.0.1",
+    "steamapi-node": "^1.0.3",
     "weather-js": "^2.0.0",
     "winston": "^2.4.0",
+    "youtube-api": "^2.0.9",
     "youtube-node": "^1.3.2",
-    "youtube-playlist-info": "^0.1.0",
     "youtube-search": "^1.0.10",
-    "ytdl-core": "^0.18.1"
+    "ytdl-core": "^0.18.2"
   }
 }

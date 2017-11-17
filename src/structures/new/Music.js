@@ -4,8 +4,8 @@ const yt = require('ytdl-core');
 const YouTube = require('youtube-node');
 const youtube = new YouTube();
 youtube.setKey(googleAPIKey);
-const ypi = require('youtube-playlist-info');
 const search = require('youtube-search');
+const youtubeApi = require('youtube-api');
 const { RichEmbed } = require('discord.js');
 const searchOptions = {
 	maxResults: 10,
@@ -56,7 +56,7 @@ class Music {
 			this.playing = false;
 			this.dispatcher = null;
 			this.playqueue(channel);
-		}, 500));
+		}, 200));
 	}
 
 	async handlePlaylist(link, requestedBy, channel) {
@@ -145,18 +145,45 @@ class Music {
 		});
 	}
 
-	getPlaylist(url) {
-		return new Promise((resolve, reject) => {
-			try {
-				const id = /[&?]list=([a-z0-9_-]+)/i.exec(url);
-				if (!id) throw new Error('this Link isn\'s a Youtube Playlist');
-				ypi.playlistInfo(googleAPIKey, id[1], playlistItems => {
-					if (!playlistItems) throw new Error('Invalid playlist');
-					resolve(playlistItems);
-				});
-			} catch (error) {
-				reject(error);
+	async getPlaylist(url) {
+		const id = /[&?]list=([a-z0-9_-]+)/i.exec(url);
+		if (!id) throw new Error('this Link isn\'s a Youtube Playlist');
+		const playlistItems = await this.playlistInfo(googleAPIKey, id[1]);
+		if (!playlistItems) throw new Error('Invalid playlist');
+		return playlistItems;
+	}
+
+	playlistInfoRecursive(playlistId, callStackSize, pageToken, currentItems, callback) {
+		youtubeApi.playlistItems.list({
+			part: 'snippet',
+			pageToken,
+			maxResults: 50,
+			playlistId
+		}, (err, data) => {
+			if (err) return callback(err);
+			for (const x in data.items) {
+				currentItems.push(data.items[x].snippet);
 			}
+			if (data.nextPageToken) {
+				this.playlistInfoRecursive(playlistId, callStackSize + 1, data.nextPageToken, currentItems, callback);
+			} else {
+				return callback(null, currentItems);
+			}
+		});
+	}
+
+	playlistInfo(apiKey, playlistId) {
+		return new Promise((resolve, reject) => {
+			if (!apiKey) return reject(new Error('No API Key Provided'));
+			if (!playlistId) return reject(new Error('No Playlist ID Provided'));
+			youtubeApi.authenticate({
+				type: 'key',
+				key: apiKey
+			});
+			this.playlistInfoRecursive(playlistId, 0, null, [], (err, list) => {
+				if (err) return reject(err);
+				return resolve(list);
+			});
 		});
 	}
 
@@ -168,16 +195,43 @@ class Music {
 class SongInfo {
 	constructor(info, requestedBy) {
 		this.raw = info;
-		this.id = info.id;
-		this.link = `https://www.youtube.com/watch?v=${this.id}`;
-		this.title = info.snippet.title;
-		this.length = this.parseTime(info.contentDetails.duration);
-		this.default = info.snippet.thumbnails.default ? info.snippet.thumbnails.default.url : null;
-		this.medium = info.snippet.thumbnails.medium ? info.snippet.thumbnails.medium.url : null;
-		this.high = info.snippet.thumbnails.high ? info.snippet.thumbnails.high.url : null;
-		this.standard = info.snippet.thumbnails.standard ? info.snippet.thumbnails.standard.url : null;
-		this.picture = this.standard || this.high || this.medium || this.default;
 		this.requestedBy = requestedBy;
+	}
+
+	get id() {
+		return this.raw.id;
+	}
+
+	get link() {
+		return `https://www.youtube.com/watch?v=${this.id}`;
+	}
+
+	get title() {
+		return this.raw.snippet.title;
+	}
+
+	get length() {
+		return this.parseTime(this.raw.contentDetails.duration);
+	}
+
+	get default() {
+		return this.raw.snippet.thumbnails.default ? this.raw.snippet.thumbnails.default.url : null;
+	}
+
+	get medium() {
+		return this.raw.snippet.thumbnails.medium ? this.raw.snippet.thumbnails.medium.url : null;
+	}
+
+	get high() {
+		return this.raw.snippet.thumbnails.high ? this.raw.snippet.thumbnails.high.url : null;
+	}
+
+	get standard() {
+		return this.raw.snippet.thumbnails.standard ? this.raw.snippet.thumbnails.standard.url : null;
+	}
+
+	get picture() {
+		return this.standard || this.high || this.medium || this.default;
 	}
 
 	parseTime(time) {

@@ -13,8 +13,8 @@ class ChooseCommand extends Commands {
 	}
 
 	run(msg, params) {
-		if (params.length < 2) return msg.reply('you need to provide atleast 2 different things to choose from! *,* is the seperator');
 		const options = params.join(' ').split(',');
+		if (options.length < 2) return msg.reply('you need to provide atleast 2 different things to choose from! `,` is the seperator');
 		const result = options[Math.floor(Math.random() * options.length)];
 		const embed = new RichEmbed()
 			.addField('I choose the following:', result)
