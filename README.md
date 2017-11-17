@@ -1,15 +1,22 @@
 # Senpai
 
-<div align="center">
+<div align="left">
   <br />
   <p>
-    <a href="https://travis-ci.org/Dev-Yukine/Senpai"><img src="https://api.travis-ci.org/Dev-Yukine/Senpai.svg" alt="Build status" /></a>
-    <a href="https://david-dm.org/Dev-Yukine/Senpai"><img src="https://david-dm.org/Dev-Yukine/Senpai/status.svg" alt="Dependencies" /></a>
     <a href="https://discordbots.org/bot/206955935229280256"><img src="https://discordbots.org/api/widget/206955935229280256.png" alt="Discord Bots" /></a>
   </p>
 </div>
 
 ## About
+
+<div align="center">
+  <br />
+  <p>
+    <a href="https://travis-ci.org/Dev-Yukine/Senpai"><img src="https://api.travis-ci.org/Dev-Yukine/Senpai.svg" alt="Build status" /></a>
+    <a href="https://david-dm.org/Dev-Yukine/Senpai"><img src="https://david-dm.org/Dev-Yukine/Senpai/status.svg" alt="Dependencies" /></a>
+  </p>
+</div>
+
 Here you can find the Source code of my own Bot "Senpai" for [Discord](https://discordapp.com/). You can use this Source-Code under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) at any time.
 
 after the rewrite it makes fully usage of classes & ES2017's async/await functionality.
