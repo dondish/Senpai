@@ -23,15 +23,15 @@ class Music {
 	}
 
 	playqueue(channel) {
-		const { voiceConnection } = channel.guild;
-		let { queue, dispatcher, playing, guild, loop } = this;
+		let { queue, guild, loop } = this;
+		const { voiceConnection } = guild;
 		let [CurrentSong] = queue;
-		if (!voiceConnection || playing || queue.length === 0 || !CurrentSong) return;
+		if (!voiceConnection || this.playing || queue.length === 0 || !CurrentSong) return;
 		const { title, requestedBy, link, picture } = CurrentSong;
-		dispatcher = voiceConnection.playStream(yt(link, { filter: 'audioonly' }));
-		dispatcher.on('start', () => {
+		this.dispatcher = voiceConnection.playStream(yt(link, { filter: 'audioonly' }));
+		this.dispatcher.on('start', () => {
 			voiceConnection.player.streamingData.pausedTime = 0;
-			playing = true;
+			this.playing = true;
 			const embed = new RichEmbed()
 				.setDescription(`[${title}](${link})`)
 				.setAuthor(requestedBy.tag, requestedBy.displayAvatarURL);
@@ -42,20 +42,20 @@ class Music {
 			channel.send({ embed });
 		}
 		);
-		dispatcher.on('error', error => {
+		this.dispatcher.on('error', error => {
 			channel.send('I had an error while trying to play the Current Song so i skipped it! if this happens more than 1 time please contact my DEV!');
 			queue.shift();
 			guild.client.log.error(`while trying to play a song this error occurred ${error.name}:${error.message}`);
-			playing = false;
-			dispatcher = null;
+			this.playing = false;
+			this.dispatcher = null;
 			return this.playqueue(channel);
 		}
 		);
-		dispatcher.on('end', () => setTimeout(() => {
+		this.dispatcher.on('end', () => setTimeout(() => {
 			const shifted = queue.shift();
 			if (loop) queue.push(shifted);
-			playing = false;
-			dispatcher = null;
+			this.playing = false;
+			this.dispatcher = null;
 			this.playqueue(channel);
 		}, 200));
 	}
