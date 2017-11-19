@@ -13,19 +13,18 @@ class LoopCommand extends Commands {
 
 	async run(msg) {
 		const { voiceConnection } = msg.guild;
-		if (voiceConnection === null) return msg.reply(`Im not in a Voice channel on this Server!`);
-		const isLimited = await msg.guild.getConfig();
-		if (isLimited.musicLimited) {
+		if (!voiceConnection) return msg.reply(`Im not in a Voice channel on this Server!`);
+		const { musicLimited } = await msg.guild.getConfig();
+		if (musicLimited) {
 			const permissionLevel = await msg.member.getPermissionsLevel();
 			if (permissionLevel > 3) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to do this Command!");
 		}
-		const { queue, loop } = msg.guild.getMusic();
+		const { queue, loop } = msg.guild.music;
 		if (queue.length === 0) return msg.reply('You can`t loop an empty queue :eyes:');
-		const boolean = loop;
-		if (boolean === true) {
+		if (loop) {
 			msg.guild.setLoop(false);
 			msg.channel.send('stopping the loop!');
-		} else if (boolean === false) {
+		} else if (!loop) {
 			msg.guild.setLoop(true);
 			msg.channel.send('looping the current queue!');
 		}

@@ -12,13 +12,9 @@ class RegisterCommand extends Commands {
 	}
 
 	async run(msg) {
-		try {
-			if (!msg.member) await msg.guild.fetchMember(msg.author);
-			await msg.member.addToEconomy();
-			await msg.channel.send('You successfully registered to the economy system!');
-		} catch (error) {
-			await msg.channel.send(`Errored with following Error: ${error.message}`);
-		}
+		if (!msg.member) await msg.guild.fetchMember(msg.author);
+		await msg.member.addToEconomy();
+		await msg.channel.send('You successfully registered to the economy system!');
 	}
 }
 

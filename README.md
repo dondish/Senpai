@@ -55,5 +55,3 @@ also you need a **RethinkDB server**.
 
 - [Suggestions](https://github.com/Dev-Yukine/Senpai-Bot-Discord/issues?utf8=%E2%9C%93&q=is%3Aopen%20Suggestion%3A%20)
 
-## Legal advises
-

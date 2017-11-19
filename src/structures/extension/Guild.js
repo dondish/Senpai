@@ -82,28 +82,22 @@ class GuildExtension extends Extension {
 		return result;
 	}
 
-	getLoop() {
-		const music = this.getMusic();
-		return music.loop;
+	get loop() {
+		return this.music.loop;
 	}
 
-	setLoop(boolean) {
-		const music = this.getMusic();
-		music.loop = boolean;
+	set loop(boolean) {
+		this.music.loop = boolean;
 	}
 
-	getMusic() {
-		if (!this.music) {
-			this.music = new Music(this);
-		}
-		return this.music;
+	get music() {
+		if (!this._music) this._music = new Music(this);
+		return this._music;
 	}
 
-	getEconomy() {
-		if (!this.economy) {
-			this.economy = new Economy(this.client);
-		}
-		return this.economy;
+	get economy() {
+		if (!this._economy) this._economy = new Economy(this.client);
+		return this._economy;
 	}
 }
 

@@ -8,7 +8,6 @@ class MessageReactionRemoveEvent extends Events {
 	}
 
 	async run(messageReaction, user) {
-		const { client } = this;
 		if (user.bot) return;
 		if (messageReaction.emoji.name !== '⭐') return;
 		const { message } = messageReaction;
@@ -17,7 +16,7 @@ class MessageReactionRemoveEvent extends Events {
 		if (!guild) return;
 		await messageReaction.fetchUsers();
 		let reactionCount = messageReaction.count;
-		const serverConfig = await guild.getConfig(client);
+		const serverConfig = await guild.getConfig();
 		let neededReactions = 1;
 		if (serverConfig.starboardNeededReactions) {
 			neededReactions = serverConfig.starboardNeededReactions;

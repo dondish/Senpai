@@ -2,7 +2,7 @@ const Commands = require('../../structures/new/Command.js');
 const { RichEmbed } = require('discord.js');
 const info = {
 	name: 'choose',
-	description: 'choose between different options ( , is the separator )',
+	description: 'choose between different options ( `,` is the separator )',
 	aliases: [],
 	examples: ['choose i should go outside, i should continue coding, i should get a gf']
 };

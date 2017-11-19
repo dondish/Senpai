@@ -14,14 +14,14 @@ class RemoveSongCommand extends Commands {
 	async run(msg, params, prefix) {
 		let number = params[0];
 		number = Number(number);
-		const { queue, dispatcher } = msg.guild.getMusic();
+		const { queue, dispatcher } = msg.guild.music;
 		const { voiceConnection } = msg.guild;
-		const isLimited = await msg.guild.getConfig();
-		if (isLimited.musicLimited) {
+		const { musicLimited } = await msg.guild.getConfig();
+		if (musicLimited) {
 			const permissionLevel = await msg.member.getPermissionsLevel();
 			if (permissionLevel > 3) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to do this Command!");
 		}
-		if (voiceConnection === null) return msg.reply(`Im not in a Voice channel on this Server!`);
+		if (!voiceConnection) return msg.reply(`Im not in a Voice channel on this Server!`);
 		if (!dispatcher) return msg.reply(`I don't play music at the moment!`);
 		if (number === 1) return msg.reply(`You try to delete the current playing song from the queue use ${prefix}skip instead`);
 		if (isNaN(number)) return msg.reply('I only accpet the queue number in this command');

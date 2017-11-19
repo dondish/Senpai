@@ -9,14 +9,14 @@ class MessageEvent extends Events {
 	async run(msg) {
 		const { client } = this;
 		if (msg.author.bot) return;
-		const blacklisted = await msg.author.isBlacklisted(client);
+		const blacklisted = await msg.author.isBlacklisted();
 		if (blacklisted) return;
 		if (!msg.guild) return;
-		msg.guild.getEconomy().messageUpdate(msg.member);
-		let guildConfig = await msg.guild.getConfig(client);
+		msg.guild.economy.messageUpdate(msg.member);
+		let guildConfig = await msg.guild.getConfig();
 		if (!guildConfig) {
-			await msg.guild.createConfig(client);
-			guildConfig = await msg.guild.getConfig(client);
+			await msg.guild.createConfig();
+			guildConfig = await msg.guild.getConfig();
 		}
 		if (guildConfig.prefix === 'None') guildConfig.prefix = undefined;
 		const prefix = guildConfig.prefix || client.config.prefix;
@@ -42,11 +42,6 @@ class MessageEvent extends Events {
 				await cmd.run(msg, params, prefix);
 			} catch (error) {
 				this.client.emit('commandError', error, this, msg);
-				const Owner = this.client.users.get(this.client.config.ownerID);
-				const invite = this.client.config.supportServerLink;
-				msg.reply(`An error occurred while running the command: \`${error.name}: ${error.message}\`
-You shouldn't ever receive an error like this.
-Please contact ${Owner.tag}${invite ? ` in this server: ${invite}` : '.'}`);
 			}
 		}
 	}

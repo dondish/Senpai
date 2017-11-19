@@ -2,7 +2,7 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'join',
 	description: 'joins your current voiceChannel',
-	aliases: [],
+	aliases: ['summon'],
 	examples: ['join']
 };
 
@@ -25,7 +25,7 @@ class JoinCommand extends Commands {
 		}
 		try {
 			await voiceChannel.join();
-			msg.channel.send('successfull joined your Voice Channel');
+			await msg.channel.send('successfull joined your Voice Channel');
 		} catch (error) {
 			msg.channel.send('ooops! something went wrong while trying to connect to your Voicechannel please try to let me join again');
 		}

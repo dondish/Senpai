@@ -22,25 +22,21 @@ class BanCommand extends Commands {
 		let reason = params.slice(1).join(' ');
 		if (reason.length < 1) return msg.reply('You must supply a reason for the ban.');
 		const message = await msg.channel.send(`trying to ban ${member.user.tag}`);
-		try {
-			await member.ban({
-				reason,
-				days: 7
-			});
-			await message.edit(`successfully banned ${member.user.tag}`);
-			await member.addBan(reason);
-			const guildsettings = await msg.guild.getConfig();
-			const embed = new RichEmbed()
-				.setAuthor(msg.author.username, msg.author.avatarURL)
-				.setColor(0x00AE86)
-				.setTimestamp()
-				.addField('Action', 'Ban')
-				.addField('Target', `${member.user.tag} (${member.user.id})`)
-				.addField('Reason', reason);
-			if (guildsettings.modlogID !== 'None') msg.guild.channels.get(guildsettings.modlogID).send({ embed });
-		} catch (error) {
-			message.channel.send(`i had the following Error: ${error.message}`);
-		}
+		await member.ban({
+			reason,
+			days: 7
+		});
+		await message.edit(`successfully banned ${member.user.tag}`);
+		await member.addBan(reason);
+		const guildsettings = await msg.guild.getConfig();
+		const embed = new RichEmbed()
+			.setAuthor(msg.author.username, msg.author.avatarURL)
+			.setColor(0x00AE86)
+			.setTimestamp()
+			.addField('Action', 'Ban')
+			.addField('Target', `${member.user.tag} (${member.user.id})`)
+			.addField('Reason', reason);
+		if (guildsettings.modlogID !== 'None') msg.guild.channels.get(guildsettings.modlogID).send({ embed });
 	}
 }
 

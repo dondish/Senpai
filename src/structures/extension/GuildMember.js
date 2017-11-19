@@ -1,5 +1,6 @@
 const Extension = require('./Extend.js');
 const permissionLevel = require('../new/Permissions.json');
+const { EconomyError } = require('../new/CustomErrors.js');
 
 class GuildMemberExtension extends Extension {
 	async getPermissionsLevel() {
@@ -18,8 +19,8 @@ class GuildMemberExtension extends Extension {
 	}
 
 	async updateEconomy(cash, bank) {
-		const { client } = this;
-		const result = await client.db.money.updateData(`${this.id}${this.guild.id}`, {
+		const { client, id, guild } = this;
+		const result = await client.db.money.updateData(`${id}${guild.id}`, {
 			cash,
 			bank
 		});
@@ -27,18 +28,18 @@ class GuildMemberExtension extends Extension {
 	}
 
 	async getEconomy() {
-		const { client } = this;
-		const data = await client.db.money.getByID(`${this.id}${this.guild.id}`);
-		if (!data) throw new Error('seems like you/the mentioned user did not registrate for the economy system! you can do that by using the register command');
+		const { client, id, guild } = this;
+		const data = await client.db.money.getByID(`${id}${guild.id}`);
+		if (!data) throw new EconomyError('seems like you/the mentioned user did not registrate for the economy system! you can do that by using the register command', this);
 		return data;
 	}
 
 	async addToEconomy() {
-		const { client } = this;
-		const test = await client.db.money.getByID(`${this.id}${this.guild.id}`);
-		if (test) throw new Error('already registered');
+		const { client, id, guild } = this;
+		const test = await client.db.money.getByID(`${id}${guild.id}`);
+		if (test) throw new EconomyError('you are already registered', this);
 		const result = await client.db.money.insertData({
-			id: `${this.id}${this.guild.id}`,
+			id: `${id}${guild.id}`,
 			guildID: this.guild.id,
 			userID: this.id,
 			cash: 0,
@@ -48,11 +49,11 @@ class GuildMemberExtension extends Extension {
 	}
 
 	async getHistory() {
-		const { client } = this;
-		let history = await client.db.history.getByID(`${this.id}${this.guild.id}`);
+		const { client, id, guild } = this;
+		let history = await client.db.history.getByID(`${id}${guild.id}`);
 		if (!history) {
 			history = {
-				id: `${this.id}${this.guild.id}`,
+				id: `${id}${guild.id}`,
 				guildID: this.guild.id,
 				userID: this.id,
 				warnings: [],
@@ -65,13 +66,13 @@ class GuildMemberExtension extends Extension {
 	}
 
 	async addWarn(reason) {
-		const { client } = this;
+		const { client, id, guild } = this;
 		let needCreate = false;
-		let history = await client.db.history.getByID(`${this.id}${this.guild.id}`);
+		let history = await client.db.history.getByID(`${id}${guild.id}`);
 		if (!history) {
 			needCreate = true;
 			history = {
-				id: `${this.id}${this.guild.id}`,
+				id: `${id}${guild.id}`,
 				guildID: this.guild.id,
 				userID: this.id,
 				warnings: [],
@@ -85,19 +86,19 @@ class GuildMemberExtension extends Extension {
 		if (needCreate) {
 			result = await client.db.history.insertData(history);
 		} else {
-			result = await client.db.history.updateData(`${this.id}${this.guild.id}`, { warnings });
+			result = await client.db.history.updateData(`${id}${guild.id}`, { warnings });
 		}
 		return result;
 	}
 
 	async addKick(reason) {
-		const { client } = this;
+		const { client, id, guild } = this;
 		let needCreate = false;
-		let history = await client.db.history.getByID(`${this.id}${this.guild.id}`);
+		let history = await client.db.history.getByID(`${id}${guild.id}`);
 		if (!history) {
 			needCreate = true;
 			history = {
-				id: `${this.id}${this.guild.id}`,
+				id: `${id}${guild.id}`,
 				guildID: this.guild.id,
 				userID: this.id,
 				warnings: [],
@@ -111,19 +112,19 @@ class GuildMemberExtension extends Extension {
 		if (needCreate) {
 			result = await client.db.history.insertData(history);
 		} else {
-			result = await client.db.history.updateData(`${this.id}${this.guild.id}`, { kicks });
+			result = await client.db.history.updateData(`${id}${guild.id}`, { kicks });
 		}
 		return result;
 	}
 
 	async addBan(reason) {
-		const { client } = this;
+		const { client, id, guild } = this;
 		let needCreate = false;
-		let history = await client.db.history.getByID(`${this.id}${this.guild.id}`);
+		let history = await client.db.history.getByID(`${id}${guild.id}`);
 		if (!history) {
 			needCreate = true;
 			history = {
-				id: `${this.id}${this.guild.id}`,
+				id: `${id}${guild.id}`,
 				guildID: this.guild.id,
 				userID: this.id,
 				warnings: [],
@@ -137,7 +138,7 @@ class GuildMemberExtension extends Extension {
 		if (needCreate) {
 			result = await client.db.history.insertData(history);
 		} else {
-			result = await client.db.history.updateData(`${this.id}${this.guild.id}`, { bans });
+			result = await client.db.history.updateData(`${id}${guild.id}`, { bans });
 		}
 		return result;
 	}

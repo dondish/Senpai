@@ -13,7 +13,7 @@ class QueueCommand extends Commands {
 	}
 
 	run(msg) {
-		const { queue } = msg.guild.getMusic();
+		const { queue } = msg.guild.music;
 		if (queue.length < 1) return msg.reply('there are no songs currently in queue!');
 		let totalTimeInSec = 0;
 
@@ -40,7 +40,7 @@ class QueueCommand extends Commands {
 			songArray.length = 5;
 			embed.setFooter(`and ${before - songArray.length} songs more... | total queue length: ${time}`);
 		} else {
-			embed.setFooter(`total length: ${time}`);
+			embed.setFooter(`total queue length: ${time}`);
 		}
 		for (const index in songArray) {
 			embed.addField(`#${Number(index) + 1}`, `\`\`\`\n${songArray[index]}\`\`\``);

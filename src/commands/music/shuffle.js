@@ -13,17 +13,17 @@ class ShuffleCommand extends Commands {
 
 	async run(msg) {
 		const { voiceConnection } = msg.guild;
-		let { queue, dispatcher } = msg.guild.getMusic();
-		const isLimited = await msg.guild.getConfig();
-		if (isLimited.musicLimited) {
+		let { queue, dispatcher } = msg.guild.music;
+		const { musicLimited } = await msg.guild.getConfig();
+		if (musicLimited) {
 			const permissionLevel = await msg.member.getPermissionsLevel();
 			if (permissionLevel > 3) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to do this Command!");
 		}
-		if (voiceConnection === null) return msg.reply(`Im not in a Voice channel on this Server!`);
+		if (!voiceConnection) return msg.reply(`Im not in a Voice channel on this Server!`);
 		if (!dispatcher) return msg.reply(`I don't play music at the moment!`);
 		if (queue.length < 3) return msg.channel.send('You need atleast 3 songs in the queue to shuffle!');
 		let newQueue = this.shuffle(queue);
-		msg.guild.getMusic().overwriteQueue(newQueue);
+		msg.guild.music.queue = newQueue;
 		await msg.channel.send('successfully shuffled the queue!');
 	}
 
