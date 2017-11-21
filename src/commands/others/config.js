@@ -1,5 +1,6 @@
 const Commands = require('../../structures/new/Command.js');
 const { RichEmbed } = require('discord.js');
+const { ownerID } = require('../../config/config.json');
 const info = {
 	name: 'config',
 	description: 'shows/changes the config of this server',
@@ -47,7 +48,7 @@ class ConfigCommand extends Commands {
 			.addField('Music feature limited to role?', musicboolean)
 			.addField('needed Stars for Starboard', neededStars)
 			.setTimestamp()
-			.setFooter('Senpai Bot by Yukine');
+			.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 		msg.channel.send({ embed });
 	}
 	async prefix(msg, param1, param2, param3) {
@@ -66,7 +67,7 @@ class ConfigCommand extends Commands {
 					.setTitle(`Updated Prefix for ${msg.guild.name}`)
 					.addField('New Prefix', param3)
 					.setTimestamp()
-					.setFooter('Senpai Bot by Yukine');
+					.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 				msg.channel.send({ embed });
 			} catch (error) {
 				return msg.reply('im sorry i had an error with my Database please try again!');
@@ -105,7 +106,7 @@ class ConfigCommand extends Commands {
 					.setTitle(`Updated Modlog for ${msg.guild.name}`)
 					.addField('New Modlog', modlog.toString())
 					.setTimestamp()
-					.setFooter('Senpai Bot by Yukine');
+					.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 				msg.channel.send({ embed });
 			} catch (error) {
 				return msg.reply('im sorry i had an error with my Database please try again!');
@@ -144,7 +145,7 @@ class ConfigCommand extends Commands {
 					.setTitle(`Updated Musiclog for ${msg.guild.name}`)
 					.addField('New Musiclog', musiclog.toString())
 					.setTimestamp()
-					.setFooter('Senpai Bot by Yukine');
+					.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 				msg.channel.send({ embed });
 			} catch (error) {
 				return msg.reply('im sorry i had an error with my Database please try again!');
@@ -183,7 +184,7 @@ class ConfigCommand extends Commands {
 					.setTitle(`Updated Starboard Channel for ${msg.guild.name}`)
 					.addField('New Starboard Channel', starboard.toString())
 					.setTimestamp()
-					.setFooter('Senpai Bot by Yukine');
+					.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 				msg.channel.send({ embed });
 			} catch (error) {
 				return msg.reply('im sorry i had an error with my Database please try again!');
@@ -204,7 +205,7 @@ class ConfigCommand extends Commands {
 					.setTitle(`Updated needed Stars for ${msg.guild.name}`)
 					.addField('New required Star Count', `${number}`)
 					.setTimestamp()
-					.setFooter('Senpai Bot by Yukine');
+					.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 				msg.channel.send({ embed });
 			} catch (error) {
 				return msg.reply('im sorry i had an error with my Database please try again!');
@@ -247,7 +248,7 @@ class ConfigCommand extends Commands {
 					.setTitle(`Added Role ${role.name} to the Modroles`)
 					.addField('updated Modroles', `${Roles}`)
 					.setTimestamp()
-					.setFooter('Senpai Bot by Yukine');
+					.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 				msg.channel.send({ embed });
 			} catch (error) {
 				return msg.reply(`im sorry i had the following error ${error.message}`);
@@ -280,7 +281,7 @@ class ConfigCommand extends Commands {
 					.setTitle(`deleted Role ${role.name} from the Modroles`)
 					.addField('updated Modroles', `${Roles}`)
 					.setTimestamp()
-					.setFooter('Senpai Bot by Yukine');
+					.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 				msg.channel.send({ embed });
 			} catch (error) {
 				return msg.reply(`im sorry i had the following error ${error.message}`);
@@ -319,7 +320,7 @@ class ConfigCommand extends Commands {
 					.setTitle(`Added Role ${role.name} to the Musicroles`)
 					.addField('updated Musicroles', `${Roles}`)
 					.setTimestamp()
-					.setFooter('Senpai Bot by Yukine');
+					.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 				msg.channel.send({ embed });
 			} catch (error) {
 				return msg.reply(`im sorry i had the following error ${error.message}`);
@@ -352,7 +353,7 @@ class ConfigCommand extends Commands {
 					.setTitle(`deleted Role ${role.name} from the Musicrole`)
 					.addField('updated Musicroles', `${Roles}`)
 					.setTimestamp()
-					.setFooter('Senpai Bot by Yukine');
+					.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 				msg.channel.send({ embed });
 			} catch (error) {
 				return msg.reply(`im sorry i had the following error ${error.message}`);

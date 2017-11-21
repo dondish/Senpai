@@ -1,6 +1,7 @@
 const Commands = require('../../structures/new/Command.js');
 const { RichEmbed } = require('discord.js');
 const { exec } = require('child_process');
+const { ownerID } = require('../../config/config.json');
 const info = {
 	name: 'exec',
 	description: 'execute a command in a commandline (only the Bot Owner can use this command!)',
@@ -39,7 +40,7 @@ class ExecCommand extends Commands {
 					.addField(':inbox_tray: Input', input)
 					.addField(':outbox_tray: Output', output2)
 					.setColor(0x80ff00)
-					.setFooter(`Senpai version ${client.version} by Yukine`)
+					.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
 					.setTimestamp();
 				return msg.channel.send({ embed });
 			}

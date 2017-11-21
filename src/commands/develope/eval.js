@@ -2,6 +2,7 @@ const Commands = require('../../structures/new/Command.js');
 const { RichEmbed } = require('discord.js');
 const { inspect } = require('util');
 const { post } = require('snekfetch');
+const { ownerID } = require('../../config/config.json');
 const info = {
 	name: 'eval',
 	description: 'an command to evaluate javascript code (only the Bot Owner can use this command!)',
@@ -36,7 +37,7 @@ class EvalCommand extends Commands {
 					.addField(':inbox_tray: Input', input)
 					.addField(':outbox_tray: Output', discordOutput)
 					.setColor(0x80ff00)
-					.setFooter(`Senpai version ${client.version} by Yukine`)
+					.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
 					.setTimestamp();
 				await msg.channel.send({ embed });
 			} else {
@@ -45,7 +46,7 @@ class EvalCommand extends Commands {
 					.addField('EVAL', `**Type:** ${type}`)
 					.addField(':inbox_tray: Input', input)
 					.addField(':outbox_tray: Output', `output was to long so it was uploaded to hastebin https://www.hastebin.com/${res.body.key}.js `, true)
-					.setFooter(`Senpai version ${client.version} by Yukine`)
+					.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
 					.setColor(0x80ff00)
 					.setTimestamp();
 				await msg.channel.send({ embed });
@@ -59,7 +60,7 @@ class EvalCommand extends Commands {
 					.addField('EVAL', `**Type:** Error`)
 					.addField(':inbox_tray: Input', input)
 					.addField(':x: ERROR', errDiscord)
-					.setFooter(`Senpai version ${client.version} by Yukine`)
+					.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
 					.setColor(0x80ff00);
 				msg.channel.send({ embed });
 			} else {
@@ -68,7 +69,7 @@ class EvalCommand extends Commands {
 					.addField('EVAL', `**Type:** Error`)
 					.addField(':inbox_tray: Input', input)
 					.addField(':x: ERROR', `output was to long so it was uploaded to hastebin https://www.hastebin.com/${res.body.key}.js `, true)
-					.setFooter(`Senpai version ${client.version} by Yukine`)
+					.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
 					.setColor(0x80ff00);
 				msg.channel.send({ embed });
 			}
