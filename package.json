@@ -1,6 +1,6 @@
 {
-  "name": "senpai-bot",
-  "version": "5.4.8",
+  "name": "senpai",
+  "version": "5.4.9",
   "description": "Selfmade Nodejs Discord bot",
   "main": "src/main.js",
   "scripts": {
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Dev-Yukine/Senpai-Bot-Discord.git"
+    "url": "git+https://github.com/Dev-Yukine/Senpai.git"
   },
   "keywords": [
     "Discord",
@@ -18,9 +18,9 @@
   "author": "Yukine",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/Dev-Yukine/Senpai-Bot-Discord/issues"
+    "url": "https://github.com/Dev-Yukine/Senpai/issues"
   },
-  "homepage": "https://github.com/Dev-Yukine/Senpai-Bot-Discord#readme",
+  "homepage": "https://github.com/Dev-Yukine/Senpai#readme",
   "devDependencies": {
     "eslint": "^4.11.0",
     "eslint-config-aqua": "^2.0.1"

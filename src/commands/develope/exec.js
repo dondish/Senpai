@@ -28,7 +28,7 @@ class ExecCommand extends Commands {
 					.addField(':inbox_tray: Input', input)
 					.addField(':x: Error', output)
 					.setColor(0x80ff00)
-					.setFooter(`Senpai-Bot version ${client.version} by Yukine`)
+					.setFooter(`Senpai version ${client.version} by Yukine`)
 					.setTimestamp();
 				return msg.channel.send({ embed });
 			} else {
@@ -39,7 +39,7 @@ class ExecCommand extends Commands {
 					.addField(':inbox_tray: Input', input)
 					.addField(':outbox_tray: Output', output2)
 					.setColor(0x80ff00)
-					.setFooter(`Senpai-Bot version ${client.version} by Yukine`)
+					.setFooter(`Senpai version ${client.version} by Yukine`)
 					.setTimestamp();
 				return msg.channel.send({ embed });
 			}

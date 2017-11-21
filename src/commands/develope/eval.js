@@ -36,7 +36,7 @@ class EvalCommand extends Commands {
 					.addField(':inbox_tray: Input', input)
 					.addField(':outbox_tray: Output', discordOutput)
 					.setColor(0x80ff00)
-					.setFooter(`Senpai-Bot version ${client.version} by Yukine`)
+					.setFooter(`Senpai version ${client.version} by Yukine`)
 					.setTimestamp();
 				await msg.channel.send({ embed });
 			} else {
@@ -45,7 +45,7 @@ class EvalCommand extends Commands {
 					.addField('EVAL', `**Type:** ${type}`)
 					.addField(':inbox_tray: Input', input)
 					.addField(':outbox_tray: Output', `output was to long so it was uploaded to hastebin https://www.hastebin.com/${res.body.key}.js `, true)
-					.setFooter(`Senpai-Bot version ${client.version} by Yukine`)
+					.setFooter(`Senpai version ${client.version} by Yukine`)
 					.setColor(0x80ff00)
 					.setTimestamp();
 				await msg.channel.send({ embed });
@@ -59,7 +59,7 @@ class EvalCommand extends Commands {
 					.addField('EVAL', `**Type:** Error`)
 					.addField(':inbox_tray: Input', input)
 					.addField(':x: ERROR', errDiscord)
-					.setFooter(`Senpai-Bot version ${client.version} by Yukine`)
+					.setFooter(`Senpai version ${client.version} by Yukine`)
 					.setColor(0x80ff00);
 				msg.channel.send({ embed });
 			} else {
@@ -68,7 +68,7 @@ class EvalCommand extends Commands {
 					.addField('EVAL', `**Type:** Error`)
 					.addField(':inbox_tray: Input', input)
 					.addField(':x: ERROR', `output was to long so it was uploaded to hastebin https://www.hastebin.com/${res.body.key}.js `, true)
-					.setFooter(`Senpai-Bot version ${client.version} by Yukine`)
+					.setFooter(`Senpai version ${client.version} by Yukine`)
 					.setColor(0x80ff00);
 				msg.channel.send({ embed });
 			}

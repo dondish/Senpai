@@ -11,7 +11,7 @@ class commandError extends Events {
 		const { client } = this;
 		if (error instanceof EconomyError) return msg.channel.send(`Economy Command failed with reason: \`${error.message}\``);
 		if (error instanceof MusicError) return error.msg.edit(`Could not add the Song/Playlist because this reason \`${error.message}\``);
-		if (error.message === 'Missing Permissions' || error.message === 'Missing access') return;
+		if (error.message === 'Missing Permissions' || error.message === 'Missing Access' || error.message === 'Unknown Message') return;
 		const { ownerID, supportServerLink } = client.config;
 		const owner = client.users.get(ownerID);
 		msg.reply(`An error occurred while running the command: \`${error.name}: ${error.message}\`

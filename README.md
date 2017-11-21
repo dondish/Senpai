@@ -26,7 +26,7 @@ You can Invite Senpai to your Server with  [this Link](https://discordapp.com/oa
 
 ## Contributing
 
-Before creating an PR or Issue please read the [contribution guide](https://github.com/Dev-Yukine/Senpai-Bot-Discord/blob/master/.github/CONTRIBUTING.md) 
+Before creating an PR or Issue please read the [contribution guide](https://github.com/Dev-Yukine/Senpai/blob/master/.github/CONTRIBUTING.md) 
 
 ## Language and Libs
 
@@ -53,5 +53,5 @@ also you need a **RethinkDB server**.
 
 ### Will be added in the Future
 
-- [Suggestions](https://github.com/Dev-Yukine/Senpai-Bot-Discord/issues?utf8=%E2%9C%93&q=is%3Aopen%20Suggestion%3A%20)
+- [Suggestions](https://github.com/Dev-Yukine/Senpai/issues?utf8=%E2%9C%93&q=is%3Aopen%20Suggestion%3A%20)
 
