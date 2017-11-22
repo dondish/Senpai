@@ -205,24 +205,8 @@ class SongInfo {
 		return this.parseTime(this.raw.contentDetails.duration);
 	}
 
-	get default() {
-		return this.raw.snippet.thumbnails.default ? this.raw.snippet.thumbnails.default.url : null;
-	}
-
-	get medium() {
-		return this.raw.snippet.thumbnails.medium ? this.raw.snippet.thumbnails.medium.url : null;
-	}
-
-	get high() {
-		return this.raw.snippet.thumbnails.high ? this.raw.snippet.thumbnails.high.url : null;
-	}
-
-	get standard() {
-		return this.raw.snippet.thumbnails.standard ? this.raw.snippet.thumbnails.standard.url : null;
-	}
-
 	get picture() {
-		return this.standard || this.high || this.medium || this.default;
+		return `https://img.youtube.com/vi/${this.id}/maxresdefault.jpg`;
 	}
 
 	parseTime(time) {
