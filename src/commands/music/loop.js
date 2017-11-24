@@ -22,10 +22,10 @@ class LoopCommand extends Commands {
 		const { queue, loop } = msg.guild.music;
 		if (queue.length === 0) return msg.reply('You can`t loop an empty queue :eyes:');
 		if (loop) {
-			msg.guild.setLoop(false);
+			msg.guild.music.loop = false;
 			msg.channel.send('stopping the loop!');
 		} else if (!loop) {
-			msg.guild.setLoop(true);
+			msg.guild.music.loop = true;
 			msg.channel.send('looping the current queue!');
 		}
 	}
