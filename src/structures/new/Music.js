@@ -128,8 +128,12 @@ class Music {
 					index += 1;
 					song = result[index];
 				}
-				const songInfo = await this.getSongByUrl(song.link, requestedBy);
-				resolve(songInfo);
+				try {
+					const songInfo = await this.getSongByUrl(song.link, requestedBy);
+					resolve(songInfo);
+				} catch (error) {
+					reject(error);
+				}
 			});
 		});
 	}
