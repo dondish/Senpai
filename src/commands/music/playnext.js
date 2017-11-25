@@ -27,14 +27,14 @@ class PlayNextCommand extends Commands {
 		if (!link) return message.edit('You must add a Link to add behind!');
 		if (link.startsWith('http')) {
 			if (link.includes('watch') || link.includes('youtu.be')) {
-				const result = await msg.guild.music.handleSongAsNext(link, msg.author, true, musicChannel);
+				const result = await msg.guild.music.handleSongAsNext(link, msg.author, true, musicChannel, message);
 				message.edit(`**Queued:** ${result.title}`);
 			} else if (link.includes('playlist')) {
 				return message.edit("this command don't accept Playlists!");
 			}
 		} else {
 			const searchTerm = params.join(' ');
-			const result = await msg.guild.music.handleSongAsNext(searchTerm, msg.author, false, musicChannel);
+			const result = await msg.guild.music.handleSongAsNext(searchTerm, msg.author, false, musicChannel, message);
 			message.edit(`**Queued:** ${result.title}`);
 		}
 	}
