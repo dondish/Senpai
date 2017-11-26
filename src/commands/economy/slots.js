@@ -32,7 +32,6 @@ class SlotsCommand extends Commands {
 
 	async run(msg, params) {
 		const { client } = this;
-		if (!msg.member) await msg.guild.fetchMember(msg.author);
 		const data = await msg.member.getEconomy();
 		if (!data) return msg.reply(`looks like you haven't registered for the economy system yet you can do that by using the register command!`);
 		let { cash, bank } = data;

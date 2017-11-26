@@ -15,7 +15,6 @@ class MoneyCommand extends Commands {
 		let member;
 		if (msg.mentions.users.size < 1) {
 			member = msg.member;
-			if (!member) await msg.guild.fetchMember(msg.author);
 		} else {
 			member = msg.mentions.members.first();
 			if (!member) await msg.guild.fetchMember(msg.mentions.users.first());
