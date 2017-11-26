@@ -12,7 +12,7 @@ class Util {
 		await this._eventloader(client);
 	}
 
-	_commandloader(Client) {
+	_commandloader(client) {
 		return new Promise((resolve, reject) => {
 			fileP.walk('./commands', (error, dirPath, dirs) => {
 				if (error) reject(error);
@@ -22,11 +22,11 @@ class Util {
 						const folder = dir.slice(9);
 						files.forEach(file => {
 							let Command = require(`../../commands/${folder}/${file}`);
-							let Module = new Command(Client, folder);
-							Client.commands.set(Module.name, Module);
-							Client.log.debug(`Loading Command: ${Module.name} from ${folder}.`);
+							let Module = new Command(client, folder);
+							client.commands.set(Module.name, Module);
+							client.log.debug(`Loading Command: ${Module.name} from ${folder}.`);
 							Module.aliases.forEach(alias => { // eslint-disable-line max-nested-callbacks
-								Client.aliases.set(alias, Module.name);
+								client.aliases.set(alias, Module.name);
 							});
 						});
 					});
@@ -36,15 +36,15 @@ class Util {
 		});
 	}
 
-	_eventloader(Client) {
+	_eventloader(client) {
 		return new Promise((resolve, reject) => {
 			fileP.walk('./events', (err, dirPath, dirs, files) => {
 				if (err) reject(err);
 				files.forEach(element => {
 					const name = element.slice(7);
 					const EventClass = require(`../../events/${name}`);
-					const Event = new EventClass(Client);
-					Client.on(Event.name, (par1, par2, par3) => Event.run(par1, par2, par3));
+					const Event = new EventClass(client);
+					client.on(Event.name, Event.run.bind(Event));
 				});
 				resolve();
 			});
