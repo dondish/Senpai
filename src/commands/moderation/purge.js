@@ -23,10 +23,11 @@ class bulkdeleteCommand extends Commands {
 		try {
 			const deleted = await msg.channel.bulkDelete(messagecount);
 			const message = await msg.channel.send(`i've deleted ${deleted.size} Messages`);
-			message.delete(10000);
+			await message.delete(10000);
 		} catch (error) {
+			if (error.message === 'Unknown Message') throw error;
 			const message = await msg.channel.send('I may only delete Messages that are not older than 14 Days! thats is a Limit from Discord');
-			message.delete(10000);
+			await message.delete(10000);
 		}
 	}
 }
