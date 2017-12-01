@@ -129,7 +129,7 @@ class Music {
 					song = result[index];
 				}
 				try {
-					const songInfo = await this.getSongByUrl(song.link, requestedBy);
+					const songInfo = await this.getSongByUrl(song.link, requestedBy, messageToEdit);
 					resolve(songInfo);
 				} catch (error) {
 					reject(error);
