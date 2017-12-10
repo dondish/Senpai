@@ -13,9 +13,8 @@ class NekoCommand extends Commands {
 	}
 
 	async run(msg) {
-		const response = await get('https://nekos.life/api/neko');
-		const Link = response.body.neko;
-		msg.channel.send('Here\'s your neko', { files: [Link] });
+		const { body } = await get('https://nekos.life/api/neko');
+		msg.channel.send('Here\'s your neko', { files: [body.neko] });
 	}
 }
 

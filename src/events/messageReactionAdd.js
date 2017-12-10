@@ -75,7 +75,7 @@ class MessageReactionAddEvent extends Events {
 			.setColor(0x80ff00);
 		if (message.content) {
 			embed.addField(`Message:`, `${message.content}`, true);
-			const matches = message.content.match(/(http:\/\/|https:\/\/)([a-z, ., /, \d, -]+)(\.(gif|jpg|jpeg|tiff|png))/gi);
+			const matches = message.content.match(/(http:\/\/|https:\/\/)([a-z, ., /, \d, -, _]+)(\.(gif|jpg|jpeg|tiff|png))/gi);
 			if (matches) embed.setImage(matches[0]);
 		}
 		if (message.attachments.size === 1) {

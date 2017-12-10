@@ -14,7 +14,7 @@ class QueueCommand extends Commands {
 
 	run(msg) {
 		const { queue } = msg.guild.music;
-		if (queue.length < 1) return msg.reply('there are no songs currently in queue!');
+		if (!queue || queue.length < 1) return msg.reply('there are no songs currently in queue!');
 		let totalTimeInSec = 0;
 
 		const songsLength = queue.map(Song => Number(Song.length));

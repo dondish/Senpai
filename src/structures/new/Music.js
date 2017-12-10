@@ -28,7 +28,7 @@ class Music {
 		let [CurrentSong] = queue;
 		if (!voiceConnection || this.playing || queue.length === 0 || !CurrentSong) return;
 		const { title, requestedBy, link, picture } = CurrentSong;
-		this.dispatcher = voiceConnection.playStream(yt(link, { filter: 'audioonly' }));
+		this.dispatcher = voiceConnection.playStream(yt(link, { audioonly: true }));
 		this.dispatcher.on('start', () => {
 			voiceConnection.player.streamingData.pausedTime = 0;
 			this.playing = true;
@@ -127,6 +127,7 @@ class Music {
 				while (song.kind !== 'youtube#video') {
 					index += 1;
 					song = result[index];
+					if (!song) reject(new MusicError('i found no song with that name. Please use a link instead!', messageToEdit));
 				}
 				try {
 					const songInfo = await this.getSongByUrl(song.link, requestedBy, messageToEdit);
@@ -141,9 +142,14 @@ class Music {
 	async getPlaylist(url, messageToEdit) {
 		const id = /[&?]list=([a-z0-9_-]+)/i.exec(url);
 		if (!id) throw new MusicError('this Link isn\'s a Youtube Playlist', messageToEdit);
-		const playlistItems = await this.playlistInfo(googleAPIKey, id[1]);
-		if (!playlistItems) throw new MusicError('Invalid playlist', messageToEdit);
-		return playlistItems;
+		try {
+			const playlistItems = await this.playlistInfo(googleAPIKey, id[1]);
+			if (!playlistItems) throw new MusicError('Invalid playlist', messageToEdit);
+			return playlistItems;
+		} catch (error) {
+			if (error instanceof MusicError) throw error;
+			throw new MusicError('Playlist Url is not correctly formatted try another one!', messageToEdit);
+		}
 	}
 
 	playlistInfoRecursive(playlistId, callStackSize, pageToken, currentItems, callback) {
