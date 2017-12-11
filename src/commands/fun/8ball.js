@@ -14,8 +14,8 @@ class QuestionCommand extends Commands {
 
 	async run(msg, params) {
 		if (params.length < 1) return msg.reply('8ball is for questions so please add a question behind.');
-		const { ouput } = this;
-		await msg.reply(`You ask me \`${params.join(' ')}\` and my answer is: **${ouput[Math.floor(Math.random() * ouput.length)]}**`);
+		const { options } = this;
+		await msg.reply(`You ask me \`${params.join(' ')}\` and my answer is: **${options[Math.floor(Math.random() * options.length)]}**`);
 	}
 }
 
