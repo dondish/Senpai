@@ -158,7 +158,8 @@ module.exports = class Database {
 			},
 			originalMessage: {
 				type: Sequelize.STRING,
-				allowNull: false
+				allowNull: false,
+				unique: true
 			}
 		});
 

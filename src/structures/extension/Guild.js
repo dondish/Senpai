@@ -10,10 +10,10 @@ class GuildExtension extends Extension {
 		return data;
 	}
 
-	async getStarboardMessages() {
-		const { client, id } = this;
-		let results = await client.db.starboardMessages.findAll({ where: { guild: id } });
-		return results;
+	async getStarboardMessage(originalMessageID) {
+		const { client } = this;
+		let result = await client.db.starboardMessages.findOne({ where: { originalMessage: originalMessageID } });
+		return result;
 	}
 
 	async updateStarboardMessage({ originalMessageID, starMessageID, starCount }) {
