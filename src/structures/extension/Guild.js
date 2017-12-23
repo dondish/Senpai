@@ -11,45 +11,28 @@ class GuildExtension extends Extension {
 	}
 
 	async getStarboardMessages() {
-		const { client } = this;
-		let result = await client.db.starboardMessages.getByID(this.id);
-		if (!result) {
-			await client.db.starboardMessages.insertData({
-				id: this.id,
-				messages: {}
-			});
-			result = await client.db.starboardMessages.getByID(this.id);
-		}
-		return result.messages;
+		const { client, id } = this;
+		let results = await client.db.starboardMessages.findAll({ where: { guild: id } });
+		return results;
 	}
 
-	async updateStarboardMessage({ originalMessageID, starMessageID, starcount }) {
-		const { client } = this;
-		let result1 = await client.db.starboardMessages.getByID(this.id);
-		result1.messages[originalMessageID] = {
-			starMessageID,
-			starcount
-		};
-		const result2 = await client.db.starboardMessages.getAndReplace(this.id, result1);
-		return result2;
+	async updateStarboardMessage({ originalMessageID, starMessageID, starCount }) {
+		const { client, id } = this;
+		let result = await client.db.starboardMessages.findOne({ where: { id: starMessageID, originalMessage: originalMessageID, guild: id } });
+		result = await result.update({ starCount });
+		return result;
 	}
 
-	async resolveStarboardMessage(id) {
+	async resolveStarboardMessage(originalMessageID) {
 		const { client } = this;
-		let { messages } = await client.db.starboardMessages.getByID(this.id);
-		const result = messages[id];
-		if (!result) {
-			return null;
-		} else {
-			return result;
-		}
+		const result = await client.db.starboardMessages.findOne({ where: { originalMessage: originalMessageID } });
+		return result;
 	}
 
-	async deleteStarboardMessage(id) {
+	async deleteStarboardMessage(originalMessageID) {
 		const { client } = this;
-		let result1 = await client.db.starboardMessages.getByID(this.id);
-		delete result1.messages[id];
-		const result = await client.db.starboardMessages.getAndReplace(this.id, result1);
+		let result = await client.db.starboardMessages.findOne({ where: { originalMessage: originalMessageID } });
+		result = await result.destroy();
 		return result;
 	}
 
@@ -60,8 +43,9 @@ class GuildExtension extends Extension {
 	}
 
 	async updateConfig(data) {
-		const { client } = this;
-		const result = await client.db.guild.updateData(this.id, data);
+		const { client, id } = this;
+		const config = await client.db.serverconfig.findByID(id);
+		const result = await config.update(data);
 		return result;
 	}
 

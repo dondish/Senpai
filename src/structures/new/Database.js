@@ -109,7 +109,7 @@ module.exports = class Database {
 				allowNull: true
 			},
 			caseNumber: {
-				type: Sequelize.STRING,
+				type: Sequelize.INTEGER,
 				allowNull: false
 			},
 			message: {
@@ -144,6 +144,10 @@ module.exports = class Database {
 				allowNull: false,
 				unique: true
 			},
+			guild: {
+				type: Sequelize.STRING,
+				allowNull: false
+			},
 			starCount: {
 				type: Sequelize.INTEGER,
 				allowNull: false
@@ -152,7 +156,7 @@ module.exports = class Database {
 				type: Sequelize.STRING,
 				allowNull: false
 			},
-			message: {
+			originalMessage: {
 				type: Sequelize.STRING,
 				allowNull: false
 			}
