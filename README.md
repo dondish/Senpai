@@ -41,7 +41,7 @@ if you are on linux you need install FFMPEG yourself if you are on windows you m
 after that you should install the dependencies by run a **npm install** in the Bots directory.
 
 
-also you need a **RethinkDB server**.
+also you need a **PostgresSQL server** with a **Discord** Database.
 
 
 ## Features

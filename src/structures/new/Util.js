@@ -7,13 +7,14 @@ class Util {
 	}
 
 	async init() {
-		const { client } = this;
-		await this._commandloader(client);
-		await this._eventloader(client);
+		await this._commandloader();
+		await this._eventloader();
+		await this._syncDatabase();
 	}
 
-	_commandloader(client) {
+	_commandloader() {
 		return new Promise((resolve, reject) => {
+			const { client } = this;
 			fileP.walk('./commands', (error, dirPath, dirs) => {
 				if (error) reject(error);
 				dirs.forEach(dir => {
@@ -36,8 +37,9 @@ class Util {
 		});
 	}
 
-	_eventloader(client) {
+	_eventloader() {
 		return new Promise((resolve, reject) => {
+			const { client } = this;
 			fileP.walk('./events', (err, dirPath, dirs, files) => {
 				if (err) reject(err);
 				files.forEach(element => {
@@ -49,6 +51,11 @@ class Util {
 				resolve();
 			});
 		});
+	}
+
+	async _syncDatabase() {
+		const { client } = this;
+		await client.db.database.sync();
 	}
 }
 

@@ -9,10 +9,10 @@ class MessageEvent extends Events {
 	async run(msg) {
 		const { client } = this;
 		if (msg.author.bot) return;
-		const blacklisted = await msg.author.isBlacklisted();
-		if (blacklisted) return;
 		if (!msg.guild) return;
 		if (!msg.member) await msg.guild.fetchMember(msg.author);
+		const blacklisted = await msg.member.isBlacklisted();
+		if (blacklisted) return;
 		msg.guild.economy.messageUpdate(msg.member);
 		let guildConfig = await msg.guild.getConfig();
 		if (!guildConfig) {

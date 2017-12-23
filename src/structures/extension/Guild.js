@@ -1,13 +1,12 @@
 const Extension = require('./Extend.js');
 const Music = require('../new/Music.js');
 const Economy = require('../new/Economy.js');
-const rethink = require('rethinkdb');
 
 class GuildExtension extends Extension {
 	async getLeaderboard() {
-		const { client } = this;
-		const data = await client.db.money.filterAndSort({ guildID: this.id }, rethink.desc(element => rethink.add(element('cash'), element('bank')))
-		);
+		const { client, id } = this;
+		let data = await client.db.economy.findAll({ where: { guild: id } });
+		data = data.sort((a, b) => a.cash + a.bank - b.cash + b.bank);
 		return data;
 	}
 
@@ -56,24 +55,8 @@ class GuildExtension extends Extension {
 
 	async getConfig() {
 		const { client } = this;
-		const config = await client.db.guild.getByID(this.id);
-		return config;
-	}
-
-	async createConfig() {
-		const { client } = this;
-		const result = await client.db.guild.insertData({
-			moderationRolesIDs: [],
-			modlogID: 'None',
-			musicID: 'None',
-			musicRolesIDs: [],
-			starboardID: 'None',
-			prefix: 'None',
-			musicLimited: false,
-			starboardNeededReactions: 1,
-			id: this.id
-		});
-		return result;
+		const config = await client.db.serverconfig.findOrCreate({ where: { id: this.id } });
+		return config[0];
 	}
 
 	async updateConfig(data) {

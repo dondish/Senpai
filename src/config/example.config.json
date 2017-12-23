@@ -10,6 +10,8 @@
       "inviteURL"           :"",
       "supportServerLink"   :"",
       "voteLink"            :"",
-      "pixabayToken"        :""
+      "pixabayToken"        :"",
+      "databaseName"        :"",
+      "databasePW"          :""
   }
   

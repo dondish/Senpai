@@ -122,7 +122,7 @@ class Music {
 			search(name, searchOptions, async (err, result) => {
 				if (err) reject(err);
 				if (!result || !result[0]) reject(new MusicError('searching for that song failed', messageToEdit));
-				let [song] = result;
+				let song = result[0];
 				let index = 0;
 				while (song.kind !== 'youtube#video') {
 					index += 1;
