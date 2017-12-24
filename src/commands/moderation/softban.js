@@ -32,7 +32,7 @@ class SoftbanCommand extends Commands {
 		await member.editHistory('kick');
 		const guildsettings = await msg.guild.getConfig();
 		const embed = new RichEmbed()
-			.setAuthor(msg.author.username, msg.author.avatarURL)
+			.setAuthor(msg.author.username, msg.author.displayAvatarURL)
 			.setColor(0x00AE86)
 			.setTimestamp()
 			.addField('Action', 'Softban')

@@ -15,7 +15,9 @@ class Util {
 			Kicked: 'DARK_GREEN',
 			Kick: 'DARK_GREEN',
 			Muted: 'BLUE',
-			Mute: 'Blue'
+			Mute: 'Blue',
+			Warn: 'NAVY',
+			Warned: 'NAVY'
 		};
 		return colors[type];
 	}

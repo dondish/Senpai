@@ -65,7 +65,7 @@ class GuildMemberExtension extends Extension {
 		else caseNumber = 0;
 		caseNumber++;
 		const embed = new RichEmbed()
-			.setAuthor(moderator.tag, moderator.avatarURL)
+			.setAuthor(moderator.tag, moderator.displayAvatarURL)
 			.setColor(colors(action))
 			.setTimestamp()
 			.addField('Action', action)

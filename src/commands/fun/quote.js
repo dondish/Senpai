@@ -19,7 +19,7 @@ class VoteCommand extends Commands {
 			try {
 				const message = await msg.channel.fetchMessage(params[1]);
 				const embed = new RichEmbed()
-					.setAuthor(`${message.author.username}`, `${message.author.avatarURL}`)
+					.setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
 					.addField(`ID:`, `${params[1]}`)
 					.addField(`Message:`, `${message.content}`)
 					.setTimestamp(message.createdAt)
