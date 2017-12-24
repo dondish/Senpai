@@ -33,7 +33,6 @@ class SlotsCommand extends Commands {
 	async run(msg, params) {
 		const { client } = this;
 		const data = await msg.member.getEconomy();
-		if (!data) return msg.reply(`looks like you haven't registered for the economy system yet you can do that by using the register command!`);
 		let { cash, bank } = data;
 		let change = params[0];
 		let gambleamount;

@@ -13,7 +13,6 @@ class WithdrawCommand extends Commands {
 
 	async run(msg, params) {
 		const data = await msg.member.getEconomy();
-		if (!data) return msg.reply(`looks like you haven't registered for the economy system yet you can do that by using the register command!`);
 		let { cash, bank } = data;
 		let currency = this.client.guilds.get('199857240037916672').emojis.get('322135966322262056');
 		let change = params[0];

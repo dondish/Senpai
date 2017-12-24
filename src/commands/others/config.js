@@ -192,12 +192,12 @@ class ConfigCommand extends Commands {
 				}
 			}
 			const result = await msg.guild.getConfig();
-			const array = result.moderationRolesIDs;
+			const array = result.modRoles;
 			if (array.includes(role.id)) {
 				return msg.reply('this Role is already an Modrole on this server!');
 			}
 			array.push(role.id);
-			await msg.guild.updateConfig({ moderationRolesIDs: array });
+			await msg.guild.updateConfig({ modRoles: array });
 			let Roles = array.map(ID => `<@&${ID}>`).join(', ');
 			if (!Roles) Roles = 'None';
 			const embed = new RichEmbed()
@@ -220,13 +220,13 @@ class ConfigCommand extends Commands {
 				}
 			}
 			const result = await msg.guild.getConfig();
-			const array = result.moderationRolesIDs;
+			const array = result.modRoles;
 			if (!array.includes(role.id)) {
 				return msg.reply('this Role is not an Modrole on this server!');
 			}
 			const index = array.indexOf(role.id);
 			array.splice(index, 1);
-			await msg.guild.updateConfig({ moderationRolesIDs: array });
+			await msg.guild.updateConfig({ modRoles: array });
 			let Roles = array.map(ID => `<@&${ID}>`).join(', ');
 			if (!Roles) Roles = 'None';
 			const embed = new RichEmbed()
@@ -257,12 +257,12 @@ class ConfigCommand extends Commands {
 				}
 			}
 			const result = await msg.guild.getConfig();
-			const array = result.musicRolesIDs;
+			const array = result.musicRoles;
 			if (array.includes(role.id)) {
 				return msg.reply('this Role is already an Musicrole on this server!');
 			}
 			array.push(role.id);
-			await msg.guild.updateConfig({ musicRolesIDs: array });
+			await msg.guild.updateConfig({ musicRoles: array });
 			const Roles = array.map(ID => `<@&${ID}>`).join(', ');
 			const embed = new RichEmbed()
 				.setTitle(`Added Role ${role.name} to the Musicroles`)
@@ -284,13 +284,13 @@ class ConfigCommand extends Commands {
 				}
 			}
 			const result = await msg.guild.getConfig();
-			const array = result.musicRolesIDs;
+			const array = result.musicRoles;
 			if (!array.includes(role.id)) {
 				return msg.reply('this Role is not an Musicrole on this server!');
 			}
 			const index = array.indexOf(role.id);
 			array.splice(index, 1);
-			await msg.guild.updateConfig({ musicRolesIDs: array });
+			await msg.guild.updateConfig({ musicRoles: array });
 			let Roles = array.map(ID => `<@&${ID}>`).join(', ');
 			if (!Roles) Roles = 'None';
 			const embed = new RichEmbed()

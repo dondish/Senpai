@@ -1,6 +1,7 @@
 const Extension = require('./Extend.js');
 const { BOTOWNER, SERVEROWNER, MODERATORROLE, MUSICROLE, NOTHING } = require('../new/Permissions.json');
-
+const { RichEmbed } = require('discord.js');
+const { colors } = require('../new/Util');
 class GuildMemberExtension extends Extension {
 	async isBlacklisted() {
 		const { client } = this;
@@ -49,9 +50,33 @@ class GuildMemberExtension extends Extension {
 	async editHistory(type) {
 		const { client, id, guild } = this;
 		let [history] = await client.db.history.findOrCreate({ where: { user: id, guild: guild.id } });
-		history[type]++;
+		history[`${type.toLowerCase()}Count`]++;
 		await history.save();
 		return history;
+	}
+
+	async createCase({ moderator, reason, channel, action }) {
+		const { client, id, user, guild } = this;
+		let result = await client.db.cases.findAll({ where: { guild: guild.id }, attributes: ['caseNumber'] });
+		result = result.map(res => res.dataValues);
+		result = result.sort((a, b) => b.caseNumber - a.caseNumber);
+		let caseNumber;
+		if (result[0]) caseNumber = result[0].caseNumber;
+		else caseNumber = 0;
+		caseNumber++;
+		const embed = new RichEmbed()
+			.setAuthor(moderator.tag, moderator.avatarURL)
+			.setColor(colors(action))
+			.setTimestamp()
+			.addField('Action', action)
+			.addField('Target', `${user.tag} (${id})`)
+			.addField('Reason', reason)
+			.setFooter(`Case ${caseNumber}`)
+			.setTimestamp();
+		let message = { id: null };
+		if (channel) message = await channel.send(embed);
+		await client.db.cases.create({ guild: guild.id, message: message.id, caseNumber, target: id, action, reason, moderator: moderator.id });
+		await this.editHistory(action);
 	}
 }
 

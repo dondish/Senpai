@@ -29,7 +29,7 @@ class SoftbanCommand extends Commands {
 		const newMessage = await message.edit(`successfully banned ${member.user.tag} Awaiting unban ..`);
 		const unbanned = await member.guild.unban(banned.user);
 		await newMessage.edit(`successfully softbanned ${unbanned.tag}`);
-		await member.addKick(reason);
+		await member.editHistory('kick');
 		const guildsettings = await msg.guild.getConfig();
 		const embed = new RichEmbed()
 			.setAuthor(msg.author.username, msg.author.avatarURL)

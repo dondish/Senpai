@@ -1,5 +1,7 @@
 const fs = require('fs');
 const { parse } = require('sherlockjs');
+const { RichEmbed } = require('discord.js');
+const { colors } = require('./Util.js');
 
 class Commands {
 	constructor(client, info, group) {
@@ -89,6 +91,15 @@ class Commands {
 		const string1 = data[index].titles.en_jp ? data[index].titles.en_jp : '';
 		const string2 = data[index].titles.en ? `/${data[index].titles.en}` : '';
 		return `${string1}${string2}`;
+	}
+
+	_constructDM({ action, moderator, reason, serverName }) {
+		const embed = new RichEmbed()
+			.setDescription(`You Have been ${action} on ${serverName}`)
+			.addField('Moderator', moderator)
+			.addField('Reason', reason)
+			.setColor(colors(action));
+		return embed;
 	}
 }
 

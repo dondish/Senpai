@@ -6,6 +6,20 @@ class Util {
 		this.client = Client;
 	}
 
+	static colors(type) {
+		const colors = {
+			Banned: 'RED',
+			Ban: 'RED',
+			Softbanned: 'DARK_ORANGE',
+			SoftBan: 'DARK_ORANGE',
+			Kicked: 'DARK_GREEN',
+			Kick: 'DARK_GREEN',
+			Muted: 'BLUE',
+			Mute: 'Blue'
+		};
+		return colors[type];
+	}
+
 	async init() {
 		await this._commandloader();
 		await this._eventloader();

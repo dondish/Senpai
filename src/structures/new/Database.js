@@ -92,9 +92,14 @@ module.exports = class Database {
 		this.cases = this.database.define('cases', {
 			id: {
 				type: Sequelize.UUID,
+				defaultValue: Sequelize.UUIDV4,
 				primaryKey: true,
 				allowNull: false,
 				unique: true
+			},
+			action: {
+				type: Sequelize.STRING,
+				allowNull: false
 			},
 			guild: {
 				type: Sequelize.STRING,
@@ -118,7 +123,8 @@ module.exports = class Database {
 			},
 			message: {
 				type: Sequelize.STRING,
-				allowNull: false
+				defaultValue: null,
+				allowNull: true
 			}
 		});
 
