@@ -378,7 +378,7 @@ class ConfigCommand extends Commands {
 	async run(msg, params) {
 		let [param1, param2, param3, param4] = params;
 		if (!param1) {
-			this.showConfig(msg);
+			await this.showConfig(msg);
 		} else {
 			param1 = param1.toLowerCase();
 			if (param2) param2 = param2.toLowerCase();
@@ -388,22 +388,22 @@ class ConfigCommand extends Commands {
 			if (permissionLevel > 2) return msg.reply("You dont have permission to do that since you dont have a moderation Role and also aren't the Owner of this server!");
 			switch (param1) {
 				case 'prefix':
-					this.prefix(msg, param1, param2, param3, param4);
+					await this.prefix(msg, param1, param2, param3, param4);
 					break;
 				case 'modlog':
-					this.modlog(msg, param1, param2, param3, param4);
+					await this.modlog(msg, param1, param2, param3, param4);
 					break;
 				case 'musiclog':
-					this.musiclog(msg, param1, param2, param3, param4);
+					await this.musiclog(msg, param1, param2, param3, param4);
 					break;
 				case 'starboard':
-					this.starboard(msg, param1, param2, param3, param4);
+					await this.starboard(msg, param1, param2, param3, param4);
 					break;
 				case 'modrole':
-					this.modrole(msg, param1, param2, param3, param4);
+					await this.modrole(msg, param1, param2, param3, param4);
 					break;
 				case 'musicrole':
-					this.musicrole(msg, param1, param2, param3, param4);
+					await this.musicrole(msg, param1, param2, param3, param4);
 					break;
 				default:
 					return msg.reply('seems like you provided a first parameter what is wrong maybe look the usage up again!');

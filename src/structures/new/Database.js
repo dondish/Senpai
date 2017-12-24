@@ -194,6 +194,7 @@ module.exports = class Database {
 		this.history = this.database.define('history', {
 			id: {
 				type: Sequelize.UUID,
+				defaultValue: Sequelize.UUIDV4,
 				primaryKey: true,
 				allowNull: false,
 				unique: true
@@ -224,6 +225,38 @@ module.exports = class Database {
 			banCount: {
 				type: Sequelize.INTEGER,
 				defaultValue: 0,
+				allowNull: false
+			}
+		});
+
+		this.timers = this.database.define('timers', {
+			id: {
+				type: Sequelize.UUID,
+				defaultValue: Sequelize.UUIDV4,
+				primaryKey: true,
+				allowNull: false,
+				unique: true
+			},
+			type: {
+				type: Sequelize.STRING,
+				defaultValue: 'reminder',
+				allowNull: false
+			},
+			user: {
+				type: Sequelize.STRING,
+				allowNull: false
+			},
+			date: {
+				type: Sequelize.DATE,
+				allowNull: false
+			},
+			message: {
+				type: Sequelize.TEXT,
+				defaultValue: 'no message provided',
+				allowNull: false
+			},
+			channel: {
+				type: Sequelize.STRING,
 				allowNull: false
 			}
 		});

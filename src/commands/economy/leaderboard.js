@@ -18,12 +18,8 @@ class LeaderboardCommand extends Commands {
 		await msg.guild.fetchMembers();
 		const mapped = [];
 		for (let player of leaderboard) {
-			try {
-				const thisPlayer = msg.guild.members.get(player.userID);
-				mapped.push(`${thisPlayer.user.tag} ${player.cash + player.bank}${currency}`);
-			} catch (error) {
-				// Nothing kek
-			}
+			const thisPlayer = msg.guild.members.get(player.user);
+			if (thisPlayer) mapped.push(`${thisPlayer.user.tag} ${player.cash + player.bank}${currency}`);
 		}
 		if (mapped.length > 10) mapped.length = 10;
 		const embed = new RichEmbed()

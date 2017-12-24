@@ -6,8 +6,9 @@ class GuildExtension extends Extension {
 	async getLeaderboard() {
 		const { client, id } = this;
 		let data = await client.db.economy.findAll({ where: { guild: id } });
-		data = data.sort((a, b) => a.cash + a.bank - b.cash + b.bank);
-		return data;
+		console.log(data)
+		data = data.sort((a, b) => a.dataValues.cash + a.dataValues.bank - b.dataValues.cash + b.dataValues.bank);
+		return data.map(economy => economy.dataValues);
 	}
 
 	async getStarboardMessage(originalMessageID) {
