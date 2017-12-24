@@ -14,13 +14,8 @@ class MessageEvent extends Events {
 		const blacklisted = await msg.member.isBlacklisted();
 		if (blacklisted) return;
 		msg.guild.economy.messageUpdate(msg.member);
-		let guildConfig = await msg.guild.getConfig();
-		if (!guildConfig) {
-			await msg.guild.createConfig();
-			guildConfig = await msg.guild.getConfig();
-		}
-		if (guildConfig.prefix === 'None') guildConfig.prefix = undefined;
-		const prefix = guildConfig.prefix || client.config.prefix;
+		let { prefix } = await msg.guild.getConfig();
+		prefix = prefix || client.config.prefix;
 		if (!msg.content.startsWith(prefix) && !this.mentioned(msg.content)) return;
 		let params;
 		let command;

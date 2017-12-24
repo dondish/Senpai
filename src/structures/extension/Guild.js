@@ -6,7 +6,6 @@ class GuildExtension extends Extension {
 	async getLeaderboard() {
 		const { client, id } = this;
 		let data = await client.db.economy.findAll({ where: { guild: id } });
-		console.log(data)
 		data = data.sort((a, b) => a.dataValues.cash + a.dataValues.bank - b.dataValues.cash + b.dataValues.bank);
 		return data.map(economy => economy.dataValues);
 	}
@@ -45,7 +44,7 @@ class GuildExtension extends Extension {
 
 	async updateConfig(data) {
 		const { client, id } = this;
-		const config = await client.db.serverconfig.findByID(id);
+		const config = await client.db.serverconfig.findById(id);
 		const result = await config.update(data);
 		return result;
 	}

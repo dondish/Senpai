@@ -1,5 +1,4 @@
 const { databaseName, databasePW } = require('../../config/config.json');
-const { prefix } = require('../../config/config.json');
 const Sequelize = require('sequelize');
 
 module.exports = class Database {
@@ -34,11 +33,11 @@ module.exports = class Database {
 				allowNull: false
 			},
 			prefix: {
-				type: Sequelize.ARRAY({ type: Sequelize.STRING }), // eslint-disable-line new-cap
-				defaultValue: [prefix], // eslint-disable-line new-cap
-				allowNull: false
+				type: Sequelize.STRING,
+				defaultValue: null,
+				allowNull: true
 			},
-			modLogChannel: {
+			modlogChannel: {
 				type: Sequelize.STRING,
 				defaultValue: null,
 				allowNull: true
@@ -57,6 +56,11 @@ module.exports = class Database {
 				type: Sequelize.BOOLEAN,
 				defaultValue: false,
 				allowNull: false
+			},
+			musicChannel: {
+				type: Sequelize.STRING,
+				defaultValue: null,
+				allowNull: true
 			},
 			starboardChannel: {
 				type: Sequelize.BOOLEAN,
@@ -188,6 +192,11 @@ module.exports = class Database {
 				type: Sequelize.INTEGER,
 				defaultValue: 0,
 				allowNull: false
+			},
+			daily: {
+				type: Sequelize.DATE,
+				defaultValue: null,
+				allowNull: true
 			}
 		});
 
