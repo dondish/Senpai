@@ -1,6 +1,7 @@
 const { ShardingManager } = require('discord.js');
 const { bottoken } = require('./config/config.json');
 const Economy = require('./structures/new/Economy.js');
+const { economy } = require('./structures/new/Database.js');
 const Manager = new ShardingManager('./main.js',
 	{
 		totalShards: 'auto',
@@ -11,7 +12,7 @@ const Manager = new ShardingManager('./main.js',
 Manager.spawn();
 
 // Economy Bank update
-Economy.bankUpdate();
+Economy.bankUpdate(economy);
 
 
 Manager.on('launch', shard => {

@@ -3,11 +3,10 @@ class Economy {
 		this.recentlyUpdated = [];
 		this.client = client;
 		this.db = client.db;
-		this.databaseTable = 'money';
 	}
 
-	static bankUpdate(db) {
-		setInterval(() => this._updatebank(db), 18000000);
+	static bankUpdate(model) {
+		setInterval(() => this._updatebank(model), 18000000);
 	}
 
 	messageUpdate(member) {
@@ -28,9 +27,9 @@ class Economy {
 		this.recentlyUpdated.splice(this.recentlyUpdated.indexOf(member.id), 1);
 	}
 
-	static async _updatebank(db) {
-		const values = await db.economy.findAll();
-		values.map(value => value.bank * 1.01);
+	static async _updatebank(model) {
+		const values = await model.findAll();
+		values.map(value => Math.floor(value.bank * 1.01));
 		const Promises = values.map(value => value.save());
 		await Promise.all(Promises);
 	}

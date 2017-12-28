@@ -16,20 +16,16 @@ class MessageReactionRemoveEvent extends Events {
 		if (!guild) return;
 		await messageReaction.fetchUsers();
 		let reactionCount = messageReaction.count;
-		const serverConfig = await guild.getConfig();
-		let neededReactions = 1;
-		if (serverConfig.starboardNeededReactions) {
-			neededReactions = serverConfig.starboardNeededReactions;
-		}
+		const { starboardChannel, starcount } = await guild.getConfig();
 		if (messageReaction.users.has(message.author.id)) reactionCount -= 1;
-		if (reactionCount < neededReactions) {
-			await this.deleteStarboardMessage(message, serverConfig);
+		if (reactionCount < starcount) {
+			await this.deleteStarboardMessage(message, starboardChannel);
 		} else {
-			await this.editStarboardMessage({ message, reactionCount, serverConfig });
+			await this.editStarboardMessage({ message, reactionCount, starboardChannel });
 		}
 	}
 
-	async editStarboardMessage({ message, reactionCount, serverConfig }) {
+	async editStarboardMessage({ message, reactionCount, starboardChannel }) {
 		const embed = new RichEmbed()
 			.setAuthor(`${message.author.tag}`)
 			.setThumbnail(message.author.displayAvatarURL)
@@ -46,16 +42,16 @@ class MessageReactionRemoveEvent extends Events {
 		if (message.attachments.size === 1) {
 			if (/\.(gif|jpg|jpeg|tiff|png)$/i.test(message.attachments.first().filename)) embed.setImage(`${message.attachments.first().url}`);
 		}
-		const channel = message.guild.channels.get(serverConfig.starboardID);
+		const channel = message.guild.channels.get(starboardChannel);
 		if (!channel) return;
-		const messageObject = await message.guild.resolveStarboardMessage(message.id);
+		const messageObject = await message.guild.getStarboardMessage(message.id);
 		const sentMessage = await channel.fetchMessage(messageObject.starMessageID);
 		await sentMessage.edit({ embed });
 		await message.guild.updateStarboardMessage({ originalMessageID: message.id, starMessageID: sentMessage.id, starcount: reactionCount });
 	}
 
-	async deleteStarboardMessage(message, serverConfig) {
-		const channel = message.guild.channels.get(serverConfig.starboardID);
+	async deleteStarboardMessage(message, starboardChannel) {
+		const channel = message.guild.channels.get(starboardChannel);
 		const messageObject = await message.guild.resolveStarboardMessage(message.id);
 		if (!messageObject) return;
 		const sentMessage = await channel.fetchMessage(messageObject.starMessageID);

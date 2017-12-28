@@ -13,40 +13,40 @@ class GuildExtension extends Extension {
 	async getStarboardMessage(originalMessageID) {
 		const { client } = this;
 		let result = await client.db.starboardMessages.findOne({ where: { originalMessage: originalMessageID } });
-		return result;
+		return !result ? result : result.dataValues;
+	}
+
+	async createStarboardMessage({ originalMessageID, starMessageID, starCount, author }) {
+		const { client, id } = this;
+		let result = await client.db.starboardMessages.create({ id: starMessageID, originalMessage: originalMessageID, guild: id, starCount, author });
+		return result.dataValues;
 	}
 
 	async updateStarboardMessage({ originalMessageID, starMessageID, starCount }) {
 		const { client, id } = this;
 		let result = await client.db.starboardMessages.findOne({ where: { id: starMessageID, originalMessage: originalMessageID, guild: id } });
 		result = await result.update({ starCount });
-		return result;
-	}
-
-	async resolveStarboardMessage(originalMessageID) {
-		const { client } = this;
-		const result = await client.db.starboardMessages.findOne({ where: { originalMessage: originalMessageID } });
-		return result;
+		return result.dataValues;
 	}
 
 	async deleteStarboardMessage(originalMessageID) {
 		const { client } = this;
 		let result = await client.db.starboardMessages.findOne({ where: { originalMessage: originalMessageID } });
 		result = await result.destroy();
-		return result;
+		return result.dataValues;
 	}
 
 	async getConfig() {
 		const { client } = this;
-		const config = await client.db.serverconfig.findOrCreate({ where: { id: this.id } });
-		return config[0];
+		const [config] = await client.db.serverconfig.findOrCreate({ where: { id: this.id } });
+		return config.dataValues;
 	}
 
 	async updateConfig(data) {
 		const { client, id } = this;
 		const config = await client.db.serverconfig.findById(id);
 		const result = await config.update(data);
-		return result;
+		return result.dataValues;
 	}
 
 	get loop() {

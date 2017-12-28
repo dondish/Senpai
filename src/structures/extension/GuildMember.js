@@ -32,19 +32,19 @@ class GuildMemberExtension extends Extension {
 			cash,
 			bank
 		});
-		return result;
+		return result.dataValues;
 	}
 
 	async getEconomy() {
 		const { client, id, guild } = this;
 		const [data] = await client.db.economy.findOrCreate({ where: { user: id, guild: guild.id } });
-		return data;
+		return data.dataValues;
 	}
 
 	async getHistory() {
 		const { client, id, guild } = this;
 		const [history] = await client.db.history.findOrCreate({ where: { user: id, guild: guild.id } });
-		return history;
+		return history.dataValues;
 	}
 
 	async editHistory(type) {
@@ -52,7 +52,7 @@ class GuildMemberExtension extends Extension {
 		let [history] = await client.db.history.findOrCreate({ where: { user: id, guild: guild.id } });
 		history[`${type.toLowerCase()}Count`]++;
 		await history.save();
-		return history;
+		return history.dataValues;
 	}
 
 	async createCase({ moderator, reason, channel, action }) {

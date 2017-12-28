@@ -1,12 +1,12 @@
 const { databaseName, databasePW } = require('../../config/config.json');
 const Sequelize = require('sequelize');
 
-module.exports = class Database {
-	constructor(name, log) {
-		this.database = new Sequelize(name, databaseName, databasePW, {
+class Database {
+	constructor() {
+		this.database = new Sequelize('Discord', databaseName, databasePW, {
 			host: 'localhost',
 			dialect: 'postgres',
-			logging: log.debug.bind(log),
+			logging: false,
 			operatorsAliases: false
 		});
 
@@ -63,7 +63,7 @@ module.exports = class Database {
 				allowNull: true
 			},
 			starboardChannel: {
-				type: Sequelize.BOOLEAN,
+				type: Sequelize.STRING,
 				defaultValue: true,
 				allowNull: false
 			},
@@ -276,4 +276,6 @@ module.exports = class Database {
 			}
 		});
 	}
-};
+}
+
+module.exports = new Database();
