@@ -17,7 +17,7 @@ class QueueCommand extends Commands {
 		if (!queue || queue.length < 1) return msg.reply('there are no songs currently in queue!');
 		let totalTimeInSec = 0;
 
-		const songsLength = queue.map(Song => Number(Song.length));
+		const songsLength = queue.map(Song => Number(Song ? Song.length : 0));
 
 		for (let index = 0; index < songsLength.length; index++) {
 			totalTimeInSec += songsLength[index];
