@@ -12,7 +12,7 @@ class PlayNextCommand extends Commands {
 	}
 
 	async run(msg, params) {
-		const { voiceConnection } = msg.guild;
+		const { voiceConnection, client } = msg.guild;
 		const { musicID } = msg.guild.music;
 		let channel = msg.guild.channels.get(musicID);
 		const musicChannel = channel || msg.channel;

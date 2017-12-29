@@ -23,8 +23,8 @@ class Util {
 	}
 
 	async init() {
-		await this._commandloader();
-		await this._eventloader();
+		this._commandloader();
+		this._eventloader();
 		await this._syncDatabase();
 	}
 
