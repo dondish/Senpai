@@ -2,6 +2,7 @@ const Extension = require('./Extend.js');
 const { BOTOWNER, SERVEROWNER, MODERATORROLE, MUSICROLE, NOTHING } = require('../new/Permissions.json');
 const { RichEmbed } = require('discord.js');
 const { colors } = require('../new/Util');
+
 class GuildMemberExtension extends Extension {
 	async isBlacklisted() {
 		const { client } = this;
@@ -49,8 +50,9 @@ class GuildMemberExtension extends Extension {
 
 	async editHistory(type) {
 		const { client, id, guild } = this;
+		let action = type === 'Softban' ? 'kick' : type.toLowerCase();
 		let [history] = await client.db.history.findOrCreate({ where: { user: id, guild: guild.id } });
-		history[`${type.toLowerCase()}Count`]++;
+		history[`${action}Count`]++;
 		await history.save();
 		return history.dataValues;
 	}

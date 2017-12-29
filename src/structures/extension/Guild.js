@@ -1,6 +1,8 @@
 const Extension = require('./Extend.js');
 const Music = require('../new/Music.js');
 const Economy = require('../new/Economy.js');
+const { RichEmbed } = require('discord.js');
+const { colors } = require('../new/Util');
 
 class GuildExtension extends Extension {
 	async getLeaderboard() {
@@ -46,6 +48,36 @@ class GuildExtension extends Extension {
 		const { client, id } = this;
 		const config = await client.db.serverconfig.findById(id);
 		const result = await config.update(data);
+		return result.dataValues;
+	}
+
+	async latestCase() {
+		const { client, id } = this;
+		let result = await client.db.cases.findAll({ where: { guild: id }, attributes: ['caseNumber'] });
+		result = result.map(res => res.dataValues);
+		result = result.sort((a, b) => b.caseNumber - a.caseNumber);
+		return result[0];
+	}
+
+	async updateCase({ reason, caseNumber, channel }) {
+		const { client, id } = this;
+		const caseObject = await client.db.cases.findOne({ where: { guild: id, caseNumber } });
+		if (!caseObject) throw new Error('Case not Found');
+		const result = await caseObject.update({ reason });
+		const message = await channel.fetchMessage(caseObject.message);
+		const values = result.dataValues;
+		const user = await client.fetchUser(values.target);
+		const moderator = await client.fetchUser(values.moderator);
+		const embed = new RichEmbed()
+			.setAuthor(moderator.tag, moderator.displayAvatarURL)
+			.setColor(colors(values.action))
+			.setTimestamp()
+			.addField('Action', values.action)
+			.addField('Target', `${user.tag} (${user.id})`)
+			.addField('Reason', reason)
+			.setFooter(`Case ${caseNumber}`)
+			.setTimestamp();
+		await message.edit(embed);
 		return result.dataValues;
 	}
 

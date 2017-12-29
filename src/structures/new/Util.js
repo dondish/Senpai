@@ -11,7 +11,7 @@ class Util {
 			Banned: 'RED',
 			Ban: 'RED',
 			Softbanned: 'DARK_ORANGE',
-			SoftBan: 'DARK_ORANGE',
+			Softban: 'DARK_ORANGE',
 			Kicked: 'DARK_GREEN',
 			Kick: 'DARK_GREEN',
 			Muted: 'BLUE',

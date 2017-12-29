@@ -3,7 +3,7 @@ const { RichEmbed } = require('discord.js');
 const info = {
 	name: 'leaderboard',
 	description: 'shows the top 10 user with the most money on this server',
-	aliases: ['baltop'],
+	aliases: ['baltop', 'lb'],
 	examples: ['leaderboard']
 };
 
