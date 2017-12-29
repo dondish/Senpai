@@ -11,9 +11,10 @@ class PlayCommand extends Commands {
 		super(client, info, group);
 	}
 
-	async run(msg, params, prefix) {
-		const { voiceConnection } = msg.guild;
-		const { musicChannel: musicID } = await msg.guild.getConfig();
+	async run(msg, params) {
+		const { voiceConnection, client } = msg.guild;
+		let { musicChannel: musicID, prefix } = await msg.guild.getConfig();
+		prefix = prefix ? prefix : client.config.prefix;
 		let channel = msg.guild.channels.get(musicID);
 		const musicChannel = channel || msg.channel;
 		const { musicLimited } = await msg.guild.getConfig();

@@ -11,15 +11,16 @@ class PlayNextCommand extends Commands {
 		super(client, info, group);
 	}
 
-	async run(msg, params, prefix) {
+	async run(msg, params) {
 		const { voiceConnection } = msg.guild;
 		const { musicID } = msg.guild.music;
 		let channel = msg.guild.channels.get(musicID);
 		const musicChannel = channel || msg.channel;
-		const { musicLimited } = await msg.guild.getConfig();
+		let { musicLimited, prefix } = await msg.guild.getConfig();
+		prefix = prefix ? prefix : client.config.prefix;
 		if (musicLimited) {
 			const permissionLevel = await msg.member.getPermissionsLevel();
-			if (permissionLevel > 3) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to do this Command!");
+			if (permissionLevel > 3) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to use this Command!");
 		}
 		if (!voiceConnection) return msg.reply(`You must let me join a Voice Channel with ${prefix}join!`);
 		const message = await msg.channel.send('trying to add your Song at next position to the queue....');

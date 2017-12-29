@@ -14,10 +14,8 @@ class MessageUpdateEvent extends Events {
 		const blacklisted = await msg.member.isBlacklisted();
 		if (blacklisted) return;
 		if (!msg.guild) return;
-		let guildConfig = await msg.guild.getConfig();
-		if (guildConfig.prefix === 'None') guildConfig.prefix = undefined;
 		let { prefix } = await msg.guild.getConfig();
-		prefix = prefix || client.config.prefix;
+		prefix = prefix ? prefix : client.config.prefix;
 		if (!msg.content.startsWith(prefix) && !this.mentioned(msg.content)) return;
 		const params = this.constructor.createParams(msg);
 		const command = this.constructor.getCommand(msg, prefix);
@@ -30,7 +28,7 @@ class MessageUpdateEvent extends Events {
 		if (cmd) {
 			try {
 				this.client.emit('commandRun', this, msg);
-				await cmd.run(msg, params, prefix);
+				await cmd.run(msg, params);
 			} catch (error) {
 				this.client.emit('commandError', error, this, msg);
 				const Owner = this.client.users.get(this.client.config.ownerID);

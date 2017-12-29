@@ -12,8 +12,10 @@ class HelpCommand extends Commands {
 		super(client, info, group);
 	}
 
-	async run(msg, params, prefix) {
+	async run(msg, params) {
 		const { client } = this;
+		let { prefix } = msg.guild.getConfig();
+		prefix = prefix ? prefix : client.config.prefix;
 		let param1 = params[0];
 		if (!param1) {
 			let categories = await this.asyncReadDir('./commands');

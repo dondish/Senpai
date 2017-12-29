@@ -15,7 +15,7 @@ class MessageEvent extends Events {
 		if (blacklisted) return;
 		msg.guild.economy.messageUpdate(msg.member);
 		let { prefix } = await msg.guild.getConfig();
-		prefix = prefix || client.config.prefix;
+		prefix = prefix ? prefix : client.config.prefix;
 		if (!msg.content.startsWith(prefix) && !this.mentioned(msg.content)) return;
 		let params;
 		let command;
@@ -35,7 +35,7 @@ class MessageEvent extends Events {
 		if (cmd) {
 			try {
 				this.client.emit('commandRun', this, msg);
-				await cmd.run(msg, params, prefix);
+				await cmd.run(msg, params);
 			} catch (error) {
 				this.client.emit('commandError', error, this, msg);
 			}

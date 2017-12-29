@@ -11,12 +11,13 @@ class RemoveSongCommand extends Commands {
 		super(client, info, group);
 	}
 
-	async run(msg, params, prefix) {
+	async run(msg, params) {
 		let number = params[0];
 		number = Number(number);
 		const { queue, dispatcher } = msg.guild.music;
-		const { voiceConnection } = msg.guild;
-		const { musicLimited } = await msg.guild.getConfig();
+		const { voiceConnection, client } = msg.guild;
+		let { musicLimited, prefix } = await msg.guild.getConfig();
+		prefix = prefix ? prefix : client.config.prefix;
 		if (musicLimited) {
 			const permissionLevel = await msg.member.getPermissionsLevel();
 			if (permissionLevel > 3) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to do this Command!");
