@@ -1,6 +1,6 @@
 {
   "name": "senpai",
-  "version": "5.4.9",
+  "version": "5.5.0",
   "description": "Selfmade Nodejs Discord bot",
   "main": "src/main.js",
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/Dev-Yukine/Senpai#readme",
   "devDependencies": {
-    "eslint": "^4.13.1",
+    "eslint": "^4.14.0",
     "eslint-config-aqua": "^2.0.1"
   },
   "eslintConfig": {
@@ -36,7 +36,7 @@
   "dependencies": {
     "ascii-art": "^1.4.2",
     "bufferutil": "^3.0.3",
-    "canvas": "^2.0.0-alpha.8",
+    "canvas": "^2.0.0-alpha.9",
     "discord.js": "^11.2.1",
     "ffmpeg-binaries": "^3.2.2",
     "file": "^0.2.2",

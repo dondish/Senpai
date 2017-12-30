@@ -27,7 +27,7 @@ class AboutCommand extends Commands {
 			.addField('Creator/Dev', 'Yukine', true)
 			.addField('RAM usage:', `${Math.round(process.memoryUsage().heapTotal / 1024 / 1024)}MB`, true)
 			.addField('Uptime', `${this.format(process.uptime())}`, true)
-			.addField('Libary', `Discord.js ${version}`, true)
+			.addField('Library', `Discord.js ${version}`, true)
 			.addField('Node.js Version', process.version, true)
 			.addField('Senpai Version:', this.client.version, true)
 			.addField('Total Servers:', serverCount, true)

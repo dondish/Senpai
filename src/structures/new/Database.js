@@ -275,6 +275,32 @@ class Database {
 				allowNull: false
 			}
 		});
+
+		this.tags = this.database.define('tag', {
+			id: {
+				type: Sequelize.UUID,
+				defaultValue: Sequelize.UUIDV4,
+				allowNull: false,
+				primaryKey: true
+			},
+			content: {
+				type: Sequelize.TEXT,
+				allowNull: false
+			},
+			owner: {
+				type: Sequelize.STRING,
+				allowNull: false
+			},
+			guild: {
+				type: Sequelize.STRING,
+				allowNull: false
+			},
+			usageCount: {
+				type: Sequelize.INTEGER,
+				defaultValue: 0,
+				allowNull: false
+			}
+		});
 	}
 }
 
