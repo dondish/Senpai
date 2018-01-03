@@ -1,7 +1,7 @@
-const fs = require('fs');
+const { readFile } = require('fs');
 const { parse } = require('sherlockjs');
 const { RichEmbed } = require('discord.js');
-const { colors } = require('./Util.js');
+const { colors, promisify } = require('./Util.js');
 
 class Commands {
 	constructor(client, info, group) {
@@ -36,13 +36,10 @@ class Commands {
 		if (typeof group !== 'string') throw new TypeError('group name must be a string.');
 	}
 
-	readFileAsync(path) {
-		return new Promise((resolve, reject) => {
-			fs.readFile(path, (err, result) => {
-				if (err) return reject(err);
-				resolve(result);
-			});
-		});
+	async readFileAsync(path) {
+		const func = promisify(readFile);
+		const result = await func(path);
+		return result;
 	}
 
 	parseTime(input) {

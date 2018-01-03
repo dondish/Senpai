@@ -14,7 +14,7 @@ class ConfigCommand extends Commands {
 	}
 
 	async showConfig(msg) {
-		let { prefix, modlogChannel, starboardChannel, musicChannel, modRoles, musicRoles, musicLimited, starcount } = await msg.guild.getConfig();
+		let { prefix, modlogChannel, starboardChannel, musicChannel, modRoles, musicRoles, musicLimited, starcount, welcomeEnabled, welcomeChannel, welcomeMessage } = await msg.guild.getConfig();
 		if (!prefix) prefix = 'None';
 		let ModlogChannel = msg.guild.channels.get(modlogChannel);
 		if (!ModlogChannel) ModlogChannel = 'None';
@@ -28,18 +28,23 @@ class ConfigCommand extends Commands {
 		if (MusicRoles.length === 0) MusicRoles = 'None';
 		let musicboolean = musicLimited.toString();
 		const neededStars = starcount.toString();
+		welcomeEnabled = welcomeEnabled.toString();
+		if (!welcomeChannel) welcomeChannel = 'None';
 		const embed = new RichEmbed()
 			.setTitle(`Configuration for ${msg.guild.name}`)
 			.setThumbnail(msg.guild.iconURL)
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL)
-			.addField('Custom Prefix', prefix)
-			.addField('Modlog Channel', ModlogChannel)
-			.addField('Starboard Channel', StarboardChannel)
-			.addField('Music Channel', MusicChannel)
-			.addField('Moderation Roles', ModerationRoles)
-			.addField('Music Roles', MusicRoles)
-			.addField('Music feature limited to role?', musicboolean)
-			.addField('needed Stars for Starboard', neededStars)
+			.addField('Custom Prefix', prefix, true)
+			.addField('Modlog Channel', ModlogChannel, true)
+			.addField('Starboard Channel', StarboardChannel, true)
+			.addField('Music Channel', MusicChannel, true)
+			.addField('Moderation Roles', ModerationRoles, true)
+			.addField('Music Roles', MusicRoles, true)
+			.addField('Music feature limited to role?', musicboolean, true)
+			.addField('Stars needed for Starboard', neededStars, true)
+			.addField('Welcome Messages enabled?', welcomeEnabled, true)
+			.addField('Welcome Channel', welcomeChannel, true)
+			.addField('Welcome Message', welcomeMessage, true)
 			.setTimestamp()
 			.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 		msg.channel.send({ embed });

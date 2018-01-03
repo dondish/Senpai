@@ -106,7 +106,7 @@ class Music {
 	getSongByUrl(url, requestedBy, messageToEdit) {
 		return new Promise((resolve, reject) => {
 			const id = /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/g.exec(url);
-			if (!id) reject(new MusicError('this Link isn\'s a Youtube Video', messageToEdit));
+			if (!id) return reject(new MusicError('this Link isn\'s a Youtube Video', messageToEdit));
 			youtube.getById(id[1], (err, result) => {
 				if (err) return reject(err);
 				if (!result.items[0]) return reject(new MusicError('Song Unaviable', messageToEdit));
@@ -120,20 +120,20 @@ class Music {
 	getSongByName(name, requestedBy, messageToEdit) {
 		return new Promise((resolve, reject) => {
 			search(name, searchOptions, async (err, result) => {
-				if (err) reject(err);
-				if (!result || !result[0]) reject(new MusicError('searching for that song failed', messageToEdit));
+				if (err) return reject(err);
+				if (!result || !result[0]) return reject(new MusicError('searching for that song failed', messageToEdit));
 				let song = result[0];
 				let index = 0;
 				while (song.kind !== 'youtube#video') {
 					index += 1;
 					song = result[index];
-					if (!song) reject(new MusicError('i found no song with that name. Please use a link instead!', messageToEdit));
+					if (!song) return reject(new MusicError('i found no song with that name. Please use a link instead!', messageToEdit));
 				}
 				try {
 					const songInfo = await this.getSongByUrl(song.link, requestedBy, messageToEdit);
 					resolve(songInfo);
 				} catch (error) {
-					reject(error);
+					return reject(error);
 				}
 			});
 		});

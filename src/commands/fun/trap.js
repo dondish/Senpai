@@ -14,13 +14,14 @@ class TrapCommand extends Commands {
 	}
 
 	async run(msg) {
+		const { readFileAsync } = this;
 		const { Image } = Canvas;
 		const canvas = Canvas.createCanvas(316, 480);
 		const ctx = canvas.getContext('2d');
 		let base = new Image();
 		let userPicture = new Image();
 		try {
-			base.src = await this.readFileAsync('./materials/pictures/trap.png');
+			base.src = await readFileAsync('./materials/pictures/trap.png');
 		} catch (error) {
 			return msg.channel.send('Something went wrong while reading a file! try again and if the error still happens contact my owner!');
 		}
