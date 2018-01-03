@@ -1,5 +1,4 @@
 const Commands = require('../../structures/new/Command.js');
-const { UniqueConstraintError } = require('sequelize');
 const { DatabaseError } = require('../../structures/new/CustomErrors.js');
 const info = {
 	name: 'blacklist',
