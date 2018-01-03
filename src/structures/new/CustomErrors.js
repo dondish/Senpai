@@ -5,4 +5,8 @@ class MusicError extends Error {
 	}
 }
 
-module.exports = { MusicError };
+class DatabaseError extends Error {
+
+}
+
+module.exports = { MusicError, DatabaseError };

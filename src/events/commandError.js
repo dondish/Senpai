@@ -1,5 +1,5 @@
 const Events = require('../structures/new/Event.js');
-const { EconomyError, MusicError } = require('../structures/new/CustomErrors');
+const { MusicError, DatabaseError } = require('../structures/new/CustomErrors');
 
 class commandError extends Events {
 	constructor(client) {
@@ -9,8 +9,8 @@ class commandError extends Events {
 
 	async run(error, messageEvent, msg) {
 		const { client } = this;
-		if (error instanceof EconomyError) return msg.channel.send(`Economy Command failed with reason: \`${error.message}\``);
-		if (error instanceof MusicError) return error.msg.edit(`Could not add the Song/Playlist because this reason \`${error.message}\``);
+		if (error instanceof MusicError) return error.msg.edit(`Could not add the Song/Playlist because this reason: \`${error.message}\``);
+		if (error instanceof DatabaseError) return msg.channel.send(`Could not execute this command because of this reason: \`${error.message}\``);
 		if (error.message === 'Missing Permissions' || error.message === 'Missing Access' || error.message === 'Unknown Message') return;
 		const { ownerID, supportServerLink } = client.config;
 		const owner = client.users.get(ownerID);
