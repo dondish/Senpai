@@ -49,24 +49,25 @@ class ConfigCommand extends Commands {
 			.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 		msg.channel.send({ embed });
 	}
-	async prefix(msg, param1, param2, param3) {
-		if (!param2) {
+	async prefix(msg, passedArgs) {
+		const [arg1, arg2] = passedArgs;
+		if (!arg1) {
 			return msg.reply('You must provide an second parameter!');
-		} else if (param2 === 'set') {
-			if (!param3) {
+		} else if (arg1 === 'set') {
+			if (!arg2) {
 				return msg.reply('you must add a prefix to set!');
 			}
-			if (param3.length > 3) {
+			if (arg2.length > 3) {
 				return msg.reply("a prefix's length must be between 1-3 characters long!");
 			}
-			await msg.guild.updateConfig({ prefix: param3 });
+			await msg.guild.updateConfig({ prefix: arg2 });
 			const embed = new RichEmbed()
 				.setTitle(`Updated Prefix for ${msg.guild.name}`)
-				.addField('New Prefix added', param3)
+				.addField('Updated Prefix to', arg2)
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 			msg.channel.send({ embed });
-		} else if (param2 === 'remove' || param2 === 'delete') {
+		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			await msg.guild.updateConfig({ prefix: null });
 			msg.channel.send('i deleted the custom prefix from this server!');
 		} else {
@@ -74,18 +75,19 @@ class ConfigCommand extends Commands {
 		}
 	}
 
-	async modlog(msg, param1, param2, param3) {
-		if (!param2) {
+	async modlog(msg, passedArgs) {
+		const [arg1, arg2] = passedArgs;
+		if (!arg1) {
 			return msg.reply('You must provide an second parameter!');
-		} else if (param2 === 'set') {
-			if (!param3) {
+		} else if (arg1 === 'set') {
+			if (!arg2) {
 				return msg.reply('you must add channelID or Mention for this!');
 			}
 			let modlog;
 			if (msg.mentions.channels.size > 0) {
 				modlog = msg.mentions.channels.first();
 			} else {
-				modlog = msg.guild.channels.get(param3);
+				modlog = msg.guild.channels.get(arg2);
 				if (!modlog) {
 					return msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
 				}
@@ -97,7 +99,7 @@ class ConfigCommand extends Commands {
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 			msg.channel.send({ embed });
-		} else if (param2 === 'remove' || param2 === 'delete') {
+		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			await msg.guild.updateConfig({ modlogChannel: null });
 			msg.channel.send('i deleted the modlog channel from my config!');
 		} else {
@@ -105,18 +107,19 @@ class ConfigCommand extends Commands {
 		}
 	}
 
-	async musiclog(msg, param1, param2, param3) {
-		if (!param2) {
+	async musiclog(msg, passedArgs) {
+		const [arg1, arg2] = passedArgs;
+		if (!arg1) {
 			return msg.reply('You must provide an second parameter!');
-		} else if (param2 === 'set') {
-			if (!param3) {
+		} else if (arg1 === 'set') {
+			if (!arg2) {
 				return msg.reply('you must add channelID or Mention for this!');
 			}
 			let musiclog;
 			if (msg.mentions.channels.size > 0) {
 				musiclog = msg.mentions.channels.first();
 			} else {
-				musiclog = msg.guild.channels.get(param3);
+				musiclog = msg.guild.channels.get(arg2);
 				if (!musiclog) {
 					return msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
 				}
@@ -128,7 +131,7 @@ class ConfigCommand extends Commands {
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 			msg.channel.send({ embed });
-		} else if (param2 === 'remove' || param2 === 'delete') {
+		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			await msg.guild.updateConfig({ musicChannel: null });
 			msg.channel.send('i deleted the Musiclog channel from my config!');
 		} else {
@@ -136,18 +139,19 @@ class ConfigCommand extends Commands {
 		}
 	}
 
-	async starboard(msg, param1, param2, param3) {
-		if (!param2) {
+	async starboard(msg, passedArgs) {
+		const [arg1, arg2] = passedArgs;
+		if (!arg1) {
 			return msg.reply('You must provide an second parameter!');
-		} else if (param2 === 'set') {
-			if (!param3) {
+		} else if (arg1 === 'set') {
+			if (!arg2) {
 				return msg.reply('you must add channelID or Mention for this!');
 			}
 			let starboard;
 			if (msg.mentions.channels.size > 0) {
 				starboard = msg.mentions.channels.first();
 			} else {
-				starboard = msg.guild.channels.get(param3);
+				starboard = msg.guild.channels.get(arg2);
 				if (!starboard) {
 					return msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
 				}
@@ -159,11 +163,11 @@ class ConfigCommand extends Commands {
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 			msg.channel.send({ embed });
-		} else if (param2 === 'remove' || param2 === 'delete') {
+		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			await msg.guild.updateConfig({ starboardChannel: null });
 			msg.channel.send('i deleted the Starboard channel from my config!');
-		} else if (param2 === 'count' || param2 === 'votes') {
-			const number = Number(param3);
+		} else if (arg1 === 'count' || arg1 === 'votes') {
+			const number = Number(arg2);
 			if (number <= 0 || isNaN(number)) return msg.reply('the third parameter must be a number greater than 0 !');
 			await msg.guild.updateConfig({ starboardNeededReactions: number });
 			const embed = new RichEmbed()
@@ -177,21 +181,22 @@ class ConfigCommand extends Commands {
 		}
 	}
 
-	async modrole(msg, param1, param2, param3) {
+	async modrole(msg, passedArgs) {
+		const [arg1, arg2] = passedArgs;
 		if (await msg.member.getPermissionsLevel() > 1) {
 			return msg.reply('Only the Owner can edit the Moderation Roles!');
 		}
-		if (!param2) {
+		if (!arg1) {
 			return msg.reply('You must provide an second parameter!');
-		} else if (param2 === 'add') {
-			if (!param3) {
+		} else if (arg1 === 'add') {
+			if (!arg2) {
 				return msg.reply('you must add RoleID or Mention for this!');
 			}
 			let role;
 			if (msg.mentions.roles.size > 0) {
 				role = msg.mentions.roles.first();
 			} else {
-				role = msg.guild.roles.get(param3);
+				role = msg.guild.roles.get(arg2);
 				if (!role) {
 					return msg.reply('Your provided ID is wrong! use a Rolemention instead maybe');
 				}
@@ -211,15 +216,15 @@ class ConfigCommand extends Commands {
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 			msg.channel.send({ embed });
-		} else if (param2 === 'remove' || param2 === 'delete') {
-			if (!param3) {
+		} else if (arg1 === 'remove' || arg1 === 'delete') {
+			if (!arg2) {
 				return msg.reply('you must add RoleID or Mention for this!');
 			}
 			let role;
 			if (msg.mentions.roles.size > 0) {
 				role = msg.mentions.roles.first();
 			} else {
-				role = msg.guild.roles.get(param3);
+				role = msg.guild.roles.get(arg2);
 				if (!role) {
 					return msg.reply('Your provided ID is wrong! use a RoleMention instead maybe');
 				}
@@ -245,18 +250,19 @@ class ConfigCommand extends Commands {
 		}
 	}
 
-	async musicrole(msg, param1, param2, param3) { // eslint-disable-line complexity
-		if (!param2) {
+	async musicrole(msg, passedArgs) { // eslint-disable-line complexity
+		const [arg1, arg2] = passedArgs;
+		if (!arg1) {
 			return msg.reply('You must provide an second parameter!');
-		} else if (param2 === 'add') {
-			if (!param3) {
+		} else if (arg1 === 'add') {
+			if (!arg2) {
 				return msg.reply('you must add RoleID or Mention for this!');
 			}
 			let role;
 			if (msg.mentions.roles.size > 0) {
 				role = msg.mentions.roles.first();
 			} else {
-				role = msg.guild.roles.get(param3);
+				role = msg.guild.roles.get(arg2);
 				if (!role) {
 					return msg.reply('Your provided ID is wrong! use a Rolemention instead maybe');
 				}
@@ -275,15 +281,15 @@ class ConfigCommand extends Commands {
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 			msg.channel.send({ embed });
-		} else if (param2 === 'remove' || param2 === 'delete') {
-			if (!param3) {
+		} else if (arg1 === 'remove' || arg1 === 'delete') {
+			if (!arg2) {
 				return msg.reply('you must add RoleID or Mention for this!');
 			}
 			let role;
 			if (msg.mentions.roles.size > 0) {
 				role = msg.mentions.roles.first();
 			} else {
-				role = msg.guild.roles.get(param3);
+				role = msg.guild.roles.get(arg2);
 				if (!role) {
 					return msg.reply('Your provided ID is wrong! use a channelmention instead maybe');
 				}
@@ -304,13 +310,13 @@ class ConfigCommand extends Commands {
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 			msg.channel.send({ embed });
-		} else if (param2 === 'limit') {
-			if (!param3) {
+		} else if (arg1 === 'limit') {
+			if (!arg2) {
 				return msg.reply('You must provide an third parameter!');
-			} else if (param3 === 'enable' || param3 === 'on') {
+			} else if (arg2 === 'enable' || arg2 === 'on') {
 				await msg.guild.updateConfig({ musicLimited: true });
 				msg.channel.send('enabled Limitation of my music feature to the Musicroles!');
-			} else if (param3 === 'disable' || param3 === 'off') {
+			} else if (arg2 === 'disable' || arg2 === 'off') {
 				await msg.guild.updateConfig({ musicLimited: false });
 				msg.channel.send('disabled Limitation of my music feature to the Musicroles!');
 			} else {
@@ -321,35 +327,33 @@ class ConfigCommand extends Commands {
 		}
 	}
 
-	async run(msg, params) {
-		let [param1, param2, param3, param4] = params;
-		if (!param1) {
+	async run(msg, args) {
+		let [arg1, ...argsToPass] = args;
+		if (!arg1) {
 			await this.showConfig(msg);
 		} else {
-			param1 = param1.toLowerCase();
-			if (param2) param2 = param2.toLowerCase();
-			if (param3) param3 = param3.toLowerCase();
-			if (param4) param4 = param4.toLowerCase();
+			arg1 = arg1.toLowerCase();
+			argsToPass = argsToPass.map(param => param.toLowerCase());
 			const permissionLevel = await msg.member.getPermissionsLevel();
 			if (permissionLevel > 2) return msg.reply("You dont have permission to do that since you dont have a moderation Role and also aren't the Owner of this server!");
-			switch (param1) {
+			switch (arg1) {
 				case 'prefix':
-					await this.prefix(msg, param1, param2, param3, param4);
+					await this.prefix(msg, argsToPass);
 					break;
 				case 'modlog':
-					await this.modlog(msg, param1, param2, param3, param4);
+					await this.modlog(msg, argsToPass);
 					break;
 				case 'musiclog':
-					await this.musiclog(msg, param1, param2, param3, param4);
+					await this.musiclog(msg, argsToPass);
 					break;
 				case 'starboard':
-					await this.starboard(msg, param1, param2, param3, param4);
+					await this.starboard(msg, argsToPass);
 					break;
 				case 'modrole':
-					await this.modrole(msg, param1, param2, param3, param4);
+					await this.modrole(msg, argsToPass);
 					break;
 				case 'musicrole':
-					await this.musicrole(msg, param1, param2, param3, param4);
+					await this.musicrole(msg, argsToPass);
 					break;
 				default:
 					return msg.reply('seems like you provided a first parameter what is wrong maybe look the usage up again!');
