@@ -56,11 +56,11 @@ class BlacklistCommand extends Commands {
 
 	async delete(member, global) {
 		const { client } = this;
-		const user = await client.db.blacklist.findById(member.id);
+		const user = await client.db.blacklist.findOrCreate({ where: { id: member.id } });
 		if (!user) throw new DatabaseError('User is not blacklisted!');
 		if (global) {
 			if (!user.global) throw new DatabaseError('User is not global blacklisted!');
-			return user.update({ global });
+			return user.update({ global: !global });
 		} else {
 			if (!user.guilds.includes(member.guild.id)) throw new DatabaseError('User not blacklisted!');
 			user.guilds.splice(user.guilds.indexOf(member.guild.id), 1);

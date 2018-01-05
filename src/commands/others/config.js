@@ -327,6 +327,40 @@ class ConfigCommand extends Commands {
 		}
 	}
 
+	async welcome(msg, passedArgs) {
+		const [arg1, arg2, arg3, ...rest] = passedArgs;
+		if (!arg1) {
+			return msg.reply('You must provide an second parameter!');
+		} else if (arg2 === 'enable' || arg2 === 'on') {
+			await msg.guild.updateConfig({ welcomeEnabled: true });
+			msg.channel.send('enabled welcome messages!');
+		} else if (arg2 === 'disable' || arg2 === 'off') {
+			await msg.guild.updateConfig({ welcomeEnabled: false });
+			msg.channel.send('disabled welcome messages!');
+		} else if (arg2 === 'channel') {
+			if (arg3 === 'set') {
+				let channel;
+				if (msg.mentions.roles.size > 0) {
+					channel = msg.mentions.roles.first().id;
+				} else {
+					channel = msg.guild.roles.get(arg2).id;
+					if (!channel) {
+						return msg.reply('Your provided ID is wrong! use a Channelmention instead maybe');
+					}
+				}
+				await msg.guild.updateConfig({ welcomeChannel: channel });
+			} else if (arg3 === 'remove') {
+				await msg.guild.updateConfig({ welcomeChannel: null });
+			}
+		} else if (arg2 === 'message') {
+			rest.unshift(arg3);
+			const welcomeMessage = rest.join(' ');
+			await msg.guild.updateConfig({ welcomeMessage });
+		} else {
+			return msg.reply('You provided an wrong second parameter');
+		}
+	}
+
 	async run(msg, args) {
 		let [arg1, ...argsToPass] = args;
 		if (!arg1) {
@@ -354,6 +388,9 @@ class ConfigCommand extends Commands {
 					break;
 				case 'musicrole':
 					await this.musicrole(msg, argsToPass);
+					break;
+				case 'welcome':
+					await this.welcome(msg, argsToPass);
 					break;
 				default:
 					return msg.reply('seems like you provided a first parameter what is wrong maybe look the usage up again!');
