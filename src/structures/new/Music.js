@@ -120,14 +120,14 @@ class Music {
 	getSongByName(name, requestedBy, messageToEdit) {
 		return new Promise((resolve, reject) => {
 			search(name, searchOptions, async (err, result) => {
-				if (err) reject(err);
-				if (!result || !result[0]) reject(new MusicError('searching for that song failed', messageToEdit));
+				if (err) return reject(err);
+				if (!result || !result[0]) return reject(new MusicError('searching for that song failed', messageToEdit));
 				let [song] = result;
 				let index = 0;
 				while (song.kind !== 'youtube#video') {
 					index += 1;
 					song = result[index];
-					if (!song) reject(new MusicError('i found no song with that name. Please use a link instead!', messageToEdit));
+					if (!song) return reject(new MusicError('i found no song with that name. Please use a link instead!', messageToEdit));
 				}
 				try {
 					const songInfo = await this.getSongByUrl(song.link, requestedBy, messageToEdit);
