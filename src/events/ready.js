@@ -15,7 +15,7 @@ class ReadyEvent extends Events {
 		client.log.info(`Servers:       ${client.guilds.size}`);
 		client.log.info(`Channels:      ${client.channels.size}`);
 		client.log.info('-----------------------------------------------------------------------------');
-		client.user.setGame(`${client.config.prefix}help || Version: ${client.version}`);
+		client.user.setActivity(`${client.config.prefix}help || Version: ${client.version}`);
 		const Timers = new Timer(client);
 		Timers.init();
 	}
