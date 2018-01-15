@@ -1,17 +1,9 @@
 const { googleAPIKey } = require('../../config/config.json');
 const { MusicError } = require('./CustomErrors.js');
-const promiseReflect = require('promise-reflect');
 const yt = require('ytdl-core');
-const YouTube = require('youtube-node');
-const youtube = new YouTube();
-youtube.setKey(googleAPIKey);
-const search = require('youtube-search');
-const youtubeApi = require('youtube-api');
+const YouTube = require('simple-youtube-api');
+const youtube = new YouTube(googleAPIKey);
 const { RichEmbed } = require('discord.js');
-const searchOptions = {
-	maxResults: 10,
-	key: googleAPIKey
-};
 
 class Music {
 	constructor(Guild) {
@@ -27,17 +19,15 @@ class Music {
 		const { voiceConnection } = guild;
 		let [CurrentSong] = queue;
 		if (!voiceConnection || this.playing || queue.length === 0 || !CurrentSong) return;
-		const { title, requestedBy, link, picture } = CurrentSong;
-		this.dispatcher = voiceConnection.playStream(yt(link, { audioonly: true }));
+		const { title, requestor, url, thumbnails } = CurrentSong;
+		this.dispatcher = voiceConnection.playStream(yt(url, { audioonly: true }));
 		this.dispatcher.on('start', () => {
 			voiceConnection.player.streamingData.pausedTime = 0;
 			this.playing = true;
 			const embed = new RichEmbed()
-				.setDescription(`[${title}](${link})`)
-				.setAuthor(requestedBy.tag, requestedBy.displayAvatarURL);
-			if (picture) {
-				embed.setImage(picture);
-			}
+				.setDescription(`[${title}](${url})`)
+				.setAuthor(requestor.tag, requestor.displayAvatarURL)
+				.setImage(thumbnails.maxres.url);
 			embed.setColor('RANDOM');
 			channel.send({ embed });
 		}
@@ -61,18 +51,15 @@ class Music {
 	}
 
 	async handlePlaylist(link, requestedBy, channel, messageToEdit) {
-		const playlist = await this.getPlaylist(link, messageToEdit);
-		const promises = [];
-		for (const song of playlist) {
-			const url = `https://www.youtube.com/watch?v=${song.resourceId.videoId}`;
-			promises.push(this.getSongByUrl(url, requestedBy, messageToEdit));
+		try {
+			const playlist = await youtube.getPlaylist(link);
+			const songs = await playlist.getVideos();
+			for (const song of songs) this.queue.push(new Song(song, requestedBy));
+			this.playqueue(channel);
+			return `${songs.length} Songs were added.`;
+		} catch (error) {
+			throw new MusicError(error.message, messageToEdit);
 		}
-		const values = await Promise.all(promises.map(promiseReflect));
-		let resolved = values.filter(value => value.status === 'resolved');
-		let rejected = values.filter(value => value.status === 'rejected');
-		resolved.map(song => this.queue.push(song.data));
-		this.playqueue(channel);
-		return `${resolved.length} Songs were added, ${rejected.length} could not be added due length, Copyright issues or it is Private`;
 	}
 
 	async handleSong(input, requestedBy, isUrl, channel, messageToEdit) {
@@ -103,85 +90,22 @@ class Music {
 		}
 	}
 
-	getSongByUrl(url, requestedBy, messageToEdit) {
-		return new Promise((resolve, reject) => {
-			const id = /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/g.exec(url);
-			if (!id) return reject(new MusicError('this Link isn\'s a Youtube Video', messageToEdit));
-			youtube.getById(id[1], (err, result) => {
-				if (err) return reject(err);
-				if (!result.items[0]) return reject(new MusicError('Song Unaviable', messageToEdit));
-				const Song = new SongInfo(result.items[0], requestedBy);
-				if (Song.length > 1800) return reject(new MusicError('Song is too long! the maximun limit is 30 minutes', messageToEdit));
-				resolve(Song);
-			});
-		});
+	async getSongByUrl(url, requestedBy, messageToEdit) {
+		const id = /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/g.exec(url);
+		if (!id) throw new MusicError('this Link isn\'s a Youtube Video', messageToEdit);
+		const result = await youtube.getVideoByID(id[1]);
+		if (!result) throw new MusicError('Song Unaviable', messageToEdit);
+		const song = new Song(result, requestedBy);
+		if (song.durationSeconds > 1800) throw new MusicError('Song is too long! the maximun limit is 30 minutes', messageToEdit);
+		return song;
 	}
 
-	getSongByName(name, requestedBy, messageToEdit) {
-		return new Promise((resolve, reject) => {
-			search(name, searchOptions, async (err, result) => {
-				if (err) return reject(err);
-				if (!result || !result[0]) return reject(new MusicError('searching for that song failed', messageToEdit));
-				let song = result[0];
-				let index = 0;
-				while (song.kind !== 'youtube#video') {
-					index += 1;
-					song = result[index];
-					if (!song) return reject(new MusicError('i found no song with that name. Please use a link instead!', messageToEdit));
-				}
-				try {
-					const songInfo = await this.getSongByUrl(song.link, requestedBy, messageToEdit);
-					resolve(songInfo);
-				} catch (error) {
-					return reject(error);
-				}
-			});
-		});
-	}
-
-	async getPlaylist(url, messageToEdit) {
-		const id = /[&?]list=([a-z0-9_-]+)/i.exec(url);
-		if (!id) throw new MusicError('this Link isn\'s a Youtube Playlist', messageToEdit);
-		try {
-			const playlistItems = await this.playlistInfo(googleAPIKey, id[1]);
-			if (!playlistItems) throw new MusicError('Invalid playlist', messageToEdit);
-			return playlistItems;
-		} catch (error) {
-			if (error instanceof MusicError) throw error;
-			throw new MusicError('Playlist Url is not correctly formatted try another one!', messageToEdit);
-		}
-	}
-
-	playlistInfoRecursive(playlistId, callStackSize, pageToken, currentItems, callback) {
-		youtubeApi.playlistItems.list({
-			part: 'snippet',
-			pageToken,
-			maxResults: 50,
-			playlistId
-		}, (err, data) => {
-			if (err) return callback(err);
-			for (const x in data.items) {
-				currentItems.push(data.items[x].snippet);
-			}
-			if (data.nextPageToken) {
-				this.playlistInfoRecursive(playlistId, callStackSize + 1, data.nextPageToken, currentItems, callback);
-			} else {
-				return callback(null, currentItems);
-			}
-		});
-	}
-
-	playlistInfo(apiKey, playlistId) {
-		return new Promise((resolve, reject) => {
-			youtubeApi.authenticate({
-				type: 'key',
-				key: apiKey
-			});
-			this.playlistInfoRecursive(playlistId, 0, null, [], (err, list) => {
-				if (err) return reject(err);
-				return resolve(list);
-			});
-		});
+	async getSongByName(name, requestedBy, messageToEdit) {
+		const searchResult = await youtube.searchVideos(name);
+		if (!searchResult[0]) throw new MusicError('i found no song with that name. Please use a link instead!', messageToEdit);
+		let [song] = searchResult;
+		const songInfo = await this.getSongByUrl(song.url, requestedBy, messageToEdit);
+		return songInfo;
 	}
 
 	set queue(input) {
@@ -193,44 +117,10 @@ class Music {
 	}
 }
 
-class SongInfo {
-	constructor(info, requestedBy) {
-		this.raw = info;
-		this.requestedBy = requestedBy;
-	}
-
-	get id() {
-		return this.raw.id;
-	}
-
-	get link() {
-		return `https://www.youtube.com/watch?v=${this.id}`;
-	}
-
-	get title() {
-		return this.raw.snippet.title;
-	}
-
-	get length() {
-		return this.parseTime(this.raw.contentDetails.duration);
-	}
-
-	get picture() {
-		return `https://img.youtube.com/vi/${this.id}/maxresdefault.jpg`;
-	}
-
-	parseTime(time) {
-		if (!time) return null;
-		const match = time.match(/P(\d+M)?(\d+W)?(\d+D)?T(\d+H)?(\d+M)?(\d+S)?/);
-
-		const Month = parseInt(match[1]) || 0,
-			Weeks = parseInt(match[2]) || 0,
-			Days = parseInt(match[3]) || 0,
-			Hours = parseInt(match[4]) || 0,
-			minutes = parseInt(match[5]) || 0,
-			Seconds = parseInt(match[6]) || 0;
-
-		return Month * 2629744 + Weeks * 604800 + Days * 86400 + Hours * 3600 + minutes * 60 + Seconds; // eslint-disable-line no-mixed-operators
+class Song extends YouTube.Video {
+	constructor(song, requestedBy) {
+		super(youtube, song.raw);
+		this.requestor = requestedBy;
 	}
 }
 
