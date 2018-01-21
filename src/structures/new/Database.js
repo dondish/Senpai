@@ -1,7 +1,7 @@
 const { databaseName, databasePW } = require('../../config/config.json');
 const Sequelize = require('sequelize');
 
-class Database {
+module.exports = new class Database {
 	constructor() {
 		this.database = new Sequelize('Discord', databaseName, databasePW, {
 			host: 'localhost',
@@ -302,6 +302,4 @@ class Database {
 			}
 		});
 	}
-}
-
-module.exports = new Database();
+};

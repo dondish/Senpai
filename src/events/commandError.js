@@ -17,9 +17,8 @@ class commandError extends Events {
 		msg.reply(`An error occurred while running the command: \`${error.name}: ${error.message}\`
 You shouldn't ever receive an error like this.
 Please contact ${owner.tag} in this server: ${supportServerLink}`);
-		client.log.error(`[Error]   ${error.name}: ${error.message}`);
-		client.log.error(`          with this message ${msg.content}`);
-		await client.users.get(ownerID).send(`The error: "${error.name}:${error.message}" has occured; Go to logs for more info.`);
+		client.log.error(`CommandError ${error.stack} \nwith this message ${msg.content}`);
+		await client.users.get(ownerID).send(`Error: \`\`\`js\n${error.stack}\`\`\` has occured`);
 	}
 }
 

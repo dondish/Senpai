@@ -52,7 +52,7 @@ class PollCommand extends Commands {
 			.addField('Options', collection.map(object => `${object.emoji} => ${object.option}`).join('\n'))
 			.setFooter(`this poll will last ${this.format(time / 1000)}`);
 
-		const sent = await msg.channel.send({ embed });
+		const sent = await msg.channel.send(embed);
 
 		sent.awaitReactions((reaction, user) => {
 			if (!collection.exists('emoji', reaction.emoji.name) || user.bot) return false;

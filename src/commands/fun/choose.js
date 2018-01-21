@@ -20,7 +20,7 @@ class ChooseCommand extends Commands {
 			.addField('I choose the following:', result)
 			.setColor('RANDOM')
 			.setAuthor(msg.member.displayName, msg.author.displayAvatarURL);
-		msg.channel.send({ embed });
+		msg.channel.send(embed);
 	}
 }
 

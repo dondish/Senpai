@@ -26,7 +26,7 @@ class QueueCommand extends Commands {
 		const time = this.format(Math.floor(totalTimeInSec));
 		const songs = queue.map(Song => `${Song.title}\nRequested by ${Song.requestedBy.tag}`);
 		const embed = this.constructRichEmbed(songs, msg, time);
-		msg.channel.send({ embed });
+		msg.channel.send(embed);
 	}
 
 	constructRichEmbed(songArray, msg, time) {

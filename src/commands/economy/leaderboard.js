@@ -29,7 +29,7 @@ class LeaderboardCommand extends Commands {
 			embed.addField(`Rank #${index}`, user);
 			index++;
 		}
-		await msg.channel.send({ embed });
+		await msg.channel.send(embed);
 	}
 }
 

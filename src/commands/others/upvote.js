@@ -19,7 +19,7 @@ class UpvoteCommand extends Commands {
 			.setColor(0x80ff00)
 			.setTimestamp()
 			.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
-		msg.channel.send({ embed });
+		msg.channel.send(embed);
 	}
 }
 

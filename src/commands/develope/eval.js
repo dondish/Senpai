@@ -39,7 +39,7 @@ class EvalCommand extends Commands {
 					.setColor(0x80ff00)
 					.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
 					.setTimestamp();
-				await msg.channel.send({ embed });
+				await msg.channel.send(embed);
 			} else {
 				const res = await post('https://www.hastebin.com/documents').send(output);
 				const embed = new RichEmbed()
@@ -49,10 +49,10 @@ class EvalCommand extends Commands {
 					.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
 					.setColor(0x80ff00)
 					.setTimestamp();
-				await msg.channel.send({ embed });
+				await msg.channel.send(embed);
 			}
 		} catch (error) {
-			let err = inspect(error, { depth: 0, maxArrayLength: 0 });
+			let err = inspect(error, { depth: 0, maxArrayLength: null });
 			err = err.replace(filter, '[TOKEN]');
 			const errDiscord = `\`\`\`js\n${err}\n\`\`\``;
 			if (err.length < 1024) {
@@ -62,7 +62,7 @@ class EvalCommand extends Commands {
 					.addField(':x: ERROR', errDiscord)
 					.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
 					.setColor(0x80ff00);
-				msg.channel.send({ embed });
+				msg.channel.send(embed);
 			} else {
 				const res = await post('https://www.hastebin.com/documents').send(err);
 				const embed = new RichEmbed()
@@ -71,7 +71,7 @@ class EvalCommand extends Commands {
 					.addField(':x: ERROR', `output was to long so it was uploaded to hastebin https://www.hastebin.com/${res.body.key}.js `, true)
 					.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
 					.setColor(0x80ff00);
-				msg.channel.send({ embed });
+				msg.channel.send(embed);
 			}
 		}
 	}

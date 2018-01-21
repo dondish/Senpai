@@ -16,31 +16,37 @@ class Music {
 
 	playqueue(channel) {
 		let { queue, guild, loop } = this;
-		const { voiceConnection } = guild;
+		const { voiceConnection, client } = guild;
 		let [CurrentSong] = queue;
 		if (!voiceConnection || this.playing || queue.length === 0 || !CurrentSong) return;
 		const { title, requestor, url, thumbnails } = CurrentSong;
+
 		this.dispatcher = voiceConnection.playStream(yt(url, { audioonly: true }));
+
 		this.dispatcher.on('start', () => {
 			voiceConnection.player.streamingData.pausedTime = 0;
 			this.playing = true;
 			const embed = new RichEmbed()
 				.setDescription(`[${title}](${url})`)
 				.setAuthor(requestor.tag, requestor.displayAvatarURL)
-				.setImage(thumbnails.maxres.url);
-			embed.setColor('RANDOM');
-			channel.send({ embed });
-		}
-		);
+				.setImage(thumbnails.maxres.url)
+				.setColor('RANDOM');
+			if (channel.permissionsFor(channel.guild.me).has('SEND_MESSAGES')) {
+				channel.send(embed);
+			}
+		});
+
 		this.dispatcher.on('error', error => {
-			channel.send('I had an error while trying to play the Current Song so i skipped it! if this happens more than 1 time please contact my DEV!');
+			if (channel.permissionsFor(channel.guild.me).has('SEND_MESSAGES')) {
+				channel.send('I had an error while trying to play the Current Song so i skipped it! if this happens more than 1 time please contact my DEV!');
+			}
 			queue.shift();
-			guild.client.log.error(`while trying to play a song this error occurred ${error.name}:${error.message}`);
+			client.log.error(`while trying to play a song this error occurred ${error.name}:${error.message}`);
 			this.playing = false;
 			this.dispatcher = null;
 			return this.playqueue(channel);
-		}
-		);
+		});
+
 		this.dispatcher.on('end', () => setTimeout(() => {
 			const shifted = queue.shift();
 			if (loop) queue.push(shifted);
@@ -103,9 +109,8 @@ class Music {
 	async getSongByName(name, requestedBy, messageToEdit) {
 		const searchResult = await youtube.searchVideos(name);
 		if (!searchResult[0]) throw new MusicError('i found no song with that name. Please use a link instead!', messageToEdit);
-		let [song] = searchResult;
-		const songInfo = await this.getSongByUrl(song.url, requestedBy, messageToEdit);
-		return songInfo;
+		let [result] = searchResult;
+		return new Song(result, requestedBy);
 	}
 
 	set queue(input) {

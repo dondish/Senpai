@@ -34,7 +34,7 @@ class MessageReactionAddEvent extends Events {
 				await this.createStarboardMessage({ message, reactionCount, guild, starboardChannel });
 			}
 		} catch (error) {
-			client.log.error(`MessageReactionAdd Event encountered this Error ${error.name}: ${error.message}`);
+			client.log.error(`MessageReactionAdd Event encountered this Error ${error.stack}`);
 		}
 	}
 
@@ -56,7 +56,7 @@ class MessageReactionAddEvent extends Events {
 			if (/\.(gif|jpg|jpeg|tiff|png)$/i.test(message.attachments.first().filename)) embed.setImage(`${message.attachments.first().url}`);
 		}
 		const channel = message.guild.channels.get(starboardChannel);
-		const sent = await channel.send({ embed });
+		const sent = await channel.send(embed);
 		await message.guild.createStarboardMessage({ originalMessageID: message.id, starMessageID: sent.id, starCount: reactionCount, author: message.author.id });
 	}
 

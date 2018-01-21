@@ -24,7 +24,7 @@ class WaifuCommand extends Commands {
 			.setColor(0x80ff00)
 			.setTimestamp()
 			.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
-		await msg.channel.send({ embed });
+		await msg.channel.send(embed);
 	}
 }
 

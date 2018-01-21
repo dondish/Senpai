@@ -47,7 +47,7 @@ class ConfigCommand extends Commands {
 			.addField('Welcome Message', welcomeMessage, true)
 			.setTimestamp()
 			.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
-		msg.channel.send({ embed });
+		msg.channel.send(embed);
 	}
 	async prefix(msg, passedArgs) {
 		const [arg1, arg2] = passedArgs;
@@ -66,7 +66,7 @@ class ConfigCommand extends Commands {
 				.addField('Updated Prefix to', arg2)
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
-			msg.channel.send({ embed });
+			msg.channel.send(embed);
 		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			await msg.guild.updateConfig({ prefix: null });
 			msg.channel.send('i deleted the custom prefix from this server!');
@@ -98,7 +98,7 @@ class ConfigCommand extends Commands {
 				.addField('New Modlog', modlog.toString())
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
-			msg.channel.send({ embed });
+			msg.channel.send(embed);
 		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			await msg.guild.updateConfig({ modlogChannel: null });
 			msg.channel.send('i deleted the modlog channel from my config!');
@@ -130,7 +130,7 @@ class ConfigCommand extends Commands {
 				.addField('New Musiclog', musiclog.toString())
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
-			msg.channel.send({ embed });
+			msg.channel.send(embed);
 		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			await msg.guild.updateConfig({ musicChannel: null });
 			msg.channel.send('i deleted the Musiclog channel from my config!');
@@ -162,7 +162,7 @@ class ConfigCommand extends Commands {
 				.addField('New Starboard Channel', starboard.toString())
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
-			msg.channel.send({ embed });
+			msg.channel.send(embed);
 		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			await msg.guild.updateConfig({ starboardChannel: null });
 			msg.channel.send('i deleted the Starboard channel from my config!');
@@ -175,7 +175,7 @@ class ConfigCommand extends Commands {
 				.addField('New required Star Count', `${number}`)
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
-			msg.channel.send({ embed });
+			msg.channel.send(embed);
 		} else {
 			return msg.reply('You provided an wrong second parameter');
 		}
@@ -215,7 +215,7 @@ class ConfigCommand extends Commands {
 				.addField('updated Modroles', `${Roles}`)
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
-			msg.channel.send({ embed });
+			msg.channel.send(embed);
 		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			if (!arg2) {
 				return msg.reply('you must add RoleID or Mention for this!');
@@ -244,7 +244,7 @@ class ConfigCommand extends Commands {
 				.addField('updated Modroles', `${Roles}`)
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
-			msg.channel.send({ embed });
+			msg.channel.send(embed);
 		} else {
 			return msg.reply('You provided an wrong second parameter');
 		}
@@ -280,7 +280,7 @@ class ConfigCommand extends Commands {
 				.addField('updated Musicroles', `${Roles}`)
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
-			msg.channel.send({ embed });
+			msg.channel.send(embed);
 		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			if (!arg2) {
 				return msg.reply('you must add RoleID or Mention for this!');
@@ -309,7 +309,7 @@ class ConfigCommand extends Commands {
 				.addField('updated Musicroles', `${Roles}`)
 				.setTimestamp()
 				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
-			msg.channel.send({ embed });
+			msg.channel.send(embed);
 		} else if (arg1 === 'limit') {
 			if (!arg2) {
 				return msg.reply('You must provide an third parameter!');

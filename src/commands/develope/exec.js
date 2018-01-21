@@ -31,7 +31,7 @@ class ExecCommand extends Commands {
 					.setColor(0x80ff00)
 					.setFooter(`Senpai version ${client.version} by Yukine`)
 					.setTimestamp();
-				return msg.channel.send({ embed });
+				return msg.channel.send(embed);
 			} else {
 				const output = stderr || stdout;
 				const output2 = `\`\`\`Bash\n${output}\n\`\`\``;
@@ -42,7 +42,7 @@ class ExecCommand extends Commands {
 					.setColor(0x80ff00)
 					.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
 					.setTimestamp();
-				return msg.channel.send({ embed });
+				return msg.channel.send(embed);
 			}
 		});
 	}

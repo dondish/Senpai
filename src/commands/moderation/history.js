@@ -19,7 +19,7 @@ class HistoryCommand extends Commands {
 		const embed = new RichEmbed()
 			.setAuthor(member.user.tag, member.user.displayAvatarURL)
 			.setFooter(`This user has ${warnCount} warnings, ${muteCount} mutes, ${kickCount} kicks, and ${banCount} bans.`);
-		msg.channel.send({ embed });
+		msg.channel.send(embed);
 	}
 }
 

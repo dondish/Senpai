@@ -39,7 +39,7 @@ class AboutCommand extends Commands {
 			.addField('Shards:', `${client.shard.id + 1}/${client.shard.count}`, true)
 			.setTimestamp()
 			.setColor('DARK_GREEN');
-		msg.channel.send({ embed });
+		msg.channel.send(embed);
 	}
 
 	format(seconds) {
