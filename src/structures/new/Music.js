@@ -107,9 +107,9 @@ class Music {
 	}
 
 	async getSongByName(name, requestedBy, messageToEdit) {
-		const searchResult = await youtube.searchVideos(name);
-		if (!searchResult[0]) throw new MusicError('i found no song with that name. Please use a link instead!', messageToEdit);
-		let [result] = searchResult;
+		const results = await youtube.searchVideos(name);
+		if (!results[0]) throw new MusicError('i found no song with that name. Please use a link instead!', messageToEdit);
+		let [result] = results;
 		return new Song(result, requestedBy);
 	}
 
