@@ -26,7 +26,7 @@ class EvalCommand extends Commands {
 		const input = `\`\`\`js\n${code}\n\`\`\``;
 		try {
 			let output = eval(code);
-			if (output instanceof Promise) output = await output;
+			if (output instanceof Promise || (Boolean(output) && typeof output.then === 'function' && typeof output.catch === 'function')) output = await output;
 			let type = typeof output;
 			output = inspect(output, { depth: 0, maxArrayLength: null });
 			output = output.replace(filter, '[TOKEN]');
