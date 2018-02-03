@@ -32,13 +32,12 @@
     "discord.js": "^11.3.0",
     "ffmpeg-binaries": "^3.2.2",
     "file": "^0.2.2",
-    "kitsu": "^4.4.3",
+    "kitsu": "^4.5.2",
     "node-opus": "^0.2.7",
     "node-osu": "^1.3.0",
     "pg": "^6.4.2",
     "pg-hstore": "^2.3.2",
     "pixabay-api": "^1.0.4",
-    "promise-reflect": "^1.1.0",
     "relevant-urban": "^2.0.0",
     "sequelize": "^4.32.1",
     "sherlockjs": "^1.3.7",
@@ -49,6 +48,6 @@
     "steamapi-node": "^2.0.3",
     "weather-js": "^2.0.0",
     "winston": "^2.4.0",
-    "ytdl-core": "^0.18.7"
+    "ytdl-core": "^0.20.0"
   }
 }
