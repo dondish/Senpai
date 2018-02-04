@@ -76,9 +76,17 @@ class Util {
 			const name = element.slice(7);
 			const EventClass = require(`../../events/${name}`);
 			const Event = new EventClass(client);
-			client.on(Event.name, Event.run.bind(Event));
+			const eventWrap = async (...args) => {
+				try {
+					await Event.run(...args);
+				} catch (error) {
+					this.client.log.error(`${Event.name} encountered following error ${error.stack}`);
+				}
+			};
+			client.on(Event.name, eventWrap);
 		});
 	}
+
 
 	async _syncDatabase() {
 		const { client } = this;

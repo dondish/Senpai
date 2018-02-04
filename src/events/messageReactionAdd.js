@@ -8,33 +8,28 @@ class MessageReactionAddEvent extends Events {
 	}
 
 	async run(messageReaction, user) {
-		const { client } = this;
-		try {
-			if (user.bot) return;
-			if (messageReaction.emoji.name !== '⭐') return;
-			const { message } = messageReaction;
-			const { guild } = message;
-			if (message.author.id === user.id) return;
-			if (!guild) return;
-			const { starboardChannel, starcount } = await guild.getConfig();
-			const starboardChannelObj = message.guild.channels.get(starboardChannel);
-			if (!starboardChannelObj) return;
-			if (message.channel.id === starboardChannel.id) return;
-			const starboardMessage = await guild.getStarboardMessage(message.id);
-			if (starboardMessage) {
-				await messageReaction.fetchUsers();
-				let reactionCount = messageReaction.count;
-				if (messageReaction.users.has(message.author.id)) reactionCount -= 1;
-				await this.editStarboardMessage({ message, reactionCount, guild, starboardChannel });
-			} else {
-				await messageReaction.fetchUsers();
-				let reactionCount = messageReaction.count;
-				if (messageReaction.users.has(message.author.id)) reactionCount -= 1;
-				if (reactionCount < starcount) return;
-				await this.createStarboardMessage({ message, reactionCount, guild, starboardChannel });
-			}
-		} catch (error) {
-			client.log.error(`MessageReactionAdd Event encountered this Error ${error.stack}`);
+		if (user.bot) return;
+		if (messageReaction.emoji.name !== '⭐') return;
+		const { message } = messageReaction;
+		const { guild } = message;
+		if (message.author.id === user.id) return;
+		if (!guild) return;
+		const { starboardChannel, starcount } = await guild.getConfig();
+		const starboardChannelObj = message.guild.channels.get(starboardChannel);
+		if (!starboardChannelObj) return;
+		if (message.channel.id === starboardChannel.id) return;
+		const starboardMessage = await guild.getStarboardMessage(message.id);
+		if (starboardMessage) {
+			await messageReaction.fetchUsers();
+			let reactionCount = messageReaction.count;
+			if (messageReaction.users.has(message.author.id)) reactionCount -= 1;
+			await this.editStarboardMessage({ message, reactionCount, guild, starboardChannel });
+		} else {
+			await messageReaction.fetchUsers();
+			let reactionCount = messageReaction.count;
+			if (messageReaction.users.has(message.author.id)) reactionCount -= 1;
+			if (reactionCount < starcount) return;
+			await this.createStarboardMessage({ message, reactionCount, guild, starboardChannel });
 		}
 	}
 
