@@ -9,14 +9,10 @@ class RawEvent extends Events {
 	async run(event) {
 		if (event.t !== 'MESSAGE_REACTION_ADD' && event.t !== 'MESSAGE_REACTION_REMOVE') return;
 		const { d: data, t: type } = event; // eslint-disable-line id-length
-		try {
-			if (type === 'MESSAGE_REACTION_ADD') {
-				await this.reactionAdd(data);
-			} else if (type === 'MESSAGE_REACTION_REMOVE') {
-				await this.reactionRemove(data);
-			}
-		} catch (error) {
-			this.client.log.error(`Raw Event encountered this Error ${error.name}: ${error.message}`);
+		if (type === 'MESSAGE_REACTION_ADD') {
+			await this.reactionAdd(data);
+		} else if (type === 'MESSAGE_REACTION_REMOVE') {
+			await this.reactionRemove(data);
 		}
 	}
 

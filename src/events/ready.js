@@ -7,7 +7,7 @@ class ReadyEvent extends Events {
 		this.name = 'ready';
 	}
 
-	run() {
+	async run() {
 		const { client } = this;
 		client.log.info('-----------------------------------------------------------------------------');
 		client.log.info(`Username:      ${client.user.username}`);
@@ -17,7 +17,12 @@ class ReadyEvent extends Events {
 		client.log.info('-----------------------------------------------------------------------------');
 		client.user.setActivity(`${client.config.prefix}help || Version: ${client.version}`);
 		const Timers = new Timer(client);
-		Timers.init();
+		await Timers.init();
+		const promises = [];
+		for (const guild of client.guilds.values()) {
+			if (!guild.me) promises.push(guild.fetchMember(client.user));
+		}
+		await Promise.all(promises);
 	}
 }
 

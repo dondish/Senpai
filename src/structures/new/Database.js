@@ -86,6 +86,11 @@ module.exports = new class Database {
 				type: Sequelize.TEXT,
 				defaultValue: 'Welcome our new user {{user}} to this server! Enjoy your stay',
 				allowNull: false
+			},
+			leaveMessage: {
+				type: Sequelize.TEXT,
+				defaultValue: '{{displayName}} just left us, press f to pray respect',
+				allowNull: false
 			}
 		});
 

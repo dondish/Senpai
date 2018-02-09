@@ -15,11 +15,10 @@ class Music {
 	}
 
 	playqueue(channel) {
-		let { queue, guild, loop } = this;
-		const { voiceConnection, client } = guild;
-		let [CurrentSong] = queue;
-		if (!voiceConnection || this.playing || queue.length === 0 || !CurrentSong) return;
-		const { title, requestor, url, thumbnails } = CurrentSong;
+		const { voiceConnection, client } = this.guild;
+		let [currentSong] = this.queue;
+		if (!voiceConnection || this.playing || this.queue.length === 0 || !currentSong) return;
+		const { title, requestor, url, thumbnails } = currentSong;
 
 		this.dispatcher = voiceConnection.playStream(yt(url, { audioonly: true }));
 
@@ -40,16 +39,16 @@ class Music {
 			if (channel.permissionsFor(channel.guild.me).has('SEND_MESSAGES')) {
 				channel.send('I had an error while trying to play the Current Song so i skipped it! if this happens more than 1 time please contact my DEV!');
 			}
-			queue.shift();
-			client.log.error(`while trying to play a song this error occurred ${error.name}:${error.message}`);
+			this.queue.shift();
+			client.log.error(`while trying to play a song this error occurred ${error.stack}`);
 			this.playing = false;
 			this.dispatcher = null;
 			return this.playqueue(channel);
 		});
 
 		this.dispatcher.on('end', () => setTimeout(() => {
-			const shifted = queue.shift();
-			if (loop) queue.push(shifted);
+			const shifted = this.queue.shift();
+			if (this.loop) this.queue.push(shifted);
 			this.playing = false;
 			this.dispatcher = null;
 			this.playqueue(channel);
@@ -99,8 +98,9 @@ class Music {
 	async getSongByUrl(url, requestedBy, messageToEdit) {
 		const id = /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/g.exec(url);
 		if (!id) throw new MusicError('this Link isn\'s a Youtube Video', messageToEdit);
-		const result = await youtube.getVideoByID(id[1]);
+		let result = await youtube.getVideoByID(id[1]);
 		if (!result) throw new MusicError('Song Unaviable', messageToEdit);
+		result = await result.fetch();
 		const song = new Song(result, requestedBy);
 		if (song.durationSeconds > 1800) throw new MusicError('Song is too long! the maximun limit is 30 minutes', messageToEdit);
 		return song;
@@ -109,7 +109,8 @@ class Music {
 	async getSongByName(name, requestedBy, messageToEdit) {
 		const results = await youtube.searchVideos(name);
 		if (!results[0]) throw new MusicError('i found no song with that name. Please use a link instead!', messageToEdit);
-		let [result] = results;
+		let result = results[0];
+		result = await result.fetch();
 		return new Song(result, requestedBy);
 	}
 
@@ -126,6 +127,7 @@ class Song extends YouTube.Video {
 	constructor(song, requestedBy) {
 		super(youtube, song.raw);
 		this.requestor = requestedBy;
+		if (!this.thumbnails.maxres) this.thumbnails.maxres = this.thumbnails.standard || this.thumbnails.high || this.thumbnails.medium || this.thumbnails.default;
 	}
 }
 

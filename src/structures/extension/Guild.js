@@ -81,14 +81,6 @@ class GuildExtension extends Extension {
 		return result.dataValues;
 	}
 
-	get loop() {
-		return this.music.loop;
-	}
-
-	set loop(boolean) {
-		this.music.loop = boolean;
-	}
-
 	get music() {
 		if (!this._music) this._music = new Music(this);
 		return this._music;

@@ -29,7 +29,7 @@ module.exports = class Timer {
 
 	addTimerToCache(timer) {
 		if (timer.type === 'reminder') this.client.setTimeout(() => this.client.channels.get(timer.channel).send(`${this.client.users.get(timer.user)} you wanted me to remind you with the Reason: ${timer.message}`), Date.now() - timer.date.getTime());
-		else if (timer.type === 'mute') this.client.channels.get(timer.channel).guild.members.get(timer.user).removeRole(this.client.channels.get(timer.channel).guild.toles.find('name', 'muted'), Date.now() - timer.date.getTime());
+		else if (timer.type === 'mute') this.client.setTimeout(() => this.client.channels.get(timer.channel).guild.members.get(timer.user).removeRole(this.client.channels.get(timer.channel).guild.roles.find('name', 'muted')), Date.now() - timer.date.getTime());
 	}
 
 	async executeTimer(timer) {
