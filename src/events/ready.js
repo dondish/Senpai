@@ -18,11 +18,6 @@ class ReadyEvent extends Events {
 		client.user.setActivity(`${client.config.prefix}help || Version: ${client.version}`);
 		const Timers = new Timer(client);
 		await Timers.init();
-		const promises = [];
-		for (const guild of client.guilds.values()) {
-			if (!guild.me) promises.push(guild.fetchMember(client.user));
-		}
-		await Promise.all(promises);
 	}
 }
 
