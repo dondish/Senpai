@@ -59,9 +59,12 @@ class Music {
 		try {
 			const playlist = await youtube.getPlaylist(link);
 			const songs = await playlist.getVideos();
-			for (const song of songs) this.queue.push(new Song(song, requestedBy));
+			const promises = [];
+			for (const song of songs) promises.push(song.fetch());
+			const fullSongs = await Promise.all(promises);
+			for (const song of fullSongs) this.queue.push(new Song(song, requestedBy));
 			this.playqueue(channel);
-			return `${songs.length} Songs were added.`;
+			return `${fullSongs.length} Songs were added.`;
 		} catch (error) {
 			throw new MusicError(error.message, messageToEdit);
 		}

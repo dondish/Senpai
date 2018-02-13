@@ -17,7 +17,6 @@ class QueueCommand extends Commands {
 		if (!queue || queue.length < 1) return msg.reply('there are no songs currently in queue!');
 
 		let time = queue.map(song => song.durationSeconds).reduce((a, b) => a + b);
-
 		time = this.format(time);
 		const songs = queue.map(Song => `${Song.title}\nRequested by ${Song.requestor.tag}`);
 		const embed = this.constructRichEmbed(songs, msg, time);
