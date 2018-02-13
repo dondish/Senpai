@@ -56,7 +56,7 @@ class Util {
 		const results = await Promise.all(promises);
 		for (const result of results) {
 			let [commands, folder] = result;
-			folder = folder.slice(16);
+			folder = folder.slice(path.length + 1);
 			for (const command of commands) {
 				let Command = require(`../../commands/${folder}/${command}`);
 				let Module = new Command(client, folder);
@@ -73,7 +73,7 @@ class Util {
 		const { client, walkAsync } = this;
 		const [dirPath, dirs, files] = await walkAsync('./events'); // eslint-disable-line no-unused-vars
 		files.forEach(element => {
-			const name = element.slice(7);
+			const name = element.slice(dirPath.length - 1);
 			const EventClass = require(`../../events/${name}`);
 			const Event = new EventClass(client);
 			const eventWrap = async (...args) => {
