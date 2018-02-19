@@ -2,7 +2,6 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'withdraw',
 	description: 'withdraw from the bank',
-	aliases: [],
 	examples: ['withdraw -a', 'withdraw 1500', 'withdraw all']
 };
 

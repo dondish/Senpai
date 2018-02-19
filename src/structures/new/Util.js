@@ -62,9 +62,7 @@ class Util {
 				let Module = new Command(client, folder);
 				client.commands.set(Module.name, Module);
 				client.log.debug(`Loading Command: ${Module.name} from ${folder}.`);
-				Module.aliases.forEach(alias => {
-					client.aliases.set(alias, Module.name);
-				});
+				if (Module.aliases) Module.aliases.forEach(alias => client.aliases.set(alias, Module.name));
 			}
 		}
 	}

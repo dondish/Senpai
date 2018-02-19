@@ -3,7 +3,6 @@ const urban = require('relevant-urban');
 const info = {
 	name: 'urban',
 	description: 'search for a word on the urban dictonary',
-	aliases: [],
 	examples: ['urban LOL']
 };
 

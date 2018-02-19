@@ -3,7 +3,6 @@ const { get } = require('snekfetch');
 const info = {
 	name: 'neko',
 	description: 'shows a picture of a neko',
-	aliases: [],
 	examples: ['neko']
 };
 

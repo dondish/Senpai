@@ -42,7 +42,7 @@ class HelpCommand extends Commands {
 			if (client.commands.has(param1)) {
 				const command = client.commands.get(param1);
 				const examples = command.examples.map(ex => `${prefix}${ex}`).join('\n');
-				await msg.channel.send(`= ${command.name} = \n\n${command.description}\n\nAliase: \n${command.aliases.join('\n')}\n\nExamples: \n${examples}`, { code: 'asciidoc' });
+				await msg.channel.send(`= ${command.name} = \n\n${command.description}\n\n${command.aliases ? `` : `Aliase:\n${command.aliases.join('\n')}`}\n\nExamples: \n${examples}`, { code: 'asciidoc' });
 			} else if (client.aliases.has(param1)) {
 				const command = client.commands.get(client.aliases.get(param1));
 				const examples = command.examples.map(ex => `${prefix}${ex}`).join('\n');

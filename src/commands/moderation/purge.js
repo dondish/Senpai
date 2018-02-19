@@ -2,7 +2,7 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'purge',
 	description: 'purges x amount of messages in this channel',
-	aliases: ['prune', 'bulkdelete'],
+	aliases: ['prune', 'bulkdelete', 'clear'],
 	examples: ['purge 25', 'purge 75']
 };
 

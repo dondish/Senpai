@@ -2,7 +2,6 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'shuffle',
 	description: 'shuffle the current queue',
-	aliases: [],
 	examples: ['shuffle']
 };
 

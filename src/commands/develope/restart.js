@@ -2,7 +2,6 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'restart',
 	description: 'restart this Bot (only the Bot Owner can use this command!)',
-	aliases: [],
 	examples: ['restart']
 };
 

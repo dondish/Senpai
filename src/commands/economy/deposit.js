@@ -2,7 +2,6 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'deposit',
 	description: 'deposit cash to the bank',
-	aliases: [],
 	examples: ['deposit -a', 'deposit 1500', 'deposit all']
 };
 

@@ -2,7 +2,6 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'kick',
 	description: 'kicks the mentioned user',
-	aliases: [],
 	examples: ['kick @User annoying', 'kick @user spamming']
 };
 

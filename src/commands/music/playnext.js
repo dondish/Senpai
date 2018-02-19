@@ -2,7 +2,6 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'playnext',
 	description: 'add a song to the queue as #2 position. Important! this Command takes no playlists',
-	aliases: [],
 	examples: ['playnext Adele Hello', 'playnext https://www.youtube.com/watch?v=YQHsXMglC9A']
 };
 

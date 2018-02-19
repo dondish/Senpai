@@ -2,7 +2,6 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'leave',
 	description: 'disconnect from voiceChannel im currently in!',
-	aliases: [],
 	examples: ['disconnect']
 };
 

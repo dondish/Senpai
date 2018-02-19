@@ -2,7 +2,6 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'clearqueue',
 	description: 'clear the whole queue only the playing song will stay!',
-	aliases: [],
 	examples: ['clearqueue']
 };
 

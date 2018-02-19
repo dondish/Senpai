@@ -2,7 +2,6 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'warn',
 	description: 'warn the mentioned user',
-	aliases: [],
 	examples: ['warn @User annoying', 'warn @User spamming', 'warn @User bad language']
 };
 

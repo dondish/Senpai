@@ -3,7 +3,6 @@ const ascii = require('ascii-art');
 const info = {
 	name: 'ascii',
 	description: 'transform text to ascii art (only works on short sentence)',
-	aliases: [],
 	examples: ['ascii test', 'ascii this is cool']
 };
 

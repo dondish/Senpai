@@ -2,7 +2,7 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'volume',
 	description: 'shows or change the current volume',
-	aliases: [],
+	aliases: ['vol'],
 	examples: ['volume', 'volume 0.8', 'volume 1.2']
 };
 

@@ -3,7 +3,6 @@ const { SlotMachine, SlotSymbol } = require('slot-machine');
 const info = {
 	name: 'slots',
 	description: 'play on a slotmachine',
-	aliases: [],
 	examples: ['slots [amount]']
 };
 
