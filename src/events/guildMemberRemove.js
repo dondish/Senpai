@@ -1,15 +1,15 @@
 const Events = require('../structures/new/Event.js');
 
-class GuildMemberAdd extends Events {
+class GuildMemberRemove extends Events {
 	constructor(client) {
 		super(client);
-		this.name = 'guildMemberAdd';
+		this.name = 'guildMemberRemove';
 	}
 
 	async run(member) {
-		const { welcomeEnabled, welcomeChannel, welcomeMessage } = await member.guild.getConfig();
+		const { welcomeEnabled, welcomeChannel, leaveMessage } = await member.guild.getConfig();
 		if (!welcomeEnabled || !welcomeChannel) return;
-		member.guild.channels.get(welcomeChannel).send(this.replaceAll(welcomeMessage, member));
+		member.guild.channels.get(welcomeChannel).send(this.replaceAll(leaveMessage, member));
 	}
 
 	replaceAll(text, member) {
@@ -27,4 +27,4 @@ class GuildMemberAdd extends Events {
 	}
 }
 
-module.exports = GuildMemberAdd;
+module.exports = GuildMemberRemove;

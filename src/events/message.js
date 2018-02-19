@@ -11,11 +11,13 @@ class MessageEvent extends Events {
 		if (msg.author.bot) return;
 		if (!msg.guild) return;
 		if (!msg.member) msg.member = await msg.guild.fetchMember(msg.author);
+
 		const blacklisted = await msg.member.isBlacklisted();
 		if (blacklisted) return;
 		msg.guild.economy.messageUpdate(msg.member);
 		let { prefix, disabledCommandCategories, disabledCommands, inviteLinkProtection } = await msg.guild.getConfig();
 		prefix = prefix ? prefix : client.config.prefix;
+
 		try {
 			if (inviteLinkProtection) {
 				if (this.inviteLink(msg.content)) {
@@ -26,9 +28,11 @@ class MessageEvent extends Events {
 		} catch (error) {
 			return msg.channel.send('Invite Links are forbidden on this Server! but i have no permission to delete this message.');
 		}
+
 		if (!msg.content.startsWith(prefix) && !this.mentioned(msg.content)) return;
 		let params;
 		let command;
+
 		if (msg.content.startsWith(prefix)) {
 			params = this.createParams(msg);
 			command = this.getCommand(msg, prefix);
@@ -36,12 +40,14 @@ class MessageEvent extends Events {
 			params = this.createParamsMention(msg);
 			command = this.getCommandMention(msg);
 		}
+
 		let cmd;
 		if (client.commands.has(command)) {
 			cmd = client.commands.get(command);
 		} else if (client.aliases.has(command)) {
 			cmd = client.commands.get(client.aliases.get(command));
 		}
+
 		if (cmd) {
 			if (disabledCommands.includes(cmd.name) || disabledCommandCategories.includes(cmd.group)) return;
 			try {
