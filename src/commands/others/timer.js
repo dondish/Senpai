@@ -11,13 +11,22 @@ class TimerCommand extends Commands {
 		super(client, info, group);
 	}
 
-	run(msg, params) {
+	async run(msg, params) {
 		if (params.length < 1) return msg.reply('You must add atleast a time to remind you!');
 		if (!this.validateTime(params.join(' '))) return msg.reply('seems like your Date is invalid! please try again');
-		const timeObject = this.parseTime(params.join(' '));
-		const time = timeObject.startDate.getTime() - Date.now();
+		const { startDate, eventTitle } = this.parseTime(params.join(' '));
+		const time = startDate.getTime() - new Date().getTime();
 		msg.channel.send(`I will remind you in ${this.format(time / 1000)}`);
-		setTimeout(() => msg.channel.send(`${msg.author} you wanted me to remind you. Reason: ${this.clean(timeObject.eventTitle) ? this.clean(timeObject.eventTitle) : 'no reason provided'}`), time);
+		const { dataValues } = await this.client.db.timers.create({
+			user: msg.author.id,
+			date: startDate,
+			message: this.clean(eventTitle) ? this.clean(eventTitle) : 'no reason provided',
+			channel: msg.channel.id
+		});
+		setTimeout(() => {
+			this.client.channels.get(dataValues.channel).send(`${msg.author} you wanted me to remind you. Reason: ${this.clean(dataValues.message)}`);
+			this.client.db.timers.findById(dataValues.id).destroy();
+		}, time);
 	}
 }
 

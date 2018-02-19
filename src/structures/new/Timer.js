@@ -5,9 +5,9 @@ module.exports = class Timer {
 	}
 
 	async init() {
-		let result = await this.fetchFromDB();
-		result = this.compareTimers(result);
-		this.handleTimers(result);
+		const results = await this.fetchFromDB();
+		const timerObjects = this.compareTimers(results);
+		this.handleTimers(timerObjects);
 	}
 
 	async fetchFromDB() {
@@ -17,25 +17,24 @@ module.exports = class Timer {
 	}
 
 	compareTimers(array) {
-		const overtime = array.filter(element => Date.now() > element.date.getTime());
-		const readd = array.filter(element => Date.now() < element.date.getTime());
-		return { execute: overtime, toAdd: readd };
+		const overtime = array.filter(element => new Date().getTime() > element.date.getTime());
+		const read = array.filter(element => new Date().getTime() < element.date.getTime());
+		return { execute: overtime, toAdd: read };
 	}
 
 	handleTimers(object) {
-		object.execute.map(this.executeTimer);
-		object.toAdd.map(this.addTimerToCache);
+		object.execute.map(this.executeTimer.bind(this));
+		object.toAdd.map(this.addTimerToCache.bind(this));
 	}
 
 	addTimerToCache(timer) {
-		if (timer.type === 'reminder') this.client.setTimeout(() => this.client.channels.get(timer.channel).send(`${this.client.users.get(timer.user)} you wanted me to remind you with the Reason: ${timer.message}`), Date.now() - timer.date.getTime());
-		else if (timer.type === 'mute') this.client.setTimeout(() => this.client.channels.get(timer.channel).guild.members.get(timer.user).removeRole(this.client.channels.get(timer.channel).guild.roles.find('name', 'muted')), Date.now() - timer.date.getTime());
+		this.client.setTimeout(() => this.executeTimer.bind(this)(timer), timer.date.getTime() - new Date().getTime());
 	}
 
 	async executeTimer(timer) {
 		if (timer.type === 'reminder') this.client.channels.get(timer.channel).send(`${this.client.users.get(timer.user)} you wanted me to remind you with the Reason: ${timer.message}`);
 		else if (timer.type === 'mute') this.client.channels.get(timer.channel).guild.members.get(timer.user).removeRole(this.client.channels.get(timer.channel).guild.toles.find('name', 'muted'));
-		const result = await timer.delete();
+		const result = await timer.destroy();
 		return result;
 	}
 };

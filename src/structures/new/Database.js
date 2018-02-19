@@ -272,7 +272,7 @@ module.exports = new class Database {
 			},
 			message: {
 				type: Sequelize.TEXT,
-				defaultValue: 'no message provided',
+				defaultValue: 'no reason provided',
 				allowNull: false
 			},
 			channel: {
