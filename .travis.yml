@@ -1,15 +1,16 @@
 language: node_js
 node_js:
   - "8"
+  - "9"
 sudo: required 
 dist: trusty
 cache:
+  yarn: true
   directories:
     - node_modules
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++ libtool autoconf automake
-  - npm install -g npm@latest
 install: 
-  - npm install
+  - yarn
 script:
-  - eslint src *.js
+  - yarn run lint
