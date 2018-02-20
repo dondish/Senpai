@@ -17,11 +17,6 @@ class PlayCommand extends Commands {
 		prefix = prefix ? prefix : client.config.prefix;
 		let channel = msg.guild.channels.get(musicID);
 		const musicChannel = channel || msg.channel;
-		const { musicLimited } = await msg.guild.getConfig();
-		if (musicLimited) {
-			const permissionLevel = await msg.member.getPermissionsLevel();
-			if (permissionLevel > 3) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to do this Command!");
-		}
 		if (!voiceConnection) return msg.reply(`You must let me join a Voice Channel with ${prefix}join!`);
 		const message = await msg.channel.send('trying to add your Song/Playlist to the queue....');
 		let link = params[0];

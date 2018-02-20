@@ -23,7 +23,7 @@ class TimerCommand extends Commands {
 			message: this.clean(eventTitle) ? this.clean(eventTitle) : 'no reason provided',
 			channel: msg.channel.id
 		});
-		setTimeout(() => {
+		this.client.setTimeout(() => {
 			this.client.channels.get(dataValues.channel).send(`${msg.author} you wanted me to remind you. Reason: ${this.clean(dataValues.message)}`);
 			this.client.db.timers.findById(dataValues.id).destroy();
 		}, time);

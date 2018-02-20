@@ -29,9 +29,8 @@ class Economy {
 
 	static async _updatebank(model) {
 		const values = await model.findAll();
-		values.map(value => Math.floor(value.bank * 1.01));
-		const Promises = values.map(value => value.save());
-		await Promise.all(Promises);
+		const promises = values.map(value => value.update({ bank: Math.floor(value.bank * 1.01) }));
+		await Promise.all(promises);
 	}
 }
 

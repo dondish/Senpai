@@ -16,12 +16,8 @@ class RemoveSongCommand extends Commands {
 		number = Number(number);
 		const { queue, dispatcher } = msg.guild.music;
 		const { voiceConnection, client } = msg.guild;
-		let { musicLimited, prefix } = await msg.guild.getConfig();
+		let { prefix } = await msg.guild.getConfig();
 		prefix = prefix ? prefix : client.config.prefix;
-		if (musicLimited) {
-			const permissionLevel = await msg.member.getPermissionsLevel();
-			if (permissionLevel > 3) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to do this Command!");
-		}
 		if (!voiceConnection) return msg.reply(`Im not in a Voice channel on this Server!`);
 		if (!dispatcher) return msg.reply(`I don't play music at the moment!`);
 		if (number === 1) return msg.reply(`You try to delete the current playing song from the queue use ${prefix}skip instead`);

@@ -22,7 +22,7 @@ class ReasonCommand extends Commands {
 		let caseNumber;
 		if (caseNumberS === 'latest') {
 			caseNumber = latestcase;
-		} else if (!Number.isNaN(Number(caseNumberS))) {
+		} else if (!isNaN(caseNumberS)) {
 			caseNumber = Number(caseNumberS);
 		} else {
 			return msg.reply('The first parameter has to be a valid case number');

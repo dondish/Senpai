@@ -26,13 +26,9 @@ class WeatherCommand extends Commands {
 			let humidity = new Image();
 			let windspeed = new Image();
 			const { readFileAsync } = this;
-			try {
-				base.src = await readFileAsync('./materials/pictures/weather.png');
-				humidity.src = await readFileAsync('./materials/icons/humidity.png');
-				windspeed.src = await readFileAsync('./materials/icons/wind.png');
-			} catch (error) {
-				return msg.channel.send('Something went wrong while reading a file! try again and if the error still happens contact my owner!');
-			}
+			base.src = await readFileAsync('./materials/pictures/weather.png');
+			humidity.src = await readFileAsync('./materials/icons/humidity.png');
+			windspeed.src = await readFileAsync('./materials/icons/wind.png');
 
 			// Enviroment stuff
 			ctx.drawImage(base, 0, 0, base.width, base.height);

@@ -26,53 +26,43 @@ class EvalCommand extends Commands {
 		const input = `\`\`\`js\n${code}\n\`\`\``;
 		try {
 			let output = eval(code);
-			if (output instanceof Promise || (Boolean(output) && typeof output.then === 'function' && typeof output.catch === 'function')) output = await output;
-			let type = typeof output;
+			if (Boolean(output) && typeof output.then === 'function' && typeof output.catch === 'function') output = await output;
+			const type = typeof output;
 			output = inspect(output, { depth: 0, maxArrayLength: null });
 			output = output.replace(filter, '[TOKEN]');
-			const discordOutput = `\`\`\`js\n${output}\n\`\`\``;
+			let sentOutput;
 			if (output.length < 1024) {
-				const embed = new RichEmbed()
-					.addField('EVAL', `**Type:** ${type}`)
-					.addField(':inbox_tray: Input', input)
-					.addField(':outbox_tray: Output', discordOutput)
-					.setColor(0x80ff00)
-					.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
-					.setTimestamp();
-				await msg.channel.send(embed);
+				sentOutput = `\`\`\`js\n${output}\n\`\`\``;
 			} else {
-				const res = await post('https://www.hastebin.com/documents').send(output);
-				const embed = new RichEmbed()
-					.addField('EVAL', `**Type:** ${type}`)
-					.addField(':inbox_tray: Input', input)
-					.addField(':outbox_tray: Output', `output was to long so it was uploaded to hastebin https://www.hastebin.com/${res.body.key}.js `, true)
-					.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
-					.setColor(0x80ff00)
-					.setTimestamp();
-				await msg.channel.send(embed);
+				const { body } = await post('https://www.hastebin.com/documents').send(output);
+				sentOutput = `output was to long so it was uploaded to hastebin instead https://www.hastebin.com/${body.key}.js`;
 			}
+			const embed = new RichEmbed()
+				.addField('EVAL', `**Type:** ${type}`)
+				.addField(':inbox_tray: Input', input)
+				.addField(':outbox_tray: Output', sentOutput)
+				.setColor(0x80ff00)
+				.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
+				.setTimestamp();
+			await msg.channel.send(embed);
 		} catch (error) {
 			let err = inspect(error, { depth: 0, maxArrayLength: null });
 			err = err.replace(filter, '[TOKEN]');
-			const errDiscord = `\`\`\`js\n${err}\n\`\`\``;
+			let sentOutput;
 			if (err.length < 1024) {
-				const embed = new RichEmbed()
-					.addField('EVAL', `**Type:** Error`)
-					.addField(':inbox_tray: Input', input)
-					.addField(':x: ERROR', errDiscord)
-					.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
-					.setColor(0x80ff00);
-				msg.channel.send(embed);
+				sentOutput = `\`\`\`js\n${err}\n\`\`\``;
 			} else {
-				const res = await post('https://www.hastebin.com/documents').send(err);
-				const embed = new RichEmbed()
-					.addField('EVAL', `**Type:** Error`)
-					.addField(':inbox_tray: Input', input)
-					.addField(':x: ERROR', `output was to long so it was uploaded to hastebin https://www.hastebin.com/${res.body.key}.js `, true)
-					.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
-					.setColor(0x80ff00);
-				msg.channel.send(embed);
+				const { body } = await post('https://www.hastebin.com/documents').send(err);
+				sentOutput = `output was to long so it was uploaded to hastebin instead https://www.hastebin.com/${body.key}.js `;
 			}
+			const embed = new RichEmbed()
+				.addField('EVAL', `**Type:** Error`)
+				.addField(':inbox_tray: Input', input)
+				.addField(':x: ERROR', sentOutput)
+				.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
+				.setColor(0x80ff00)
+				.setTimestamp();
+			await msg.channel.send(embed);
 		}
 	}
 }

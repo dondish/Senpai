@@ -19,11 +19,6 @@ class VolumeCommand extends Commands {
 		if (!params[0]) {
 			await msg.channel.send(`the current volume is ${dispatcher.volume}`);
 		} else {
-			const { musicLimited } = await msg.guild.getConfig();
-			if (musicLimited) {
-				const permissionLevel = await msg.member.getPermissionsLevel();
-				if (permissionLevel > 3) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to do this Command!");
-			}
 			const number = params[0];
 			if (isNaN(number)) return msg.channel.send('This command only accept numbers!');
 			if (number > 2 || number < 0.1) return msg.channel.send('You can only choose a number between 2 and 0.1 where 2=200% volume and 0.1=10% volume from the current volume!');
