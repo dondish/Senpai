@@ -1,5 +1,5 @@
 const Commands = require('../../structures/new/Command.js');
-const file = require('file');
+const { walkAsync } = require('../../structures/new/Util.js');
 const info = {
 	name: 'help',
 	description: 'shows all commands or info about a command',
@@ -18,7 +18,7 @@ class HelpCommand extends Commands {
 		prefix = prefix ? prefix : client.config.prefix;
 		let param1 = params[0];
 		if (!param1) {
-			let categories = await this.asyncReadDir('./commands');
+			let [, categories] = await walkAsync('./commands');
 			categories = categories.map(groupPath => groupPath.slice(9));
 			const arrayOfCommandCollections = [];
 			for (let i = 0; i < categories.length; i++) {
@@ -52,15 +52,6 @@ class HelpCommand extends Commands {
 				await msg.react('🤔');
 			}
 		}
-	}
-
-	asyncReadDir(path) {
-		return new Promise((resolve, reject) => {
-			file.walk(path, (err, dirPath, dirs) => {
-				if (err) return reject(err);
-				resolve(dirs);
-			});
-		});
 	}
 }
 

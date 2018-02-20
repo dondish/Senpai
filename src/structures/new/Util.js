@@ -27,7 +27,7 @@ class Util {
 		return utilPromisify(func);
 	}
 
-	walkAsync(path) {
+	static walkAsync(path) {
 		return new Promise((resolve, reject) => {
 			walk(path, (err, ...result) => {
 				if (err) return reject(err);
@@ -43,8 +43,8 @@ class Util {
 	}
 
 	async _commandloader() {
-		const { client, walkAsync, constructor } = this;
-		const { promisify } = constructor;
+		const { client, constructor } = this;
+		const { promisify, walkAsync } = constructor;
 		const readDirAsync = promisify(readdir);
 		const [path, dirs] = await walkAsync('../src/commands'); // eslint-disable-line no-unused-vars
 		const promises = [];
@@ -70,7 +70,8 @@ class Util {
 	}
 
 	async _eventloader() {
-		const { client, walkAsync } = this;
+		const { client, constructor } = this;
+		const { walkAsync } = constructor;
 		const [dirPath, dirs, files] = await walkAsync('./events'); // eslint-disable-line no-unused-vars
 		files.forEach(element => {
 			const name = element.slice(dirPath.length - 1);
