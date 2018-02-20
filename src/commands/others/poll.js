@@ -41,8 +41,8 @@ class PollCommand extends Commands {
 		if (options.length < 2) return msg.channel.send('you need to supply atleast 2 options to to choose!');
 		if (options.length > 10) return msg.channel.send('you can only set a max of 10 options!');
 		if (!validateTime(time)) return msg.reply('seems like your Time is invalid! please try again');
-		const timeObject = parseTime(time);
-		time = timeObject.startDate.getTime() - Date.now();
+		const { startDate } = parseTime(time);
+		time = startDate.getTime() - new Date().getTime();
 		const collection = createCollection(options, emojiValues);
 
 		const embed = new RichEmbed()
@@ -53,7 +53,6 @@ class PollCommand extends Commands {
 			.setFooter(`this poll will last ${this.format(time / 1000)}`);
 
 		const sent = await msg.channel.send(embed);
-
 		sent.awaitReactions((reaction, user) => {
 			if (!collection.exists('emoji', reaction.emoji.name) || user.bot) return false;
 			return true;
