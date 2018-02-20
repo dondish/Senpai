@@ -15,15 +15,15 @@ class ReasonCommand extends Commands {
 		const permissionLevel = await msg.member.getPermissionsLevel();
 		if (permissionLevel >= 3) return msg.reply('You dont have permission to use this Command!');
 		if (args.length < 2) return msg.reply('you need to provide atleast a case number to change and a new reason');
-		let caseNumberS = args[0].toLowerCase();
+		let caseNumbers = args[0].toLowerCase();
 		const reason = args.slice(1).join(' ');
 		const latestcase = await msg.guild.latestCase();
 		const { modlogChannel } = await msg.guild.getConfig();
 		let caseNumber;
-		if (caseNumberS === 'latest') {
+		if (caseNumbers === 'latest') {
 			caseNumber = latestcase;
-		} else if (!isNaN(caseNumberS)) {
-			caseNumber = Number(caseNumberS);
+		} else if (!isNaN(caseNumbers)) {
+			caseNumber = Number(caseNumbers);
 		} else {
 			return msg.reply('The first parameter has to be a valid case number');
 		}
