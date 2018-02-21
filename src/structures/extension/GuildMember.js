@@ -1,5 +1,5 @@
 const Extension = require('./Extend.js');
-const { BOTOWNER, SERVEROWNER, MODERATORROLE, MUSICROLE, NOTHING } = require('../new/Permissions.json');
+const { BOTOWNER, SERVEROWNER, ADMINISTRATOR, MODERATORROLE, MUSICROLE, NOTHING } = require('../new/Permissions.json');
 const { RichEmbed } = require('discord.js');
 const { colors } = require('../new/Util');
 
@@ -15,6 +15,7 @@ class GuildMemberExtension extends Extension {
 		const { client, guild, id, roles } = this;
 		if (id === client.config.ownerID) return BOTOWNER;
 		if (id === guild.owner.id) return SERVEROWNER;
+		if (this.permissions.has('ADMINISTRATOR')) return ADMINISTRATOR;
 		const database = client.db;
 		const guildConfig = await database.guildsettings.findById(guild.id);
 		for (let role of roles) {

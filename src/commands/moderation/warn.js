@@ -13,7 +13,7 @@ class WarnCommand extends Commands {
 
 	async run(msg, params) {
 		const permissionLevel = await msg.member.getPermissionsLevel();
-		if (permissionLevel >= 3) return msg.reply('You dont have permission to use this Command!');
+		if (permissionLevel > 3) return msg.reply('You dont have permission to use this Command!');
 		if (msg.mentions.members.size < 1) return msg.reply('You must mention someone for this Command.');
 		let member = msg.mentions.members.first();
 		if (msg.member.highestRole.comparePositionTo(member.highestRole) <= 0 && msg.guild.owner.id !== msg.author.id) return msg.reply("You can't warn someone with an higher or the same roleposition!");

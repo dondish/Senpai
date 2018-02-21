@@ -13,7 +13,7 @@ class ReasonCommand extends Commands {
 
 	async run(msg, args) {
 		const permissionLevel = await msg.member.getPermissionsLevel();
-		if (permissionLevel >= 3) return msg.reply('You dont have permission to use this Command!');
+		if (permissionLevel > 3) return msg.reply('You dont have permission to use this Command!');
 		if (args.length < 2) return msg.reply('you need to provide atleast a case number to change and a new reason');
 		let caseNumbers = args[0].toLowerCase();
 		const reason = args.slice(1).join(' ');

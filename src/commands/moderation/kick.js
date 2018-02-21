@@ -13,7 +13,7 @@ class KickCommand extends Commands {
 
 	async run(msg, params) {
 		const permissionLevel = await msg.member.getPermissionsLevel();
-		if (permissionLevel >= 3) return msg.reply('You dont have permission to use this Command!');
+		if (permissionLevel > 3) return msg.reply('You dont have permission to use this Command!');
 		if (msg.mentions.members.size < 1) return msg.reply('You must mention someone for this Command.');
 		let member = msg.mentions.members.first();
 		if (!member.kickable) return msg.reply('I have no rights to kick that User');

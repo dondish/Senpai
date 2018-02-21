@@ -14,7 +14,7 @@ class BlacklistCommand extends Commands {
 
 	async run(msg, args) {
 		const permissionLevel = await msg.member.getPermissionsLevel();
-		if (permissionLevel >= 3) return msg.reply('You dont have permission to use this Command!');
+		if (permissionLevel > 3) return msg.reply('You dont have permission to use this Command!');
 		let arg1 = args[0];
 		if (!arg1) return msg.reply('you must choose if you wanna add or delete a user to/from the blacklist list :eyes:');
 		arg1 = arg1.toLowerCase();

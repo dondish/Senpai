@@ -14,7 +14,7 @@ class ConfigCommand extends Commands {
 	}
 
 	async showConfig(msg) {
-		let { prefix, modlogChannel, starboardChannel, musicChannel, modRoles, musicRoles, musicLimited, starcount, welcomeEnabled, welcomeChannel, welcomeMessage } = await msg.guild.getConfig();
+		let { prefix, modlogChannel, starboardChannel, musicChannel, modRoles, musicRoles, musicLimited, starcount, welcomeEnabled, welcomeChannel, welcomeMessage, leaveMessage } = await msg.guild.getConfig();
 		if (!prefix) prefix = 'None';
 		let ModlogChannel = msg.guild.channels.get(modlogChannel);
 		if (!ModlogChannel) ModlogChannel = 'None';
@@ -45,10 +45,12 @@ class ConfigCommand extends Commands {
 			.addField('Welcome Messages enabled?', welcomeEnabled, true)
 			.addField('Welcome Channel', welcomeChannel, true)
 			.addField('Welcome Message', welcomeMessage, true)
+			.addField('Leave Message', leaveMessage, true)
 			.setTimestamp()
 			.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
 		msg.channel.send(embed);
 	}
+
 	async prefix(msg, passedArgs) {
 		const [arg1, arg2] = passedArgs;
 		if (!arg1) {
@@ -183,8 +185,8 @@ class ConfigCommand extends Commands {
 
 	async modrole(msg, passedArgs) {
 		const [arg1, arg2] = passedArgs;
-		if (await msg.member.getPermissionsLevel() > 1) {
-			return msg.reply('Only the Owner can edit the Moderation Roles!');
+		if (await msg.member.getPermissionsLevel() > 2) {
+			return msg.reply('You need to be the owner or have Administrator permission to edit the moderation roles!');
 		}
 		if (!arg1) {
 			return msg.reply('You must provide an second parameter!');
@@ -352,7 +354,7 @@ class ConfigCommand extends Commands {
 			} else if (arg3 === 'remove') {
 				await msg.guild.updateConfig({ welcomeChannel: null });
 			}
-		} else if (arg2 === 'message') {
+		} else if (arg2 === 'welcome') {
 			rest.unshift(arg3);
 			const welcomeMessage = rest.join(' ');
 			await msg.guild.updateConfig({ welcomeMessage });
@@ -369,7 +371,7 @@ class ConfigCommand extends Commands {
 			arg1 = arg1.toLowerCase();
 			argsToPass = argsToPass.map(param => param.toLowerCase());
 			const permissionLevel = await msg.member.getPermissionsLevel();
-			if (permissionLevel > 2) return msg.reply("You dont have permission to do that since you dont have a moderation Role and also aren't the Owner of this server!");
+			if (permissionLevel > 3) return msg.reply("You dont have permission to do that since you dont have a moderation Role and also aren't the Owner of this server!");
 			switch (arg1) {
 				case 'prefix':
 					await this.prefix(msg, argsToPass);
