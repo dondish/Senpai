@@ -13,7 +13,7 @@ class GuildMemberExtension extends Extension {
 
 	async getPermissionsLevel() {
 		const { client, guild, id, roles } = this;
-		if (id === client.config.ownerID) return BOTOWNER;
+		if (id === client.constants.ownerID) return BOTOWNER;
 		if (id === guild.owner.id) return SERVEROWNER;
 		if (this.permissions.has('ADMINISTRATOR')) return ADMINISTRATOR;
 		const database = client.db;

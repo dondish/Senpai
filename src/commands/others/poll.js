@@ -91,8 +91,8 @@ class PollCommand extends Commands {
 			}
 		});
 		const emojis = collection.map(object => object.emoji);
-		for (let i = 0; i < emojis.length; i++) {
-			await sent.react(emojis[i]); // eslint-disable-line no-await-in-loop
+		for (let i = 0; i < emojis.length; i++) { // eslint-disable-line no-await-in-loop
+			await sent.react(emojis[i]);
 		}
 	}
 

@@ -12,7 +12,8 @@ class commandError extends Events {
 		if (error instanceof MusicError) return error.msg.edit(`Could not add the Song/Playlist because this reason: \`${error.message}\``);
 		if (error instanceof DatabaseError) return msg.channel.send(`Could not execute this command because of this reason: \`${error.message}\``);
 		if (error.message === 'Missing Permissions' || error.message === 'Missing Access' || error.message === 'Unknown Message') return;
-		const { ownerID, supportServerLink } = client.config;
+		const { supportServerLink } = client.config;
+		const { ownerID } = client.constants;
 		const owner = client.users.get(ownerID);
 		msg.reply(`An error occurred while running the command: \`${error.name}: ${error.message}\`
 You shouldn't ever receive an error like this.

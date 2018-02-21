@@ -1,6 +1,5 @@
 const Commands = require('../../structures/new/Command.js');
 const { RichEmbed } = require('discord.js');
-const { ownerID } = require('../../config/config.json');
 const info = {
 	name: 'ratewaifu',
 	description: 'rate your waifu with an scale from 0 to 10',
@@ -22,8 +21,7 @@ class WaifuCommand extends Commands {
 			.setAuthor(msg.client.user.username, msg.client.user.displayAvatarURL)
 			.addField(`I Rate your waifu ${waifu}`, `${random}/10`)
 			.setColor(0x80ff00)
-			.setTimestamp()
-			.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
+			.setTimestamp();
 		await msg.channel.send(embed);
 	}
 }

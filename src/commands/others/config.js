@@ -1,6 +1,5 @@
 const Commands = require('../../structures/new/Command.js');
 const { RichEmbed } = require('discord.js');
-const { ownerID } = require('../../config/config.json');
 const info = {
 	name: 'config',
 	description: 'shows/changes the config of this server',
@@ -46,8 +45,7 @@ class ConfigCommand extends Commands {
 			.addField('Welcome Channel', welcomeChannel, true)
 			.addField('Welcome Message', welcomeMessage, true)
 			.addField('Leave Message', leaveMessage, true)
-			.setTimestamp()
-			.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
+			.setTimestamp();
 		msg.channel.send(embed);
 	}
 
@@ -66,8 +64,7 @@ class ConfigCommand extends Commands {
 			const embed = new RichEmbed()
 				.setTitle(`Updated Prefix for ${msg.guild.name}`)
 				.addField('Updated Prefix to', arg2)
-				.setTimestamp()
-				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
+				.setTimestamp();
 			msg.channel.send(embed);
 		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			await msg.guild.updateConfig({ prefix: null });
@@ -98,8 +95,7 @@ class ConfigCommand extends Commands {
 			const embed = new RichEmbed()
 				.setTitle(`Updated Modlog for ${msg.guild.name}`)
 				.addField('New Modlog', modlog.toString())
-				.setTimestamp()
-				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
+				.setTimestamp();
 			msg.channel.send(embed);
 		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			await msg.guild.updateConfig({ modlogChannel: null });
@@ -130,8 +126,7 @@ class ConfigCommand extends Commands {
 			const embed = new RichEmbed()
 				.setTitle(`Updated Musiclog for ${msg.guild.name}`)
 				.addField('New Musiclog', musiclog.toString())
-				.setTimestamp()
-				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
+				.setTimestamp();
 			msg.channel.send(embed);
 		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			await msg.guild.updateConfig({ musicChannel: null });
@@ -162,8 +157,7 @@ class ConfigCommand extends Commands {
 			const embed = new RichEmbed()
 				.setTitle(`Updated Starboard Channel for ${msg.guild.name}`)
 				.addField('New Starboard Channel', starboard.toString())
-				.setTimestamp()
-				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
+				.setTimestamp();
 			msg.channel.send(embed);
 		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			await msg.guild.updateConfig({ starboardChannel: null });
@@ -175,8 +169,7 @@ class ConfigCommand extends Commands {
 			const embed = new RichEmbed()
 				.setTitle(`Updated needed Stars for ${msg.guild.name}`)
 				.addField('New required Star Count', `${number}`)
-				.setTimestamp()
-				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
+				.setTimestamp();
 			msg.channel.send(embed);
 		} else {
 			return msg.reply('You provided an wrong second parameter');
@@ -215,8 +208,7 @@ class ConfigCommand extends Commands {
 			const embed = new RichEmbed()
 				.setTitle(`Added Role ${role.name} to the Modroles`)
 				.addField('updated Modroles', `${Roles}`)
-				.setTimestamp()
-				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
+				.setTimestamp();
 			msg.channel.send(embed);
 		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			if (!arg2) {
@@ -244,8 +236,7 @@ class ConfigCommand extends Commands {
 			const embed = new RichEmbed()
 				.setTitle(`deleted Role ${role.name} from the Modroles`)
 				.addField('updated Modroles', `${Roles}`)
-				.setTimestamp()
-				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
+				.setTimestamp();
 			msg.channel.send(embed);
 		} else {
 			return msg.reply('You provided an wrong second parameter');
@@ -280,8 +271,7 @@ class ConfigCommand extends Commands {
 			const embed = new RichEmbed()
 				.setTitle(`Added Role ${role.name} to the Musicroles`)
 				.addField('updated Musicroles', `${Roles}`)
-				.setTimestamp()
-				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
+				.setTimestamp();
 			msg.channel.send(embed);
 		} else if (arg1 === 'remove' || arg1 === 'delete') {
 			if (!arg2) {
@@ -309,8 +299,7 @@ class ConfigCommand extends Commands {
 			const embed = new RichEmbed()
 				.setTitle(`deleted Role ${role.name} from the Musicrole`)
 				.addField('updated Musicroles', `${Roles}`)
-				.setTimestamp()
-				.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
+				.setTimestamp();
 			msg.channel.send(embed);
 		} else if (arg1 === 'limit') {
 			if (!arg2) {

@@ -1,4 +1,4 @@
-const { googleAPIKey } = require('../../config/config.json');
+const { googleAPIKey } = process.env;
 const { MusicError } = require('./CustomErrors.js');
 const yt = require('ytdl-core');
 const YouTube = require('simple-youtube-api');

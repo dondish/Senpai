@@ -1,10 +1,10 @@
-const { databaseName, databasePW } = require('../../config/config.json');
+const { databaseName, databaseUser, databasePW, databaseHost } = process.env;
 const Sequelize = require('sequelize');
 
 module.exports = class Database {
 	constructor() {
-		this.database = new Sequelize('Discord', databaseName, databasePW, {
-			host: 'localhost',
+		this.database = new Sequelize(databaseName, databaseUser, databasePW, {
+			host: databaseHost,
 			dialect: 'postgres',
 			logging: false,
 			operatorsAliases: false

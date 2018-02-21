@@ -2,7 +2,6 @@ const Commands = require('../../structures/new/Command.js');
 const { RichEmbed } = require('discord.js');
 const { inspect } = require('util');
 const { post } = require('snekfetch');
-const { ownerID } = require('../../config/config.json');
 const info = {
 	name: 'eval',
 	description: 'an command to evaluate javascript code (only the Bot Owner can use this command!)',
@@ -42,7 +41,6 @@ class EvalCommand extends Commands {
 				.addField(':inbox_tray: Input', input)
 				.addField(':outbox_tray: Output', sentOutput)
 				.setColor(0x80ff00)
-				.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
 				.setTimestamp();
 			await msg.channel.send(embed);
 		} catch (error) {
@@ -59,7 +57,6 @@ class EvalCommand extends Commands {
 				.addField('EVAL', `**Type:** Error`)
 				.addField(':inbox_tray: Input', input)
 				.addField(':x: ERROR', sentOutput)
-				.setFooter(`Senpai version ${client.version} by Yukine`, client.users.get(ownerID).displayAvatarURL)
 				.setColor(0x80ff00)
 				.setTimestamp();
 			await msg.channel.send(embed);

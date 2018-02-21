@@ -20,7 +20,7 @@ class AboutCommand extends Commands {
 		const serverCount = result.reduce((prev, val) => prev + val, 0);
 		const userCount = result2.reduce((prev, val) => prev + val, 0);
 		const channelcount = result3.reduce((prev, val) => prev + val, 0);
-		const owner = client.users.get(client.config.ownerID);
+		const owner = client.users.get(client.constants.ownerID);
 		const embed = new RichEmbed()
 			.setTitle(`Stats & Infos`)
 			.setAuthor(owner.username, owner.displayAvatarURL, 'http://yukine.ga/')
@@ -33,26 +33,13 @@ class AboutCommand extends Commands {
 			.addField('Total Servers:', serverCount, true)
 			.addField('Total Users:', userCount, true)
 			.addField('Total Channels:', channelcount, true)
-			.addField('Bot Invite Link', `[Link](${client.config.inviteURL})`, true)
+			.addField('Bot Invite Link', `[Link](${client.constants.inviteURL})`, true)
 			.addField('GitHub', '[Senpai Github Repo](https://github.com/Dev-Yukine/Senpai)', true)
 			.addField('Support Server', `[Server](${client.config.supportServerLink})`, true)
 			.addField('Shards:', `${client.shard.id + 1}/${client.shard.count}`, true)
 			.setTimestamp()
 			.setColor('DARK_GREEN');
-		msg.channel.send(embed);
-	}
-
-	format(seconds) {
-		const { pad } = this;
-		let hours = Math.floor(seconds / (60 * 60));
-		let minutes = Math.floor(seconds % (60 * 60) / 60);
-		let seconds2 = Math.floor(seconds % 60);
-
-		return `${pad(hours)}:${pad(minutes)}:${pad(seconds2)}`;
-	}
-
-	pad(seconds) {
-		return (seconds < 10 ? '0' : '') + seconds;
+		await msg.channel.send(embed);
 	}
 }
 

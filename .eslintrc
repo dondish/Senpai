@@ -3,6 +3,7 @@
 	"rules": {
 	  "consistent-return": "off",
 	  "max-len": "off",
-	  "no-console": "off"
+		"no-console": "off",
+		"no-process-env": "off"
 	}
 }

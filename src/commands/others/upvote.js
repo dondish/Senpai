@@ -1,6 +1,5 @@
 const Commands = require('../../structures/new/Command.js');
 const { RichEmbed } = require('discord.js');
-const { ownerID } = require('../../config/config.json');
 const info = {
 	name: 'upvote',
 	description: 'shows where you can upvote Senpai and support me <3',
@@ -17,8 +16,7 @@ class UpvoteCommand extends Commands {
 		const embed = new RichEmbed()
 			.addField(`You can upvote Senpai on this Link`, `[Click me!](${this.client.config.voteLink}) \n I appreciate that very much <3`)
 			.setColor(0x80ff00)
-			.setTimestamp()
-			.setFooter('Senpai Bot by Yukine', this.client.users.get(ownerID).displayAvatarURL);
+			.setTimestamp();
 		msg.channel.send(embed);
 	}
 }

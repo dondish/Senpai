@@ -24,6 +24,8 @@ class MessageEvent extends Events {
 			params = this.createParams(msg);
 			command = this.getCommand(msg, prefix);
 		} else if (this.mentioned(msg.content)) {
+			msg.mentions.users.delete(client.user.id);
+			msg.mentions.members.delete(client.user.id);
 			params = this.createParamsMention(msg);
 			command = this.getCommandMention(msg);
 		}

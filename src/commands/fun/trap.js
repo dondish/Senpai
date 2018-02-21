@@ -20,11 +20,7 @@ class TrapCommand extends Commands {
 		const ctx = canvas.getContext('2d');
 		let base = new Image();
 		let userPicture = new Image();
-		try {
-			base.src = await readFileAsync('./materials/pictures/trap.png');
-		} catch (error) {
-			return msg.channel.send('Something went wrong while reading a file! try again and if the error still happens contact my owner!');
-		}
+		base.src = await readFileAsync('./materials/pictures/trap.png');
 		let avatar;
 		if (msg.mentions.users.size > 0) {
 			avatar = msg.mentions.users.first().displayAvatarURL;

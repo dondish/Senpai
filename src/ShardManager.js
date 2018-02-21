@@ -1,6 +1,6 @@
 const { ShardingManager } = require('discord.js');
 const { join } = require('path');
-const { bottoken } = require('./config/config.json');
+const { bottoken } = process.env;
 const Economy = require('./structures/new/Economy.js');
 const Database = require('./structures/new/Database.js');
 const { economy } = new Database();
