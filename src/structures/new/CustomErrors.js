@@ -10,4 +10,8 @@ class DatabaseError extends Error {
 
 }
 
-module.exports = { MusicError, DatabaseError };
+class UsageError extends Error {
+
+}
+
+module.exports = { MusicError, DatabaseError, UsageError };

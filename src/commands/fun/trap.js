@@ -1,6 +1,7 @@
 const Commands = require('../../structures/new/Command.js');
 const Canvas = require('canvas');
 const { get } = require('snekfetch');
+const { join } = require('path');
 const info = {
 	name: 'trap',
 	description: 'turn the tables with your ultimate Yu-Gi-Oh trap card!',
@@ -20,7 +21,7 @@ class TrapCommand extends Commands {
 		const ctx = canvas.getContext('2d');
 		let base = new Image();
 		let userPicture = new Image();
-		base.src = await readFileAsync('./materials/pictures/trap.png');
+		base.src = await readFileAsync(join(__dirname, '..', '..', 'materials', 'pictures', 'trap.png'));
 		let avatar;
 		if (msg.mentions.users.size > 0) {
 			avatar = msg.mentions.users.first().displayAvatarURL;

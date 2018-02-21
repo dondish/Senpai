@@ -1,5 +1,5 @@
 const Events = require('../structures/new/Event.js');
-const { MusicError, DatabaseError } = require('../structures/new/CustomErrors');
+const { MusicError, DatabaseError, UsageError } = require('../structures/new/CustomErrors');
 
 class commandError extends Events {
 	constructor(client) {
@@ -11,6 +11,7 @@ class commandError extends Events {
 		const { client } = this;
 		if (error instanceof MusicError) return error.msg.edit(`Could not add the Song/Playlist because this reason: \`${error.message}\``);
 		if (error instanceof DatabaseError) return msg.channel.send(`Could not execute this command because of this reason: \`${error.message}\``);
+		if (error instanceof UsageError) return msg.channel.send(error.message);
 		if (error.message === 'Missing Permissions' || error.message === 'Missing Access' || error.message === 'Unknown Message') return;
 		const { supportServerLink } = client.config;
 		const { ownerID } = client.constants;
