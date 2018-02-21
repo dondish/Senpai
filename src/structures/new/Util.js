@@ -1,6 +1,7 @@
 const { walk } = require('file');
 const { readdir } = require('fs');
 const { promisify: utilPromisify } = require('util');
+const { join } = require('path');
 
 class Util {
 	constructor(Client) {
@@ -46,7 +47,7 @@ class Util {
 		const { client, constructor } = this;
 		const { promisify, walkAsync } = constructor;
 		const readDirAsync = promisify(readdir);
-		const [path, dirs] = await walkAsync('../src/commands'); // eslint-disable-line no-unused-vars
+		const [path, dirs] = await walkAsync(join(__dirname, '..', '..', 'commands')); // eslint-disable-line no-unused-vars
 		const promises = [];
 		for (const dir of dirs) {
 			promises.push(new Promise((resolve, reject) => {
@@ -56,9 +57,9 @@ class Util {
 		const results = await Promise.all(promises);
 		for (const result of results) {
 			let [commands, folder] = result;
-			folder = folder.slice(path.length + 1);
+			folder = folder.slice(path.length);
 			for (const command of commands) {
-				let Command = require(`../../commands/${folder}/${command}`);
+				let Command = require(join(__dirname, '..', '..', 'commands', folder, command));
 				let Module = new Command(client, folder);
 				client.commands.set(Module.name, Module);
 				client.log.debug(`Loading Command: ${Module.name} from ${folder}.`);
@@ -72,10 +73,10 @@ class Util {
 	async _eventloader() {
 		const { client, constructor } = this;
 		const { walkAsync } = constructor;
-		const [dirPath, dirs, files] = await walkAsync('./events'); // eslint-disable-line no-unused-vars
+		const [dirPath, dirs, files] = await walkAsync(join(__dirname, '..', '..', 'events')); // eslint-disable-line no-unused-vars
 		files.forEach(element => {
-			const name = element.slice(dirPath.length - 1);
-			const EventClass = require(`../../events/${name}`);
+			const name = element.slice(dirPath.length);
+			const EventClass = require(join(__dirname, '..', '..', 'events', name));
 			const Event = new EventClass(client);
 			const eventWrap = async (...args) => {
 				try {

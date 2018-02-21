@@ -2,7 +2,7 @@
   "name": "senpai",
   "version": "5.5.0",
   "description": "Weeb Discord bot written in JS",
-  "main": "src/main.js",
+  "main": "src/ShardManager.js",
   "scripts": {
     "lint": "eslint src *.js"
   },

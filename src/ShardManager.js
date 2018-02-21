@@ -1,9 +1,10 @@
 const { ShardingManager } = require('discord.js');
+const { join } = require('path');
 const { bottoken } = require('./config/config.json');
 const Economy = require('./structures/new/Economy.js');
 const Database = require('./structures/new/Database.js');
 const { economy } = new Database();
-const Manager = new ShardingManager('./main.js',
+const Manager = new ShardingManager(join(__dirname, 'main.js'),
 	{
 		totalShards: 'auto',
 		respawn: true,
