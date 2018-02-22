@@ -14,7 +14,7 @@ class InviteCommand extends Commands {
 
 	async run(msg) {
 		const embed = new RichEmbed()
-			.addField('Invite Link', `[Click Me](${this.client.config.inviteURL})`)
+			.addField('Invite Link', `[Click Me](${this.client.constants.inviteURL})`)
 			.setColor(0x80ff00)
 			.setTimestamp();
 		await msg.channel.send(embed);
