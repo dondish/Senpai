@@ -20,18 +20,18 @@ if [ -n "$TRAVIS_TAG" ]; then
 	DOCKER_RELEASE="$TRAVIS_TAG"
 	test
 	docker login --username="$DOCKER_USERNAME" --password="$DOCKER_PASSWORD"
-	docker build -t Senpai .
-	docker tag Senpai:"$DOCKER_RELEASE" yukine/Senpai:"$DOCKER_RELEASE"
-	docker push yukine/Senpai:"$DOCKER_RELEASE"
+	docker build -t senpai .
+	docker tag senpai:"$DOCKER_RELEASE" yukine/senpai:"$DOCKER_RELEASE"
+	docker push yukine/senpai:"$DOCKER_RELEASE"
 else
 	echo -e "\e[36m\e[1mBuild triggered for branch \"${TRAVIS_BRANCH}\"."
 	DOCKER_RELEASE="$TRAVIS_BRANCH"
 	test
 	if [ "$TRAVIS_BRANCH" == "master"]; then
-	DOCKER_RELEASE="latest"
+		DOCKER_RELEASE="latest"
 	fi
 	docker login --username="$DOCKER_USERNAME" --password="$DOCKER_PASSWORD"
-	docker build -t Senpai .
-	docker tag Senpai:"$DOCKER_RELEASE" yukine/Senpai:"$DOCKER_RELEASE"
-	docker push yukine/Senpai:"$DOCKER_RELEASE"
+	docker build -t senpai .
+	docker tag senpai:"$DOCKER_RELEASE" yukine/senpai:"$DOCKER_RELEASE"
+	docker push yukine/senpai:"$DOCKER_RELEASE"
 fi
