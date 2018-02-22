@@ -8,14 +8,15 @@ class GuildExtension extends Extension {
 	async getLeaderboard() {
 		const { client, id } = this;
 		let data = await client.db.economy.findAll({ where: { guild: id } });
-		data = data.sort((a, b) => a.dataValues.cash + a.dataValues.bank - b.dataValues.cash + b.dataValues.bank);
-		return data.map(economy => economy.dataValues);
+		data = data.map(economy => economy.dataValues);
+		data = data.sort((a, b) => (a.cash + a.bank) - (b.cash + b.bank));
+		return data.reverse();
 	}
 
 	async getStarboardMessage(originalMessageID) {
 		const { client } = this;
 		let result = await client.db.starboardMessages.findOne({ where: { originalMessage: originalMessageID } });
-		return !result ? result : result.dataValues;
+		return result ? result.dataValues : result;
 	}
 
 	async createStarboardMessage({ originalMessageID, starMessageID, starCount, author }) {

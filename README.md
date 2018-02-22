@@ -22,7 +22,7 @@ Here you can find the Source code of my own Bot "Senpai" for [Discord](https://d
 after the rewrite it makes fully usage of classes & ES2017's async/await functionality.
 
 ## Invite
-You can Invite Senpai to your Server with  [this Link](https://discordapp.com/oauth2/authorize?client_id=206955239985774593&scope=bot&permissions=2146959615)
+You can Invite Senpai to your Server with [this Link](https://discordapp.com/oauth2/authorize?client_id=206955239985774593&scope=bot&permissions=8)
 
 ## Contributing
 
@@ -34,16 +34,9 @@ This bot is written in Javascript and use [Nodejs](https://nodejs.org/en/) to ru
 
 also it uses the Libary [Discord.js](https://github.com/hydrabolt/discord.js) to interact with the Discord API
 
-if you want to host this bot yourself you need to install python 2.7 and a C compiler if you are on Windows you can run this command in a cmd line **npm install --global --production windows-build-tools** on some Linux distributions it is pre installed on some others not.
+# Selfhosting/Selfhosting
 
-if you are on linux you need install FFMPEG yourself if you are on windows you mostly wont need since one of my dependencies handle that.
-
-after that you should install the dependencies by run a **npm install** in the Bots directory.
-
-
-also you need a **PostgresSQL server** with a **Discord** Database.
-
-
+This is official not supported but if you wanna try it anyway you would need a PostgresSQL server aswell as install all deps with npm/yarn. You might instead just use the dockerfile to create a container.
 ## Features
 
 ### Commands 

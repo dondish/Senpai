@@ -13,7 +13,7 @@ class MessageEvent extends Events {
 		if (!msg.member) msg.member = await msg.guild.fetchMember(msg.author);
 		const blacklisted = await msg.member.isBlacklisted();
 		if (blacklisted) return;
-		msg.guild.economy.messageUpdate(msg.member);
+		await msg.guild.economy.messageUpdate(msg.member);
 		let { prefix, disabledCommandCategories, disabledCommands, inviteLinkProtection, musicLimited } = await msg.guild.getConfig();
 		prefix = prefix ? prefix : client.config.prefix;
 		if (inviteLinkProtection) await this.handleInviteLink(msg);

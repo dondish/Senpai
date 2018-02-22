@@ -13,4 +13,4 @@ before_install:
 install: 
   - yarn
 script:
-  - yarn run lint
+  - bash ./deploy/deploy.sh

@@ -6,15 +6,15 @@ class Economy {
 	}
 
 	static bankUpdate(model) {
-		setInterval(() => this._updatebank(model), 18000000);
+		setInterval(() => this._updatebank(model), 864e5);
 	}
 
-	messageUpdate(member) {
+	async messageUpdate(member) {
 		if (!member) return;
 		if (this.recentlyUpdated.includes(member.user.id)) return;
 		this.recentlyUpdated.push(member.user.id);
-		setTimeout(() => this._addMoney(member), 5000);
-		setTimeout(() => this._removeIDFromArray(member), 30000);
+		await this._addMoney(member);
+		setTimeout(() => this._removeIDFromArray(member), 3e5);
 	}
 
 	async _addMoney(member) {

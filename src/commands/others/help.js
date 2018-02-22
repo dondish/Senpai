@@ -1,5 +1,6 @@
 const Commands = require('../../structures/new/Command.js');
 const { walkAsync } = require('../../structures/new/Util.js');
+const { join } = require('path');
 const info = {
 	name: 'help',
 	description: 'shows all commands or info about a command',
@@ -18,7 +19,7 @@ class HelpCommand extends Commands {
 		prefix = prefix ? prefix : client.config.prefix;
 		let param1 = params[0];
 		if (!param1) {
-			let [, categories] = await walkAsync('./commands');
+			let [, categories] = await walkAsync(join(__dirname, '..', '..', 'commands'));
 			categories = categories.map(groupPath => groupPath.slice(9));
 			const arrayOfCommandCollections = [];
 			for (let i = 0; i < categories.length; i++) {
@@ -30,13 +31,9 @@ class HelpCommand extends Commands {
 				const result = `__${arrayOfCommandCollections[i].first().group}__\n${arrayOfCommandCollections[i].map(command => `**${command.name}:** ${command.description}`).join('\n')}\n`;
 				categorieStrings.push(result);
 			}
-			try {
-				const message = await msg.channel.send("i've sent you a PM");
-				message.delete(10000);
-				await msg.author.send(`To run a command in ${msg.guild.name}, use ${prefix}command or @${this.client.user.tag} command.\nUse help <command> to view detailed information about a specific command.\n\n${categorieStrings.join('\n')}\nyou can get a list of all my commands with usage and details here: \nhttp://yukine.ga/Senpai/commands/`, { split: true });
-			} catch (error) {
-				await msg.channel.send('I had an error while trying to DM you, look your Direct Message settings up!');
-			}
+			await msg.author.send(`To run a command in ${msg.guild.name}, use ${prefix}command or @${this.client.user.tag} command.\nUse help <command> to view detailed information about a specific command.\n\n${categorieStrings.join('\n')}\nyou can get a list of all my commands with usage and details here: \nhttp://yukine.ga/Senpai/commands/`, { split: true });
+			const message = await msg.channel.send("i've sent you a PM");
+			message.delete(10000);
 		} else {
 			param1 = param1.toLowerCase();
 			if (client.commands.has(param1)) {
