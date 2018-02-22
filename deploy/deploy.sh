@@ -32,6 +32,6 @@ else
 	fi
 	docker login --username="$DOCKER_USERNAME" --password="$DOCKER_PASSWORD"
 	docker build -t senpai .
-	docker tag senpai:"$DOCKER_RELEASE" yukine/senpai:"$DOCKER_RELEASE"
+	docker tag senpai:latest yukine/senpai:"$DOCKER_RELEASE"
 	docker push yukine/senpai:"$DOCKER_RELEASE"
 fi
