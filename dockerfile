@@ -1,5 +1,5 @@
 # Linux distro with node.js pre-installed
-FROM node:8-alpine
+FROM node:9-alpine
 # My credentials
 LABEL maintainer "Yukine <DevYukine@gmx.de>"
 # Workdir
@@ -13,7 +13,6 @@ RUN apk add --update \
 # Install node.js dependencies
 \
 && yarn install \
-\
 # Clean up build dependencies
 && apk del .build-deps
 # Add project source
