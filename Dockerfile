@@ -22,15 +22,15 @@ ENV bottoken=\
     prefix=\
     osuToken=\
     googleAPIKey=\
-	owmAPIKey=\
+    owmAPIKey=\
     dBotsToken=\
     discordBotsToken=\
     supportServerLink=\
     voteLink=\
     pixabayToken=\
     databaseName=\
-	databaseUser=\
+    databaseUser=\
     databasePW=\
-	databaseHost=
+    databaseHost=
 # Run command
 CMD ["node", "."]
