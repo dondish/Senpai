@@ -8,9 +8,8 @@ cache:
   directories:
     - node_modules
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y -qq docker-ce
-  - yarn global add eslint 
-  - yarn global add eslint-config-aqua
+  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++ libtool autoconf automake
+install: 
+  - yarn
 script:
   - bash ./deploy/deploy.sh
