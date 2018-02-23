@@ -12,8 +12,8 @@
 <div align="center">
   <br />
   <p>
-    <a href="https://travis-ci.org/Dev-Yukine/Senpai"><img src="https://api.travis-ci.org/Dev-Yukine/Senpai.svg" alt="Build status" /></a>
-    <a href="https://david-dm.org/Dev-Yukine/Senpai"><img src="https://david-dm.org/Dev-Yukine/Senpai/status.svg" alt="Dependencies" /></a>
+    <a href="https://travis-ci.org/Discord-Senpai/Senpai"><img src="https://api.travis-ci.org/Discord-Senpai/Senpai.svg" alt="Build status" /></a>
+    <a href="https://david-dm.org/Discord-Senpai/Senpai"><img src="https://david-dm.org/Discord-Senpai/Senpai/status.svg" alt="Dependencies" /></a>
   </p>
 </div>
 
