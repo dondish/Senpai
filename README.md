@@ -19,7 +19,8 @@
 
 Here you can find the Source code of my own Bot "Senpai" for [Discord](https://discordapp.com/). You can use this Source-Code under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) at any time.
 
-after the rewrite it makes fully usage of classes & ES2017's async/await functionality.
+After the rewrite it makes fully usage of classes & ES2017's async/await functionality.
+
 
 ## Invite
 You can Invite Senpai to your Server with [this Link](https://discordapp.com/oauth2/authorize?client_id=206955239985774593&scope=bot&permissions=8)
@@ -34,9 +35,9 @@ This bot is written in Javascript and use [Nodejs](https://nodejs.org/en/) to ru
 
 also it uses the Libary [Discord.js](https://github.com/hydrabolt/discord.js) to interact with the Discord API
 
-# Selfhosting/Selfhosting
+## Selfhosting
 
-This is official not supported but if you wanna try it anyway you would need a PostgresSQL server aswell as install all deps with npm/yarn. You might instead just use the dockerfile to create a container.
+This is official not supported but if you wanna try it anyway you would need a PostgresSQL server, ffmpeg and all deps specified in the package.json. You might instead just use the dockerfile to create a container.
 ## Features
 
 ### Commands 
