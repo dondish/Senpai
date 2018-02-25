@@ -12,30 +12,52 @@ class PlayCommand extends Commands {
 	}
 
 	async run(msg, params) {
-		const { voiceConnection, client } = msg.guild;
+		const { me, client } = msg.guild;
 		let { musicChannel: musicID, prefix } = await msg.guild.getConfig();
 		prefix = prefix ? prefix : client.config.prefix;
 		let channel = msg.guild.channels.get(musicID);
 		const musicChannel = channel || msg.channel;
-		if (!voiceConnection) return msg.reply(`You must let me join a Voice Channel with ${prefix}join!`);
-		const message = await msg.channel.send('trying to add your Song/Playlist to the queue....');
+		if (msg.guild.music.channelID !== musicChannel.id) msg.guild.music.channelID = musicChannel.id;
+		if (!me.voiceChannelID) return msg.reply(`You must let me join a Voice Channel with ${prefix}join!`);
+		const message = await msg.channel.send('adding your Song/Playlist to the queue....');
 		let link = params[0];
-		if (!link) return message.edit('You must add a Link to add behind!');
-		if (link.startsWith('http')) {
-			if (link.includes('watch') || link.includes('youtu.be')) {
-				const result = await msg.guild.music.handleSong(link, msg.author, true, musicChannel, message);
-				await message.edit(`**Queued:** ${result.title}`);
-			} else if (link.includes('playlist')) {
-				const result = await msg.guild.music.handlePlaylist(link, msg.author, musicChannel, message);
-				await message.edit(result);
+		if (!link) return message.edit('You must add a Link or query to search for behind!');
+		const player = this.client.lavalink.players.get(msg.guild.id);
+		if (!player) return;
+		try {
+			let songs;
+			if (this.isLink(params.join(' '))) {
+				songs = await this.client.lavalink.resolveTrack(params.join(' '));
 			} else {
-				await message.edit('Could not add the Song/Playlist because this link is not from Youtube!');
+				let arr = [];
+				const searchResult = await this.client.lavalink.resolveTrack(`ytsearch: ${params.join(' ')}`);
+				arr.push(searchResult[0]);
+				songs = arr;
 			}
-		} else {
-			const searchTerm = params.join(' ');
-			const result = await msg.guild.music.handleSong(searchTerm, msg.author, false, musicChannel, message);
-			await message.edit(`**Queued:** ${result.title}`);
+			if (songs.length > 1) {
+				await this._playlist(songs, message);
+			} else {
+				await this._song(songs[0], message);
+			}
+		} catch (error) {
+			await message.edit(error.message);
 		}
+	}
+
+	isLink(input) {
+		return /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/g.test(input); // eslint-disable-line no-useless-escape
+	}
+
+	async _playlist(songs, message) {
+		for (const song of songs) {
+			message.guild.music.queue(song);
+		}
+		await message.edit(`**Queued** ${songs.length} songs.`);
+	}
+
+	async _song(song, message) {
+		message.guild.music.queue(song);
+		await message.edit(`**Queued:** ${song.info.title}.`);
 	}
 }
 

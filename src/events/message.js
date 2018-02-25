@@ -1,4 +1,5 @@
 const Events = require('../structures/new/Event.js');
+const { MusicError } = require('../structures/new/CustomErrors.js');
 
 class MessageEvent extends Events {
 	constructor(client) {
@@ -92,7 +93,7 @@ class MessageEvent extends Events {
 
 	async checkMusicPermission(msg) {
 		const permissionLevel = await msg.member.getPermissionsLevel();
-		if (permissionLevel > 4) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to use this Command!");
+		if (permissionLevel > 4) throw new MusicError("on this server the music feature is limited to music roles and since you don't have one you dont have permission to use this Command!");
 	}
 }
 

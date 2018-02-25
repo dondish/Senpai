@@ -12,10 +12,10 @@ class ShuffleCommand extends Commands {
 	}
 
 	async run(msg) {
-		const { voiceConnection } = msg.guild;
-		let { queue, dispatcher } = msg.guild.music;
-		if (!voiceConnection) return msg.reply(`Im not in a Voice channel on this Server!`);
-		if (!dispatcher) return msg.reply(`I don't play music at the moment!`);
+		const { me } = msg.guild;
+		let { queue } = msg.guild.music;
+		if (!me.voiceChannelID) return msg.reply(`Im not in a Voice channel on this Server!`);
+		if (!msg.guild.music.playing) return msg.reply(`I don't play music at the moment!`);
 		if (queue.length < 3) return msg.channel.send('You need atleast 3 songs in the queue to shuffle!');
 		let newQueue = this.shuffle(queue);
 		msg.guild.music.queue = newQueue;

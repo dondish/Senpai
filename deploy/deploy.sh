@@ -27,9 +27,6 @@ else
 	echo -e "\e[36m\e[1mBuild triggered for branch \"${TRAVIS_BRANCH}\"."
 	DOCKER_RELEASE="$TRAVIS_BRANCH"
 	test
-	if [ "$TRAVIS_BRANCH" == "master"]; then
-		DOCKER_RELEASE="latest"
-	fi
 	docker login --username="$DOCKER_USERNAME" --password="$DOCKER_PASSWORD"
 	docker build -t senpai .
 	docker tag senpai:latest yukine/senpai:"$DOCKER_RELEASE"

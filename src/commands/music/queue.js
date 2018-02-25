@@ -13,11 +13,11 @@ class QueueCommand extends Commands {
 	}
 
 	run(msg) {
-		const { queue } = msg.guild.music;
-		if (!queue || queue.length < 1) return msg.reply('there are no songs currently in queue!');
-		let time = queue.map(song => song.durationSeconds).reduce((a, b) => a + b);
-		time = this.format(time);
-		const songs = queue.map(Song => `${Song.title}\nRequested by ${Song.requestor.tag}`);
+		const { _queue } = msg.guild.music;
+		if (!_queue || _queue.length < 1) return msg.reply('there are no songs currently in queue!');
+		let time = _queue.map(song => song.info.length).reduce((a, b) => a + b);
+		time = this.format(time / 1000);
+		const songs = _queue.map(Song => `${Song.info.title}\nRequested by ${Song.requestor.tag}`);
 		const embed = this.constructRichEmbed(songs, msg, time);
 		msg.channel.send(embed);
 	}

@@ -28,6 +28,7 @@
     "discord.js": "discordjs/discord.js#11.3-dev",
     "file": "^0.2.2",
     "kitsu": "^5.0.3",
+    "lavalink": "^0.2.3",
     "libsodium-wrappers": "0.5.4",
     "node-opus": "^0.2.7",
     "node-osu": "^1.3.0",
