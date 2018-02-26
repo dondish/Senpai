@@ -35,7 +35,7 @@ module.exports = class Music extends EventEmitter {
 		const shifted = this._queue.shift();
 		this.playing = false;
 		if (event.reason === 'FINISHED') return this._finished(event, shifted);
-		else if (event.reason === 'STOPPED') return this._failed(event, shifted);
+		else if (event.reason === 'STOPPED') return this._stopped(event, shifted);
 		else if (event.reason === 'FAILED') return this._failed(event);
 	}
 

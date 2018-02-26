@@ -343,10 +343,21 @@ class ConfigCommand extends Commands {
 			} else if (arg3 === 'remove') {
 				await msg.guild.updateConfig({ welcomeChannel: null });
 			}
-		} else if (arg2 === 'welcome') {
+		} else if (arg2 === 'message') {
 			rest.unshift(arg3);
 			const welcomeMessage = rest.join(' ');
 			await msg.guild.updateConfig({ welcomeMessage });
+		} else {
+			return msg.reply('You provided an wrong second parameter');
+		}
+	}
+
+	async leave(msg, passedArgs) {
+		const [arg1, arg2, arg3, ...rest] = passedArgs;
+		if (!arg1) {
+			return msg.reply('You must provide an second parameter!');
+		} else if (arg2 === 'message') {
+
 		} else {
 			return msg.reply('You provided an wrong second parameter');
 		}

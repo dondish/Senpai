@@ -4,15 +4,6 @@ const { version } = require('../../../package.json');
 const Database = require('../new/Database.js');
 const Lavalink = require('../new/Lavalink.js');
 const Log = require('../new/Log.js');
-const lavalink = new Lavalink({
-	password: lavalinkPW,
-	shards: Number(lavalinkShards),
-	userID: UserID,
-	host: lavalinkHost,
-	portWS: lavalinkPortWS,
-	port: LavalinkPort
-});
-lavalink.init();
 
 class SenpaiClient extends Client {
 	constructor(options) {
@@ -23,7 +14,15 @@ class SenpaiClient extends Client {
 		this.aliases = new Collection();
 		this.log = new Log(this.shard.id);
 		this.db = new Database();
-		this.lavalink = lavalink;
+		this.lavalink = new Lavalink({
+			password: lavalinkPW,
+			shards: Number(lavalinkShards),
+			userID: UserID,
+			host: lavalinkHost,
+			portWS: lavalinkPortWS,
+			port: LavalinkPort
+		});
+		this.lavalink.init();
 		this.lavalink.on('error', err => this.emit('error', err));
 		this.lavalink.on('event', this._lavalinkEvent.bind(this));
 		this.constants = {};

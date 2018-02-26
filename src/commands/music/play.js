@@ -35,9 +35,9 @@ class PlayCommand extends Commands {
 				songs = arr;
 			}
 			if (songs.length > 1) {
-				await this._playlist(songs, message);
+				await this._playlist(songs, message, msg.member.displayName);
 			} else {
-				await this._song(songs[0], message);
+				await this._song(songs[0], message, msg.member.displayName);
 			}
 		} catch (error) {
 			await message.edit(error.message);
@@ -48,14 +48,16 @@ class PlayCommand extends Commands {
 		return /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/g.test(input); // eslint-disable-line no-useless-escape
 	}
 
-	async _playlist(songs, message) {
+	async _playlist(songs, message, requestor) {
 		for (const song of songs) {
+			song.user = requestor;
 			message.guild.music.queue(song);
 		}
 		await message.edit(`**Queued** ${songs.length} songs.`);
 	}
 
-	async _song(song, message) {
+	async _song(song, message, requestor) {
+		song.user = requestor;
 		message.guild.music.queue(song);
 		await message.edit(`**Queued:** ${song.info.title}.`);
 	}
