@@ -14,7 +14,7 @@ const Manager = new ShardingManager(join(__dirname, 'main.js'),
 	});
 // Spawn shards
 const spawn = async () => {
-	await wait(10000);
+	await wait(5000);
 	Manager.spawn();
 };
 spawn();

@@ -59,6 +59,7 @@ module.exports = class Music extends EventEmitter {
 		const channel = this.client.channels.get(this.channelID);
 		channel.send(`Skipped the played Song!`);
 		if (!this._queue.length) return;
+		channel.send(`Now Playing: ${this._queue[0].info.title}`);
 		return this._play();
 	}
 
