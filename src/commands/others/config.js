@@ -357,7 +357,9 @@ class ConfigCommand extends Commands {
 		if (!arg1) {
 			return msg.reply('You must provide an second parameter!');
 		} else if (arg2 === 'message') {
-
+			rest.unshift(arg3);
+			const leaveMessage = rest.join(' ');
+			await msg.guild.updateConfig({ leaveMessage });
 		} else {
 			return msg.reply('You provided an wrong second parameter');
 		}
