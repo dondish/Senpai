@@ -17,7 +17,7 @@ class PlayCommand extends Commands {
 		prefix = prefix ? prefix : client.config.prefix;
 		let channel = msg.guild.channels.get(musicID);
 		const musicChannel = channel || msg.channel;
-		if (msg.guild.music.channelID !== musicChannel.id) msg.guild.music.channelID = musicChannel.id;
+		if (!msg.guild.music.channelID) msg.guild.music.channelID = musicChannel.id;
 		if (!me.voiceChannelID) return msg.reply(`You must let me join a Voice Channel with ${prefix}join!`);
 		const message = await msg.channel.send('adding your Song/Playlist to the queue....');
 		let link = params[0];

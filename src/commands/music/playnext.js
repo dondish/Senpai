@@ -17,7 +17,7 @@ class PlayNextCommand extends Commands {
 		let channel = msg.guild.channels.get(musicID);
 		let { prefix } = await msg.guild.getConfig();
 		const musicChannel = channel || msg.channel;
-		if (msg.guild.music.channelID !== musicChannel.id) msg.guild.music.channelID = musicChannel.id;
+		if (!msg.guild.music.channelID) msg.guild.music.channelID = musicChannel.id;
 		prefix = prefix ? prefix : client.config.prefix;
 		if (!me.voiceChannelID) return msg.reply(`You must let me join a Voice Channel with ${prefix}join!`);
 		const message = await msg.channel.send('trying to add your Song/Playlist at next position to the queue....');
