@@ -165,7 +165,7 @@ class ConfigCommand extends Commands {
 		} else if (arg1 === 'count' || arg1 === 'votes') {
 			const number = Number(arg2);
 			if (number <= 0 || isNaN(number)) return msg.reply('the third parameter must be a number greater than 0 !');
-			await msg.guild.updateConfig({ starboardNeededReactions: number });
+			await msg.guild.updateConfig({ starcount: number });
 			const embed = new RichEmbed()
 				.setTitle(`Updated needed Stars for ${msg.guild.name}`)
 				.addField('New required Star Count', `${number}`)
