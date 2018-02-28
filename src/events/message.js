@@ -38,10 +38,10 @@ class MessageEvent extends Events {
 		}
 		if (cmd) {
 			if (disabledCommands.includes(cmd.name) || disabledCommandCategories.includes(cmd.group)) return;
-			if (musicLimited) {
-				await this.checkMusicPermission(msg);
-			}
 			try {
+				if (musicLimited && cmd.group === 'music') {
+					await this.checkMusicPermission(msg);
+				}
 				this.client.emit('commandRun', this, msg);
 				await cmd.run(msg, params);
 			} catch (error) {

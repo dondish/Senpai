@@ -16,8 +16,7 @@ class GuildMemberExtension extends Extension {
 		if (id === client.constants.ownerID) return BOTOWNER;
 		if (id === guild.owner.id) return SERVEROWNER;
 		if (this.permissions.has('ADMINISTRATOR')) return ADMINISTRATOR;
-		const database = client.db;
-		const guildConfig = await database.guildsettings.findById(guild.id);
+		const guildConfig = await client.db.serverconfig.findById(guild.id);
 		for (let role of roles) {
 			if (guildConfig.modRoles.includes(role[0])) return MODERATORROLE;
 		}
