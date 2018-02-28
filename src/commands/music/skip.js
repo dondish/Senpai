@@ -11,9 +11,10 @@ class SkipCommand extends Commands {
 		super(client, info, group);
 	}
 
-	run(msg) {
+	async run(msg) {
 		if (!msg.guild.music.playing) return msg.reply(`Im not playing music!`);
 		msg.guild.music.stop();
+		await msg.channel.send('Skipped the played Song!');
 	}
 }
 

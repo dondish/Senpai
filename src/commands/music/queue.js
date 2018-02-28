@@ -15,9 +15,9 @@ class QueueCommand extends Commands {
 	run(msg) {
 		const { _queue } = msg.guild.music;
 		if (!_queue || _queue.length < 1) return msg.reply('there are no songs currently in queue!');
-		let time = _queue.map(song => song.info.length).reduce((a, b) => a + b);
+		let time = _queue.map(song => song.info.isStream ? 0 : song.info.length).reduce((a, b) => a + b);
 		time = this.format(time / 1000);
-		const songs = _queue.map(song => `${song.info.title}\nRequested by ${song.user}`);
+		const songs = _queue.map(song => `${song.info.title}\nRequested by ${song.user.name}`);
 		const embed = this.constructRichEmbed(songs, msg, time);
 		msg.channel.send(embed);
 	}

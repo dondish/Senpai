@@ -25,7 +25,7 @@ class SenpaiClient extends Client {
 		this.lavalink.init();
 		this.lavalink.on('error', err => this.emit('error', err));
 		this.lavalink.on('event', this._lavalinkEvent.bind(this));
-		this.constants = {};
+		this.constants = { currency: '<:kappa:322135966322262056>' };
 		this.once('ready', async () => {
 			this.constants.application = await this.fetchApplication();
 			this.constants.ownerID = this.constants.application.owner.id;

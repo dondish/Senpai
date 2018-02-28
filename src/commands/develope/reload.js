@@ -15,7 +15,7 @@ class ReloadCommand extends Commands {
 		const { client } = this;
 		const [command] = params;
 		const permissionLevel = await msg.member.getPermissionsLevel();
-		if (permissionLevel !== 0) return msg.react(client.emojis.get('361218228103675905'));
+		if (permissionLevel !== 0) return msg.react('361218228103675905');
 		if (!client.commands.has(command)) return msg.channel.send(`no command called ${command} found`);
 		const DeleteCommand = client.commands.get(command);
 		DeleteCommand.aliases.forEach(alias => {
@@ -29,7 +29,7 @@ class ReloadCommand extends Commands {
 		Command.aliases.forEach(alias => {
 			client.aliases.set(alias, Command.name);
 		});
-		msg.react(client.emojis.get('361218217605070858'));
+		msg.react('361218217605070858');
 		client.log.debug(`Reloaded Command: ${Command.name}.`);
 	}
 }

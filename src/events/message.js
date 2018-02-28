@@ -51,22 +51,22 @@ class MessageEvent extends Events {
 	}
 
 	createParamsMention(msg) {
-		const params = msg.content.split(' ').slice(2);
+		const params = msg.content.split(/ +/g).slice(2);
 		return params;
 	}
 
 	getCommandMention(msg) {
-		const command = msg.content.split(' ')[1].toLowerCase();
+		const command = msg.content.split(/ +/g)[1].toLowerCase();
 		return command;
 	}
 
 	createParams(msg) {
-		const params = msg.content.split(' ').slice(1);
+		const params = msg.content.split(/ +/g).slice(1);
 		return params;
 	}
 
 	getCommand(msg, prefix) {
-		const command = msg.content.split(' ')[0].slice(prefix.length).toLowerCase();
+		const command = msg.content.split(/ +/g)[0].slice(prefix.length).toLowerCase();
 		return command;
 	}
 

@@ -22,10 +22,10 @@ class RemoveSongCommand extends Commands {
 		if (number === 1) return msg.reply(`You try to delete the current playing song from the queue use ${prefix}skip instead`);
 		if (isNaN(number)) return msg.reply('I only accpet the queue number in this command');
 		if (number <= 0) return msg.channel.send('There is no Song which is in queue place 0 or less :thinking:');
-		if (number > msg.guild.music.queue.length) return msg.channel.send("You can't try to delete a song that is not there!");
+		if (number > msg.guild.music._queue.length) return msg.channel.send("You can't try to delete a song that is not there!");
 		const indexnumber = number - 1;
-		await msg.channel.send(`I've deleted the Song ${msg.guild.music.queue[indexnumber].title} from the queue`);
-		msg.guild.music.queue.splice(indexnumber, 1);
+		await msg.channel.send(`I've deleted the Song ${msg.guild.music._queue[indexnumber].info.title} from the queue`);
+		msg.guild.music.remove(indexnumber);
 	}
 }
 

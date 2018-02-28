@@ -10,8 +10,8 @@ GuildMemberExtension.extend(Discord.GuildMember);
 const Client = new SenpaiClient({ disabledEvents: ['TYPING_START'] });
 const setup = new Setup(Client);
 
-setup.init().then(
-	() => Client.login(Client.config.bottoken)
+setup.init()
+	.then(() => Client.login(Client.config.bottoken)
 		.catch(err => Client.log.error(`${err.name}: ${err.message}`)))
 	.catch(err => { throw err; });
 

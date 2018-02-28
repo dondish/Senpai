@@ -14,7 +14,7 @@ class WithdrawCommand extends Commands {
 	async run(msg, params) {
 		const data = await msg.member.getEconomy();
 		let { cash, bank } = data;
-		let currency = this.client.guilds.get('199857240037916672').emojis.get('322135966322262056');
+		let { currency } = this.client.constants;
 		let change = params[0];
 		let amount;
 		if (change === 'all' || change === '-a' || change === 'everything') {

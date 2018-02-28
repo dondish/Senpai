@@ -14,7 +14,7 @@ class LeaderboardCommand extends Commands {
 
 	async run(msg) {
 		const leaderboard = await msg.guild.getLeaderboard();
-		let currency = this.client.emojis.get('322135966322262056');
+		let { currency } = this.client.constants;
 		await msg.guild.fetchMembers();
 		const mapped = [];
 		for (const player of leaderboard) {

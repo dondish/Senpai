@@ -13,38 +13,12 @@ class ShuffleCommand extends Commands {
 
 	async run(msg) {
 		const { me } = msg.guild;
-		let { queue } = msg.guild.music;
+		let { _queue } = msg.guild.music;
 		if (!me.voiceChannelID) return msg.reply(`Im not in a Voice channel on this Server!`);
 		if (!msg.guild.music.playing) return msg.reply(`I don't play music at the moment!`);
-		if (queue.length < 3) return msg.channel.send('You need atleast 3 songs in the queue to shuffle!');
-		let newQueue = this.shuffle(queue);
-		msg.guild.music.queue = newQueue;
+		if (_queue.length < 3) return msg.channel.send('You need atleast 3 songs in the queue to shuffle!');
+		msg.guild.music.shuffle();
 		await msg.channel.send('successfully shuffled the queue!');
-	}
-
-	shuffle(queue) {
-		let firstSong = queue.shift();
-		let currentIndex = queue.length,
-			randomIndex,
-			temporaryValue;
-
-		// While there remain elements to shuffle...
-		while (currentIndex !== 0) {
-			// Pick a remaining element...
-			randomIndex = Math.floor(Math.random() * currentIndex);
-			currentIndex -= 1;
-
-			// And swap it with the current element.
-			temporaryValue = queue[currentIndex];
-			queue[currentIndex] = queue[randomIndex];
-			queue[randomIndex] = temporaryValue;
-		}
-
-		// Add first song again to queue
-		queue.unshift(firstSong);
-
-		// Return queue
-		return queue;
 	}
 }
 

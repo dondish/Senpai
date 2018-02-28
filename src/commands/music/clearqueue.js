@@ -12,10 +12,10 @@ class ClearQueueCommand extends Commands {
 	}
 
 	async run(msg) {
-		const { voiceConnection } = msg.guild;
-		if (voiceConnection === null) return msg.reply(`Im not in a Voice channel on this Server!`);
-		if (!msg.guild.music.playing) return msg.reply(`I don't play music at the moment!`);
-		msg.guild.music._queue.length = 1;
+		const { me } = msg.guild;
+		if (!me.voiceChannelID === null) return msg.reply(`Im not in a Voice channel on this Server!`);
+		if (!msg.guild.music._queue.length === 0) return msg.reply(`The queue is empty already!`);
+		msg.guild.music.clear();
 		await msg.channel.send('i cleared the whole queue only the playing Song is left!');
 	}
 }

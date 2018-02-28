@@ -22,7 +22,7 @@ class MoneyCommand extends Commands {
 		const result = await member.getEconomy();
 		let { cash, bank } = result;
 		let total = cash + bank;
-		const currency = this.client.guilds.get('199857240037916672').emojis.get('322135966322262056');
+		let { currency } = this.client.constants;
 		await msg.channel.send(`${member} have ${cash} ${currency} on the hand and ${bank} ${currency} in the Bank thats a Total of ${total} ${currency}.`);
 	}
 }

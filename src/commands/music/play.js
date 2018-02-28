@@ -35,9 +35,9 @@ class PlayCommand extends Commands {
 				songs = arr;
 			}
 			if (songs.length > 1) {
-				await this._playlist(songs, message, msg.member.displayName);
+				await this._playlist(songs, message, { name: msg.member.displayName, url: msg.member.user.displayAvatarURL });
 			} else {
-				await this._song(songs[0], message, msg.member.displayName);
+				await this._song(songs[0], message, { name: msg.member.displayName, url: msg.member.user.displayAvatarURL });
 			}
 		} catch (error) {
 			await message.edit(error.message);

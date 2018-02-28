@@ -396,6 +396,9 @@ class ConfigCommand extends Commands {
 				case 'welcome':
 					await this.welcome(msg, argsToPass);
 					break;
+				case 'leave':
+					await this.leave(msg, argsToPass);
+					break;
 				default:
 					return msg.reply('seems like you provided a first parameter what is wrong maybe look the usage up again!');
 			}
