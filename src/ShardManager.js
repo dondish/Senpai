@@ -4,6 +4,8 @@ const { bottoken } = process.env;
 const Economy = require('./structures/new/Economy.js');
 const Database = require('./structures/new/Database.js');
 const { economy } = new Database();
+const { promisify } = require('./structures/new/Util.js');
+const wait = promisify(setTimeout);
 const Manager = new ShardingManager(join(__dirname, 'main.js'),
 	{
 		totalShards: 'auto',
@@ -11,7 +13,11 @@ const Manager = new ShardingManager(join(__dirname, 'main.js'),
 		token: bottoken
 	});
 // Spawn shards
-Manager.spawn();
+const spawn = async () => {
+	await wait(5000);
+	Manager.spawn();
+};
+spawn();
 
 // Economy Bank update
 Economy.bankUpdate(economy);

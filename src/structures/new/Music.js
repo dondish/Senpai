@@ -1,137 +1,117 @@
-const { googleAPIKey } = process.env;
-const { MusicError } = require('./CustomErrors.js');
-const yt = require('ytdl-core');
-const YouTube = require('simple-youtube-api');
-const youtube = new YouTube(googleAPIKey);
+const { EventEmitter } = require('events');
 const { RichEmbed } = require('discord.js');
 
-class Music {
-	constructor(Guild) {
-		this.guild = Guild;
+module.exports = class Music extends EventEmitter {
+	constructor(client, id) {
+		super();
+		this.client = client;
+		this.id = id;
+		this.playing = false;
 		this._queue = [];
 		this.loop = false;
+		this._channelID = null;
+		this.on('TrackEnd', this._handleEnd.bind(this));
+	}
+
+	queue(songinfo) {
+		this._queue.push(songinfo);
+		if (!this.playing) {
+			return this._play();
+		}
+	}
+
+	queueNext(songinfo) {
+		this._queue.splice(1, 0, songinfo);
+		if (!this.playing) {
+			return this._play();
+		}
+	}
+
+	stop() {
+		this.client.lavalink.players.get(this.id).stop();
+	}
+
+	shuffle() {
+		this._shuffle(this._queue);
+	}
+
+	remove(index) {
+		this._queue.splice(index, 1);
+	}
+
+	clear() {
+		this._queue.length = 1;
+	}
+
+	_play(options) {
+		const channel = this.client.channels.get(this.channelID);
+		const embed = new RichEmbed()
+			.setAuthor(this._queue[0].user.name, this._queue[0].user.url)
+			.addField('Now Playing:', `[${this._queue[0].info.title}](${this._queue[0].info.uri})`)
+			.setColor('RANDOM');
+		channel.send(embed);
+		const { track } = this._queue[0];
+		this.client.lavalink.players.get(this.id).play(track, options);
+		this.playing = true;
+	}
+
+	_handleEnd(event) {
+		const shifted = this._queue.shift();
 		this.playing = false;
-		this.dispatcher = null;
+		if (event.reason === 'FINISHED') return this._finished(event, shifted);
+		else if (event.reason === 'STOPPED') return this._stopped(event, shifted);
+		else if (event.reason === 'FAILED') return this._failed(event);
 	}
 
-	playqueue(channel) {
-		const { voiceConnection, client } = this.guild;
-		let [currentSong] = this.queue;
-		if (!voiceConnection || this.playing || this.queue.length === 0 || !currentSong) return;
-		const { title, requestor, url, thumbnails } = currentSong;
-
-		this.dispatcher = voiceConnection.playStream(yt(url, { audioonly: true }));
-
-		this.dispatcher.on('start', () => {
-			voiceConnection.player.streamingData.pausedTime = 0;
-			this.playing = true;
-			const embed = new RichEmbed()
-				.setDescription(`[${title}](${url})`)
-				.setAuthor(requestor.tag, requestor.displayAvatarURL)
-				.setImage(thumbnails.maxres.url)
-				.setColor('RANDOM');
-			if (channel.permissionsFor(channel.guild.me).has('SEND_MESSAGES')) {
-				channel.send(embed);
-			}
-		});
-
-		this.dispatcher.on('error', error => {
-			if (channel.permissionsFor(channel.guild.me).has('SEND_MESSAGES')) {
-				channel.send('I had an error while trying to play the Current Song so i skipped it! if this happens more than 1 time please contact my DEV!');
-			}
-			this.queue.shift();
-			client.log.error(`while trying to play a song this error occurred ${error.stack}`);
-			this.playing = false;
-			this.dispatcher = null;
-			return this.playqueue(channel);
-		});
-
-		this.dispatcher.on('end', () => setTimeout(() => {
-			const shifted = this.queue.shift();
-			if (this.loop) this.queue.push(shifted);
-			this.playing = false;
-			this.dispatcher = null;
-			this.playqueue(channel);
-		}, 200));
+	_finished(event, shifted) {
+		if (this.loop) this._queue.push(shifted);
+		if (!this._queue.length) return;
+		return this._play();
 	}
 
-	async handlePlaylist(link, requestedBy, channel, messageToEdit) {
-		try {
-			const playlist = await youtube.getPlaylist(link);
-			const songs = await playlist.getVideos();
-			const promises = [];
-			for (const song of songs) promises.push(song.fetch());
-			const fullSongs = await Promise.all(promises);
-			for (const song of fullSongs) this.queue.push(new Song(song, requestedBy));
-			this.playqueue(channel);
-			return `${fullSongs.length} Songs were added.`;
-		} catch (error) {
-			throw new MusicError(error.message, messageToEdit);
+	_failed() {
+		const channel = this.client.channels.get(this.channelID);
+		channel.send('Sorry seems like i encountered an issue while playing this song, so i skipped it');
+		if (!this._queue.length) return;
+		return this._play();
+	}
+
+	_stopped(event, shifted) {
+		if (this.loop) this._queue.push(shifted);
+		if (!this._queue.length) return;
+		return this._play();
+	}
+
+	_shuffle(queue) {
+		let firstSong = queue.shift();
+		let currentIndex = queue.length,
+			randomIndex,
+			temporaryValue;
+
+		// While there remain elements to shuffle...
+		while (currentIndex !== 0) {
+			// Pick a remaining element...
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex -= 1;
+
+			// And swap it with the current element.
+			temporaryValue = queue[currentIndex];
+			queue[currentIndex] = queue[randomIndex];
+			queue[randomIndex] = temporaryValue;
 		}
+
+		// Add first song again to queue
+		queue.unshift(firstSong);
+
+		// Return queue
+		return queue;
 	}
 
-	async handleSong(input, requestedBy, isUrl, channel, messageToEdit) {
-		if (isUrl) {
-			const Song = await this.getSongByUrl(input, requestedBy, messageToEdit);
-			this.queue.push(Song);
-			this.playqueue(channel);
-			return Song;
-		} else {
-			const Song = await this.getSongByName(input, requestedBy, messageToEdit);
-			this.queue.push(Song);
-			this.playqueue(channel);
-			return Song;
-		}
+	set channelID(value) {
+		this._channelID = value;
 	}
 
-	async handleSongAsNext(input, requestedBy, isUrl, channel, messageToEdit) {
-		if (isUrl) {
-			const Song = await this.getSongByUrl(input, requestedBy, messageToEdit);
-			this.queue.splice(1, 0, Song);
-			this.playqueue(channel);
-			return Song;
-		} else {
-			const Song = await this.getSongByName(input, requestedBy, messageToEdit);
-			this.queue.splice(1, 0, Song);
-			this.playqueue(channel);
-			return Song;
-		}
+	get channelID() {
+		return this._channelID;
 	}
-
-	async getSongByUrl(url, requestedBy, messageToEdit) {
-		const id = /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/g.exec(url);
-		if (!id) throw new MusicError('this Link isn\'s a Youtube Video', messageToEdit);
-		let result = await youtube.getVideoByID(id[1]);
-		if (!result) throw new MusicError('Song Unaviable', messageToEdit);
-		result = await result.fetch();
-		const song = new Song(result, requestedBy);
-		if (song.durationSeconds > 1800) throw new MusicError('Song is too long! the maximun limit is 30 minutes', messageToEdit);
-		return song;
-	}
-
-	async getSongByName(name, requestedBy, messageToEdit) {
-		const results = await youtube.searchVideos(name);
-		if (!results[0]) throw new MusicError('i found no song with that name. Please use a link instead!', messageToEdit);
-		let result = results[0];
-		result = await result.fetch();
-		return new Song(result, requestedBy);
-	}
-
-	set queue(input) {
-		this._queue = input;
-	}
-
-	get queue() {
-		return this._queue;
-	}
-}
-
-class Song extends YouTube.Video {
-	constructor(song, requestedBy) {
-		super(youtube, song.raw);
-		this.requestor = requestedBy;
-		if (!this.thumbnails.maxres) this.thumbnails.maxres = this.thumbnails.standard || this.thumbnails.high || this.thumbnails.medium || this.thumbnails.default;
-	}
-}
-
-module.exports = Music;
+};

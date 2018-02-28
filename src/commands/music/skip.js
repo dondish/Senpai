@@ -11,13 +11,10 @@ class SkipCommand extends Commands {
 		super(client, info, group);
 	}
 
-	run(msg) {
-		const { voiceConnection } = msg.guild;
-		if (!voiceConnection) return msg.reply(`Im not in a Voice channel on this Server!`);
-		const { dispatcher } = msg.guild.music;
-		if (!dispatcher) return msg.reply(`I don't play music at the moment!`);
-		dispatcher.end();
-		msg.channel.send('Skipped the played Song!');
+	async run(msg) {
+		if (!msg.guild.music.playing) return msg.reply(`Im not playing music!`);
+		msg.guild.music.stop();
+		await msg.channel.send('Skipped the played Song!');
 	}
 }
 

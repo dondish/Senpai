@@ -1,4 +1,5 @@
 const Events = require('../structures/new/Event.js');
+const { MusicError } = require('../structures/new/CustomErrors.js');
 
 class MessageEvent extends Events {
 	constructor(client) {
@@ -50,22 +51,22 @@ class MessageEvent extends Events {
 	}
 
 	createParamsMention(msg) {
-		const params = msg.content.split(' ').slice(2);
+		const params = msg.content.split(/ +/g).slice(2);
 		return params;
 	}
 
 	getCommandMention(msg) {
-		const command = msg.content.split(' ')[1].toLowerCase();
+		const command = msg.content.split(/ +/g)[1].toLowerCase();
 		return command;
 	}
 
 	createParams(msg) {
-		const params = msg.content.split(' ').slice(1);
+		const params = msg.content.split(/ +/g).slice(1);
 		return params;
 	}
 
 	getCommand(msg, prefix) {
-		const command = msg.content.split(' ')[0].slice(prefix.length).toLowerCase();
+		const command = msg.content.split(/ +/g)[0].slice(prefix.length).toLowerCase();
 		return command;
 	}
 
@@ -92,7 +93,7 @@ class MessageEvent extends Events {
 
 	async checkMusicPermission(msg) {
 		const permissionLevel = await msg.member.getPermissionsLevel();
-		if (permissionLevel > 4) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to use this Command!");
+		if (permissionLevel > 4) throw new MusicError("on this server the music feature is limited to music roles and since you don't have one you dont have permission to use this Command!");
 	}
 }
 

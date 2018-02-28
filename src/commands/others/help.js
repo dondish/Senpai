@@ -19,8 +19,8 @@ class HelpCommand extends Commands {
 		prefix = prefix ? prefix : client.config.prefix;
 		let param1 = params[0];
 		if (!param1) {
-			let [, categories] = await walkAsync(join(__dirname, '..', '..', 'commands'));
-			categories = categories.map(groupPath => groupPath.slice(9));
+			let [path, categories] = await walkAsync(join(__dirname, '..', '..', 'commands'));
+			categories = categories.map(groupPath => groupPath.slice(path.length));
 			const arrayOfCommandCollections = [];
 			for (let i = 0; i < categories.length; i++) {
 				const result = client.commands.filter(command => command.group === categories[i]);
@@ -28,7 +28,7 @@ class HelpCommand extends Commands {
 			}
 			const categorieStrings = [];
 			for (let i = 0; i < arrayOfCommandCollections.length; i++) {
-				const result = `__${arrayOfCommandCollections[i].first().group}__\n${arrayOfCommandCollections[i].map(command => `**${command.name}:** ${command.description}`).join('\n')}\n`;
+				const result = `__${arrayOfCommandCollections[i].first().group.slice(1)}__\n${arrayOfCommandCollections[i].map(command => `**${command.name}:** ${command.description}`).join('\n')}\n`;
 				categorieStrings.push(result);
 			}
 			await msg.author.send(`To run a command in ${msg.guild.name}, use ${prefix}command or @${this.client.user.tag} command.\nUse help <command> to view detailed information about a specific command.\n\n${categorieStrings.join('\n')}\nyou can get a list of all my commands with usage and details here: \nhttp://yukine.ga/Senpai/commands/`, { split: true });

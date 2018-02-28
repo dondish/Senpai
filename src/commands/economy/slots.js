@@ -43,7 +43,7 @@ class SlotsCommand extends Commands {
 			gambleamount = Number(gambleamount);
 			gambleamount = Math.floor(gambleamount);
 		}
-		let currency = client.guilds.get('199857240037916672').emojis.get('322135966322262056');
+		let { currency } = client.constants;
 		if (isNaN(gambleamount)) return msg.reply('that is not a valid number :thinking:');
 		if (gambleamount > data.cash) return msg.reply('You dont have that much money');
 		if (gambleamount <= 0) return msg.reply('Your amount must be more than 0!');

@@ -83,7 +83,7 @@ class GuildExtension extends Extension {
 	}
 
 	get music() {
-		if (!this._music) this._music = new Music(this);
+		if (!this._music) this._music = new Music(this.client, this.id);
 		return this._music;
 	}
 

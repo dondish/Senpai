@@ -12,8 +12,8 @@ class LoopCommand extends Commands {
 	}
 
 	run(msg) {
-		const { voiceConnection } = msg.guild;
-		if (!voiceConnection) return msg.reply(`Im not in a Voice channel on this Server!`);
+		const { me } = msg.guild;
+		if (!me.voiceChannelID) return msg.reply(`Im not in a Voice channel on this Server!`);
 		const { queue, loop } = msg.guild.music;
 		if (queue.length === 0) return msg.reply('You can`t loop an empty queue :eyes:');
 		if (loop) {
