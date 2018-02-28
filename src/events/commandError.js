@@ -9,8 +9,8 @@ class commandError extends Events {
 
 	async run(error, messageEvent, msg) {
 		const { client } = this;
-		if (error instanceof MusicError || error instanceof UsageError) return error.msg.edit(`${error.message}`);
 		if (error instanceof DatabaseError) return msg.channel.send(`Could not execute this command because of this reason: \`${error.message}\``);
+		if (error instanceof UsageError || error instanceof MusicError) return msg.channel.send(error.message);
 		if (error.message === 'Cannot send messages to this user') return msg.channel.send('I had an error while trying to DM you, look your Direct Message settings up!');
 		if (error.message === 'Missing Permissions' || error.message === 'Missing Access' || error.message === 'Unknown Message') return;
 		const { supportServerLink } = client.config;
