@@ -41,7 +41,8 @@ class RawEvent extends Events {
 
 		const user = client.users.get(data.user_id);
 		const message = await channel.fetchMessage(data.message_id);
-		const reaction = message.reactions.get(data.emoji.id || data.emoji.name);
+		const emojiKey = data.emoji.id ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
+		const reaction = message.reactions.get(emojiKey);
 
 		client.emit('messageReactionRemove', reaction, user);
 	}
