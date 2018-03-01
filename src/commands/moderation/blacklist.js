@@ -43,7 +43,7 @@ class BlacklistCommand extends Commands {
 
 	async add(member, global) {
 		const { client } = this;
-		const user = await client.db.blacklist.findOrCreate({ where: { id: member.id } });
+		const [user] = await client.db.blacklist.findOrCreate({ where: { id: member.id } });
 		if (global) {
 			if (user.global) throw new DatabaseError('User already global blacklisted!');
 			return user.update({ global });
@@ -56,7 +56,7 @@ class BlacklistCommand extends Commands {
 
 	async delete(member, global) {
 		const { client } = this;
-		const user = await client.db.blacklist.findOrCreate({ where: { id: member.id } });
+		const [user] = await client.db.blacklist.findOrCreate({ where: { id: member.id } });
 		if (!user) throw new DatabaseError('User is not blacklisted!');
 		if (global) {
 			if (!user.global) throw new DatabaseError('User is not global blacklisted!');
