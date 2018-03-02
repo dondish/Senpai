@@ -12,9 +12,8 @@ class DepositCommand extends Commands {
 	}
 
 	async run(msg, params) {
-		const data = await msg.member.getEconomy();
-		let { cash, bank } = data;
-		let { currency } = this.client.constants;
+		let { cash, bank } = await msg.member.getEconomy();
+		let { currency } = this.client.globalEmoji;
 		let change = params[0];
 		let amount;
 		if (change === 'all' || change === '-a' || change === 'everything') {
@@ -30,7 +29,7 @@ class DepositCommand extends Commands {
 		cash -= amount;
 		bank += amount;
 		await msg.member.updateEconomy(cash, bank);
-		await msg.reply(`You successfully deposit ${amount} ${currency} to the bank!`);
+		await msg.reply(`You successfully deposit ${amount} <${currency}> to the bank!`);
 	}
 }
 

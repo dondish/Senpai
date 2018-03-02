@@ -49,8 +49,8 @@ class BlacklistCommand extends Commands {
 			return user.update({ global });
 		} else {
 			if (user.guilds.includes(member.guild.id)) throw new DatabaseError('User already blacklisted!');
-			const guilds = user.guilds.push(member.guild.id);
-			return user.update({ guilds });
+			user.guilds.push(member.guild.id);
+			return user.update({ guilds: user.guilds });
 		}
 	}
 

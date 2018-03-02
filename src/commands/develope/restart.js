@@ -14,8 +14,8 @@ class RestartCommand extends Commands {
 	async run(msg) {
 		const { client } = this;
 		const permissionLevel = await msg.member.getPermissionsLevel();
-		if (permissionLevel !== 0) return msg.react('361218228103675905');
-		await msg.react('361218217605070858');
+		if (permissionLevel !== 0) return msg.react(this.client.globalEmoji.error);
+		await msg.react(this.client.globalEmoji.success);
 		client.log.debug('Restarting All Shards!');
 		client.shard.broadcastEval('process.exit()');
 	}

@@ -32,22 +32,19 @@ class SlotsCommand extends Commands {
 
 	async run(msg, params) {
 		const { client } = this;
-		const data = await msg.member.getEconomy();
-		let { cash, bank } = data;
+		let { cash, bank } = await msg.member.getEconomy();
 		let change = params[0];
 		let gambleamount;
 		if (change === 'all' || change === '-a' || change === 'everything') {
 			gambleamount = cash;
 		} else {
 			[gambleamount] = params;
-			gambleamount = Number(gambleamount);
-			gambleamount = Math.floor(gambleamount);
+			gambleamount = Math.floor(Number(gambleamount));
 		}
 		let { currency } = client.constants;
 		if (isNaN(gambleamount)) return msg.reply('that is not a valid number :thinking:');
-		if (gambleamount > data.cash) return msg.reply('You dont have that much money');
+		if (gambleamount > cash) return msg.reply('You dont have that much money');
 		if (gambleamount <= 0) return msg.reply('Your amount must be more than 0!');
-
 		const result = this._runSlots();
 		const resultString = result.visualize();
 		const { winCount } = result;

@@ -12,17 +12,15 @@ class WithdrawCommand extends Commands {
 	}
 
 	async run(msg, params) {
-		const data = await msg.member.getEconomy();
-		let { cash, bank } = data;
-		let { currency } = this.client.constants;
+		let { cash, bank } = await msg.member.getEconomy();
+		let { currency } = this.client.globalEmoji;
 		let change = params[0];
 		let amount;
 		if (change === 'all' || change === '-a' || change === 'everything') {
 			amount = bank;
 		} else {
 			[amount] = params;
-			amount = Number(amount);
-			amount = Math.floor(amount);
+			amount = Math.floor(Number(amount));
 		}
 		if (isNaN(amount)) return msg.reply('that looks not like a valid number :thinking:');
 		if (amount > bank) return msg.reply("you don't have that much money!");
@@ -30,7 +28,7 @@ class WithdrawCommand extends Commands {
 		cash += amount;
 		bank -= amount;
 		await msg.member.updateEconomy(cash, bank);
-		await msg.reply(`You successfully withdraw ${amount} ${currency} from the bank!`);
+		await msg.reply(`You successfully withdraw ${amount} <${currency}> from the bank!`);
 	}
 }
 

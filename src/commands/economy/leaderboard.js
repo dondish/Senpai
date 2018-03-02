@@ -14,12 +14,12 @@ class LeaderboardCommand extends Commands {
 
 	async run(msg) {
 		const leaderboard = await msg.guild.getLeaderboard();
-		let { currency } = this.client.constants;
+		let { currency } = this.client.globalEmoji;
 		await msg.guild.fetchMembers();
 		const mapped = [];
 		for (const player of leaderboard) {
 			const thisPlayer = msg.guild.members.get(player.user);
-			if (thisPlayer) mapped.push(`${thisPlayer.user.tag} ${player.cash + player.bank}${currency}`);
+			if (thisPlayer) mapped.push(`${thisPlayer.user.tag} ${player.cash + player.bank} <${currency}>`);
 		}
 		if (mapped.length > 10) mapped.length = 10;
 		const embed = new RichEmbed()

@@ -22,8 +22,8 @@ class MoneyCommand extends Commands {
 		const result = await member.getEconomy();
 		let { cash, bank } = result;
 		let total = cash + bank;
-		let { currency } = this.client.constants;
-		await msg.channel.send(`${member} have ${cash} ${currency} on the hand and ${bank} ${currency} in the Bank thats a Total of ${total} ${currency}.`);
+		let { currency } = this.client.globalEmoji;
+		await msg.channel.send(`${member} have ${cash} <${currency}> on the hand and ${bank} <${currency}> in the Bank thats a Total of ${total} <${currency}>.`);
 	}
 }
 
