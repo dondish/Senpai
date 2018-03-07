@@ -3,7 +3,6 @@ const { RichEmbed } = require('discord.js');
 const info = {
 	name: 'history',
 	description: 'shows the moderation history of the mentioned user',
-	aliases: [],
 	examples: ['history @User']
 };
 

@@ -3,7 +3,6 @@ const { RichEmbed } = require('discord.js');
 const info = {
 	name: 'quote',
 	description: 'this will quote or generate a quoted message for you',
-	aliases: [],
 	examples: ['quote -id MESSAGE_ID', 'quote @author MESSAGE_CONTENT_HERE']
 };
 

@@ -2,7 +2,6 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'reload',
 	description: 'reload a command (only the Bot Owner can use this command!)',
-	aliases: [],
 	examples: ['reload invite', 'reload cat']
 };
 

@@ -2,7 +2,6 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: '8ball',
 	description: 'ask a yes/no question and get a answer',
-	aliases: [],
 	examples: ['8ball is this working?']
 };
 

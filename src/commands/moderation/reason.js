@@ -2,7 +2,6 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'reason',
 	description: 'changes the reason of a moderation case',
-	aliases: [],
 	examples: ['reason 50 spam', 'reason 24 Ads']
 };
 

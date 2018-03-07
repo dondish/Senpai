@@ -23,12 +23,9 @@ class Commands {
 		if (typeof info.name !== 'string') throw new TypeError('Command name must be a string.');
 		if (info.name !== info.name.toLowerCase()) throw new Error('Command name must be lowercase.');
 		if (typeof info.description !== 'string') throw new TypeError('Command description must be a string.');
-		if (info.aliases && (!Array.isArray(info.aliases) || info.aliases.some(ali => typeof ali !== 'string'))) {
-			throw new TypeError('Command aliases must be an Array of strings.');
-		}
-		if (info.aliases && info.aliases.some(ali => ali !== ali.toLowerCase())) {
-			throw new Error('Command aliases must be lowercase.');
-		}
+		if (info.aliases && !Array.isArray(info.aliases)) throw new Error('Command aliases must be an Array.');
+		if (info.aliases && info.aliases.some(alis => typeof alis !== 'string')) throw new Error('Command aliases must only contain strings.');
+		if (info.aliases && info.aliases.some(alis => alis !== alis.toLowerCase())) throw new Error('Command aliases must be lowercased.');
 		if (!info.examples) throw new Error('Command examples must be specified.');
 		if (info.examples && (!Array.isArray(info.examples) || info.examples.some(ali => typeof ali !== 'string'))) {
 			throw new TypeError('Command examples must be an Array of strings.');

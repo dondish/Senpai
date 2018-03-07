@@ -7,7 +7,6 @@ const { UsageError } = require('../../structures/new/CustomErrors.js');
 const info = {
 	name: 'weather',
 	description: 'shows you the weather of that city/location',
-	aliases: [],
 	examples: ['weather berlin', 'weather New York']
 };
 

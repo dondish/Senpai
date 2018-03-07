@@ -5,7 +5,6 @@ const { join } = require('path');
 const info = {
 	name: 'trap',
 	description: 'turn the tables with your ultimate Yu-Gi-Oh trap card!',
-	aliases: [],
 	examples: ['trap', 'trap @user']
 };
 

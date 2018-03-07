@@ -3,7 +3,6 @@ const { RichEmbed } = require('discord.js');
 const info = {
 	name: 'upvote',
 	description: 'shows where you can upvote Senpai and support me <3',
-	aliases: [],
 	examples: ['upvote']
 };
 

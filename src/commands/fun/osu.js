@@ -4,7 +4,6 @@ const Osu = require('node-osu');
 const info = {
 	name: 'osu',
 	description: 'shows the stats of an osu! player or map',
-	aliases: [],
 	examples: ['osu user Username_here', 'osu map BeatmapID_here']
 };
 

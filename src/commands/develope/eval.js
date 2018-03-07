@@ -5,7 +5,6 @@ const { post } = require('snekfetch');
 const info = {
 	name: 'eval',
 	description: 'an command to evaluate javascript code (only the Bot Owner can use this command!)',
-	aliases: [],
 	examples: ["eval msg.channel.send('Test')", 'eval msg.client']
 };
 

@@ -39,11 +39,11 @@ class HelpCommand extends Commands {
 			if (client.commands.has(param1)) {
 				const command = client.commands.get(param1);
 				const examples = command.examples.map(ex => `${prefix}${ex}`).join('\n');
-				await msg.channel.send(`= ${command.name} = \n\n${command.description}\n\nAliase: \n${command.aliases.join('\n')}\n\nExamples: \n${examples}`, { code: 'asciidoc' });
+				await msg.channel.send(`= ${command.name} = \n\n${command.description}${command.aliases ? `\n\nAliase: \n${command.aliases.join('\n')}\n\n` : ''}Examples: \n${examples}`, { code: 'asciidoc' });
 			} else if (client.aliases.has(param1)) {
 				const command = client.commands.get(client.aliases.get(param1));
 				const examples = command.examples.map(ex => `${prefix}${ex}`).join('\n');
-				await msg.channel.send(`= ${command.name} = \n\n${command.description}\n\nAliase: \n${command.aliases.join('\n')}\n\nExamples: \n${examples}`, { code: 'asciidoc' });
+				await msg.channel.send(`= ${command.name} = \n\n${command.description}${command.aliases ? `\n\nAliase: \n${command.aliases.join('\n')}\n\n` : ''}Examples: \n${examples}`, { code: 'asciidoc' });
 			} else {
 				await msg.channel.send('looks like i have no command like that :thinking:');
 				await msg.react('🤔');

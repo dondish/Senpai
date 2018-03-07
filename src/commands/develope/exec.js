@@ -4,7 +4,6 @@ const { exec } = require('child_process');
 const info = {
 	name: 'exec',
 	description: 'execute a command in a commandline (only the Bot Owner can use this command!)',
-	aliases: [],
 	examples: ['exec node -v', 'exec npm -v']
 };
 
