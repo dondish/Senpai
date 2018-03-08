@@ -10,6 +10,7 @@ class SenpaiClient extends Client {
 		super(options);
 		this.config = process.env;
 		this.version = version;
+		this.categories = [];
 		this.commands = new Collection();
 		this.aliases = new Collection();
 		this.log = new Log(this.shard.id);
@@ -40,7 +41,9 @@ class SenpaiClient extends Client {
 
 	_lavalinkEvent(event) {
 		const guild = this.guilds.get(event.guildId);
-		if (event.type === 'TrackEndEvent') guild.music.emit('TrackEnd', event);
+		if (event.type === 'TrackEndEvent') {
+			if (guild) guild.music.emit('TrackEnd', event);
+		}
 	}
 }
 

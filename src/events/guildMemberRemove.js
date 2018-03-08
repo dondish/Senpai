@@ -15,7 +15,7 @@ class GuildMemberRemove extends Events {
 	replaceAll(text, member) {
 		const { replace } = this;
 		let updatedText;
-		updatedText = replace(text, '{{user}}', member);
+		updatedText = replace(text, '{{user}}', member.toString());
 		updatedText = replace(updatedText, '{{username}}', member.user.username);
 		updatedText = replace(updatedText, '{{server}}', member.guild.name);
 		updatedText = replace(updatedText, '{{memberCount}}', member.guild.memberCount);

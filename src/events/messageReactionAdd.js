@@ -74,8 +74,8 @@ class MessageReactionAddEvent extends Events {
 		}
 		const channel = message.guild.channels.get(starboardChannel);
 		const messageObject = await message.guild.getStarboardMessage(message.id);
-		const sentMessage = await channel.fetchMessage(messageObject.originalMessage);
-		await message.guild.updateStarboardMessage({ originalMessageID: message.id, starMessageID: sentMessage.id, starCount: reactionCount });
+		const sentMessage = await channel.fetchMessage(messageObject.id);
+		await message.guild.updateStarboardMessage({ originalMessageID: messageObject.id, starMessageID: sentMessage.id, starCount: reactionCount });
 		await sentMessage.edit({ embed });
 	}
 }

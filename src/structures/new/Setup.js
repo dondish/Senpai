@@ -7,15 +7,22 @@ module.exports = class Setup {
 		this.client = client;
 	}
 	async init() {
-		await this._commandloader();
+		const loaded = await this._dirloader();
+		await this._commandloader(loaded);
 		await this._eventloader();
 		await this._syncDatabase();
 	}
 
-	async _commandloader() {
+	async _dirloader() {
+		const { client } = this;
+		const [path, dirs] = await walkAsync(join(__dirname, '..', '..', 'commands'));
+		client.categories = dirs;
+		return { path, dirs };
+	}
+
+	async _commandloader({ path, dirs }) {
 		const { client } = this;
 		const readDirAsync = promisify(readdir);
-		const [path, dirs] = await walkAsync(join(__dirname, '..', '..', 'commands')); // eslint-disable-line no-unused-vars
 		const promises = [];
 		for (const dir of dirs) {
 			promises.push(new Promise((resolve, reject) => {

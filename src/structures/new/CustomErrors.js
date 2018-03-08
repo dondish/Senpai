@@ -1,8 +1,5 @@
 class MusicError extends Error {
-	constructor(message) {
-		super(message);
-		this.name = this.constructor.name;
-	}
+
 }
 
 class DatabaseError extends Error {
