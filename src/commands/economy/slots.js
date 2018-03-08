@@ -30,7 +30,6 @@ class SlotsCommand extends Commands {
 	}
 
 	async run(msg, params) {
-		const { client } = this;
 		let { cash, bank } = await msg.member.getEconomy();
 		let change = params[0];
 		let gambleamount;
@@ -40,7 +39,7 @@ class SlotsCommand extends Commands {
 			[gambleamount] = params;
 			gambleamount = Math.floor(Number(gambleamount));
 		}
-		let { currency } = client.globalEmoji;
+		const { currency } = this.client.globalEmoji;
 		if (isNaN(gambleamount)) return msg.reply('that is not a valid number :thinking:');
 		if (gambleamount > cash) return msg.reply('You dont have that much money');
 		if (gambleamount <= 0) return msg.reply('Your amount must be more than 0!');
@@ -50,11 +49,11 @@ class SlotsCommand extends Commands {
 		const multiplier = winCount * 0.5;
 		let message;
 		if (winCount === 0) {
-			message = `\n\n**----Slots----**\n${resultString}\n**--------------**\n\n You lost ${gambleamount}${currency}`;
+			message = `\n\n**----Slots----**\n${resultString}\n**--------------**\n\n You lost ${gambleamount}<${currency}>`;
 			cash -= gambleamount;
 		} else {
 			const wonMoney = Math.round(gambleamount * multiplier);
-			message = `\n\n**----Slots----**\n${resultString}\n**--------------**\n\n You won ${wonMoney}${currency} and got your bet back`;
+			message = `\n\n**----Slots----**\n${resultString}\n**--------------**\n\n You won ${wonMoney}<${currency}> and got your bet back`;
 			cash += wonMoney;
 		}
 		await msg.member.updateEconomy(cash, bank);
