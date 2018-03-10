@@ -14,6 +14,7 @@
   <p>
     <a href="https://travis-ci.org/Discord-Senpai/Senpai"><img src="https://api.travis-ci.org/Discord-Senpai/Senpai.svg" alt="Build status" /></a>
     <a href="https://david-dm.org/Discord-Senpai/Senpai"><img src="https://david-dm.org/Discord-Senpai/Senpai/status.svg" alt="Dependencies" /></a>
+    <a href="https://app.codacy.com/p/123215"><img src="https://api.codacy.com/project/badge/Grade/fcdcfe2344ac4c25a54b83fa55d6d568" alt="Codacy"></a>
   </p>
 </div>
 
