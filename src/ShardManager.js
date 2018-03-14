@@ -1,10 +1,7 @@
 const { ShardingManager } = require('discord.js');
 const { join } = require('path');
+const { promisify } = require('util');
 const { bottoken } = process.env;
-const Economy = require('./structures/new/Economy.js');
-const Database = require('./structures/new/Database.js');
-const { economy } = new Database();
-const { promisify } = require('./structures/new/Util.js');
 const wait = promisify(setTimeout);
 const Manager = new ShardingManager(join(__dirname, 'main.js'),
 	{
@@ -18,10 +15,6 @@ const spawn = async () => {
 	Manager.spawn();
 };
 spawn();
-
-// Economy Bank update
-Economy.bankUpdate(economy);
-
 
 Manager.on('launch', shard => {
 	console.log(`Shard spawned with ID ${shard.id}`);

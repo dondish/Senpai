@@ -1,21 +1,21 @@
-const Commands = require('../../structures/new/Command.js');
-const info = {
-	name: 'skip',
-	description: 'skip the current playing song',
-	aliases: ['next'],
-	examples: ['skip']
-};
+const { Command } = require('klasa');
 
-class SkipCommand extends Commands {
-	constructor(client, group) {
-		super(client, info, group);
+module.exports = class SkipCommand extends Command {
+	constructor(...args) {
+		super(...args, {
+			name: 'skip',
+			enabled: true,
+			runIn: ['text'],
+			cooldown: 5,
+			bucket: 1,
+			aliases: ['next'],
+			permLevel: 0,
+			description: 'Skip the currently playing song'
+		});
 	}
 
-	async run(msg) {
-		if (!msg.guild.music.playing) return msg.reply(`Im not playing music!`);
+	run(msg) {
 		msg.guild.music.stop();
-		await msg.channel.send('Skipped the played Song!');
+		return msg.send('Skipped the played Song!');
 	}
-}
-
-module.exports = SkipCommand;
+};

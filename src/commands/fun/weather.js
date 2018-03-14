@@ -1,24 +1,28 @@
-const Commands = require('../../structures/new/Command.js');
-const weather = require('weather-js');
-const Canvas = require('canvas');
+const { Command } = require('klasa');
+const { readFile } = require('fs-nextra');
+const { find } = require('weather-js');
 const { join } = require('path');
-const { promisify } = require('../../structures/new/Util.js');
-const { UsageError } = require('../../structures/new/CustomErrors.js');
-const info = {
-	name: 'weather',
-	description: 'shows you the weather of that city/location',
-	examples: ['weather berlin', 'weather New York']
-};
+const { APIError } = require(join(__dirname, '..', '..', 'util', 'CustomErrors.js'));
+const Canvas = require('canvas');
 
-class WeatherCommand extends Commands {
-	constructor(client, group) {
-		super(client, info, group);
+module.exports = class WeatherCommand extends Command {
+	constructor(...args) {
+		super(...args, {
+			name: 'weather',
+			enabled: true,
+			runIn: ['text', 'dm', 'group'],
+			cooldown: 10,
+			bucket: 1,
+			aliases: [],
+			permLevel: 0,
+			usage: '<location:str>',
+			botPerms: ['ATTACH_FILES'],
+			description: 'Shows a picture with the weather of the city you requested.'
+		});
 	}
 
-	async run(msg, params) {
-		if (params.length < 1) return msg.reply('You must add a word to search for');
-		const result = await this.getWeather({ search: params.join(' '), degreeType: 'C' });
-		let realResult = result[0];
+	async run(msg, [...location]) {
+		const [result] = await this.getWeather({ search: location, degreeType: 'C' });
 		Canvas.registerFont(join(__dirname, '..', '..', 'materials', 'fonts', 'Roboto-Regular.ttf'), { family: 'Roboto' });
 		const { Image } = Canvas;
 		const canvas = Canvas.createCanvas(400, 180);
@@ -26,10 +30,9 @@ class WeatherCommand extends Commands {
 		let base = new Image();
 		let humidity = new Image();
 		let windspeed = new Image();
-		const { readFileAsync } = this;
-		base.src = await readFileAsync(join(__dirname, '..', '..', 'materials', 'pictures', 'weather.png'));
-		humidity.src = await readFileAsync(join(__dirname, '..', '..', 'materials', 'icons', 'humidity.png'));
-		windspeed.src = await readFileAsync(join(__dirname, '..', '..', 'materials', 'icons', 'wind.png'));
+		base.src = await readFile(join(__dirname, '..', '..', 'materials', 'pictures', 'weather.png'));
+		humidity.src = await readFile(join(__dirname, '..', '..', 'materials', 'icons', 'humidity.png'));
+		windspeed.src = await readFile(join(__dirname, '..', '..', 'materials', 'icons', 'wind.png'));
 
 		// Enviroment stuff
 		ctx.drawImage(base, 0, 0, base.width, base.height);
@@ -42,17 +45,17 @@ class WeatherCommand extends Commands {
 		// City Name
 		ctx.font = '20px Roboto';
 		ctx.fillStyle = fontColor;
-		ctx.fillText(realResult.location.name, 35, 50);
+		ctx.fillText(result.location.name, 35, 50);
 
 		// Temperature
 		ctx.font = "48px 'Roboto'";
 		ctx.fillStyle = fontColor;
-		ctx.fillText(`${realResult.current.temperature}°C`, 35, 140);
+		ctx.fillText(`${result.current.temperature}°C`, 35, 140);
 
 		// Condition
 		ctx.font = "16px 'Roboto'";
 		ctx.textAlign = 'right';
-		ctx.fillText(realResult.current.skytext, 370, 142);
+		ctx.fillText(result.current.skytext, 370, 142);
 
 		// Humidity Image
 		ctx.drawImage(humidity, 358, 88);
@@ -62,11 +65,11 @@ class WeatherCommand extends Commands {
 
 		// Humidity & wind speed
 		ctx.font = "16px 'Roboto'";
-		ctx.fillText(`${realResult.current.humidity}%`, 353, 100);
-		ctx.fillText(`${realResult.current.windspeed}`, 353, 121);
+		ctx.fillText(`${result.current.humidity}%`, 353, 100);
+		ctx.fillText(`${result.current.windspeed}`, 353, 121);
 
 		// Send the Message
-		msg.channel.send({
+		return msg.send({
 			files: [
 				{
 					attachment: canvas.toBuffer(),
@@ -76,17 +79,13 @@ class WeatherCommand extends Commands {
 		});
 	}
 
-	async getWeather(...args) {
-		const func = promisify(weather.find);
-		try {
-			const result = await func(...args);
-			if (!result || !result[0]) throw new UsageError('No Location found! did you spell the city name right?');
-			return result;
-		} catch (error) {
-			if (!(error instanceof UsageError)) throw new UsageError(error.message);
-			throw error;
-		}
+	getWeather(data) {
+		return new Promise((resolve, reject) => {
+			find(data, (err, result) => {
+				if (err) return reject(err);
+				if (!result || !result[0]) return reject(new APIError('No Location with this name found!'));
+				return resolve(result);
+			});
+		});
 	}
-}
-
-module.exports = WeatherCommand;
+};

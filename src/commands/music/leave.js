@@ -1,22 +1,20 @@
-const Commands = require('../../structures/new/Command.js');
-const info = {
-	name: 'leave',
-	description: 'disconnect from voiceChannel im currently in!',
-	aliases: ['disconnect'],
-	examples: ['leave']
-};
+const { Command } = require('klasa');
 
-class LeaveCommand extends Commands {
-	constructor(client, group) {
-		super(client, info, group);
+module.exports = class LeaveCommand extends Command {
+	constructor(...args) {
+		super(...args, {
+			name: 'leave',
+			enabled: true,
+			runIn: ['text'],
+			cooldown: 5,
+			bucket: 1,
+			permLevel: 0,
+			description: 'Leave the VoiceChannel im currently connected to and removes the queue.'
+		});
 	}
 
-	async run(msg) {
-		const { me } = msg.guild;
-		if (!me.voiceChannelID) return msg.reply(`Im not in a Voice channel on this Server!`);
-		if (msg.guild.music._queue.length > 0) msg.guild.music._queue.length = 0;
-		if (msg.guild.music.loop) msg.guild.music.loop = false;
-		if (msg.guild.music.playing) msg.guild.music.stop();
+	run(msg) {
+		msg.guild.music.reset();
 		this.client.ws.send({
 			shard: this.client.shard.id,
 			op: 4,
@@ -27,8 +25,6 @@ class LeaveCommand extends Commands {
 				self_deaf: false // eslint-disable-line camelcase
 			}
 		});
-		await msg.channel.send('bye bye :wave:');
+		return msg.send('bye bye :wave:');
 	}
-}
-
-module.exports = LeaveCommand;
+};

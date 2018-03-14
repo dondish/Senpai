@@ -1,9 +1,13 @@
-const Events = require('../structures/new/Event.js');
+const { Event } = require('klasa');
 
-class RawEvent extends Events {
-	constructor(client) {
-		super(client);
-		this.name = 'raw';
+module.exports = class RawEvent extends Event {
+	constructor(...args) {
+		super(...args, {
+			name: 'raw',
+			enabled: true,
+			event: 'raw',
+			once: false
+		});
 		this.methods = {
 			MESSAGE_REACTION_ADD: 'messageReactionAdd',
 			MESSAGE_REACTION_REMOVE: 'messageReactionRemove',
@@ -26,8 +30,8 @@ class RawEvent extends Events {
 		if (channel.messages.has(data.message_id)) return;
 
 		const user = client.users.get(data.user_id);
-		const message = await channel.fetchMessage(data.message_id);
-		const emojiKey = data.emoji.id ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
+		const message = await channel.messages.fetch(data.message_id);
+		const emojiKey = data.emoji.id ? data.emoji : data.emoji.name;
 		const reaction = message.reactions.get(emojiKey);
 
 		client.emit('messageReactionAdd', reaction, user);
@@ -40,8 +44,8 @@ class RawEvent extends Events {
 		if (channel.messages.has(data.message_id)) return;
 
 		const user = client.users.get(data.user_id);
-		const message = await channel.fetchMessage(data.message_id);
-		const emojiKey = data.emoji.id ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
+		const message = await channel.messages.fetch(data.message_id);
+		const emojiKey = data.emoji.id ? data.emoji : data.emoji.name;
 		const reaction = message.reactions.get(emojiKey);
 
 		client.emit('messageReactionRemove', reaction, user);
@@ -54,6 +58,4 @@ class RawEvent extends Events {
 	voiceServerUpdate(data) {
 		return this.client.lavalink.voiceServerUpdate(data);
 	}
-}
-
-module.exports = RawEvent;
+};

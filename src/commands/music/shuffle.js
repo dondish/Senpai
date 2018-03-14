@@ -1,24 +1,20 @@
-const Commands = require('../../structures/new/Command.js');
-const info = {
-	name: 'shuffle',
-	description: 'shuffle the current queue',
-	examples: ['shuffle']
-};
+const { Command } = require('klasa');
 
-class ShuffleCommand extends Commands {
-	constructor(client, group) {
-		super(client, info, group);
+module.exports = class ShuffleCommand extends Command {
+	constructor(...args) {
+		super(...args, {
+			name: 'shuffle',
+			enabled: true,
+			runIn: ['text'],
+			cooldown: 5,
+			bucket: 1,
+			permLevel: 0,
+			description: 'Shuffles the currently Queue'
+		});
 	}
 
-	async run(msg) {
-		const { me } = msg.guild;
-		let { _queue } = msg.guild.music;
-		if (!me.voiceChannelID) return msg.reply(`Im not in a Voice channel on this Server!`);
-		if (!msg.guild.music.playing) return msg.reply(`I don't play music at the moment!`);
-		if (_queue.length < 3) return msg.channel.send('You need atleast 3 songs in the queue to shuffle!');
+	run(msg) {
 		msg.guild.music.shuffle();
-		await msg.channel.send('successfully shuffled the queue!');
+		return msg.send('successfully shuffled the queue!');
 	}
-}
-
-module.exports = ShuffleCommand;
+};

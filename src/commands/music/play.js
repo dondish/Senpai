@@ -1,51 +1,43 @@
-const Commands = require('../../structures/new/Command.js');
-const info = {
-	name: 'play',
-	description: 'adds a Song/playlis from youtube to the queue and start the queue',
-	aliases: ['add'],
-	examples: ['play owl city fireflies', 'play https://www.youtube.com/watch?v=psuRGfAaju4', 'play Adele Hello']
-};
+const { Command } = require('klasa');
 
-class PlayCommand extends Commands {
-	constructor(client, group) {
-		super(client, info, group);
+module.exports = class PlayCommand extends Command {
+	constructor(...args) {
+		super(...args, {
+			name: 'play',
+			enabled: true,
+			runIn: ['text'],
+			cooldown: 5,
+			bucket: 1,
+			aliases: ['add'],
+			usage: '<song_or_playlist:str>',
+			permLevel: 0,
+			description: 'Add a Song/Playlist/Livestream from Youtube/Soundcloud/Twitch in the queue.'
+		});
 	}
 
-	async run(msg, params) {
-		const { me, client } = msg.guild;
-		let { musicChannel: musicID, prefix } = await msg.guild.getConfig();
-		prefix = prefix ? prefix : client.config.prefix;
-		let channel = msg.guild.channels.get(musicID);
-		const musicChannel = channel || msg.channel;
-		if (!msg.guild.music.channelID) msg.guild.music.channelID = musicChannel.id;
-		if (!me.voiceChannelID) return msg.reply(`You must let me join a Voice Channel with ${prefix}join!`);
-		const message = await msg.channel.send('adding your Song/Playlist to the queue....');
-		let link = params[0];
-		if (!link) return message.edit('You must add a Link or query to search for behind!');
+	async run(msg, [...query]) {
+		if (!msg.guild.music.channelID) msg.guild.music.channelID = msg.channel.id;
+		await msg.send('*adding your Song/Playlist to the queue....*');
 		const player = this.client.lavalink.players.get(msg.guild.id);
 		if (!player) return;
 		try {
 			let songs;
-			if (this.isLink(params.join(' '))) {
-				songs = await this.client.lavalink.resolveTrack(params.join(' '));
+			if (this.isLink(query.join(' '))) {
+				songs = await this.client.lavalink.resolveTrack(query.join(' '));
 			} else {
 				let arr = [];
-				const searchResult = await this.client.lavalink.resolveTrack(`ytsearch: ${params.join(' ')}`);
+				const searchResult = await this.client.lavalink.resolveTrack(`ytsearch: ${query}`);
 				arr.push(searchResult[0]);
 				songs = arr;
 			}
 			if (songs.length > 1) {
-				await this._playlist(songs, message, { name: msg.member.displayName, url: msg.member.user.displayAvatarURL });
+				await this._playlist(songs, msg, { name: msg.member.displayName, url: msg.member.user.displayAvatarURL() });
 			} else {
-				await this._song(songs[0], message, { name: msg.member.displayName, url: msg.member.user.displayAvatarURL });
+				await this._song(songs[0], msg, { name: msg.member.displayName, url: msg.member.user.displayAvatarURL() });
 			}
 		} catch (error) {
-			await message.edit(error.message);
+			await msg.send(error.message);
 		}
-	}
-
-	isLink(input) {
-		return /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/g.test(input); // eslint-disable-line no-useless-escape
 	}
 
 	async _playlist(songs, message, requestor) {
@@ -53,14 +45,16 @@ class PlayCommand extends Commands {
 			song.user = requestor;
 			message.guild.music.queue(song);
 		}
-		await message.edit(`**Queued** ${songs.length} songs.`);
+		await message.send(`**Queued** ${songs.length} songs.`);
 	}
 
 	async _song(song, message, requestor) {
 		song.user = requestor;
 		message.guild.music.queue(song);
-		await message.edit(`**Queued:** ${song.info.title}.`);
+		await message.send(`**Queued:** ${song.info.title}.`);
 	}
-}
 
-module.exports = PlayCommand;
+	isLink(input) {
+		return /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/g.test(input); // eslint-disable-line no-useless-escape
+	}
+};

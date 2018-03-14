@@ -1,22 +1,22 @@
-const Commands = require('../../structures/new/Command.js');
-const { get } = require('snekfetch');
-const info = {
-	name: 'dog',
-	description: 'shows a picture of a dog',
-	examples: ['dog']
-};
+const { Command } = require('klasa');
 
-class DogCommand extends Commands {
-	constructor(client, group) {
-		super(client, info, group);
+module.exports = class DogCommand extends Command {
+	constructor(...args) {
+		super(...args, {
+			name: 'dog',
+			enabled: true,
+			runIn: ['text', 'dm', 'group'],
+			cooldown: 5,
+			bucket: 1,
+			aliases: ['doggo', 'goodboi'],
+			permLevel: 0,
+			botPerms: ['ATTACH_FILES'],
+			description: 'Shows a random dog'
+		});
 	}
 
 	async run(msg) {
-		const response = await get('https://dog.ceo/api/breeds/image/random');
-		if (response.body.status !== 'success') return msg.reply('The website for the API request had an error');
-		const Link = response.body.message;
-		msg.channel.send('Here\'s your dog', { files: [Link] });
+		const { url } = await this.client.weebAPI.getRandom({ type: 'animal_dog', hidden: false, nsfw: false });
+		msg.channel.send('Here\'s your dog', { files: [url] });
 	}
-}
-
-module.exports = DogCommand;
+};

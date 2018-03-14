@@ -1,29 +1,26 @@
-const Commands = require('../../structures/new/Command.js');
-const info = {
-	name: 'loop',
-	description: 'loops or remove the loop from your current queue!',
-	aliases: ['repeat'],
-	examples: ['loop']
-};
+const { Command } = require('klasa');
 
-class LoopCommand extends Commands {
-	constructor(client, group) {
-		super(client, info, group);
+module.exports = class LoopCommand extends Command {
+	constructor(...args) {
+		super(...args, {
+			name: 'loop',
+			enabled: true,
+			runIn: ['text'],
+			cooldown: 5,
+			bucket: 1,
+			permLevel: 0,
+			description: 'Starts looping the current queue.'
+		});
 	}
 
 	run(msg) {
-		const { me } = msg.guild;
-		if (!me.voiceChannelID) return msg.reply(`Im not in a Voice channel on this Server!`);
-		const { queue, loop } = msg.guild.music;
-		if (queue.length === 0) return msg.reply('You can`t loop an empty queue :eyes:');
+		const { loop } = msg.guild.music;
 		if (loop) {
 			msg.guild.music.loop = false;
-			msg.channel.send('stopping the loop!');
+			return msg.send('stopping the loop!');
 		} else if (!loop) {
 			msg.guild.music.loop = true;
-			msg.channel.send('looping the current queue!');
+			return msg.send('looping the current queue!');
 		}
 	}
-}
-
-module.exports = LoopCommand;
+};

@@ -1,22 +1,20 @@
-const Commands = require('../../structures/new/Command.js');
-const info = {
-	name: 'clearqueue',
-	description: 'clear the whole queue only the playing song will stay!',
-	examples: ['clearqueue']
-};
+const { Command } = require('klasa');
 
-class ClearQueueCommand extends Commands {
-	constructor(client, group) {
-		super(client, info, group);
+module.exports = class ClearQueueCommand extends Command {
+	constructor(...args) {
+		super(...args, {
+			name: 'clearqueue',
+			enabled: true,
+			runIn: ['text'],
+			cooldown: 5,
+			bucket: 1,
+			permLevel: 0,
+			description: 'Clears the whole queue beside the currently playing one'
+		});
 	}
 
-	async run(msg) {
-		const { me } = msg.guild;
-		if (!me.voiceChannelID === null) return msg.reply(`Im not in a Voice channel on this Server!`);
-		if (!msg.guild.music._queue.length === 0) return msg.reply(`The queue is empty already!`);
+	run(msg) {
 		msg.guild.music.clear();
-		await msg.channel.send('i cleared the whole queue only the playing Song is left!');
+		return msg.send('i cleared the whole queue only the playing Song is left!');
 	}
-}
-
-module.exports = ClearQueueCommand;
+};

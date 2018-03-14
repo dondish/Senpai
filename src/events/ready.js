@@ -1,24 +1,35 @@
-const Events = require('../structures/new/Event.js');
-const Timer = require('../structures/new/Timer.js');
+const { Event } = require('klasa');
+const { join } = require('path');
+const Lavalink = require(join(__dirname, '..', 'structures', 'Lavalink.js'));
+const { lavalinkPW, lavalinkShards, lavalinkHost, lavalinkPortWS, LavalinkPort } = process.env;
 
-class ReadyEvent extends Events {
-	constructor(client) {
-		super(client);
-		this.name = 'ready';
+module.exports = class ReadyEvent extends Event {
+	constructor(...args) {
+		super(...args, {
+			name: 'ready',
+			enabled: true,
+			event: 'ready',
+			once: false
+		});
 	}
 
-	async run() {
-		const { client } = this;
-		client.log.info('-----------------------------------------------------------------------------');
-		client.log.info(`Username:      ${client.user.username}`);
-		client.log.info(`ID:            ${client.user.id}`);
-		client.log.info(`Servers:       ${client.guilds.size}`);
-		client.log.info(`Channels:      ${client.channels.size}`);
-		client.log.info('-----------------------------------------------------------------------------');
-		client.user.setActivity(`${client.config.prefix}help || Version: ${client.version}`);
-		const Timers = new Timer(client);
-		await Timers.init();
+	run() {
+		this.client.console.debug('Connected/Reconnected to the Discord API');
+		return this.client.user.setActivity(`${this.client.botConfig.prefix}help || Version: ${this.client.version}`);
 	}
-}
 
-module.exports = ReadyEvent;
+	async init() {
+		this.client.lavalink = new Lavalink({
+			password: lavalinkPW,
+			shards: Number(lavalinkShards),
+			userID: this.client.user.id,
+			host: lavalinkHost,
+			portWS: lavalinkPortWS,
+			port: LavalinkPort
+		});
+		await this.client.lavalink.init();
+		this.client.lavalink.on('error', err => this.emit('error', err));
+		this.client.lavalink.on('event', this.client._lavalinkEvent.bind(this.client));
+		this.client.console.debug('Lavalink Websocket Connection established');
+	}
+};

@@ -1,31 +1,32 @@
-const Commands = require('../../structures/new/Command.js');
-const { RichEmbed } = require('discord.js');
-const info = {
-	name: 'queue',
-	description: 'shows the music queue of this server',
-	aliases: ['songs', 'playlist', 'list'],
-	examples: ['queue']
-};
+const { Command } = require('klasa');
 
-class QueueCommand extends Commands {
-	constructor(client, group) {
-		super(client, info, group);
+module.exports = class QueueCommand extends Command {
+	constructor(...args) {
+		super(...args, {
+			name: 'queue',
+			enabled: true,
+			runIn: ['text'],
+			cooldown: 5,
+			bucket: 1,
+			aliases: ['playlist'],
+			permLevel: 0,
+			description: 'Shows the currently Song Queue'
+		});
 	}
 
 	run(msg) {
 		const { _queue } = msg.guild.music;
-		if (!_queue || _queue.length < 1) return msg.reply('there are no songs currently in queue!');
 		let time = _queue.map(song => song.info.isStream ? 0 : song.info.length).reduce((a, b) => a + b);
 		time = this.format(time / 1000);
 		const songs = _queue.map(song => `${song.info.title}\nRequested by ${song.user.name}`);
 		const embed = this.constructRichEmbed(songs, msg, time);
-		msg.channel.send(embed);
+		return msg.send(embed);
 	}
 
 	constructRichEmbed(songArray, msg, time) {
 		const first = songArray.shift();
-		const embed = new RichEmbed()
-			.setAuthor(msg.author.username, msg.author.displayAvatarURL)
+		const embed = new this.client.methods.Embed()
+			.setAuthor(msg.member.displayName, msg.author.displayAvatarURL())
 			.addField('Currently Playing', `\`\`\`\n${first}\`\`\``)
 			.setColor('RANDOM');
 		if (songArray.length > 5) {
@@ -40,6 +41,4 @@ class QueueCommand extends Commands {
 		}
 		return embed;
 	}
-}
-
-module.exports = QueueCommand;
+};

@@ -24,6 +24,7 @@ ENV bottoken=\
     googleAPIKey=\
     owmAPIKey=\
     dBotsToken=\
+    wolkeToken=\
     discordBotsToken=\
     supportServerLink=\
     voteLink=\

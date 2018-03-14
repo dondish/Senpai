@@ -1,25 +1,35 @@
-const Commands = require('../../structures/new/Command.js');
-const urban = require('relevant-urban');
-const info = {
-	name: 'urban',
-	description: 'search for a word on the urban dictonary',
-	examples: ['urban LOL']
-};
+const { Command } = require('klasa');
+const { random } = require('relevant-urban');
+const { MessageEmbed } = require('discord.js');
 
-class UrbanCommand extends Commands {
-	constructor(client, group) {
-		super(client, info, group);
+module.exports = class UrbanCommand extends Command {
+	constructor(...args) {
+		super(...args, {
+			name: 'urban',
+			enabled: true,
+			runIn: ['text', 'dm', 'group'],
+			cooldown: 5,
+			bucket: 1,
+			permLevel: 0,
+			usage: '<phrase:str>',
+			botPerms: ['EMBED_MESSAGE'],
+			description: 'Search for a word on the urban dictonary'
+		});
 	}
 
-	async run(msg, params) {
-		if (params.length < 1) return msg.reply('You must add a word to search for');
+	async run(msg, [...query]) {
 		try {
-			const result = await urban.random(params.join(' '));
-			msg.channel.send(`**${result.word}** by ${result.author}\n\n***Definition:***\n${result.definition}\n\n***Example***\n${result.example}\n\n${result.thumbsUp} :thumbsup:\n${result.thumbsDown} :thumbsdown:`);
+			const { author, word, definition, example, thumbsUp, thumbsDown } = await random(query);
+			const embed = new MessageEmbed()
+				.setAuthor(author)
+				.setTitle(word)
+				.setDescription(definition)
+				.addField('Example:', example)
+				.setFooter(`${thumbsUp}👍 | ${thumbsDown}👎`)
+				.setColor('RANDOM');
+			return msg.sendEmbed(embed);
 		} catch (error) {
-			msg.channel.send("seems like i didn't have found anything in the urban dictonary!");
+			return msg.send('Sorry but i didn\'t find this phrase on the urban dictonary!');
 		}
 	}
-}
-
-module.exports = UrbanCommand;
+};
