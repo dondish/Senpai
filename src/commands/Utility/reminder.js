@@ -34,7 +34,7 @@ module.exports = class ReminderCommand extends Command {
 			.setDescription(reason)
 			.addField('Channel:', channel.id === msg.author.id ? 'Direct Messages' : channel.toString())
 			.setColor('GREEN')
-			.setFooter('You will get reminded in')
+			.setFooter('You will get reminded on')
 			.setTimestamp(time);
 		return msg.send(embed);
 	}

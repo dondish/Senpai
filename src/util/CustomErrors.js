@@ -6,4 +6,8 @@ class APIError extends Error {
 
 }
 
-module.exports = { MusicError, APIError };
+class PermissionError extends Error {
+
+}
+
+module.exports = { MusicError, APIError, PermissionError };

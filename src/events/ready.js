@@ -1,7 +1,7 @@
 const { Event } = require('klasa');
 const { join } = require('path');
 const Lavalink = require(join(__dirname, '..', 'structures', 'Lavalink.js'));
-const { lavalinkPW, lavalinkShards, lavalinkHost, lavalinkPortWS, LavalinkPort } = process.env;
+const { lavalinkPW, lavalinkHost, lavalinkPortWS, LavalinkPort } = process.env;
 
 module.exports = class ReadyEvent extends Event {
 	constructor(...args) {
@@ -21,7 +21,7 @@ module.exports = class ReadyEvent extends Event {
 	async init() {
 		this.client.lavalink = new Lavalink({
 			password: lavalinkPW,
-			shards: Number(lavalinkShards),
+			shards: this.client.shard.count,
 			userID: this.client.user.id,
 			host: lavalinkHost,
 			portWS: lavalinkPortWS,

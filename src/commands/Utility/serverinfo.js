@@ -5,7 +5,7 @@ module.exports = class ServerInfoCommand extends Command {
 		super(...args, {
 			name: 'serverinfo',
 			enabled: true,
-			runIn: ['text', 'dm', 'group'],
+			runIn: ['text'],
 			cooldown: 5,
 			bucket: 1,
 			permLevel: 0,

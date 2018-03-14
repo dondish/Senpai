@@ -32,6 +32,10 @@ ENV bottoken=\
     databaseName=\
     databaseUser=\
     databasePW=\
-    databaseHost=
+    databaseHost=\
+    lavalinkPW=\
+    lavalinkHost=\
+    lavalinkPortWS=\
+    LavalinkPort=
 # Run command
 CMD ["node", "."]
