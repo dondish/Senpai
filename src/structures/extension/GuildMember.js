@@ -1,146 +1,84 @@
 const Extension = require('./Extend.js');
-const permissionLevel = require('../new/Permissions.json');
-const { EconomyError } = require('../new/CustomErrors.js');
+const { BOTOWNER, SERVEROWNER, ADMINISTRATOR, MODERATORROLE, MUSICROLE, NOTHING } = require('../new/Permissions.json');
+const { RichEmbed } = require('discord.js');
+const { colors } = require('../new/Util');
 
 class GuildMemberExtension extends Extension {
-	async getPermissionsLevel() {
+	async isBlacklisted() {
 		const { client } = this;
-		if (this.id === client.config.ownerID) return permissionLevel.BOTOWNER;
-		if (this.id === this.guild.owner.id) return permissionLevel.SERVEROWNER;
-		const database = client.db;
-		const guildConfig = await database.guild.getByID(this.guild.id);
-		for (let role of this.roles) {
-			if (guildConfig.moderationRolesIDs.includes(role[0])) return permissionLevel.MODERATORROLE;
+		const result = await client.db.blacklist.findOrCreate({ where: { id: this.id } });
+		if (result[0].global || result[0].guilds.includes(this.guild.id)) return true;
+		return false;
+	}
+
+	async getPermissionsLevel() {
+		const { client, guild, id, roles } = this;
+		if (id === client.constants.ownerID) return BOTOWNER;
+		if (id === guild.owner.id) return SERVEROWNER;
+		if (this.permissions.has('ADMINISTRATOR')) return ADMINISTRATOR;
+		const guildConfig = await client.db.serverconfig.findById(guild.id);
+		for (let role of roles) {
+			if (guildConfig.modRoles.includes(role[0])) return MODERATORROLE;
 		}
-		for (let role of this.roles) {
-			if (guildConfig.musicRolesIDs.includes(role[0])) return permissionLevel.MUSICROLE;
+		for (let role of roles) {
+			if (guildConfig.modRoles.includes(role[0])) return MUSICROLE;
 		}
-		return permissionLevel.NOTHING;
+		return NOTHING;
 	}
 
 	async updateEconomy(cash, bank) {
 		const { client, id, guild } = this;
-		const result = await client.db.money.updateData(`${id}${guild.id}`, {
+		const data = await client.db.economy.findOne({ where: { user: id, guild: guild.id } });
+		const result = await data.update({
 			cash,
 			bank
 		});
-		return result;
+		return result.dataValues;
 	}
 
 	async getEconomy() {
 		const { client, id, guild } = this;
-		const data = await client.db.money.getByID(`${id}${guild.id}`);
-		if (!data) throw new EconomyError('seems like you/the mentioned user did not registrate for the economy system! you can do that by using the register command', this);
-		return data;
-	}
-
-	async addToEconomy() {
-		const { client, id, guild } = this;
-		const test = await client.db.money.getByID(`${id}${guild.id}`);
-		if (test) throw new EconomyError('you are already registered', this);
-		const result = await client.db.money.insertData({
-			id: `${id}${guild.id}`,
-			guildID: this.guild.id,
-			userID: this.id,
-			cash: 0,
-			bank: 0
-		});
-		return result;
+		const [data] = await client.db.economy.findOrCreate({ where: { user: id, guild: guild.id } });
+		return data.dataValues;
 	}
 
 	async getHistory() {
 		const { client, id, guild } = this;
-		let history = await client.db.history.getByID(`${id}${guild.id}`);
-		if (!history) {
-			history = {
-				id: `${id}${guild.id}`,
-				guildID: this.guild.id,
-				userID: this.id,
-				warnings: [],
-				kicks: [],
-				bans: []
-			}
-			;
-		}
-		return history;
+		const [history] = await client.db.history.findOrCreate({ where: { user: id, guild: guild.id } });
+		return history.dataValues;
 	}
 
-	async addWarn(reason) {
+	async editHistory(type) {
 		const { client, id, guild } = this;
-		let needCreate = false;
-		let history = await client.db.history.getByID(`${id}${guild.id}`);
-		if (!history) {
-			needCreate = true;
-			history = {
-				id: `${id}${guild.id}`,
-				guildID: this.guild.id,
-				userID: this.id,
-				warnings: [],
-				kicks: [],
-				bans: []
-			};
-		}
-		const { warnings } = history;
-		warnings.push(reason);
-		let result;
-		if (needCreate) {
-			result = await client.db.history.insertData(history);
-		} else {
-			result = await client.db.history.updateData(`${id}${guild.id}`, { warnings });
-		}
-		return result;
+		let action = type === 'Softban' ? 'kick' : type.toLowerCase();
+		let [history] = await client.db.history.findOrCreate({ where: { user: id, guild: guild.id } });
+		history[`${action}Count`]++;
+		await history.save();
+		return history.dataValues;
 	}
 
-	async addKick(reason) {
-		const { client, id, guild } = this;
-		let needCreate = false;
-		let history = await client.db.history.getByID(`${id}${guild.id}`);
-		if (!history) {
-			needCreate = true;
-			history = {
-				id: `${id}${guild.id}`,
-				guildID: this.guild.id,
-				userID: this.id,
-				warnings: [],
-				kicks: [],
-				bans: []
-			};
-		}
-		const { kicks } = history;
-		kicks.push(reason);
-		let result;
-		if (needCreate) {
-			result = await client.db.history.insertData(history);
-		} else {
-			result = await client.db.history.updateData(`${id}${guild.id}`, { kicks });
-		}
-		return result;
-	}
-
-	async addBan(reason) {
-		const { client, id, guild } = this;
-		let needCreate = false;
-		let history = await client.db.history.getByID(`${id}${guild.id}`);
-		if (!history) {
-			needCreate = true;
-			history = {
-				id: `${id}${guild.id}`,
-				guildID: this.guild.id,
-				userID: this.id,
-				warnings: [],
-				kicks: [],
-				bans: []
-			};
-		}
-		const { bans } = history;
-		bans.push(reason);
-		let result;
-		if (needCreate) {
-			result = await client.db.history.insertData(history);
-		} else {
-			result = await client.db.history.updateData(`${id}${guild.id}`, { bans });
-		}
-		return result;
+	async createCase({ moderator, reason, channel, action }) {
+		const { client, id, user, guild } = this;
+		let result = await client.db.cases.findAll({ where: { guild: guild.id }, attributes: ['caseNumber'] });
+		result = result.map(res => res.dataValues);
+		result = result.sort((a, b) => b.caseNumber - a.caseNumber);
+		let caseNumber;
+		if (result[0]) caseNumber = result[0].caseNumber;
+		else caseNumber = 0;
+		caseNumber++;
+		const embed = new RichEmbed()
+			.setAuthor(moderator.tag, moderator.displayAvatarURL)
+			.setColor(colors(action))
+			.setTimestamp()
+			.addField('Action', action)
+			.addField('Target', `${user.tag} (${id})`)
+			.addField('Reason', reason)
+			.setFooter(`Case ${caseNumber}`)
+			.setTimestamp();
+		let message = { id: null };
+		if (channel) message = await channel.send(embed);
+		await client.db.cases.create({ guild: guild.id, message: message.id, caseNumber, target: id, action, reason, moderator: moderator.id });
+		await this.editHistory(action);
 	}
 }
 

@@ -20,11 +20,10 @@ class MoneyCommand extends Commands {
 			if (!member) await msg.guild.fetchMember(msg.mentions.users.first());
 		}
 		const result = await member.getEconomy();
-		if (!result) return msg.reply(`looks like you or the user you mentioned haven't registered for the economy system yet you or the user can do that by using the register command!`);
 		let { cash, bank } = result;
-		let Total = cash + bank;
-		const currency = this.client.guilds.get('199857240037916672').emojis.get('322135966322262056');
-		await msg.channel.send(`${member} have ${cash} ${currency} on the hand and ${bank} ${currency} in the Bank thats a Total of ${Total} ${currency}.`);
+		let total = cash + bank;
+		let { currency } = this.client.globalEmoji;
+		await msg.channel.send(`${member} have ${cash} <${currency}> on the hand and ${bank} <${currency}> in the Bank thats a Total of ${total} <${currency}>.`);
 	}
 }
 

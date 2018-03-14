@@ -2,8 +2,8 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'leave',
 	description: 'disconnect from voiceChannel im currently in!',
-	aliases: [],
-	examples: ['disconnect']
+	aliases: ['disconnect'],
+	examples: ['leave']
 };
 
 class LeaveCommand extends Commands {
@@ -12,23 +12,22 @@ class LeaveCommand extends Commands {
 	}
 
 	async run(msg) {
-		const { voiceConnection } = msg.guild;
-		if (!voiceConnection) return msg.reply(`Im not in a Voice channel on this Server!`);
-		const { musicLimited } = await msg.guild.getConfig();
-		if (musicLimited) {
-			const permissionLevel = await msg.member.getPermissionsLevel();
-			if (permissionLevel > 3) return msg.reply("on this server the music feature is limited to music roles and since you don't have one you dont have permission to do this Command!");
-		}
-		try {
-			let { queue, loop, dispatcher } = msg.guild.music;
-			if (queue.length > 0) queue.length = 0;
-			if (loop) loop = false;
-			if (dispatcher) dispatcher.end();
-			await voiceConnection.disconnect();
-			await msg.channel.send('bye bye :wave:');
-		} catch (error) {
-			await msg.channel.send('ooops! something went wrong while trying to leave to your Voicechannel please try to let me leave again!');
-		}
+		const { me } = msg.guild;
+		if (!me.voiceChannelID) return msg.reply(`Im not in a Voice channel on this Server!`);
+		if (msg.guild.music._queue.length > 0) msg.guild.music._queue.length = 0;
+		if (msg.guild.music.loop) msg.guild.music.loop = false;
+		if (msg.guild.music.playing) msg.guild.music.stop();
+		this.client.ws.send({
+			shard: this.client.shard.id,
+			op: 4,
+			d: { // eslint-disable-line id-length
+				guild_id: msg.guild.id, // eslint-disable-line camelcase
+				channel_id: null, // eslint-disable-line camelcase
+				self_mute: false, // eslint-disable-line camelcase
+				self_deaf: false // eslint-disable-line camelcase
+			}
+		});
+		await msg.channel.send('bye bye :wave:');
 	}
 }
 

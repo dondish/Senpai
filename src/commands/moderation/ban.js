@@ -1,5 +1,4 @@
 const Commands = require('../../structures/new/Command.js');
-const { RichEmbed } = require('discord.js');
 const info = {
 	name: 'ban',
 	description: 'bans the mentioned user',
@@ -14,7 +13,7 @@ class BanCommand extends Commands {
 
 	async run(msg, params) {
 		const permissionLevel = await msg.member.getPermissionsLevel();
-		if (permissionLevel >= 3) return msg.reply('You dont have permission to use this Command!');
+		if (permissionLevel > 3) return msg.reply('You dont have permission to use this Command!');
 		if (msg.mentions.members.size < 1) return msg.reply('You must mention someone for this Command.');
 		let member = msg.mentions.members.first();
 		if (!member.bannable) return msg.reply('I have no rights to ban that User');
@@ -22,21 +21,18 @@ class BanCommand extends Commands {
 		let reason = params.slice(1).join(' ');
 		if (reason.length < 1) return msg.reply('You must supply a reason for the ban.');
 		const message = await msg.channel.send(`trying to ban ${member.user.tag}`);
+		try {
+			await member.send(this._constructDM({ action: 'Banned', reason, serverName: msg.guild.name, moderator: msg.author.tag }));
+		} catch (error) {
+			// Nothing
+		}
 		await member.ban({
 			reason,
 			days: 7
 		});
 		await message.edit(`successfully banned ${member.user.tag}`);
-		await member.addBan(reason);
-		const guildsettings = await msg.guild.getConfig();
-		const embed = new RichEmbed()
-			.setAuthor(msg.author.username, msg.author.avatarURL)
-			.setColor(0x00AE86)
-			.setTimestamp()
-			.addField('Action', 'Ban')
-			.addField('Target', `${member.user.tag} (${member.user.id})`)
-			.addField('Reason', reason);
-		if (guildsettings.modlogID !== 'None') msg.guild.channels.get(guildsettings.modlogID).send({ embed });
+		const { modlogChannel } = await msg.guild.getConfig();
+		await member.createCase({ moderator: msg.author, reason, channel: msg.client.channels.get(modlogChannel), action: 'Ban' });
 	}
 }
 

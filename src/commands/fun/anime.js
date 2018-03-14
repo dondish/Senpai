@@ -5,7 +5,6 @@ const kitsu = new Kitsu();
 const info = {
 	name: 'anime',
 	description: 'search for an Anime on kitsu!',
-	aliases: [],
 	examples: ['anime Attack on Titan', 'anime shingeki no kyojin']
 };
 

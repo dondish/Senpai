@@ -41,8 +41,8 @@ class PollCommand extends Commands {
 		if (options.length < 2) return msg.channel.send('you need to supply atleast 2 options to to choose!');
 		if (options.length > 10) return msg.channel.send('you can only set a max of 10 options!');
 		if (!validateTime(time)) return msg.reply('seems like your Time is invalid! please try again');
-		const timeObject = parseTime(time);
-		time = timeObject.startDate.getTime() - Date.now();
+		const { startDate } = parseTime(time);
+		time = startDate.getTime() - new Date().getTime();
 		const collection = createCollection(options, emojiValues);
 
 		const embed = new RichEmbed()
@@ -52,8 +52,7 @@ class PollCommand extends Commands {
 			.addField('Options', collection.map(object => `${object.emoji} => ${object.option}`).join('\n'))
 			.setFooter(`this poll will last ${this.format(time / 1000)}`);
 
-		const sent = await msg.channel.send({ embed });
-
+		const sent = await msg.channel.send(embed);
 		sent.awaitReactions((reaction, user) => {
 			if (!collection.exists('emoji', reaction.emoji.name) || user.bot) return false;
 			return true;
@@ -92,8 +91,8 @@ class PollCommand extends Commands {
 			}
 		});
 		const emojis = collection.map(object => object.emoji);
-		for (let i = 0; i < emojis.length; i++) {
-			await sent.react(emojis[i]); // eslint-disable-line no-await-in-loop
+		for (let i = 0; i < emojis.length; i++) { // eslint-disable-line no-await-in-loop
+			await sent.react(emojis[i]);
 		}
 	}
 

@@ -1,4 +1,5 @@
 const Events = require('../structures/new/Event.js');
+const { MusicError } = require('../structures/new/CustomErrors.js');
 
 class MessageEvent extends Events {
 	constructor(client) {
@@ -9,18 +10,14 @@ class MessageEvent extends Events {
 	async run(msg) {
 		const { client } = this;
 		if (msg.author.bot) return;
-		const blacklisted = await msg.author.isBlacklisted();
-		if (blacklisted) return;
 		if (!msg.guild) return;
 		if (!msg.member) msg.member = await msg.guild.fetchMember(msg.author);
-		msg.guild.economy.messageUpdate(msg.member);
-		let guildConfig = await msg.guild.getConfig();
-		if (!guildConfig) {
-			await msg.guild.createConfig();
-			guildConfig = await msg.guild.getConfig();
-		}
-		if (guildConfig.prefix === 'None') guildConfig.prefix = undefined;
-		const prefix = guildConfig.prefix || client.config.prefix;
+		const blacklisted = await msg.member.isBlacklisted();
+		if (blacklisted) return;
+		await msg.guild.economy.messageUpdate(msg.member);
+		let { prefix, disabledCommandCategories, disabledCommands, inviteLinkProtection, musicLimited } = await msg.guild.getConfig();
+		prefix = prefix ? prefix : client.config.prefix;
+		if (inviteLinkProtection) await this.handleInviteLink(msg);
 		if (!msg.content.startsWith(prefix) && !this.mentioned(msg.content)) return;
 		let params;
 		let command;
@@ -28,6 +25,8 @@ class MessageEvent extends Events {
 			params = this.createParams(msg);
 			command = this.getCommand(msg, prefix);
 		} else if (this.mentioned(msg.content)) {
+			msg.mentions.users.delete(client.user.id);
+			msg.mentions.members.delete(client.user.id);
 			params = this.createParamsMention(msg);
 			command = this.getCommandMention(msg);
 		}
@@ -38,9 +37,13 @@ class MessageEvent extends Events {
 			cmd = client.commands.get(client.aliases.get(command));
 		}
 		if (cmd) {
+			if (disabledCommands.includes(cmd.name) || disabledCommandCategories.includes(cmd.group)) return;
 			try {
+				if (musicLimited && cmd.group === 'music') {
+					await this.checkMusicPermission(msg);
+				}
 				this.client.emit('commandRun', this, msg);
-				await cmd.run(msg, params, prefix);
+				await cmd.run(msg, params);
 			} catch (error) {
 				this.client.emit('commandError', error, this, msg);
 			}
@@ -48,22 +51,22 @@ class MessageEvent extends Events {
 	}
 
 	createParamsMention(msg) {
-		const params = msg.content.split(' ').slice(2);
+		const params = msg.content.split(/ +/g).slice(2);
 		return params;
 	}
 
 	getCommandMention(msg) {
-		const command = msg.content.split(' ')[1].toLowerCase();
+		const command = msg.content.split(/ +/g)[1].toLowerCase();
 		return command;
 	}
 
 	createParams(msg) {
-		const params = msg.content.split(' ').slice(1);
+		const params = msg.content.split(/ +/g).slice(1);
 		return params;
 	}
 
 	getCommand(msg, prefix) {
-		const command = msg.content.split(' ')[0].slice(prefix.length).toLowerCase();
+		const command = msg.content.split(/ +/g)[0].slice(prefix.length).toLowerCase();
 		return command;
 	}
 
@@ -72,12 +75,25 @@ class MessageEvent extends Events {
 		return RegEx.test(input);
 	}
 
-	inviteLink(link) {
-		if (/(https:\/\/|http:\/\/)(discord.me\/)[a-z]*/.test(link) || /(https:\/\/|http:\/\/)(discord)(app\.com\/invite|\.gg)\/\w{5,7}/.test(link)) {
-			return true;
-		} else {
-			return false;
+	checkInviteLink(content) {
+		if (/(https:\/\/|http:\/\/)(discord.me\/)[a-z]*/.test(content) || /(https:\/\/|http:\/\/)(discord)(app\.com\/invite|\.gg)\/\w{5,7}/.test(content)) return true;
+		return false;
+	}
+
+	async handleInviteLink(msg) {
+		if (this.checkInviteLink(msg.content)) {
+			try {
+				await msg.delete();
+				return msg.reply('Invite Links are forbidden on this Server!');
+			} catch (error) {
+				return msg.channel.send('Invite Links are forbidden on this Server! but i have no permission to delete this message.');
+			}
 		}
+	}
+
+	async checkMusicPermission(msg) {
+		const permissionLevel = await msg.member.getPermissionsLevel();
+		if (permissionLevel > 4) throw new MusicError("on this server the music feature is limited to music roles and since you don't have one you dont have permission to use this Command!");
 	}
 }
 

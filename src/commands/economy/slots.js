@@ -3,7 +3,6 @@ const { SlotMachine, SlotSymbol } = require('slot-machine');
 const info = {
 	name: 'slots',
 	description: 'play on a slotmachine',
-	aliases: [],
 	examples: ['slots [amount]']
 };
 
@@ -31,35 +30,30 @@ class SlotsCommand extends Commands {
 	}
 
 	async run(msg, params) {
-		const { client } = this;
-		const data = await msg.member.getEconomy();
-		if (!data) return msg.reply(`looks like you haven't registered for the economy system yet you can do that by using the register command!`);
-		let { cash, bank } = data;
+		let { cash, bank } = await msg.member.getEconomy();
 		let change = params[0];
 		let gambleamount;
 		if (change === 'all' || change === '-a' || change === 'everything') {
 			gambleamount = cash;
 		} else {
 			[gambleamount] = params;
-			gambleamount = Number(gambleamount);
-			gambleamount = Math.floor(gambleamount);
+			gambleamount = Math.floor(Number(gambleamount));
 		}
-		let currency = client.guilds.get('199857240037916672').emojis.get('322135966322262056');
+		const { currency } = this.client.globalEmoji;
 		if (isNaN(gambleamount)) return msg.reply('that is not a valid number :thinking:');
-		if (gambleamount > data.cash) return msg.reply('You dont have that much money');
+		if (gambleamount > cash) return msg.reply('You dont have that much money');
 		if (gambleamount <= 0) return msg.reply('Your amount must be more than 0!');
-
 		const result = this._runSlots();
 		const resultString = result.visualize();
 		const { winCount } = result;
 		const multiplier = winCount * 0.5;
 		let message;
 		if (winCount === 0) {
-			message = `\n\n**----Slots----**\n${resultString}\n**--------------**\n\n You lost ${gambleamount}${currency}`;
+			message = `\n\n**----Slots----**\n${resultString}\n**--------------**\n\n You lost ${gambleamount}<${currency}>`;
 			cash -= gambleamount;
 		} else {
 			const wonMoney = Math.round(gambleamount * multiplier);
-			message = `\n\n**----Slots----**\n${resultString}\n**--------------**\n\n You won ${wonMoney}${currency} and got your bet back`;
+			message = `\n\n**----Slots----**\n${resultString}\n**--------------**\n\n You won ${wonMoney}<${currency}> and got your bet back`;
 			cash += wonMoney;
 		}
 		await msg.member.updateEconomy(cash, bank);

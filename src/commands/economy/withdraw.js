@@ -2,7 +2,6 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'withdraw',
 	description: 'withdraw from the bank',
-	aliases: [],
 	examples: ['withdraw -a', 'withdraw 1500', 'withdraw all']
 };
 
@@ -12,18 +11,15 @@ class WithdrawCommand extends Commands {
 	}
 
 	async run(msg, params) {
-		const data = await msg.member.getEconomy();
-		if (!data) return msg.reply(`looks like you haven't registered for the economy system yet you can do that by using the register command!`);
-		let { cash, bank } = data;
-		let currency = this.client.guilds.get('199857240037916672').emojis.get('322135966322262056');
+		let { cash, bank } = await msg.member.getEconomy();
+		let { currency } = this.client.globalEmoji;
 		let change = params[0];
 		let amount;
 		if (change === 'all' || change === '-a' || change === 'everything') {
 			amount = bank;
 		} else {
 			[amount] = params;
-			amount = Number(amount);
-			amount = Math.floor(amount);
+			amount = Math.floor(Number(amount));
 		}
 		if (isNaN(amount)) return msg.reply('that looks not like a valid number :thinking:');
 		if (amount > bank) return msg.reply("you don't have that much money!");
@@ -31,7 +27,7 @@ class WithdrawCommand extends Commands {
 		cash += amount;
 		bank -= amount;
 		await msg.member.updateEconomy(cash, bank);
-		await msg.reply(`You successfully withdraw ${amount} ${currency} from the bank!`);
+		await msg.reply(`You successfully withdraw ${amount} <${currency}> from the bank!`);
 	}
 }
 

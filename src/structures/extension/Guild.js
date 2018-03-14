@@ -1,97 +1,89 @@
 const Extension = require('./Extend.js');
 const Music = require('../new/Music.js');
 const Economy = require('../new/Economy.js');
-const rethink = require('rethinkdb');
+const { RichEmbed } = require('discord.js');
+const { colors } = require('../new/Util');
 
 class GuildExtension extends Extension {
 	async getLeaderboard() {
-		const { client } = this;
-		const data = await client.db.money.filterAndSort({ guildID: this.id }, rethink.desc(element => rethink.add(element('cash'), element('bank')))
-		);
-		return data;
+		const { client, id } = this;
+		let data = await client.db.economy.findAll({ where: { guild: id } });
+		data = data.map(economy => economy.dataValues);
+		data = data.sort((a, b) => (a.cash + a.bank) - (b.cash + b.bank));
+		return data.reverse();
 	}
 
-	async getStarboardMessages() {
+	async getStarboardMessage(originalMessageID) {
 		const { client } = this;
-		let result = await client.db.starboardMessages.getByID(this.id);
-		if (!result) {
-			await client.db.starboardMessages.insertData({
-				id: this.id,
-				messages: {}
-			});
-			result = await client.db.starboardMessages.getByID(this.id);
-		}
-		return result.messages;
+		let result = await client.db.starboardMessages.findOne({ where: { originalMessage: originalMessageID } });
+		return result ? result.dataValues : result;
 	}
 
-	async updateStarboardMessage({ originalMessageID, starMessageID, starcount }) {
-		const { client } = this;
-		let result1 = await client.db.starboardMessages.getByID(this.id);
-		result1.messages[originalMessageID] = {
-			starMessageID,
-			starcount
-		};
-		const result2 = await client.db.starboardMessages.getAndReplace(this.id, result1);
-		return result2;
+	async createStarboardMessage({ originalMessageID, starMessageID, starCount, author }) {
+		const { client, id } = this;
+		let result = await client.db.starboardMessages.create({ id: starMessageID, originalMessage: originalMessageID, guild: id, starCount, author });
+		return result.dataValues;
 	}
 
-	async resolveStarboardMessage(id) {
-		const { client } = this;
-		let { messages } = await client.db.starboardMessages.getByID(this.id);
-		const result = messages[id];
-		if (!result) {
-			return null;
-		} else {
-			return result;
-		}
+	async updateStarboardMessage({ originalMessageID, starMessageID, starCount }) {
+		const { client, id } = this;
+		let result = await client.db.starboardMessages.findOne({ where: { id: starMessageID, originalMessage: originalMessageID, guild: id } });
+		result = await result.update({ starCount });
+		return result.dataValues;
 	}
 
-	async deleteStarboardMessage(id) {
+	async deleteStarboardMessage(originalMessageID) {
 		const { client } = this;
-		let result1 = await client.db.starboardMessages.getByID(this.id);
-		delete result1.messages[id];
-		const result = await client.db.starboardMessages.getAndReplace(this.id, result1);
-		return result;
+		let result = await client.db.starboardMessages.findOne({ where: { originalMessage: originalMessageID } });
+		result = await result.destroy();
+		return result.dataValues;
 	}
 
 	async getConfig() {
 		const { client } = this;
-		const config = await client.db.guild.getByID(this.id);
-		return config;
-	}
-
-	async createConfig() {
-		const { client } = this;
-		const result = await client.db.guild.insertData({
-			moderationRolesIDs: [],
-			modlogID: 'None',
-			musicID: 'None',
-			musicRolesIDs: [],
-			starboardID: 'None',
-			prefix: 'None',
-			musicLimited: false,
-			starboardNeededReactions: 1,
-			id: this.id
-		});
-		return result;
+		const [config] = await client.db.serverconfig.findOrCreate({ where: { id: this.id } });
+		return config.dataValues;
 	}
 
 	async updateConfig(data) {
-		const { client } = this;
-		const result = await client.db.guild.updateData(this.id, data);
-		return result;
+		const { client, id } = this;
+		const config = await client.db.serverconfig.findById(id);
+		const result = await config.update(data);
+		return result.dataValues;
 	}
 
-	get loop() {
-		return this.music.loop;
+	async latestCase() {
+		const { client, id } = this;
+		let result = await client.db.cases.findAll({ where: { guild: id }, attributes: ['caseNumber'] });
+		result = result.map(res => res.dataValues);
+		result = result.sort((a, b) => b.caseNumber - a.caseNumber);
+		return result[0];
 	}
 
-	set loop(boolean) {
-		this.music.loop = boolean;
+	async updateCase({ reason, caseNumber, channel }) {
+		const { client, id } = this;
+		const caseObject = await client.db.cases.findOne({ where: { guild: id, caseNumber } });
+		if (!caseObject) throw new Error('Case not Found');
+		const result = await caseObject.update({ reason });
+		const message = await channel.fetchMessage(caseObject.message);
+		const values = result.dataValues;
+		const user = await client.fetchUser(values.target);
+		const moderator = await client.fetchUser(values.moderator);
+		const embed = new RichEmbed()
+			.setAuthor(moderator.tag, moderator.displayAvatarURL)
+			.setColor(colors(values.action))
+			.setTimestamp()
+			.addField('Action', values.action)
+			.addField('Target', `${user.tag} (${user.id})`)
+			.addField('Reason', reason)
+			.setFooter(`Case ${caseNumber}`)
+			.setTimestamp();
+		await message.edit(embed);
+		return result.dataValues;
 	}
 
 	get music() {
-		if (!this._music) this._music = new Music(this);
+		if (!this._music) this._music = new Music(this.client, this.id);
 		return this._music;
 	}
 

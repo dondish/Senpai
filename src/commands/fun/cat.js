@@ -13,7 +13,7 @@ class CatCommand extends Commands {
 	}
 
 	async run(msg) {
-		const response = await get('http://random.cat/meow');
+		const response = await get('http://aws.random.cat/meow');
 		const Link = response.body.file;
 		msg.channel.send('Here\'s your cat', { files: [Link] });
 	}

@@ -3,7 +3,6 @@ const { RichEmbed } = require('discord.js');
 const info = {
 	name: 'choose',
 	description: 'choose between different options ( `,` is the separator )',
-	aliases: [],
 	examples: ['choose i should go outside, i should continue coding, i should get a gf']
 };
 
@@ -20,7 +19,7 @@ class ChooseCommand extends Commands {
 			.addField('I choose the following:', result)
 			.setColor('RANDOM')
 			.setAuthor(msg.member.displayName, msg.author.displayAvatarURL);
-		msg.channel.send({ embed });
+		msg.channel.send(embed);
 	}
 }
 

@@ -12,17 +12,19 @@
 <div align="center">
   <br />
   <p>
-    <a href="https://travis-ci.org/Dev-Yukine/Senpai"><img src="https://api.travis-ci.org/Dev-Yukine/Senpai.svg" alt="Build status" /></a>
-    <a href="https://david-dm.org/Dev-Yukine/Senpai"><img src="https://david-dm.org/Dev-Yukine/Senpai/status.svg" alt="Dependencies" /></a>
+    <a href="https://travis-ci.org/Discord-Senpai/Senpai"><img src="https://api.travis-ci.org/Discord-Senpai/Senpai.svg" alt="Build status" /></a>
+    <a href="https://david-dm.org/Discord-Senpai/Senpai"><img src="https://david-dm.org/Discord-Senpai/Senpai/status.svg" alt="Dependencies" /></a>
+    <a href="https://app.codacy.com/p/123215"><img src="https://api.codacy.com/project/badge/Grade/fcdcfe2344ac4c25a54b83fa55d6d568" alt="Codacy"></a>
   </p>
 </div>
 
 Here you can find the Source code of my own Bot "Senpai" for [Discord](https://discordapp.com/). You can use this Source-Code under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) at any time.
 
-after the rewrite it makes fully usage of classes & ES2017's async/await functionality.
+After the rewrite it makes fully usage of classes & ES2017's async/await functionality.
+
 
 ## Invite
-You can Invite Senpai to your Server with  [this Link](https://discordapp.com/oauth2/authorize?client_id=206955239985774593&scope=bot&permissions=2146959615)
+You can Invite Senpai to your Server with [this Link](https://discordapp.com/oauth2/authorize?client_id=206955239985774593&scope=bot&permissions=8)
 
 ## Contributing
 
@@ -34,16 +36,9 @@ This bot is written in Javascript and use [Nodejs](https://nodejs.org/en/) to ru
 
 also it uses the Libary [Discord.js](https://github.com/hydrabolt/discord.js) to interact with the Discord API
 
-if you want to host this bot yourself you need to install python 2.7 and a C compiler if you are on Windows you can run this command in a cmd line **npm install --global --production windows-build-tools** on some Linux distributions it is pre installed on some others not.
+## Selfhosting
 
-if you are on linux you need install FFMPEG yourself if you are on windows you mostly wont need since one of my dependencies handle that.
-
-after that you should install the dependencies by run a **npm install** in the Bots directory.
-
-
-also you need a **RethinkDB server**.
-
-
+This is official not supported but if you wanna try it anyway you would need a PostgresSQL server, a lavalink server and all deps specified in the package.json. You might instead just use the dockerfile to create a container.
 ## Features
 
 ### Commands 

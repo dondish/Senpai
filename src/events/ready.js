@@ -1,4 +1,5 @@
 const Events = require('../structures/new/Event.js');
+const Timer = require('../structures/new/Timer.js');
 
 class ReadyEvent extends Events {
 	constructor(client) {
@@ -6,7 +7,7 @@ class ReadyEvent extends Events {
 		this.name = 'ready';
 	}
 
-	run() {
+	async run() {
 		const { client } = this;
 		client.log.info('-----------------------------------------------------------------------------');
 		client.log.info(`Username:      ${client.user.username}`);
@@ -15,6 +16,8 @@ class ReadyEvent extends Events {
 		client.log.info(`Channels:      ${client.channels.size}`);
 		client.log.info('-----------------------------------------------------------------------------');
 		client.user.setActivity(`${client.config.prefix}help || Version: ${client.version}`);
+		const Timers = new Timer(client);
+		await Timers.init();
 	}
 }
 

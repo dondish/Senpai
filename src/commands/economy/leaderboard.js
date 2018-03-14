@@ -3,7 +3,7 @@ const { RichEmbed } = require('discord.js');
 const info = {
 	name: 'leaderboard',
 	description: 'shows the top 10 user with the most money on this server',
-	aliases: ['baltop'],
+	aliases: ['baltop', 'lb'],
 	examples: ['leaderboard']
 };
 
@@ -14,16 +14,12 @@ class LeaderboardCommand extends Commands {
 
 	async run(msg) {
 		const leaderboard = await msg.guild.getLeaderboard();
-		let currency = this.client.guilds.get('199857240037916672').emojis.get('322135966322262056');
+		let { currency } = this.client.globalEmoji;
 		await msg.guild.fetchMembers();
 		const mapped = [];
-		for (let player of leaderboard) {
-			try {
-				const thisPlayer = msg.guild.members.get(player.userID);
-				mapped.push(`${thisPlayer.user.tag} ${player.cash + player.bank}${currency}`);
-			} catch (error) {
-				// Nothing kek
-			}
+		for (const player of leaderboard) {
+			const thisPlayer = msg.guild.members.get(player.user);
+			if (thisPlayer) mapped.push(`${thisPlayer.user.tag} ${player.cash + player.bank} <${currency}>`);
 		}
 		if (mapped.length > 10) mapped.length = 10;
 		const embed = new RichEmbed()
@@ -33,7 +29,7 @@ class LeaderboardCommand extends Commands {
 			embed.addField(`Rank #${index}`, user);
 			index++;
 		}
-		await msg.channel.send({ embed });
+		await msg.channel.send(embed);
 	}
 }
 

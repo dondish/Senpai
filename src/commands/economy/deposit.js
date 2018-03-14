@@ -2,7 +2,6 @@ const Commands = require('../../structures/new/Command.js');
 const info = {
 	name: 'deposit',
 	description: 'deposit cash to the bank',
-	aliases: [],
 	examples: ['deposit -a', 'deposit 1500', 'deposit all']
 };
 
@@ -12,10 +11,8 @@ class DepositCommand extends Commands {
 	}
 
 	async run(msg, params) {
-		const data = await msg.member.getEconomy();
-		if (!data) return msg.reply(`looks like you haven't registered for the economy system yet you can do that by using the register command!`);
-		let { cash, bank } = data;
-		let currency = this.client.guilds.get('199857240037916672').emojis.get('322135966322262056');
+		let { cash, bank } = await msg.member.getEconomy();
+		let { currency } = this.client.globalEmoji;
 		let change = params[0];
 		let amount;
 		if (change === 'all' || change === '-a' || change === 'everything') {
@@ -31,7 +28,7 @@ class DepositCommand extends Commands {
 		cash -= amount;
 		bank += amount;
 		await msg.member.updateEconomy(cash, bank);
-		await msg.reply(`You successfully deposit ${amount} ${currency} to the bank!`);
+		await msg.reply(`You successfully deposit ${amount} <${currency}> to the bank!`);
 	}
 }
 

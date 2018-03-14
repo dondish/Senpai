@@ -1,15 +1,13 @@
-class EconomyError extends Error {
-	constructor(message, member) {
-		super(message);
-		this.member = member;
-	}
-}
-
 class MusicError extends Error {
-	constructor(message, msg) {
-		super(message);
-		this.msg = msg;
-	}
+
 }
 
-module.exports = { EconomyError, MusicError };
+class DatabaseError extends Error {
+
+}
+
+class UsageError extends Error {
+
+}
+
+module.exports = { MusicError, DatabaseError, UsageError };

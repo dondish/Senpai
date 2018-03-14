@@ -62,7 +62,3 @@ package-lock.json
 
 # VSCode setting folder
 .vscode/
-
-# source code configuration
-
-src/config/config.json

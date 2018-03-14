@@ -3,7 +3,6 @@ const { RichEmbed } = require('discord.js');
 const info = {
 	name: 'quote',
 	description: 'this will quote or generate a quoted message for you',
-	aliases: [],
 	examples: ['quote -id MESSAGE_ID', 'quote @author MESSAGE_CONTENT_HERE']
 };
 
@@ -19,12 +18,12 @@ class VoteCommand extends Commands {
 			try {
 				const message = await msg.channel.fetchMessage(params[1]);
 				const embed = new RichEmbed()
-					.setAuthor(`${message.author.username}`, `${message.author.avatarURL}`)
+					.setAuthor(`${message.author.username}`, `${message.author.displayAvatarURL}`)
 					.addField(`ID:`, `${params[1]}`)
 					.addField(`Message:`, `${message.content}`)
 					.setTimestamp(message.createdAt)
 					.setColor(0x80ff00);
-				await msg.channel.send({ embed });
+				await msg.channel.send(embed);
 			} catch (error) {
 				await msg.channel.send('seems like your provided Message ID is wrong or not from this channel!');
 			}
@@ -35,7 +34,7 @@ class VoteCommand extends Commands {
 				.addField(`Message:`, `${content}`)
 				.setTimestamp()
 				.setColor(0x80ff00);
-			await msg.channel.send({ embed });
+			await msg.channel.send(embed);
 		}
 	}
 }

@@ -1,10 +1,10 @@
 const Commands = require('../../structures/new/Command.js');
 const Canvas = require('canvas');
 const { get } = require('snekfetch');
+const { join } = require('path');
 const info = {
 	name: 'trap',
 	description: 'turn the tables with your ultimate Yu-Gi-Oh trap card!',
-	aliases: [],
 	examples: ['trap', 'trap @user']
 };
 
@@ -14,16 +14,13 @@ class TrapCommand extends Commands {
 	}
 
 	async run(msg) {
+		const { readFileAsync } = this;
 		const { Image } = Canvas;
 		const canvas = Canvas.createCanvas(316, 480);
 		const ctx = canvas.getContext('2d');
 		let base = new Image();
 		let userPicture = new Image();
-		try {
-			base.src = await this.readFileAsync('./materials/pictures/trap.png');
-		} catch (error) {
-			return msg.channel.send('Something went wrong while reading a file! try again and if the error still happens contact my owner!');
-		}
+		base.src = await readFileAsync(join(__dirname, '..', '..', 'materials', 'pictures', 'trap.png'));
 		let avatar;
 		if (msg.mentions.users.size > 0) {
 			avatar = msg.mentions.users.first().displayAvatarURL;

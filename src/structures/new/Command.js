@@ -1,5 +1,7 @@
-const fs = require('fs');
+const { readFile } = require('fs');
 const { parse } = require('sherlockjs');
+const { RichEmbed } = require('discord.js');
+const { colors, promisify } = require('./Util.js');
 
 class Commands {
 	constructor(client, info, group) {
@@ -21,12 +23,9 @@ class Commands {
 		if (typeof info.name !== 'string') throw new TypeError('Command name must be a string.');
 		if (info.name !== info.name.toLowerCase()) throw new Error('Command name must be lowercase.');
 		if (typeof info.description !== 'string') throw new TypeError('Command description must be a string.');
-		if (info.aliases && (!Array.isArray(info.aliases) || info.aliases.some(ali => typeof ali !== 'string'))) {
-			throw new TypeError('Command aliases must be an Array of strings.');
-		}
-		if (info.aliases && info.aliases.some(ali => ali !== ali.toLowerCase())) {
-			throw new Error('Command aliases must be lowercase.');
-		}
+		if (info.aliases && !Array.isArray(info.aliases)) throw new Error('Command aliases must be an Array.');
+		if (info.aliases && info.aliases.some(alis => typeof alis !== 'string')) throw new Error('Command aliases must only contain strings.');
+		if (info.aliases && info.aliases.some(alis => alis !== alis.toLowerCase())) throw new Error('Command aliases must be lowercased.');
 		if (!info.examples) throw new Error('Command examples must be specified.');
 		if (info.examples && (!Array.isArray(info.examples) || info.examples.some(ali => typeof ali !== 'string'))) {
 			throw new TypeError('Command examples must be an Array of strings.');
@@ -34,13 +33,10 @@ class Commands {
 		if (typeof group !== 'string') throw new TypeError('group name must be a string.');
 	}
 
-	readFileAsync(path) {
-		return new Promise((resolve, reject) => {
-			fs.readFile(path, (err, result) => {
-				if (err) return reject(err);
-				resolve(result);
-			});
-		});
+	async readFileAsync(path) {
+		const func = promisify(readFile);
+		const result = await func(path);
+		return result;
 	}
 
 	parseTime(input) {
@@ -89,6 +85,15 @@ class Commands {
 		const string1 = data[index].titles.en_jp ? data[index].titles.en_jp : '';
 		const string2 = data[index].titles.en ? `/${data[index].titles.en}` : '';
 		return `${string1}${string2}`;
+	}
+
+	_constructDM({ action, moderator, reason, serverName }) {
+		const embed = new RichEmbed()
+			.setDescription(`You Have been ${action} on ${serverName}`)
+			.addField('Moderator', moderator)
+			.addField('Reason', reason)
+			.setColor(colors(action));
+		return embed;
 	}
 }
 
