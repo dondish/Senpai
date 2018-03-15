@@ -1,3 +1,4 @@
+#!/bin/bash
 set -e
 
 function test {
@@ -21,7 +22,7 @@ if [ -n "$TRAVIS_TAG" ]; then
 	test
 	docker login --username="$DOCKER_USERNAME" --password="$DOCKER_PASSWORD"
 	docker build -t senpai .
-	docker tag senpai:"$DOCKER_RELEASE" yukine/senpai:"$DOCKER_RELEASE"
+	docker tag senpai:latest yukine/senpai:"$DOCKER_RELEASE"
 	docker push yukine/senpai:"$DOCKER_RELEASE"
 else
 	echo -e "\e[36m\e[1mBuild triggered for branch \"${TRAVIS_BRANCH}\"."
