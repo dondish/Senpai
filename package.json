@@ -1,6 +1,6 @@
 {
   "name": "senpai",
-  "version": "5.5.0",
+  "version": "5.5.1",
   "description": "Weeb Discord bot written in JS",
   "main": "src/ShardManager.js",
   "scripts": {
