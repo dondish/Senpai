@@ -4,13 +4,8 @@ const { searchImages } = require('pixabay-api');
 module.exports = class FoxCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'fox',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
 			cooldown: 5,
-			bucket: 1,
 			aliases: ['foxxo'],
-			permLevel: 0,
 			botPerms: ['ATTACH_FILES'],
 			description: 'Shows a random fox'
 		});

@@ -3,13 +3,9 @@ const { Command } = require('klasa');
 module.exports = class JoinCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'join',
-			enabled: true,
 			runIn: ['text'],
 			cooldown: 5,
-			bucket: 1,
 			aliases: ['summon'],
-			permLevel: 0,
 			description: 'Joins your current VoiceChannel'
 		});
 	}

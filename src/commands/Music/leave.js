@@ -3,12 +3,8 @@ const { Command } = require('klasa');
 module.exports = class LeaveCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'leave',
-			enabled: true,
 			runIn: ['text'],
 			cooldown: 5,
-			bucket: 1,
-			permLevel: 0,
 			description: 'Leave the VoiceChannel im currently connected to and removes the queue.'
 		});
 	}

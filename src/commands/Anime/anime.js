@@ -4,13 +4,8 @@ const { get } = require('snekfetch');
 module.exports = class AnimeCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'anime',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
 			cooldown: 5,
-			bucket: 1,
 			aliases: ['animu'],
-			permLevel: 0,
 			usage: '<anime_name:str>',
 			botPerms: ['EMBED_MESSAGE'],
 			description: 'Shows information about an specific anime'

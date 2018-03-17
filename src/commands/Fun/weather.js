@@ -8,13 +8,7 @@ const Canvas = require('canvas');
 module.exports = class WeatherCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'weather',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
 			cooldown: 10,
-			bucket: 1,
-			aliases: [],
-			permLevel: 0,
 			usage: '<location:str>',
 			botPerms: ['ATTACH_FILES'],
 			description: 'Shows a picture with the weather of the city you requested.'

@@ -3,13 +3,9 @@ const { Command } = require('klasa');
 module.exports = class PingCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'quote',
-			enabled: true,
 			runIn: ['text'],
 			cooldown: 5,
-			bucket: 1,
 			aliases: ['pong'],
-			permLevel: 0,
 			usage: '<message:str> [channel:channel]',
 			usageDelim: ' ',
 			botPerms: ['EMBED_MESSAGE'],

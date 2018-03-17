@@ -3,11 +3,8 @@ const { Command } = require('klasa');
 module.exports = class PurgeCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'purge',
-			enabled: true,
-			runIn: ['text', 'group'],
+			runIn: ['text'],
 			cooldown: 5,
-			bucket: 1,
 			aliases: ['clear'],
 			permLevel: 4,
 			usage: '<amount:integer> [member:member]',

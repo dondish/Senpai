@@ -3,13 +3,9 @@ const { Command } = require('klasa');
 module.exports = class QueueCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'queue',
-			enabled: true,
 			runIn: ['text'],
 			cooldown: 5,
-			bucket: 1,
 			aliases: ['playlist'],
-			permLevel: 0,
 			description: 'Shows the currently Song Queue'
 		});
 	}

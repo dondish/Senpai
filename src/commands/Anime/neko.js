@@ -4,13 +4,8 @@ const { get } = require('snekfetch');
 module.exports = class NekoCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'neko',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
 			cooldown: 5,
-			bucket: 1,
 			aliases: ['catgirl'],
-			permLevel: 0,
 			botPerms: ['ATTACH_FILES'],
 			description: 'Shows a random neko.'
 		});

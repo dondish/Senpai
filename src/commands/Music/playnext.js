@@ -3,13 +3,9 @@ const { Command } = require('klasa');
 module.exports = class PlayNextCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'playnext',
-			enabled: true,
 			runIn: ['text'],
 			cooldown: 5,
-			bucket: 1,
 			usage: '<song_or_playlist:str>',
-			permLevel: 0,
 			description: 'Add a Song/Playlist/Livestream from Youtube/Soundcloud/Twitch on the next playing position in the queue.'
 		});
 	}

@@ -4,13 +4,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = class UpvoteCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'upvote',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
 			cooldown: 5,
-			bucket: 1,
-			aliases: [],
-			permLevel: 0,
 			botPerms: ['EMBED_MESSAGE'],
 			description: 'Shows where you can upvote Senpai and support me <3.'
 		});

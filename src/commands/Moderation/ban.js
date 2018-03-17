@@ -3,11 +3,8 @@ const { Command } = require('klasa');
 module.exports = class BanCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'ban',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
+			runIn: ['text'],
 			cooldown: 5,
-			bucket: 1,
 			aliases: ['banne', 'bean', 'hammer'],
 			permLevel: 5,
 			usage: '<member_to_ban:member> [reason:string]',

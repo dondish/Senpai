@@ -5,14 +5,8 @@ const seedrandom = require('seedrandom');
 module.exports = class RateWaifuCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'ratewaifu',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
 			cooldown: 5,
-			bucket: 1,
-			aliases: [],
 			usage: '<user:member|character:str>',
-			permLevel: 0,
 			botPerms: ['EMBED_MESSAGE'],
 			description: 'Rates your waifu.'
 		});

@@ -6,13 +6,8 @@ const { APIError } = require(join(__dirname, '..', '..', 'util', 'CustomErrors.j
 module.exports = class OsuCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'osu',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
 			subcommands: true,
 			cooldown: 5,
-			bucket: 1,
-			permLevel: 0,
 			usage: '<username:str>',
 			botPerms: ['EMBED_MESSAGE'],
 			description: 'Shows information about an osu! player.'

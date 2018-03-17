@@ -3,13 +3,7 @@ const { Command } = require('klasa');
 module.exports = class EightBallCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: '8ball',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
 			cooldown: 5,
-			bucket: 1,
-			aliases: [],
-			permLevel: 0,
 			usage: '<question:str>',
 			description: 'Answers a yes/no question'
 		});

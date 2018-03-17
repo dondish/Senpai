@@ -4,13 +4,8 @@ const { get } = require('snekfetch');
 module.exports = class MangaCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'manga',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
 			cooldown: 5,
-			bucket: 1,
 			aliases: ['mangu'],
-			permLevel: 0,
 			usage: '<manga_name:str>',
 			botPerms: ['EMBED_MESSAGE'],
 			description: 'Shows information about an specific manga'

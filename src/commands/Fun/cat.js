@@ -3,13 +3,8 @@ const { Command } = require('klasa');
 module.exports = class CatCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'cat',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
 			cooldown: 5,
-			bucket: 1,
 			aliases: ['pussy', 'meow'],
-			permLevel: 0,
 			botPerms: ['ATTACH_FILES'],
 			description: 'Shows a random cat'
 		});

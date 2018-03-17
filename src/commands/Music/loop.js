@@ -3,12 +3,8 @@ const { Command } = require('klasa');
 module.exports = class LoopCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'loop',
-			enabled: true,
 			runIn: ['text'],
 			cooldown: 5,
-			bucket: 1,
-			permLevel: 0,
 			description: 'Starts looping the current queue.'
 		});
 	}

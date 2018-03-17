@@ -4,13 +4,8 @@ const { MessageEmbed } = require('discord.js');
 module.exports = class PingCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'ping',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
 			cooldown: 5,
-			bucket: 1,
 			aliases: ['pong'],
-			permLevel: 0,
 			botPerms: ['EMBED_MESSAGE'],
 			description: 'Shows my current Ping to the Discord API'
 		});

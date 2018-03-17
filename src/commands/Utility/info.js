@@ -4,13 +4,8 @@ const { MessageEmbed, version } = require('discord.js');
 module.exports = class InfoCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'info',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
 			cooldown: 5,
-			bucket: 1,
 			aliases: ['about'],
-			permLevel: 0,
 			botPerms: ['EMBED_MESSAGE'],
 			description: 'Shows information about me and my creator.'
 		});

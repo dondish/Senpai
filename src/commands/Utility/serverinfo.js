@@ -3,12 +3,8 @@ const { Command, Timestamp } = require('klasa');
 module.exports = class ServerInfoCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'serverinfo',
-			enabled: true,
 			runIn: ['text'],
 			cooldown: 5,
-			bucket: 1,
-			permLevel: 0,
 			botPerms: ['EMBED_MESSAGE'],
 			description: 'Shows basic information about this server'
 		});

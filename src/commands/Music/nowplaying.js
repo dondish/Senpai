@@ -3,12 +3,8 @@ const { Command } = require('klasa');
 module.exports = class NowPlayingCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'nowplaying',
-			enabled: true,
 			runIn: ['text'],
 			cooldown: 5,
-			bucket: 1,
-			permLevel: 0,
 			aliases: ['np'],
 			description: 'Shows information about the current playing Song.'
 		});

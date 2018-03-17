@@ -4,13 +4,8 @@ const { searchImages } = require('pixabay-api');
 module.exports = class BirdCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'bird',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
 			cooldown: 5,
-			bucket: 1,
 			aliases: ['birb'],
-			permLevel: 0,
 			botPerms: ['ATTACH_FILES'],
 			description: 'Shows a random bird'
 		});

@@ -4,16 +4,11 @@ const { User } = require('discord.js');
 module.exports = class ReminderCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'reminder',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
 			cooldown: 5,
-			bucket: 1,
 			usage: '<time:duration> <reason:str> [channel:channel]',
 			usageDelim: ' ',
 			quotedStringSupport: true,
 			aliases: ['remindme'],
-			permLevel: 0,
 			description: 'Reminds after an set time with the set reason.'
 		});
 	}

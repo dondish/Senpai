@@ -3,14 +3,10 @@ const { Command } = require('klasa');
 module.exports = class PlayCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'play',
-			enabled: true,
 			runIn: ['text'],
 			cooldown: 5,
-			bucket: 1,
 			aliases: ['add'],
 			usage: '<song_or_playlist:str>',
-			permLevel: 0,
 			description: 'Add a Song/Playlist/Livestream from Youtube/Soundcloud/Twitch in the queue.'
 		});
 	}

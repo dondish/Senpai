@@ -3,12 +3,7 @@ const { Command, Timestamp } = require('klasa');
 module.exports = class UserInfoCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'userinfo',
-			enabled: true,
-			runIn: ['text', 'dm', 'group'],
 			cooldown: 5,
-			bucket: 1,
-			permLevel: 0,
 			usage: '[Member:member]',
 			botPerms: ['EMBED_MESSAGE'],
 			description: 'Shows basic information about yourself or an user!'

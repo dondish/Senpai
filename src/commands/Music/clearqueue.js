@@ -3,12 +3,8 @@ const { Command } = require('klasa');
 module.exports = class ClearQueueCommand extends Command {
 	constructor(...args) {
 		super(...args, {
-			name: 'clearqueue',
-			enabled: true,
 			runIn: ['text'],
 			cooldown: 5,
-			bucket: 1,
-			permLevel: 0,
 			description: 'Clears the whole queue beside the currently playing one'
 		});
 	}
