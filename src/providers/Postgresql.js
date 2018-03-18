@@ -30,27 +30,12 @@ module.exports = class PostgresProvider extends SQLProvider {
 	 * @returns {Promise<*>}
 	 */
 	init() {
-		/*
-		Const connection = util.mergeDefault({
+		const connection = util.mergeDefault({
 			host: 'localhost',
 			port: 5432,
 			db: 'postgres',
 			user: 'postgres',
 			password: 'password',
-			options: {
-				max: 20,
-				idleTimeoutMillis: 30000,
-				connectionTimeoutMillis: 2000
-			}
-		}, this.client.options.providers.postgresql);
-		*/
-		const { databaseHost, databaseName, databaseUser, databasePW } = this.client.databaseConfig;
-		const connection = util.mergeDefault({
-			host: databaseHost,
-			port: 5432,
-			db: databaseName,
-			user: databaseUser,
-			password: databasePW,
 			options: {
 				max: 20,
 				idleTimeoutMillis: 30000,
@@ -120,8 +105,8 @@ module.exports = class PostgresProvider extends SQLProvider {
 	}
 
 	/**
-	 * Get all row names from a table.
-	 * @param {string} table The name of the directory to fetch from
+	 * Get all row ids from a table.
+	 * @param {string} table The name of the table to fetch from
 	 * @returns {Promise<string[]>}
 	 */
 	getKeys(table) {
@@ -148,7 +133,7 @@ module.exports = class PostgresProvider extends SQLProvider {
 	/**
 	 * Returns a Boolean indicating if a row is present
 	 * @param {string} table The name of the table to get the data from
-	 * @param {string} id    The value of the id
+	 * @param {string} id    The id of the row
 	 * @returns {Promise<boolean>}
 	 */
 	has(table, id) {
@@ -172,7 +157,7 @@ module.exports = class PostgresProvider extends SQLProvider {
 	 * @param {*} newValue The new value for the key
 	 * @returns {Promise<Object>}
 	 */
-	updateValue(table, colum, newValue) {row
+	updateValue(table, colum, newValue) {
 		return this._run(`UPDATE ${sanitizeKeyName(table)} SET ${sanitizeKeyName(colum)} = $1`, [newValue]);
 	}
 
@@ -182,18 +167,18 @@ module.exports = class PostgresProvider extends SQLProvider {
 	 * @param {string} colum The key's path to updaterow
 	 * @returns {Promise<Object>}
 	 */
-	removeValue(table, colum) {row
+	removeValue(table, colum) {
 		return this._run(`UPDATE ${sanitizeKeyName(table)} SET ${sanitizeKeyName(colum)} = DEFAULT`);
 	}
 
 	/**
 	 * Insert a new row on a table.
 	 * @param {string} table The name of the table
-	 * @param {string} id The document namerow
+	 * @param {string} id The row id
 	 * @param {Object} data The object with all properties you want to insert into the table
 	 * @returns {Promise<Object>}
 	 */
-	create(table, id, data) {row
+	create(table, id, data) {
 		const parsedData = this.parseInput(data);
 		const keys = [];
 		const values = [];
@@ -213,11 +198,11 @@ module.exports = class PostgresProvider extends SQLProvider {
 	}
 
 	/**
-	 * Update a row from a table.row
+	 * Update a row from a table
 	 * @param {string} table The name of the directory
-	 * @param {string} id The id of this rowrow
+	 * @param {string} id The id of this row
 	 * @param {Object} data The object with all the properties you want to update
-	 * @returns {Promise<Object>}row
+	 * @returns {Promise<Object>}
 	 */
 	update(table, id, data) {
 		const parsedData = this.parseInput(data);
@@ -230,7 +215,7 @@ module.exports = class PostgresProvider extends SQLProvider {
 		const playceholders = makeVariables(keys.length);
 		let keyPlaceholderstring = '';
 		for (let index = 0; index < keys.length; index++) {
-			keyPlaceholderstring += `${sanitizeKeyName(keys[index])} = ${playceholders[index]}`;
+			keyPlaceholderstring += `${sanitizeKeyName(keys[index])} = ${playceholders[index]}, `;
 		}
 		return this._run(`UPDATE ${sanitizeKeyName(table)} SET ${keyPlaceholderstring} WHERE id = ${sanitizeKeyName(id)}`, values);
 	}
@@ -275,29 +260,27 @@ module.exports = class PostgresProvider extends SQLProvider {
 	}
 
 	/**
-	 * Replace all the data from a row.
-	 * @param {string} table The name of the directory
-	 * @param {string} id The row id
-	 * @param {Object} data The new data for the document
-	 * @returns {Promise<void>}
+	 * @param {...*} args The arguments
+	 * @alias PostgreSQL#update
+	 * @returns {Promise<any[]>}
 	 */
-	replace(table, id, data) {
-
+	replace(...args) {
+		return this.update(...args);
 	}
 
 	/**
-	 * Delete a document from the table.
+	 * Delete a row from the table.
 	 * @param {string} table The name of the directory
-	 * @param {string} document The document name
+	 * @param {string} id The row id
 	 * @returns {Promise<void>}
 	 */
-	delete(table, document) {
-
+	delete(table, id) {
+		return this._run(`DELETE FROM ${sanitizeKeyName(table)} WHERE "id" = ${id};`);
 	}
 	/**
 	 * Run a Query on the database
-	 * @param {...any} query the query to execute
-	 * @returns {Promise<Internal.Readable>}
+	 * @param {...*} query the query to execute
+	 * @returns {Promise<*>}
 	 */
 	_run(...query) {
 		return this.db.query(...query);
@@ -351,18 +334,4 @@ function sanitizeKeyName(value) {
 function makeVariables(number) {
 	return new Array(number).fill().map((__, index) => `$${index + 1}`)
 		.join(', ');
-}
-
-/**
- * A helper function to sanitize strings
- * @param {string} value The string to sanitize
- * @returns {string}
- * @private
- */
-function sanitizeString(value) {
-	if (value.length === 0) {
-		throw new TypeError('%PostgreSQL.sanitizeString expects a string with a length bigger than 0.');
-	}
-
-	return `'${value.replace(/'/g, "''")}'`;
 }
