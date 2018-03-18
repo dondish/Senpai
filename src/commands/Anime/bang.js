@@ -1,12 +1,11 @@
 const { Command } = require('klasa');
 
-
-module.exports = class NekoCommand extends Command {
+module.exports = class BangCommand extends Command {
 	constructor(...args) {
 		super(...args, {
 			cooldown: 5,
 			botPerms: ['ATTACH_FILES'],
-			description: 'Cute neko'
+			description: 'Shots fired'
 		});
 	}
 

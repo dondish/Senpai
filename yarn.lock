@@ -4,7 +4,7 @@
 
 "@types/node@^8.0.4":
   version "8.9.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.9.5.tgz#162b864bc70be077e6db212b322754917929e976"
+  resolved "http://registry.npmjs.org/@types/node/-/node-8.9.5.tgz#162b864bc70be077e6db212b322754917929e976"
 
 acorn-jsx@^3.0.0:
   version "3.0.1"
@@ -295,7 +295,7 @@ delayed-stream@~1.0.0:
 
 discord.js@discordjs/discord.js:
   version "12.0.0-dev"
-  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/ef8366d189b8c53f4acdc279caaae9fe682d63f2"
+  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/acd1740f0b44064a0df0e4eecb5340af35869f72"
   dependencies:
     pako "^1.0.0"
     prism-media "^0.2.0"
@@ -713,7 +713,7 @@ jsprim@^1.2.2:
 
 klasa@dirigeants/klasa#sg-refactor:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/6a0d1709534424c5b65ba95ae2cf0c6f7110897c"
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/a3fa2f87f0422245b08f80439a920f611f962c8e"
   dependencies:
     fs-nextra "^0.3.2"
 
@@ -788,8 +788,8 @@ mute-stream@0.0.7:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
 
 nan@^2.4.0:
-  version "2.9.2"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.9.2.tgz#f564d75f5f8f36a6d9456cca7a6c4fe488ab7866"
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
 
 natural-compare@^1.4.0:
   version "1.4.0"

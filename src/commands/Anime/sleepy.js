@@ -1,12 +1,13 @@
 const { Command } = require('klasa');
 
 
-module.exports = class NekoCommand extends Command {
+module.exports = class SleepyCommand extends Command {
 	constructor(...args) {
 		super(...args, {
 			cooldown: 5,
+			aliases: ['sleep', 'slep'],
 			botPerms: ['ATTACH_FILES'],
-			description: 'Cute neko'
+			description: 'I slep'
 		});
 	}
 

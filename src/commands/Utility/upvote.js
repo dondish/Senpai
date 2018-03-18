@@ -1,5 +1,5 @@
 const { Command } = require('klasa');
-const { MessageEmbed } = require('discord.js');
+
 
 module.exports = class UpvoteCommand extends Command {
 	constructor(...args) {
@@ -11,7 +11,7 @@ module.exports = class UpvoteCommand extends Command {
 	}
 
 	async run(msg) {
-		const embed = new MessageEmbed()
+		const embed = new this.client.methods.Embed()
 			.addField(`You can upvote Senpai on this Link`, `[Click me!](${this.client.constants.voteLink}) \n I appreciate that very much <3`)
 			.setColor(0x80ff00)
 			.setTimestamp();

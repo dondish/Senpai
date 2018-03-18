@@ -1,5 +1,5 @@
 const { Command, version: klasaVersion } = require('klasa');
-const { MessageEmbed, version } = require('discord.js');
+const { version } = require('discord.js');
 
 module.exports = class InfoCommand extends Command {
 	constructor(...args) {
@@ -20,7 +20,7 @@ module.exports = class InfoCommand extends Command {
 		const userCount = result2.reduce((prev, val) => prev + val, 0);
 		const channelcount = result3.reduce((prev, val) => prev + val, 0);
 		const owner = client.users.get(client.owner.id);
-		const embed = new MessageEmbed()
+		const embed = new this.client.methods.Embed()
 			.setTitle(`Stats & Infos`)
 			.setAuthor(owner.username, owner.displayAvatarURL(), 'http://yukine.ga/')
 			.addField('Creator/Dev', 'Yukine', true)

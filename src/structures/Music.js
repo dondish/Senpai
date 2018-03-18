@@ -1,5 +1,5 @@
 const { EventEmitter } = require('events');
-const { MessageEmbed } = require('discord.js');
+
 
 module.exports = class Music extends EventEmitter {
 	constructor(client, id) {
@@ -51,7 +51,7 @@ module.exports = class Music extends EventEmitter {
 
 	_play(options) {
 		const channel = this.client.channels.get(this.channelID);
-		const embed = new MessageEmbed()
+		const embed = new this.client.methods.Embed()
 			.setAuthor(this._queue[0].user.name, this._queue[0].user.url)
 			.addField('Now Playing:', `[${this._queue[0].info.title}](${this._queue[0].info.uri})`)
 			.setColor('RANDOM');

@@ -1,17 +1,16 @@
 const { Command } = require('klasa');
 
-
-module.exports = class NekoCommand extends Command {
+module.exports = class AwooCommand extends Command {
 	constructor(...args) {
 		super(...args, {
 			cooldown: 5,
 			botPerms: ['ATTACH_FILES'],
-			description: 'Cute neko'
+			description: 'Awooo!'
 		});
 	}
 
 	async run(msg) {
-		const { url } = await this.client.weebAPI.getRandom({ type: this.name, hidden: false, nsfw: false });
+		const { url } = await this.client.weebAPI.getRandom({ type: this.name, hidden: false, nsfw: false, filetype: 'gif' });
 		return msg.send(new this.client.methods.Embed().setImage(url));
 	}
 };

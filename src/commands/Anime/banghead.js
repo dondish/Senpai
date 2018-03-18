@@ -1,12 +1,12 @@
 const { Command } = require('klasa');
 
-
-module.exports = class NekoCommand extends Command {
+module.exports = class BangHeadCommand extends Command {
 	constructor(...args) {
 		super(...args, {
 			cooldown: 5,
+			aliases: ['headbang'],
 			botPerms: ['ATTACH_FILES'],
-			description: 'Cute neko'
+			description: 'TRAPS ARE FUCKING GAY!'
 		});
 	}
 

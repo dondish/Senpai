@@ -1,5 +1,5 @@
 const { Command } = require('klasa');
-const { MessageEmbed } = require('discord.js');
+
 
 module.exports = class InviteCommand extends Command {
 	constructor(...args) {
@@ -11,7 +11,7 @@ module.exports = class InviteCommand extends Command {
 	}
 
 	async run(msg) {
-		const embed = new MessageEmbed()
+		const embed = new this.client.methods.Embed()
 			.addField('Invite Link', `[Click Me](${this.client.constants.inviteURL})`)
 			.setColor(0x80ff00)
 			.setTimestamp();
