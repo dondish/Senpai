@@ -1,7 +1,6 @@
 const { join } = require('path');
 const Client = require(join(__dirname, 'structures', 'Client.js'));
 const permissionsLevels = require(join(__dirname, 'structures', 'PermissionLevel.js'));
-//const GatewayCreator = require(join(__dirname, 'structures', 'GatewayCreator.js'));
 const { prefix } = process.env;
 
 const client = new Client({
@@ -15,7 +14,7 @@ const client = new Client({
 	ignoreSelf: true,
 	ignoreBots: true,
 	permissionsLevels,
-	//providers: { default: 'PostgreSQL' },
+	providers: { default: 'Postgres' },
 	promptTime: 20000,
 	readyMessage: readyClient => [
 		'-----------------------------------------------------------------------------',
@@ -28,5 +27,3 @@ const client = new Client({
 });
 
 client.login(client.tokens.bottoken);
-
-//const creator = new GatewayCreator(client);

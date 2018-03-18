@@ -1,24 +1,41 @@
-const { Provider, util } = require('klasa');
+const { SQLProvider, QueryBuilder, util } = require('klasa');
 const { Pool } = require('pg');
 
-module.exports = class PostgreSQL extends Provider {
+/**
+ * Class to interact with the Postgresql Database
+ */
+module.exports = class PostgresProvider extends SQLProvider {
+	/**
+	 * Creates a new instance of this PostgresProvider Class
+	 * @param {any[]} args Arguments for the Providerclasss
+	 */
 	constructor(...args) {
 		super(...args, {
-			enabled: true,
-			sql: true,
+			name: 'Postgres',
 			description: 'Allows you to use PostgreSQL functionality throught Klasa'
 		});
 		this.db = null;
+		this.qb = new QueryBuilder(this.client, {
+			BOOLEAN: { name: 'BOOL', default: ['false', 'true'], size: false },
+			FLOAT: { name: 'BIGINT', default: '0', size: false },
+			INTEGER: { name: 'INTEGER', default: '0', size: false },
+			REAL: { name: 'BIGINT', default: '0', size: false },
+			TEXT: { name: 'TEXT', default: '', size: false },
+			VARCHAR: { name: 'VARCHAR', default: '', size: true }
+		}, { arrayWrap: type => `${type}[]` });
 	}
 
-	async init() {
-		const { databaseHost, databaseName, databaseUser, databasePW } = this.client.databaseConfig;
+	/**
+	 * Method to initialize this Provider
+	 * @returns {Promise<*>}
+	 */
+	init() {
 		const connection = util.mergeDefault({
-			host: databaseHost,
+			host: 'localhost',
 			port: 5432,
-			db: databaseName,
-			user: databaseUser,
-			password: databasePW,
+			db: 'postgres',
+			user: 'postgres',
+			password: 'password',
 			options: {
 				max: 20,
 				idleTimeoutMillis: 30000,
@@ -34,79 +51,71 @@ module.exports = class PostgreSQL extends Provider {
 		}, connection.options));
 
 		this.db.on('error', err => this.client.emit('error', err));
-		await this.db.connect();
+		return this.db.connect();
 	}
-
+	/**
+	 * Method to shutdown this Provider
+	 * @returns {Promise<void>}
+	 */
 	shutdown() {
 		return this.db.end();
 	}
 
-	/* Table methods */
+	/** Table Methods */
 
 	/**
-	 * @param {string} table Check if a table exists
+	 * Checks if a table exists.
+	 * @param {string} table The name of the table you want to check
 	 * @returns {Promise<boolean>}
 	 */
 	hasTable(table) {
-		return this.runAll(`SELECT true FROM pg_tables WHERE tablename = '${table}';`)
-			.then(result => result.length !== 0 && result[0].bool === true)
+		return this._runAll(`SELECT true FROM pg_tables WHERE tablename = '${table}';`)
+			.then(result => result.length && result[0].bool === true)
 			.catch(() => false);
 	}
 
 	/**
-	 * @param {string} table The name of the table to create
-	 * @param {Array<iterable>} rows The rows with their respective datatypes
-	 * @returns {Promise<Object[]>}
+	 * Creates a new Table.
+	 * @param {string} table The name for the new directory
+	 * @param {Object} data The data to columes and there types to create with
+	 * @returns {Promise<void>}
 	 */
-	createTable(table, rows) {
-		return this.run(`CREATE TABLE ${sanitizeKeyName(table)} (${rows.map(([k, v]) => `"${k}" ${v}`).join(', ')});`);
+	createTable(table, data) {
+		return this._run(`CREATE TABLE ${sanitizeKeyName(table)} (${data.map(([k, v]) => `"${k}" ${v}`).join(', ')});`);
 	}
 
 	/**
-	 * @param {string} table The name of the table to drop
-	 * @returns {Promise<Object[]>}
+	 * Deletes a Table.
+	 * @param {string} table The directory's name to delete
+	 * @returns {Promise<void>}
 	 */
 	deleteTable(table) {
-		return this.run(`DROP TABLE IF EXISTS ${sanitizeKeyName(table)};`);
+		return this._run(`DROP TABLE IF EXISTS ${sanitizeKeyName(table)};`);
 	}
 
-	/**
-	 * @param {string} table The table with the rows to count
-	 * @returns {Promise<number>}
-	 */
-	countRows(table) {
-		return this.runOne(`SELECT COUNT(*) FROM ${sanitizeKeyName(table)};`)
-			.then(result => parseInt(result.count));
-	}
-
-	/* Row methods */
+	/** Row Methods */
 
 	/**
-	 * @param {string} table The name of the table to get the data from
-	 * @param {string} [key] The key to filter the data from. Requires the value parameter
-	 * @param {*}    [value] The value to filter the data from. Requires the key parameter
-	 * @param {number} [limitMin] The minimum range. Must be higher than zero
-	 * @param {number} [limitMax] The maximum range. Must be higher than the limitMin parameter
+	 * Get all rows from a table.
+	 * @param {string} table The name of the directory to fetch from
 	 * @returns {Promise<Object[]>}
 	 */
-	getAll(table, key, value, limitMin, limitMax) {
-		if (typeof key !== 'undefined' && typeof value !== 'undefined') {
-			return this.runAll(`SELECT * FROM ${sanitizeKeyName(table)} WHERE ${sanitizeKeyName(key)} = $1 ${parseRange(limitMin, limitMax)};`, [value]);
-		}
-
-		return this.runAll(`SELECT * FROM ${sanitizeKeyName(table)} ${parseRange(limitMin, limitMax)};`);
+	getAll(table) {
+		return this._runAll(`SELECT * FROM ${sanitizeKeyName(table)};`);
 	}
 
 	/**
-	 * @param {string} table The name of the table to get the data from
-	 * @returns {Promise<Object[]>}
+	 * Get all row ids from a table.
+	 * @param {string} table The name of the table to fetch from
+	 * @returns {Promise<string[]>}
 	 */
 	getKeys(table) {
-		return this.runAll(`SELECT id FROM ${sanitizeKeyName(table)};`)
+		return this._runAll(`SELECT id FROM ${sanitizeKeyName(table)};`)
 			.then(rows => rows.map(row => row.id));
 	}
 
 	/**
+	 * Gets a value from a table by key, filtered by given value
 	 * @param {string} table The name of the table to get the data from
 	 * @param {string} key The key to filter the data from
 	 * @param {*}    [value] The value of the filtered key
@@ -118,126 +127,97 @@ module.exports = class PostgreSQL extends Provider {
 			value = key;
 			key = 'id';
 		}
-		return this.runOne(`SELECT * FROM ${sanitizeKeyName(table)} WHERE ${sanitizeKeyName(key)} = $1 LIMIT 1;`, [value]);
+		return this._runOne(`SELECT * FROM ${sanitizeKeyName(table)} WHERE ${sanitizeKeyName(key)} = $1 LIMIT 1;`, [value]);
 	}
 
 	/**
+	 * Returns a Boolean indicating if a row is present
 	 * @param {string} table The name of the table to get the data from
-	 * @param {string} id    The value of the id
+	 * @param {string} id    The id of the row
 	 * @returns {Promise<boolean>}
 	 */
 	has(table, id) {
-		return this.runOne(`SELECT id FROM ${sanitizeKeyName(table)} WHERE id = $1 LIMIT 1;`, [id])
+		return this._runOne(`SELECT id FROM ${sanitizeKeyName(table)} WHERE id = $1 LIMIT 1;`, [id])
 			.then(result => Boolean(result));
 	}
 
 	/**
+	 * Gets a random row from a table
 	 * @param {string} table The name of the table to get the data from
 	 * @returns {Promise<Object>}
 	 */
 	getRandom(table) {
-		return this.runOne(`SELECT * FROM ${sanitizeKeyName(table)} ORDER BY RANDOM() LIMIT 1;`);
+		return this._runOne(`SELECT * FROM ${sanitizeKeyName(table)} ORDER BY RANDOM() LIMIT 1;`);
 	}
 
 	/**
-	 * @param {string} table The name of the table to get the data from
-	 * @param {string} key The key to sort by
-	 * @param {('ASC'|'DESC')} [order='DESC'] Whether the order should be ascendent or descendent
-	 * @param {number} [limitMin] The minimum range
-	 * @param {number} [limitMax] The maximum range
-	 * @returns {Promise<Object[]>}
+	 * Update or insert a new value to all entries.
+	 * @param {string} table The name of the table
+	 * @param {string} colum The colum to update
+	 * @param {*} newValue The new value for the key
+	 * @returns {Promise<Object>}
 	 */
-	async getSorted(table, key, order = 'DESC', limitMin, limitMax) {
-		if (order !== 'DESC' && order !== 'ASC') {
-			throw new TypeError(`PostgreSQL#getSorted 'order' parameter expects either 'DESC' or 'ASC'. Got: ${order}`);
+	updateValue(table, colum, newValue) {
+		return this._run(`UPDATE ${sanitizeKeyName(table)} SET ${sanitizeKeyName(colum)} = $1`, [newValue]);
+	}
+
+	/**
+	 * Remove a value or object from all entries.
+	 * @param {string} table The name of the directory
+	 * @param {string} colum The key's path to updaterow
+	 * @returns {Promise<Object>}
+	 */
+	removeValue(table, colum) {
+		return this._run(`UPDATE ${sanitizeKeyName(table)} SET ${sanitizeKeyName(colum)} = DEFAULT`);
+	}
+
+	/**
+	 * Insert a new row on a table.
+	 * @param {string} table The name of the table
+	 * @param {string} id The row id
+	 * @param {Object} data The object with all properties you want to insert into the table
+	 * @returns {Promise<Object>}
+	 */
+	create(table, id, data) {
+		const parsedData = this.parseInput(data);
+		const keys = [];
+		const values = [];
+		for (const [key, value] of parsedData) {
+			keys.push(key);
+			values.push(value);
 		}
+		return this._run(`INSERT INTO ${sanitizeKeyName(table)} (${keys.map(sanitizeKeyName).join(', ')}) VALUES (${makeVariables(keys.length)});`, values);
+	}
 
-		return this.runAll(`SELECT * FROM ${sanitizeKeyName(table)} ORDER BY ${sanitizeKeyName(key)} ${order} ${parseRange(limitMin, limitMax)};`);
+	set(...args) {
+		return this.create(...args);
+	}
+
+	insert(...args) {
+		return this.create(...args);
 	}
 
 	/**
-	 * @param {string} table The name of the table to insert the new data
-	 * @param {string} id The id of the new row to insert
-	 * @param {(string|string[]|{})} param1 The first parameter to validate.
-	 * @param {*} [param2] The second parameter to validate.
-	 * @returns {Promise<any[]>}
+	 * Update a row from a table
+	 * @param {string} table The name of the directory
+	 * @param {string} id The id of this row
+	 * @param {Object} data The object with all the properties you want to update
+	 * @returns {Promise<Object>}
 	 */
-	insert(table, id, param1, param2) {
-		const [keys, values] = acceptArbitraryInput(param1, param2);
-
-		// Push the id to the inserts.
-		keys.push('id');
-		values.push(id);
-		return this.run(`INSERT INTO ${sanitizeKeyName(table)} (${keys.map(sanitizeKeyName).join(', ')}) VALUES (${makeVariables(keys.length)});`, values);
-	}
-
-	/**
-	 * @param {...*} args The arguments
-	 * @alias PostgreSQL#insert
-	 * @returns {Promise<any[]>}
-	 */
-	create(...args) {
-		return this.insert(...args);
-	}
-
-	/**
-	 * @param {string} table The name of the table to update the data from
-	 * @param {string} id The id of the row to update
-	 * @param {(string|string[]|{})} param1 The first parameter to validate.
-	 * @param {*} [param2] The second parameter to validate.
-	 * @returns {Promise<any[]>}
-	 */
-	update(table, id, param1, param2) {
-		const [keys, values] = acceptArbitraryInput(param1, param2);
-		return this.run(`UPDATE ${sanitizeKeyName(table)} SET ${keys.map((key, i) => `${sanitizeKeyName(key)} = $${i + 1}`)} WHERE id = ${sanitizeString(id)};`, stringifyArrays(values));
-	}
-
-	/**
-	 * @param {...*} args The arguments
-	 * @alias PostgreSQL#update
-	 * @returns {Promise<any[]>}
-	 */
-	replace(...args) {
-		return this.update(...args);
-	}
-
-	/**
-	 * @param {string} table The name of the table to update the data from
-	 * @param {string} id The id of the row to update
-	 * @param {string} key The key to update
-	 * @param {number} [amount=1] The value to increase
-	 * @returns {Promise<any[]>}
-	 */
-	incrementValue(table, id, key, amount = 1) {
-		if (amount < 0 || isNaN(amount) || Number.isInteger(amount) === false || Number.isSafeInteger(amount) === false) {
-			throw new TypeError(`PostgreSQL#incrementValue expects the parameter 'amount' to be an integer greater or equal than zero. Got: ${amount}`);
+	update(table, id, data) {
+		const parsedData = this.parseInput(data);
+		const keys = [];
+		const values = [];
+		for (const [key, value] of parsedData) {
+			keys.push(key);
+			values.push(value);
 		}
-
-		return this.run(`UPDATE ${sanitizeKeyName(table)} SET $2 = $2 + $3 WHERE id = $1;`, [id, key, amount]);
-	}
-
-	/**
-	 * @param {string} table The name of the table to update the data from
-	 * @param {string} id The id of the row to update
-	 * @param {string} key The key to update
-	 * @param {number} [amount=1] The value to decrease
-	 * @returns {Promise<any[]>}
-	 */
-	decrementValue(table, id, key, amount = 1) {
-		if (amount < 0 || isNaN(amount) || Number.isInteger(amount) === false || Number.isSafeInteger(amount) === false) {
-			throw new TypeError(`PostgreSQL#incrementValue expects the parameter 'amount' to be an integer greater or equal than zero. Got: ${amount}`);
+		const playceholders = makeVariables(keys.length);
+		let keyPlaceholderstring = '';
+		for (let index = 0; index < keys.length; index++) {
+			keyPlaceholderstring += `${sanitizeKeyName(keys[index])} = ${playceholders[index]}, `;
 		}
-
-		return this.run(`UPDATE ${sanitizeKeyName(table)} SET $2 = GREATEST(0, $2 - $3) WHERE id = $1;`, [id, key, amount]);
-	}
-
-	/**
-	 * @param {string} table The name of the table to update
-	 * @param {string} id The id of the row to delete
-	 * @returns {Promise<any[]>}
-	 */
-	delete(table, id) {
-		return this.run(`DELETE FROM ${sanitizeKeyName(table)} WHERE id = $1;`, [id]);
+		return this._run(`UPDATE ${sanitizeKeyName(table)} SET ${keyPlaceholderstring} WHERE id = ${sanitizeKeyName(id)}`, values);
 	}
 
 	/**
@@ -280,103 +260,59 @@ module.exports = class PostgreSQL extends Provider {
 	}
 
 	/**
-	 * Get a row from an arbitrary SQL query.
-	 * @param {...any} sql The query to execute.
-	 * @returns {Promise<Object>}
+	 * @param {...*} args The arguments
+	 * @alias PostgreSQL#update
+	 * @returns {Promise<any[]>}
 	 */
-	run(...sql) {
-		return this.db.query(...sql)
-			.then(result => result)
-			.catch(error => { throw error; });
+	replace(...args) {
+		return this.update(...args);
 	}
 
 	/**
-	 * Get all entries from a table.
+	 * Delete a row from the table.
+	 * @param {string} table The name of the directory
+	 * @param {string} id The row id
+	 * @returns {Promise<void>}
+	 */
+	delete(table, id) {
+		return this._run(`DELETE FROM ${sanitizeKeyName(table)} WHERE "id" = ${id};`);
+	}
+	/**
+	 * Run a Query on the database
+	 * @param {...*} query the query to execute
+	 * @returns {Promise<*>}
+	 */
+	_run(...query) {
+		return this.db.query(...query);
+	}
+
+	/**
+	 * Run a query and get all entries from a table.
 	 * @param {...any} sql The query to execute.
 	 * @returns {Promise<any[]>}
 	 */
-	runAll(...sql) {
-		return this.run(...sql)
+	_runAll(...sql) {
+		return this._run(...sql)
 			.then(result => result.rows);
 	}
 
 	/**
-	 * Get one entry from a table.
+	 * Run a query and get one row from a table.
 	 * @param {...any} sql The query to execute.
 	 * @returns {Promise<Object>}
 	 */
-	runOne(...sql) {
-		return this.run(...sql)
+	_runOne(...sql) {
+		return this._run(...sql)
 			.then(result => result.rows[0]);
 	}
 };
 
 /**
-	 * Accept any kind of input from two parameters.
-	 * @param {(string|string[]|{})} param1 The first parameter to validate.
-	 * @param {*} [param2] The second parameter to validate.
-	 * @returns {[[], []]}
-	 * @private
-	 */
-function acceptArbitraryInput(param1, param2) {
-	if (typeof param1 === 'undefined' && typeof param2 === 'undefined') {
-		return [[], []];
-	}
-	if (typeof param1 === 'string' && typeof param2 !== 'undefined') {
-		return [[param1], [param2]];
-	}
-	if (Array.isArray(param1) && Array.isArray(param2)) {
-		if (param1.length !== param2.length) throw new TypeError(`The array lengths do not match: ${param1.length}-${param2.length}`);
-		if (param1.some(value => typeof value !== 'string')) throw new TypeError(`The array of keys must be an array of strings, but found a value that does not match.`);
-		return [param1, param2];
-	}
-	if (util.isObject(param1) && typeof param2 === 'undefined') {
-		const entries = [[], []];
-		getEntriesFromObject(param1, entries, '');
-		return entries;
-	}
-	throw new TypeError('Invalid input. Expected a key type of string and a value, tuple of arrays, or an object and undefined.');
-}
-
-/**
-	 * Get all entries from an object.
-	 * @param {Object} object The object to "flatify".
-	 * @param {[string[], any[]]} param1 The tuple of keys and values to check.
-	 * @param {string} path The current path.
-	 * @private
-	 */
-function getEntriesFromObject(object, [keys, values], path) {
-	const objectKeys = Object.keys(object);
-	for (let i = 0; i < objectKeys.length; i++) {
-		const key = objectKeys[i];
-		const value = object[key];
-		if (util.isObject(value)) {
-			getEntriesFromObject(value, [keys, values], path.length > 0 ? `${path}.${key}` : key);
-		} else {
-			keys.push(path.length > 0 ? `${path}.${key}` : key);
-			values.push(value);
-		}
-	}
-}
-
-/**
-	 * @param {string} value The string to sanitize
-	 * @returns {string}
-	 * @private
-	 */
-function sanitizeString(value) {
-	if (value.length === 0) {
-		throw new TypeError('%PostgreSQL.sanitizeString expects a string with a length bigger than 0.');
-	}
-
-	return `'${value.replace(/'/g, "''")}'`;
-}
-
-/**
-	 * @param {string} value The string to sanitize as a key
-	 * @returns {string}
-	 * @private
-	 */
+ * A helper function to sanitize key names in postgresql
+ * @param {string} value The string to sanitize as a key
+ * @returns {string}
+ * @private
+ */
 function sanitizeKeyName(value) {
 	if (typeof value !== 'string') {
 		throw new TypeError(`%PostgreSQL.sanitizeString expects a string, got: ${typeof value}`);
@@ -389,46 +325,13 @@ function sanitizeKeyName(value) {
 	}
 	return `"${value}"`;
 }
-
 /**
-	 * @param {number} [min] The minimum value
-	 * @param {number} [max] The maximum value
-	 * @returns {string}
-	 * @private
-	 */
-function parseRange(min, max) {
-	// Min value validation
-	if (typeof min === 'undefined') return '';
-	if (isNaN(min) || Number.isInteger(min) === false || Number.isSafeInteger(min) === false) {
-		throw new TypeError(`%PostgreSQL.parseRange 'min' parameter expects an integer or undefined, got ${min}`);
-	}
-	if (min < 0) {
-		throw new TypeError(`%PostgreSQL.parseRange 'min' parameter expects to be equal or greater than zero, got ${min}`);
-	}
-
-	// Max value validation
-	if (typeof max !== 'undefined') {
-		if (typeof max !== 'number' || isNaN(max) || Number.isInteger(max) === false || Number.isSafeInteger(max) === false) {
-			throw new TypeError(`%PostgreSQL.parseRange 'max' parameter expects an integer or undefined, got ${max}`);
-		}
-		if (max <= min) {
-			throw new TypeError(`%PostgreSQL.parseRange 'max' parameter expects ${max} to be greater than ${min}. Got: ${max} <= ${min}`);
-		}
-	}
-
-	return `LIMIT ${min}${typeof max === 'number' ? `,${max}` : ''}`;
-}
-
+ * A helper function to generate an array of placeholders
+ * @param {nmumber} number the length of this array
+ * @private
+ * @returns {Array<string>}
+ */
 function makeVariables(number) {
 	return new Array(number).fill().map((__, index) => `$${index + 1}`)
 		.join(', ');
-}
-/**
- * Helper function to stringify arrays correctly
- * @param {Array<*>} array Array out of Arrays where the entries should be stringified
- * @returns {Array<string>}
- */
-function stringifyArrays(array) {
-	for (let index = 0; index < array.length; index++) if (Array.isArray(array[index])) array[index] = JSON.stringify(array[index]);
-	return array;
 }
