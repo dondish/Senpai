@@ -5,8 +5,8 @@ function test {
 	yarn lint
 }
 
-if [[ "$TRAVIS_BRANCH" == revert-* ]]; then
-	echo -e "\e[36m\e[1mBuild triggered for reversion branch \"${TRAVIS_BRANCH}\" - running nothing."
+if [[ "$TRAVIS_BRANCH" == revert-* ]] || [[ "$TRAVIS_BRANCH" == dependabot/* ]]; then
+	echo -e "\e[36m\e[1mBuild triggered for reversion or dependabot branch \"${TRAVIS_BRANCH}\" - running nothing."
 	exit 0
 fi
 
