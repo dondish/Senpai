@@ -21,7 +21,8 @@ class SenpaiClient extends Client {
 			userID: UserID,
 			host: lavalinkHost,
 			portWS: lavalinkPortWS,
-			port: LavalinkPort
+			port: LavalinkPort,
+			client: this
 		});
 		this.lavalink.init();
 		this.lavalink.on('error', err => this.emit('error', err));
