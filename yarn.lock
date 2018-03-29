@@ -149,11 +149,11 @@ axios@^0.16.2:
     follow-redirects "^1.2.3"
     is-buffer "^1.1.5"
 
-axios@^0.17.0:
-  version "0.17.1"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.17.1.tgz#2d8e3e5d0bdbd7327f91bc814f5c57660f81824d"
+axios@^0.18.0:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.18.0.tgz#32d53e4851efdc0a11993b6cd000789d70c05102"
   dependencies:
-    follow-redirects "^1.2.5"
+    follow-redirects "^1.3.0"
     is-buffer "^1.1.5"
 
 babel-code-frame@^6.22.0:
@@ -683,7 +683,7 @@ flat-cache@^1.2.1:
     graceful-fs "^4.1.2"
     write "^0.2.1"
 
-follow-redirects@^1.2.3, follow-redirects@^1.2.5:
+follow-redirects@^1.2.3, follow-redirects@^1.3.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.4.1.tgz#d8120f4518190f55aac65bb6fc7b85fcd666d6aa"
   dependencies:
@@ -1075,19 +1075,19 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-kitsu-core@^5.0.3:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/kitsu-core/-/kitsu-core-5.0.3.tgz#d3d39de92b6ee5cdc0a7521a005889ae6de75c6d"
+kitsu-core@^5.0.7:
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/kitsu-core/-/kitsu-core-5.0.7.tgz#7429ae4bdcda7a224a2de048b9c00de80a84da81"
   dependencies:
     babel-runtime "^6.26.0"
 
-kitsu@^5.0.3:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/kitsu/-/kitsu-5.0.3.tgz#ef98054b770597c621c6e1490dfb1b5ccb2b9e33"
+kitsu@^5.0.7:
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/kitsu/-/kitsu-5.0.7.tgz#01320ad7735068898f6b6b48a66712497ffbb0a7"
   dependencies:
-    axios "^0.17.0"
+    axios "^0.18.0"
     babel-runtime "^6.26.0"
-    kitsu-core "^5.0.3"
+    kitsu-core "^5.0.7"
     pluralize "^7.0.0"
 
 lavalink@^0.3.0:
