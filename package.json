@@ -19,7 +19,7 @@
   "homepage": "https://github.com/Dev-Yukine/Senpai#readme",
   "devDependencies": {
     "eslint": "^4.19.1",
-    "eslint-config-aqua": "^2.0.1"
+    "eslint-config-aqua": "^3.0.0"
   },
   "dependencies": {
     "ascii-art": "^1.4.3",
