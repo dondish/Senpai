@@ -6,7 +6,6 @@ module.exports = class Music extends EventEmitter {
 		super();
 		this.client = client;
 		this.id = id;
-		this.playing = false;
 		this._queue = [];
 		this.loop = false;
 		this._channelID = null;
@@ -28,11 +27,11 @@ module.exports = class Music extends EventEmitter {
 	}
 
 	stop() {
-		this.client.lavalink.players.get(this.id).stop();
+		this.client.customPieceStore.get('Lavalink').lavalink.players.get(this.id).stop();
 	}
 
 	shuffle() {
-		this._shuffle(this._queue);
+		return this._shuffle(this._queue);
 	}
 
 	remove(index) {
@@ -55,15 +54,13 @@ module.exports = class Music extends EventEmitter {
 			.setAuthor(this._queue[0].user.name, this._queue[0].user.url)
 			.addField('Now Playing:', `[${this._queue[0].info.title}](${this._queue[0].info.uri})`)
 			.setColor('RANDOM');
-		channel.send(embed);
+		if (channel) channel.send(embed);
 		const { track } = this._queue[0];
-		this.client.lavalink.players.get(this.id).play(track, options);
-		this.playing = true;
+		this.client.customPieceStore.get('Lavalink').lavalink.players.get(this.id).play(track, options);
 	}
 
 	_handleEnd(event) {
 		const shifted = this._queue.shift();
-		this.playing = false;
 		if (event.reason === 'FINISHED') return this._finished(event, shifted);
 		else if (event.reason === 'STOPPED') return this._stopped(event, shifted);
 		else if (event.reason === 'FAILED') return this._failed(event);
@@ -123,5 +120,9 @@ module.exports = class Music extends EventEmitter {
 
 	get nowPlaying() {
 		return this._queue[0];
+	}
+
+	get playing() {
+		return this.client.customPieceStore.get('Lavalink').lavalink.players.get(this.id).playing;
 	}
 };

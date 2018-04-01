@@ -12,7 +12,7 @@ module.exports = class LewdCommand extends Command {
 	}
 
 	async run(msg, [member]) {
-		const { url } = await this.client.weebAPI.getRandom({ type: this.name, hidden: false, nsfw: false, filetype: 'gif' });
+		const { url } = await this.wolkeHandler.getRandom({ type: this.name, hidden: false, nsfw: false, filetype: 'gif' });
 		return msg.send(
 			new this.client.methods.Embed()
 				.setDescription(member ? `${msg.member} thinks lewd about ${member}` : `${msg.member} thinks lewd`)

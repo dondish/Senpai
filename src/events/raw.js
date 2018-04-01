@@ -52,10 +52,10 @@ module.exports = class RawEvent extends Event {
 	}
 
 	voiceStateUpdate(data) {
-		return this.client.lavalink.voiceStateUpdate(data);
+		return this.client.customPieceStore.get('Lavalink').lavalink.voiceStateUpdate(data);
 	}
 
 	voiceServerUpdate(data) {
-		return this.client.lavalink.voiceServerUpdate(data);
+		return this.client.customPieceStore.get('Lavalink').lavalink.voiceServerUpdate(data);
 	}
 };

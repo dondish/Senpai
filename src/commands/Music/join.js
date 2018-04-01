@@ -11,17 +11,8 @@ module.exports = class JoinCommand extends Command {
 	}
 
 	run(msg) {
-		const { voiceChannel } = msg.member;
-		this.client.ws.send({
-			shard: this.client.shard.id,
-			op: 4,
-			d: { // eslint-disable-line id-length
-				guild_id: msg.guild.id, // eslint-disable-line camelcase
-				channel_id: voiceChannel.id, // eslint-disable-line camelcase
-				self_mute: false, // eslint-disable-line camelcase
-				self_deaf: false // eslint-disable-line camelcase
-			}
-		});
+		const { voiceChannel, guild } = msg.member;
+		this.client.customPieceStore.get('Lavalink').lavalink.players.get(guild.id).join(voiceChannel.id, { deaf: false });
 		return msg.send('successfull joined your Voice Channel');
 	}
 };

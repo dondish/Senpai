@@ -11,7 +11,7 @@ module.exports = class NekoCommand extends Command {
 	}
 
 	async run(msg) {
-		const { url } = await this.client.weebAPI.getRandom({ type: this.name, hidden: false, nsfw: false });
+		const { url } = await this.wolkeHandler.getRandom({ type: this.name, hidden: false, nsfw: false });
 		return msg.send(new this.client.methods.Embed().setImage(url));
 	}
 };

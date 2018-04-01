@@ -1,4 +1,4 @@
-const { Command, Stopwatch } = require('klasa');
+const { Command, Stopwatch, Type } = require('klasa');
 const { inspect } = require('util');
 
 module.exports = class extends Command {
@@ -23,7 +23,7 @@ module.exports = class extends Command {
 		// Handle errors
 		if (!success) {
 			if (result && result.stack) this.client.emit('error', result.stack);
-			if (!silent) return msg.sendMessage(output);
+			if (!silent) return msg.send(output);
 		}
 
 		if (silent) return null;
@@ -34,11 +34,11 @@ module.exports = class extends Command {
 				return msg.channel.sendFile(Buffer.from(result), 'output.txt', msg.language.get('COMMAND_EVAL_SENDFILE', time, footer));
 			}
 			this.client.emit('log', result);
-			return msg.sendMessage(msg.language.get('COMMAND_EVAL_SENDCONSOLE', time, footer));
+			return msg.send(msg.language.get('COMMAND_EVAL_SENDCONSOLE', time, footer));
 		}
 
 		// If it's a message that can be sent correctly, send it
-		return msg.sendMessage(output);
+		return msg.send(output);
 	}
 
 	// Eval the input
@@ -46,14 +46,14 @@ module.exports = class extends Command {
 		const stopwatch = new Stopwatch();
 		let success, syncTime, asyncTime, result;
 		let thenable = false;
-		let type = '';
+		let type;
 		try {
 			if (msg.flags.async) code = `(async () => {\n${code}\n})();`;
 			result = eval(code);
 			syncTime = stopwatch.friendlyDuration;
+			type = new Type(result);
 			if (this.client.methods.util.isThenable(result)) {
 				thenable = true;
-				type += this.client.methods.util.getTypeName(result);
 				stopwatch.restart();
 				result = await result;
 				asyncTime = stopwatch.friendlyDuration;
@@ -67,7 +67,6 @@ module.exports = class extends Command {
 		}
 
 		stopwatch.stop();
-		type += thenable ? `<${this.client.methods.util.getDeepTypeName(result)}>` : this.client.methods.util.getDeepTypeName(result);
 		if (success && typeof result !== 'string') {
 			result = inspect(result, {
 				depth: msg.flags.depth ? parseInt(msg.flags.depth) || 0 : 0,

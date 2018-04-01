@@ -12,42 +12,40 @@ module.exports = class PlayCommand extends Command {
 	}
 
 	async run(msg, [...query]) {
-		if (!msg.guild.music.channelID) msg.guild.music.channelID = msg.channel.id;
+		if (!msg.guild.music.channelID || !msg.guild.channels.has(msg.guild.music.channelID)) msg.guild.music.channelID = msg.channel.id;
 		await msg.send('*adding your Song/Playlist to the queue....*');
-		const player = this.client.lavalink.players.get(msg.guild.id);
-		if (!player) return;
 		try {
 			let songs;
 			if (this.isLink(query.join(' '))) {
-				songs = await this.client.lavalink.resolveTrack(query.join(' '));
+				songs = await this.client.customPieceStore.get('Lavalink').lavalink.resolveTrack(query.join(' '));
 			} else {
 				let arr = [];
-				const searchResult = await this.client.lavalink.resolveTrack(`ytsearch: ${query}`);
+				const searchResult = await this.client.customPieceStore.get('Lavalink').lavalink.resolveTrack(`ytsearch: ${query}`);
 				arr.push(searchResult[0]);
 				songs = arr;
 			}
 			if (songs.length > 1) {
-				await this._playlist(songs, msg, { name: msg.member.displayName, url: msg.member.user.displayAvatarURL() });
+				return this._playlist(songs, msg, { name: msg.member.displayName, url: msg.author.displayAvatarURL() });
 			} else {
-				await this._song(songs[0], msg, { name: msg.member.displayName, url: msg.member.user.displayAvatarURL() });
+				return this._song(songs[0], msg, { name: msg.member.displayName, url: msg.author.displayAvatarURL() });
 			}
 		} catch (error) {
-			await msg.send(error.message);
+			return msg.send(error.message);
 		}
 	}
 
-	async _playlist(songs, message, requestor) {
+	_playlist(songs, message, requestor) {
 		for (const song of songs) {
 			song.user = requestor;
 			message.guild.music.queue(song);
 		}
-		await message.send(`**Queued** ${songs.length} songs.`);
+		return message.send(`**Queued** ${songs.length} songs.`);
 	}
 
-	async _song(song, message, requestor) {
+	_song(song, message, requestor) {
 		song.user = requestor;
 		message.guild.music.queue(song);
-		await message.send(`**Queued:** ${song.info.title}.`);
+		return message.send(`**Queued:** ${song.info.title}.`);
 	}
 
 	isLink(input) {

@@ -1,8 +1,7 @@
 const { Client } = require('klasa');
 const { join } = require('path');
-const WolkeHandler = require('wolken');
 const { version } = require(join(__dirname, '..', '..', 'package.json'));
-const BotListHandler = require(join(__dirname, 'BotListHandler.js'));
+const CustomPieceStore = require(join(__dirname, 'CustomPieceStore.js'));
 const {
 	bottoken,
 	prefix,
@@ -29,15 +28,10 @@ module.exports = class SenpaiClient extends Client {
 		this.constants = { supportServerLink, voteLink };
 		this.botConfig = { prefix };
 		this.databaseConfig = { databaseHost, databaseName, databaseUser, databasePW };
-		this.lavalink = null;
-		this.weebAPI = new WolkeHandler(this.tokens.wolkeToken, 'Wolke');
-		this.botListHandler = new BotListHandler(this);
-	}
-
-	_lavalinkEvent(event) {
-		const guild = this.guilds.get(event.guildId);
-		if (event.type === 'TrackEndEvent') {
-			if (guild) guild.music.emit('TrackEnd', event);
-		}
+		this.customPieceStore = new CustomPieceStore(this);
+		this.registerStore(this.customPieceStore);
+		this.registerPiece('BotListHandler', this.customPieceStore);
+		this.registerPiece('CacheSync', this.customPieceStore);
+		this.registerPiece('Lavalink', this.customPieceStore);
 	}
 };

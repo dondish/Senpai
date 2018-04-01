@@ -24,28 +24,29 @@ module.exports = class ConfigCommand extends Command {
 	}
 
 	get(msg, [key]) {
-		const { piece } = this.client.gateways.guilds.getPath(key, { avoidUnconfigurable: true, piece: true });
-		return msg.send(msg.language.get('COMMAND_CONF_GET', piece.path, msg.guild.configs.resolveString(msg, piece)));
+		const path = this.client.gateways.guilds.getPath(key, { avoidUnconfigurable: true, piece: true, errors: false });
+		if (!path) return msg.sendMessage(msg.language.get('COMMAND_CONF_GET_NOEXT', key));
+		return msg.send(msg.language.get('COMMAND_CONF_GET', path.piece.path, msg.guild.configs.resolveString(msg, path.piece)));
 	}
 
 	async set(msg, [key, ...valueToSet]) {
 		const { errors, updated } = await msg.guild.configs.update(key, valueToSet.join(' '), msg.guild, { avoidUnconfigurable: true, action: 'add' });
-		if (errors.length) return msg.send(errors[0]);
-		if (!updated.length) return msg.send(msg.language.get('COMMAND_CONF_NOCHANGE', key));
+		if (errors.length) return msg.sendMessage(errors[0]);
+		if (!updated.length) return msg.sendMessage(msg.language.get('COMMAND_CONF_NOCHANGE', key));
 		return msg.send(msg.language.get('COMMAND_CONF_UPDATED', key, msg.guild.configs.resolveString(msg, updated[0].piece)));
 	}
 
 	async remove(msg, [key, ...valueToRemove]) {
 		const { errors, updated } = await msg.guild.configs.update(key, valueToRemove.join(' '), msg.guild, { avoidUnconfigurable: true, action: 'remove' });
-		if (errors.length) return msg.send(errors[0]);
-		if (!updated.length) return msg.send(msg.language.get('COMMAND_CONF_NOCHANGE', key));
+		if (errors.length) return msg.sendMessage(errors[0]);
+		if (!updated.length) return msg.sendMessage(msg.language.get('COMMAND_CONF_NOCHANGE', key));
 		return msg.send(msg.language.get('COMMAND_CONF_UPDATED', key, msg.guild.configs.resolveString(msg, updated[0].piece)));
 	}
 
 	async reset(msg, [key]) {
 		const { errors, updated } = await msg.guild.configs.reset(key, msg.guild, true);
-		if (errors.length) return msg.send(errors[0]);
-		if (!updated.length) return msg.send(msg.language.get('COMMAND_CONF_NOCHANGE', key));
+		if (errors.length) return msg.sendMessage(errors[0]);
+		if (!updated.length) return msg.sendMessage(msg.language.get('COMMAND_CONF_NOCHANGE', key));
 		return msg.send(msg.language.get('COMMAND_CONF_RESET', key, msg.guild.configs.resolveString(msg, updated[0].piece)));
 	}
 

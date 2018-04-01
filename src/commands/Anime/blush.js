@@ -11,7 +11,7 @@ module.exports = class BlushCommand extends Command {
 	}
 
 	async run(msg, [member]) {
-		const { url } = await this.client.weebAPI.getRandom({ type: this.name, hidden: false, nsfw: false, filetype: 'gif' });
+		const { url } = await this.wolkeHandler.getRandom({ type: this.name, hidden: false, nsfw: false, filetype: 'gif' });
 		return msg.send(
 			new this.client.methods.Embed()
 				.setDescription(member ? `${msg.member} blushed at ${member}` : `${msg.member} got blushed at`)

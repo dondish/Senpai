@@ -4,7 +4,7 @@ const permissionsLevels = require(join(__dirname, 'structures', 'PermissionLevel
 const { prefix } = process.env;
 
 const client = new Client({
-	messageCacheMaxSize: 50,
+	messageCacheMaxSize: 25,
 	messageSweepInterval: 60,
 	prefix,
 	cmdEditing: true,
@@ -14,8 +14,9 @@ const client = new Client({
 	ignoreSelf: true,
 	ignoreBots: true,
 	permissionsLevels,
-	providers: { default: 'Postgres' },
+	providers: { default: 'postgres' },
 	promptTime: 20000,
+	pieceDefaults: { commands: { deletable: true } },
 	readyMessage: readyClient => [
 		'-----------------------------------------------------------------------------',
 		`Shard ID:              ${readyClient.shard.id}`,

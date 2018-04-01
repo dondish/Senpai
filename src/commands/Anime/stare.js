@@ -12,7 +12,7 @@ module.exports = class StareCommand extends Command {
 	}
 
 	async run(msg, [member]) {
-		const { url } = await this.client.weebAPI.getRandom({ type: this.name, hidden: false, nsfw: false, filetype: 'gif' });
+		const { url } = await this.wolkeHandler.getRandom({ type: this.name, hidden: false, nsfw: false, filetype: 'gif' });
 		return msg.send(
 			new this.client.methods.Embed()
 				.setDescription(member ? `${msg.member} stared at ${member}` : `${msg.member} started to stare`)

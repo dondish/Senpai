@@ -1,8 +1,12 @@
+const { Piece } = require('klasa');
 const { post } = require('snekfetch');
 
-module.exports = class BotListHandler {
-	constructor(client) {
-		this.client = client;
+module.exports = class BotListHandler extends Piece {
+	constructor(...args) {
+		super(...args, {
+			name: 'BotListHandler',
+			enabled: true
+		});
 		this.interval = this.client.setInterval(this.updateStats.bind(this), 9e5);
 	}
 
@@ -19,3 +23,4 @@ module.exports = class BotListHandler {
 		}
 	}
 };
+
