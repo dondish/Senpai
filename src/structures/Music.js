@@ -8,8 +8,9 @@ module.exports = class Music extends EventEmitter {
 		this.id = id;
 		this._queue = [];
 		this.loop = false;
-		this._channelID = null;
+		this.channelID = null;
 		this.on('TrackEnd', this._handleEnd.bind(this));
+		this.on('TrackStuck', this._stuck.bind(this));
 	}
 
 	queue(songinfo) {
@@ -26,8 +27,10 @@ module.exports = class Music extends EventEmitter {
 		}
 	}
 
-	stop() {
-		this.client.customPieceStore.get('Lavalink').lavalink.players.get(this.id).stop();
+	skip(amount = 1) {
+		const skipped = this._queue.splice(0, amount);
+		this._stop();
+		return skipped;
 	}
 
 	shuffle() {
@@ -45,7 +48,7 @@ module.exports = class Music extends EventEmitter {
 	reset() {
 		if (this._queue.length > 0) this._queue.length = 0;
 		if (this.loop) this.loop = false;
-		if (this.playing) this.stop();
+		if (this.playing) this._stop();
 	}
 
 	_play(options) {
@@ -56,7 +59,11 @@ module.exports = class Music extends EventEmitter {
 			.setColor('RANDOM');
 		if (channel) channel.send(embed);
 		const { track } = this._queue[0];
-		this.client.customPieceStore.get('Lavalink').lavalink.players.get(this.id).play(track, options);
+		this.player.play(track, options);
+	}
+
+	_stop() {
+		this.player.stop();
 	}
 
 	_handleEnd(event) {
@@ -85,6 +92,10 @@ module.exports = class Music extends EventEmitter {
 		return this._play();
 	}
 
+	_stuck() {
+		this._stop();
+	}
+
 	_shuffle(queue) {
 		let firstSong = queue.shift();
 		let currentIndex = queue.length,
@@ -110,12 +121,8 @@ module.exports = class Music extends EventEmitter {
 		return queue;
 	}
 
-	set channelID(value) {
-		this._channelID = value;
-	}
-
-	get channelID() {
-		return this._channelID;
+	get channel() {
+		return this.client.channels.get(this.channelID);
 	}
 
 	get nowPlaying() {
@@ -123,6 +130,10 @@ module.exports = class Music extends EventEmitter {
 	}
 
 	get playing() {
-		return this.client.customPieceStore.get('Lavalink').lavalink.players.get(this.id).playing;
+		return this.player.playing;
+	}
+
+	get player() {
+		return this.client.customPieceStore.get('Lavalink').lavalink.players.get(this.id);
 	}
 };

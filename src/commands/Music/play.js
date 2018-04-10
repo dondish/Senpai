@@ -12,17 +12,15 @@ module.exports = class PlayCommand extends Command {
 	}
 
 	async run(msg, [...query]) {
-		if (!msg.guild.music.channelID || !msg.guild.channels.has(msg.guild.music.channelID)) msg.guild.music.channelID = msg.channel.id;
+		if (!msg.guild.music.channel) msg.guild.music.channelID = msg.channel.id;
 		await msg.send('*adding your Song/Playlist to the queue....*');
 		try {
-			let songs;
+			let songs = [];
 			if (this.isLink(query.join(' '))) {
 				songs = await this.client.customPieceStore.get('Lavalink').lavalink.resolveTrack(query.join(' '));
 			} else {
-				let arr = [];
 				const searchResult = await this.client.customPieceStore.get('Lavalink').lavalink.resolveTrack(`ytsearch: ${query}`);
-				arr.push(searchResult[0]);
-				songs = arr;
+				songs.push(searchResult[0]);
 			}
 			if (songs.length > 1) {
 				return this._playlist(songs, msg, { name: msg.member.displayName, url: msg.author.displayAvatarURL() });

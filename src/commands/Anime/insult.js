@@ -13,7 +13,7 @@ module.exports = class InsultCommand extends Command {
 
 	async run(msg, [member]) {
 		if (!msg.channel.nsfw) return msg.send('This Command only work in channels marked as nsfw');
-		const { url } = await this.wolkeHandler.getRandom({ type: this.name, hidden: false, nsfw: false, filetype: 'gif' });
+		const { url } = await this.wolkeClient.getRandom({ type: this.name, hidden: false, nsfw: false, filetype: 'gif' });
 		return msg.send(new this.client.methods.Embed()
 			.setDescription(member ? `${msg.member} insulted ${member}` : `${msg.member} got insulted`)
 			.setImage(url)

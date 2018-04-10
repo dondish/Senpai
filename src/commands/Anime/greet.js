@@ -12,7 +12,7 @@ module.exports = class GreetCommand extends Command {
 	}
 
 	async run(msg, [member]) {
-		const { url } = await this.wolkeHandler.getRandom({ type: this.name, hidden: false, nsfw: false, filetype: 'gif' });
+		const { url } = await this.wolkeClient.getRandom({ type: this.name, hidden: false, nsfw: false, filetype: 'gif' });
 		return msg.send(new this.client.methods.Embed()
 			.setDescription(member ? `${msg.member} Welcomed ${member}` : `${msg.member} got greeted`)
 			.setImage(url)
