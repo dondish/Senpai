@@ -1103,19 +1103,19 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-kitsu-core@^5.0.7:
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/kitsu-core/-/kitsu-core-5.0.7.tgz#7429ae4bdcda7a224a2de048b9c00de80a84da81"
+kitsu-core@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/kitsu-core/-/kitsu-core-5.1.0.tgz#dd777fa232996907f7f08f7200a657ffc08e9e71"
   dependencies:
     babel-runtime "^6.26.0"
 
-kitsu@^5.0.7:
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/kitsu/-/kitsu-5.0.7.tgz#01320ad7735068898f6b6b48a66712497ffbb0a7"
+kitsu@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/kitsu/-/kitsu-5.1.0.tgz#b5f5542e6384bf496e05970a36cb71ce9ab2a954"
   dependencies:
     axios "^0.18.0"
     babel-runtime "^6.26.0"
-    kitsu-core "^5.0.7"
+    kitsu-core "^5.1.0"
     pluralize "^7.0.0"
 
 lavalink@^0.4.0:
