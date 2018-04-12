@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "ascii-art": "^1.4.3",
-    "bufferutil": "^3.0.3",
+    "bufferutil": "^3.0.4",
     "canvas": "^2.0.0-alpha.12",
     "discord.js": "^11.3.2",
     "file": "^0.2.2",
